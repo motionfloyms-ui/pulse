@@ -15,3 +15,11 @@ test('finds a video inside shared text',()=>{
  const f=V.find('Schau mal: Gesangsübung https://youtu.be/dQw4w9WgXcQ?si=xy toll');assert.equal(f.id,'dQw4w9WgXcQ');assert.equal(f.url,'https://youtu.be/dQw4w9WgXcQ?si=xy');
  assert.equal(V.find('kein Video hier https://example.com'),null);
 });
+test('suggests a room from the video title',()=>{
+ assert.equal(V.room('Hip Thrust richtig ausführen – Technik'),'koerper');
+ assert.equal(V.room('Vocal warm up for growls and screams'),'ideen');
+ assert.equal(V.room('Chaos Magic: how to make a sigil'),'sinn');
+ assert.equal(V.room('Grounding exercise for dissociation'),'innen');
+ assert.equal(V.room('Irgendwas Lustiges'),'');
+ assert.equal(V.room('Irgendwas',{music:true}),'ideen');
+});

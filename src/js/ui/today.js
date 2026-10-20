@@ -82,6 +82,7 @@ function quickAnalyze(raw){
  else if(i.type==='task')kind='task';
  else if(foodOk&&amount)kind='meal';
  if(link&&(kind==='meal'||kind==='capture'))kind='note';
+ const video=link&&PulseVideo.parse(link.replace(/[).,;!?]+$/,''));if(video&&!room)room=PulseVideo.room(text.replace(link,''),video);
  if(quickOverride&&!(quickOverride==='meal'&&!(foodOk||i.type==='drink'))&&!(quickOverride==='event'&&!when.date))kind=quickOverride;
  return {text,link,room:room||(kind==='meal'?'koerper':'alltag'),kind,when,type:i.type,foodOk,kcal:Math.round(parts.reduce((a,p)=>a+(p.nut?.kcal||0),0))};
 }

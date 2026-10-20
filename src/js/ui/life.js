@@ -72,14 +72,15 @@ function lifeSearchChanged(value){lifeQuery=value;renderLifeLibraryResults()}
 function renderLifeLibraryResults(){
  const el=document.getElementById('lifeLibraryResults');if(!el)return;
  if(lifeKindFilter==='lib'){const all=lifeQuery.trim()?PulseLibrary.search(lifeQuery):PulseLibrary.ENTRIES;el.innerHTML='<p class="life-result-count">'+all.length+' Inhalte aus der Bibliothek</p>'+(lifeQuery.trim()?'<div class="life-lib-grid">'+all.map(libCard).join('')+'</div>':PulseLife.ROOMS.map(r=>{const list=all.filter(e=>e.room===r.id);return list.length?'<h3 class="life-lib-grouphead">'+esc(r.name)+' <span>'+list.length+'</span></h3><div class="life-lib-grid">'+list.map(libCard).join('')+'</div>':''}).join(''))+'<div class="life-room-actions">'+lifeButton('Tarot nachschlagen',lifeCall('lifeTarotBrowse','major',false),'life-btn')+'</div>';return}
- const items=PulseLife.search(db,lifeQuery,lifeKindFilter==='archive'?'':lifeKindFilter,'',lifeKindFilter==='archive');
+ const items=lifeKindFilter==='video'?PulseLife.search(db,lifeQuery,'','',false).filter(itemVideo):PulseLife.search(db,lifeQuery,lifeKindFilter==='archive'?'':lifeKindFilter,'',lifeKindFilter==='archive');
  const own=items.length?'<p class="life-result-count">'+items.length+' '+(items.length===1?'eigener Eintrag':'eigene Einträge')+'</p>'+items.map(x=>lifeCard(x)).join(''):'';
  const lib=lifeQuery.trim()&&!lifeKindFilter?libSearchHTML(lifeQuery):'';
+ if(!own&&lifeKindFilter==='video'&&!lifeQuery.trim()){el.innerHTML=lifeEmpty('Noch keine Videos.','In der YouTube-App auf „Teilen“ tippen und Pulse wählen, oder einen Link in die Eingabezeile einfügen.',"lifeQuick()",'Link einfügen');return}
  el.innerHTML=own+lib||lifeEmpty(lifeQuery?'Keine Treffer.':'Noch keine Einträge.',lifeQuery?'Gesucht wird in deinen Einträgen, der Bibliothek und allen Tarotkarten.':'Fertige Inhalte findest du unter „Bibliothek“.',lifeCall('lifeFilter','lib'),'Bibliothek öffnen');
 }
 function renderLifeLibrary(){
  const el=document.getElementById('lifeLibraryContent');if(!el)return;
- el.innerHTML=lifeHeader('','Sammlung','')+'<label class="life-search">'+lifeGlyph('search')+'<input id="lifeSearch" type="search" aria-label="Sammlung durchsuchen" placeholder="Suchen: Einträge, Rezepte, Tarot …" oninput="lifeSearchChanged(this.value)" value="'+esc(lifeQuery)+'"/></label><div class="life-filterbar">'+[['','Alles'],['lib','Bibliothek'],...Object.entries(PulseLife.KINDS),['archive','Archiv']].map(([k,label])=>'<button type="button" aria-pressed="'+(lifeKindFilter===k)+'" onclick="'+lifeCall('lifeFilter',k)+'">'+label+'</button>').join('')+'</div><div id="lifeLibraryResults"></div>';
+ el.innerHTML=lifeHeader('','Sammlung','')+'<label class="life-search">'+lifeGlyph('search')+'<input id="lifeSearch" type="search" aria-label="Sammlung durchsuchen" placeholder="Suchen: Einträge, Rezepte, Tarot …" oninput="lifeSearchChanged(this.value)" value="'+esc(lifeQuery)+'"/></label><div class="life-filterbar">'+[['','Alles'],['lib','Bibliothek'],...Object.entries(PulseLife.KINDS),['video','Videos'],['archive','Archiv']].map(([k,label])=>'<button type="button" aria-pressed="'+(lifeKindFilter===k)+'" onclick="'+lifeCall('lifeFilter',k)+'">'+label+'</button>').join('')+'</div><div id="lifeLibraryResults"></div>';
  renderLifeLibraryResults();
 }
 function lifeClock(sec){return Math.floor(sec/60).toString().padStart(2,'0')+':'+Math.floor(sec%60).toString().padStart(2,'0')}

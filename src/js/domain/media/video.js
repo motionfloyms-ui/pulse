@@ -22,5 +22,19 @@
  function find(text){for(const m of String(text||'').matchAll(/https?:\/\/[^\s<>"']+/g)){const v=parse(m[0]);if(v)return {...v,url:m[0]}}return null}
  function embed(v,autoplay=true){return 'https://www.youtube-nocookie.com/embed/'+v.id+'?rel=0&playsinline=1&modestbranding=1'+(autoplay?'&autoplay=1':'')+(v.start?'&start='+v.start:'')}
  function watch(v){return 'https://www.youtube.com/watch?v='+v.id+(v.start?'&t='+v.start+'s':'')}
- return {parse,find,embed,watch,seconds};
+ /* Room suggestion from the title or shared text. Empty when nothing fits; the user decides. */
+ const ROOMS=[
+  ['koerper',/training|workout|übung|uebung|exercise|gym|fitx|kraft|squat|kniebeuge|bankdr|latzug|rudern|kreuzheben|deadlift|hip ?thrust|glute|dehn|stretch|mobility|yoga|pilates|rezept|recipe|kochen|cooking|protein|ernährung|meal ?prep/],
+  ['ideen',/song|gesang|singen|sing|vocal|stimme|growl|scream|band|gitarre|guitar|bass|drum|lyric|songwriting|songtext|cover|musik|music|album|konzert|recording|mixing|schreiben|writing|vortrag|lecture|talk|doku|documentary|podcast|interview|bewusstsein|consciousness|levin/],
+  ['sinn',/tarot|ritual|meditation|meditat|magick|magie|chaos ?magic|sigil|mond|moon|astrolog|spirit|hexe|witch|occult|okkult|pagan|samhain|wicca|gnosis|breathwork/],
+  ['innen',/angst|anxiety|therapie|therapy|dissozi|dissociat|adhs|adhd|autis|neurodiver|selbstfürsorge|self[- ]care|grounding|achtsam|mindful|journaling/],
+  ['zuhause',/putzen|cleaning|aufräum|declutter|organi[sz]|deko|diy|zimmerpflanze|houseplant/],
+  ['draussen',/wandern|hiking|garten|garden|vögel|birds|natur|nature walk/]
+ ];
+ function room(text,video){
+  const t=String(text||'').toLocaleLowerCase('de');let best='',n=0;
+  for(const [id,re] of ROOMS){const c=(t.match(new RegExp(re.source,'g'))||[]).length;if(c>n){best=id;n=c}}
+  return best||(video&&video.music?'ideen':'');
+ }
+ return {parse,find,embed,watch,seconds,room};
 });

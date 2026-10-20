@@ -1981,14 +1981,15 @@ function lifeSearchChanged(value){lifeQuery=value;renderLifeLibraryResults()}
 function renderLifeLibraryResults(){
  const el=document.getElementById('lifeLibraryResults');if(!el)return;
  if(lifeKindFilter==='lib'){const all=lifeQuery.trim()?PulseLibrary.search(lifeQuery):PulseLibrary.ENTRIES;el.innerHTML='<p class="life-result-count">'+all.length+' Inhalte aus der Bibliothek</p>'+(lifeQuery.trim()?'<div class="life-lib-grid">'+all.map(libCard).join('')+'</div>':PulseLife.ROOMS.map(r=>{const list=all.filter(e=>e.room===r.id);return list.length?'<h3 class="life-lib-grouphead">'+esc(r.name)+' <span>'+list.length+'</span></h3><div class="life-lib-grid">'+list.map(libCard).join('')+'</div>':''}).join(''))+'<div class="life-room-actions">'+lifeButton('Tarot nachschlagen',lifeCall('lifeTarotBrowse','major',false),'life-btn')+'</div>';return}
- const items=PulseLife.search(db,lifeQuery,lifeKindFilter==='archive'?'':lifeKindFilter,'',lifeKindFilter==='archive');
+ const items=lifeKindFilter==='video'?PulseLife.search(db,lifeQuery,'','',false).filter(itemVideo):PulseLife.search(db,lifeQuery,lifeKindFilter==='archive'?'':lifeKindFilter,'',lifeKindFilter==='archive');
  const own=items.length?'<p class="life-result-count">'+items.length+' '+(items.length===1?'eigener Eintrag':'eigene Einträge')+'</p>'+items.map(x=>lifeCard(x)).join(''):'';
  const lib=lifeQuery.trim()&&!lifeKindFilter?libSearchHTML(lifeQuery):'';
+ if(!own&&lifeKindFilter==='video'&&!lifeQuery.trim()){el.innerHTML=lifeEmpty('Noch keine Videos.','In der YouTube-App auf „Teilen“ tippen und Pulse wählen, oder einen Link in die Eingabezeile einfügen.',"lifeQuick()",'Link einfügen');return}
  el.innerHTML=own+lib||lifeEmpty(lifeQuery?'Keine Treffer.':'Noch keine Einträge.',lifeQuery?'Gesucht wird in deinen Einträgen, der Bibliothek und allen Tarotkarten.':'Fertige Inhalte findest du unter „Bibliothek“.',lifeCall('lifeFilter','lib'),'Bibliothek öffnen');
 }
 function renderLifeLibrary(){
  const el=document.getElementById('lifeLibraryContent');if(!el)return;
- el.innerHTML=lifeHeader('','Sammlung','')+'<label class="life-search">'+lifeGlyph('search')+'<input id="lifeSearch" type="search" aria-label="Sammlung durchsuchen" placeholder="Suchen: Einträge, Rezepte, Tarot …" oninput="lifeSearchChanged(this.value)" value="'+esc(lifeQuery)+'"/></label><div class="life-filterbar">'+[['','Alles'],['lib','Bibliothek'],...Object.entries(PulseLife.KINDS),['archive','Archiv']].map(([k,label])=>'<button type="button" aria-pressed="'+(lifeKindFilter===k)+'" onclick="'+lifeCall('lifeFilter',k)+'">'+label+'</button>').join('')+'</div><div id="lifeLibraryResults"></div>';
+ el.innerHTML=lifeHeader('','Sammlung','')+'<label class="life-search">'+lifeGlyph('search')+'<input id="lifeSearch" type="search" aria-label="Sammlung durchsuchen" placeholder="Suchen: Einträge, Rezepte, Tarot …" oninput="lifeSearchChanged(this.value)" value="'+esc(lifeQuery)+'"/></label><div class="life-filterbar">'+[['','Alles'],['lib','Bibliothek'],...Object.entries(PulseLife.KINDS),['video','Videos'],['archive','Archiv']].map(([k,label])=>'<button type="button" aria-pressed="'+(lifeKindFilter===k)+'" onclick="'+lifeCall('lifeFilter',k)+'">'+label+'</button>').join('')+'</div><div id="lifeLibraryResults"></div>';
  renderLifeLibraryResults();
 }
 function lifeClock(sec){return Math.floor(sec/60).toString().padStart(2,'0')+':'+Math.floor(sec%60).toString().padStart(2,'0')}
@@ -2638,7 +2639,21 @@ return {TYPES,TAROT,SUITS,MAJORS,MOON_PHASES,tarotCard,moon,ENTRIES:E,forRoom,ge
  function find(text){for(const m of String(text||'').matchAll(/https?:\/\/[^\s<>"']+/g)){const v=parse(m[0]);if(v)return {...v,url:m[0]}}return null}
  function embed(v,autoplay=true){return 'https://www.youtube-nocookie.com/embed/'+v.id+'?rel=0&playsinline=1&modestbranding=1'+(autoplay?'&autoplay=1':'')+(v.start?'&start='+v.start:'')}
  function watch(v){return 'https://www.youtube.com/watch?v='+v.id+(v.start?'&t='+v.start+'s':'')}
- return {parse,find,embed,watch,seconds};
+ /* Room suggestion from the title or shared text. Empty when nothing fits; the user decides. */
+ const ROOMS=[
+  ['koerper',/training|workout|übung|uebung|exercise|gym|fitx|kraft|squat|kniebeuge|bankdr|latzug|rudern|kreuzheben|deadlift|hip ?thrust|glute|dehn|stretch|mobility|yoga|pilates|rezept|recipe|kochen|cooking|protein|ernährung|meal ?prep/],
+  ['ideen',/song|gesang|singen|sing|vocal|stimme|growl|scream|band|gitarre|guitar|bass|drum|lyric|songwriting|songtext|cover|musik|music|album|konzert|recording|mixing|schreiben|writing|vortrag|lecture|talk|doku|documentary|podcast|interview|bewusstsein|consciousness|levin/],
+  ['sinn',/tarot|ritual|meditation|meditat|magick|magie|chaos ?magic|sigil|mond|moon|astrolog|spirit|hexe|witch|occult|okkult|pagan|samhain|wicca|gnosis|breathwork/],
+  ['innen',/angst|anxiety|therapie|therapy|dissozi|dissociat|adhs|adhd|autis|neurodiver|selbstfürsorge|self[- ]care|grounding|achtsam|mindful|journaling/],
+  ['zuhause',/putzen|cleaning|aufräum|declutter|organi[sz]|deko|diy|zimmerpflanze|houseplant/],
+  ['draussen',/wandern|hiking|garten|garden|vögel|birds|natur|nature walk/]
+ ];
+ function room(text,video){
+  const t=String(text||'').toLocaleLowerCase('de');let best='',n=0;
+  for(const [id,re] of ROOMS){const c=(t.match(new RegExp(re.source,'g'))||[]).length;if(c>n){best=id;n=c}}
+  return best||(video&&video.music?'ideen':'');
+ }
+ return {parse,find,embed,watch,seconds,room};
 });
 // SOURCE: ui/library.js
 /* Content surfaces: room library, today strip, tarot. Reading never writes; adopting does. */
@@ -3244,6 +3259,7 @@ function quickAnalyze(raw){
  else if(i.type==='task')kind='task';
  else if(foodOk&&amount)kind='meal';
  if(link&&(kind==='meal'||kind==='capture'))kind='note';
+ const video=link&&PulseVideo.parse(link.replace(/[).,;!?]+$/,''));if(video&&!room)room=PulseVideo.room(text.replace(link,''),video);
  if(quickOverride&&!(quickOverride==='meal'&&!(foodOk||i.type==='drink'))&&!(quickOverride==='event'&&!when.date))kind=quickOverride;
  return {text,link,room:room||(kind==='meal'?'koerper':'alltag'),kind,when,type:i.type,foodOk,kcal:Math.round(parts.reduce((a,p)=>a+(p.nut?.kcal||0),0))};
 }
@@ -3330,7 +3346,7 @@ function handleLaunchParams(){
  const action=q.get('action'),title=(q.get('title')||'').trim(),text=(q.get('text')||'').trim(),url=(q.get('url')||'').trim();
  history.replaceState(history.state,'',location.pathname+location.hash);
  setTimeout(()=>{
-  if(title||text||url){const link=/^https?:\/\//i.test(url)?url:(text.match(/https?:\/\/\S+/)||[''])[0];lifeReceiveShare({kind:'note',title:title||(text.replace(link,'').trim().split('\n')[0]||'Geteilt').slice(0,120),body:text.replace(link,'').trim(),url:link})}
+  if(title||text||url){const link=/^https?:\/\//i.test(url)?url:(text.match(/https?:\/\/\S+/)||[''])[0];const video=PulseVideo.parse(link),name=title||(text.replace(link,'').trim().split('\n')[0]||(video?'YouTube-Video':'Geteilt')),room=video?PulseVideo.room(title+' '+text,video):'';lifeReceiveShare({kind:'note',title:name.slice(0,120),body:title?text.replace(link,'').trim():text.replace(link,'').trim().split('\n').slice(1).join('\n').trim(),url:link,...(room?{room}:{})})}
   else if(action==='compose')lifeQuick();
   else if(action==='voice')lifeComposeVoice();
   else if(action==='food')goView('nutrition');
