@@ -36,7 +36,7 @@
    if(currentState!==undefined){const pending=JSON.stringify(state.normalize(currentState));if(expected===null||pending!==JSON.stringify(JSON.parse(expected))){assertUnchanged();write('pulseOS_pre_import_memory_backup',pending)}}
    return transact(prepared,'pulseOS_pre_import_backup');
   })}
-  function exportText(value,{wrapped=true,version='19.0.0',now=new Date()}={}){
+  function exportText(value,{wrapped=true,version='20.0.0',now=new Date()}={}){
    // Emergency export deliberately does not reject uncommitted in-memory data.
    return JSON.stringify(wrapped?{app:'PULSE',version,schemaVersion:value.schemaVersion||state.SCHEMA_VERSION,exportedAt:now.toISOString(),data:value}:value,null,2);
   }

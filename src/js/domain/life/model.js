@@ -1,6 +1,6 @@
 // SOURCE: domain/life/model.js
 /* PULSE Lebensräume: shared records and local projections. No automatic completions. */
-(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseLife=api})(globalThis,function(){
+(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./recur.js'):root.PulseRecur);if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseLife=api})(globalThis,function(Recur){
 'use strict';
 const ROOMS=[
 {id:'alltag',name:'Alltag',sub:'Pläne, Projekte & kleine Schritte',color:'peach',symbol:'arch',prompt:'Was würde morgen ein bisschen leichter machen?'},
@@ -46,8 +46,8 @@ function list(db,{archived=false}={}){
   out.push({id:store+':'+(r.id??i),origin:store,kind:r.type==='task'||store==='tasks'?'task':'note',title:body.split('\n')[0].slice(0,180),body:m.body??body,room:m.room||(/food|drink|workout|context/.test(r.type||'')?'koerper':'alltag'),date:r.due||'',time:r.time||'',deadline:m.deadline||'',duration:m.duration||25,status:r.status==='cancelled'?'archived':r.done?'done':r.deferred?'parked':m.status==='waiting'?'waiting':'open',parent:m.parent||'',source:m.source||'',steps:m.steps||[],url:m.url||'',createdAt:r.recordedAt||r.date||'',updatedAt:r.updatedAt||'',repeat:m.repeat||0,resume:m.resume||'',photos:m.photos||[]});
  }
  for(const r of db.events||[])if(r.type==='calendar-plan'&&r.status!=='superseded'&&(r.status!=='cancelled'||r.lifeMeta?.status==='archived')){
-  const m=r.lifeMeta||{};
-  out.push({id:'event:'+r.id,origin:'event',kind:'event',title:r.title||'Termin',body:m.body||'',room:m.room||'alltag',date:r.date||'',time:r.time||'',deadline:m.deadline||'',duration:m.duration||30,status:r.status==='cancelled'?'archived':r.status==='completed'?'done':'open',parent:m.parent||'',source:m.source||'',steps:m.steps||[],url:m.url||'',createdAt:r.recordedAt||'',updatedAt:r.updatedAt||'',resume:m.resume||'',photos:m.photos||[]});
+  const m=r.lifeMeta||{},extra={};for(const k of Recur.EXTRA)if(m[k]!=null)extra[k]=m[k];
+  out.push({...extra,id:'event:'+r.id,origin:'event',kind:'event',title:r.title||'Termin',body:m.body||'',room:m.room||'alltag',date:r.date||'',time:r.time||'',deadline:m.deadline||'',duration:m.duration||30,status:r.status==='cancelled'?'archived':r.status==='completed'?'done':'open',parent:m.parent||'',source:m.source||'',steps:m.steps||[],url:m.url||'',createdAt:r.recordedAt||'',updatedAt:r.updatedAt||'',resume:m.resume||'',photos:m.photos||[]});
  }
  return out.filter(x=>archived||x.status!=='archived');
 }
@@ -62,11 +62,12 @@ function clean(fields,old={}){
  if(!validDate(x.date)||!validDate(x.deadline)||!validTime(x.time))throw Error('Bitte Datum und Uhrzeit prüfen.');
  if(x.time&&!x.date)throw Error('Zu einer Uhrzeit gehört auch ein Datum.');
  if(x.kind==='event'&&!x.date)throw Error('Wähle einen Tag für den Termin.');
- x.duration=Number(x.duration||25);if(!Number.isFinite(x.duration)||x.duration<1||x.duration>1440)throw Error('Dauer: 1 bis 1440 Minuten.');
+ x.duration=Number(x.duration||(x.kind==='event'?60:25));if(!Number.isFinite(x.duration)||x.duration<1||x.duration>1440)throw Error('Dauer: 1 bis 1440 Minuten.');
  if(x.url&&!/^https?:\/\/\S+$/i.test(x.url))throw Error('Ein Link beginnt mit https:// oder http://.');
  x.steps=Array.isArray(x.steps)?x.steps.map(s=>({text:String(s.text||'').slice(0,500),done:!!s.done})).filter(s=>s.text.trim()):[];
  x.repeat=[0,1,7,14,30].includes(Number(x.repeat))?Number(x.repeat):0;
  x.photos=Array.isArray(x.photos)?[...new Set(x.photos.filter(id=>typeof id==='string'&&/^ph-[a-z0-9]+$/.test(id)))].slice(0,8):[];
+ if(x.kind==='event')Object.assign(x,Recur.normalize(x));
  return x;
 }
 function create(db,fields,id,now){
@@ -84,7 +85,7 @@ function update(db,id,fields,now){
  x.updatedAt=now;
  if(old.origin==='life'){const dest=ensure(db).items.find(r=>r.id===id);Object.assign(dest,x);delete dest.origin;return dest}
  const r=legacyRecord(db,id);if(!r)throw Error('Eintrag nicht gefunden.');
- r.lifeMeta={title:x.title,body:x.body,room:x.room,deadline:x.deadline,duration:x.duration,status:x.status,parent:x.parent,source:x.source,steps:x.steps,url:x.url,repeat:x.repeat,resume:x.resume,photos:x.photos};
+ r.lifeMeta={title:x.title,body:x.body,room:x.room,deadline:x.deadline,duration:x.duration,status:x.status,parent:x.parent,source:x.source,steps:x.steps,url:x.url,repeat:x.repeat,resume:x.resume,photos:x.photos,...(x.kind==='event'?Object.fromEntries(Recur.EXTRA.map(k=>[k,x[k]])):{})};
  if(old.origin==='event'){r.title=x.title;r.date=x.date;r.time=x.time;r.status=x.status==='archived'?'cancelled':x.status==='done'?'completed':'planned'}
  else {if(r.text!==undefined)r.text=x.title;else r.title=x.title;r.due=x.date||null;r.time=x.time;r.done=x.status==='done';r.deferred=['parked','archived'].includes(x.status);r.status=x.status==='archived'?'cancelled':r.done?'completed':'current'}
  r.updatedAt=now;return x;
@@ -95,7 +96,15 @@ function toggle(db,id,now,today,newId){
  if(done&&x.repeat&&!list(db,{archived:true}).some(y=>y.repeatOf===x.id)){const next=offset(today,x.repeat);create(db,{...x,origin:undefined,title:x.title,status:'open',date:next,time:'',deadline:'',steps:x.steps.map(s=>({...s,done:false})),source:x.id,repeatOf:x.id,repeat:x.repeat},newId,now)}
  return done;
 }
-function day(db,date){return list(db).filter(x=>x.date===date&&!['parked','archived'].includes(x.status)&&['task','event','ritual'].includes(x.kind)).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'))}
+function day(db,date){
+ const out=[];
+ for(const x of list(db)){
+  if(['parked','archived'].includes(x.status)||!['task','event','ritual'].includes(x.kind))continue;
+  if(x.kind==='event'&&(x.recur||x.endDate)){const o=Recur.occurrence(x,date);if(o)out.push({...x,date,seriesDate:x.date,occ:o});continue}
+  if(x.date===date)out.push(x);
+ }
+ return out.sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'));
+}
 function search(db,query='',kind='',roomId='',archived=false){
  const q=query.trim().toLocaleLowerCase('de');
  return list(db,{archived}).filter(x=>(!archived||x.status==='archived')&&(!kind||x.kind===kind)&&(!roomId||x.room===roomId)&&(!q||[x.title,x.body,room(x.room).name,...x.steps.map(s=>s.text)].join(' ').toLocaleLowerCase('de').includes(q))).sort((a,b)=>(b.updatedAt||b.createdAt).localeCompare(a.updatedAt||a.createdAt));

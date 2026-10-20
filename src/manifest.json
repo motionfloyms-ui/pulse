@@ -5,7 +5,9 @@
   "app.css"
  ],
  "scripts": [
+  "domain/life/recur.js",
   "domain/life/model.js",
+  "domain/life/ics.js",
   "state/schema.js",
   "domain/memory/records.js",
   "migrations/legacy-820.js",
@@ -30,10 +32,12 @@
   "domain/content/library.js",
   "domain/cosmos/calendar.js",
   "domain/cosmos/lore.js",
+  "domain/cosmos/astro.js",
   "domain/media/video.js",
   "domain/media/vault.js",
   "ui/library.js",
   "ui/cosmos.js",
+  "ui/agenda.js",
   "ui/feel.js",
   "ui/vault.js",
   "storage/photos.js",

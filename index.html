@@ -860,7 +860,7 @@ th{color:var(--muted);font-weight:600}
 .vault-actions .life-btn[aria-pressed="true"]:first-child{background:#F1B92B;color:#2B2100}
 .vault-block{margin:18px 0 0}.vault-block h3{margin:0 0 8px;font-size:16px}
 .vault-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.vault-chips button{min-height:40px;padding:6px 14px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);font-size:14px;font-weight:600;box-shadow:inset 0 0 0 1px var(--line)}
+.vault-chips button{min-height:44px;padding:6px 14px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);font-size:14px;font-weight:600;box-shadow:inset 0 0 0 1px var(--line)}
 .vault-chips button[aria-pressed="true"]{background:var(--accent);color:var(--accent-on);box-shadow:none}
 .vault-inline{display:flex;gap:8px;align-items:center}.vault-inline input{flex:1;min-width:0}
 .vault-inline .vault-time{flex:0 0 76px;text-align:center;font-variant-numeric:tabular-nums}
@@ -871,6 +871,79 @@ th{color:var(--muted);font-weight:600}
 .vault-mark b{min-width:52px;color:var(--accent-text);font-variant-numeric:tabular-nums}
 .life-textbtn.danger{color:var(--danger)}
 @media(max-width:360px){.vault-stats{grid-template-columns:1fr 1fr}.vault-stat.hero{grid-column:1/-1}.vault-grid,.vault-shelves{gap:9px}}
+/* Kalender v20: appointments and almanac */
+.cal-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.cal-head-actions{display:flex;align-items:center;gap:8px;flex:none}
+.cal-head-actions .life-btn{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:8px 16px}
+.cal-head-actions .life-btn svg{width:18px;height:18px}
+.cos-nav .life-seg{flex:1;max-width:300px}.cos-nav .life-seg button{flex:1}
+.cal-today{display:flex;justify-content:center;margin:-4px 0 6px}
+.cos-grid{gap:2px;padding:6px}
+.cos-day{justify-content:flex-start;align-items:stretch;gap:2px;min-height:78px;padding:4px 3px;text-align:left;overflow:hidden}
+.cos-top{display:flex;align-items:center;justify-content:space-between;gap:2px;min-height:20px}
+.cos-top b{font-size:14.5px}
+.cos-sky{display:inline-flex;align-items:center;gap:2px;color:var(--muted)}
+.cos-sign{font-size:11.5px;line-height:1;font-family:"Segoe UI Symbol","Noto Sans Symbols 2","Noto Sans Symbols",var(--font)}
+.cos-day .cos-m{width:8px;height:8px}
+.cos-evs{display:flex;flex-direction:column;gap:2px;min-width:0}
+.cos-ev{display:block;padding:1px 4px;border-radius:5px;font-size:10.5px;line-height:1.35;font-style:normal;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:clip}
+.cos-more{font-size:10.5px;font-style:normal;font-weight:650;color:var(--muted);padding-left:3px}
+.cos-day .cos-marks{margin-top:auto;justify-content:flex-start}
+.cos-day[aria-pressed="true"] .cos-sky,.cos-day[aria-pressed="true"] .cos-more{color:inherit}
+.cos-day[aria-pressed="true"] .cos-ev{box-shadow:0 0 0 1px rgb(255 255 255/.35)}
+.cal-daylist{display:flex;flex-direction:column;gap:6px;margin:0 0 6px}
+.cal-row{display:flex;align-items:stretch;gap:12px;width:100%;min-height:52px;padding:10px 14px 10px 10px;border-radius:var(--r-md);background:var(--surface);box-shadow:var(--shadow-1);color:var(--ink);text-align:left;font-weight:400;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.cal-row:active{transform:scale(.98)}
+.cal-bar{flex:none;width:4px;border-radius:4px;background:var(--room)}
+.cal-when{flex:none;min-width:86px;font-size:13.5px;font-weight:650;color:var(--ink-2);font-variant-numeric:tabular-nums;padding-top:1px}
+.cal-what{display:flex;flex-direction:column;gap:2px;min-width:0}
+.cal-what b{font-size:15.5px;font-weight:650;overflow-wrap:anywhere}
+.cal-what small{font-size:12.5px}
+.cal-add{display:flex;align-items:center;gap:8px;min-height:48px;padding:8px 14px;border-radius:var(--r-md);background:transparent;color:var(--accent-text);font-weight:650;box-shadow:inset 0 0 0 1.5px var(--line)}
+.cal-add svg{width:18px;height:18px}
+.cal-week{display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
+.cal-weekday{display:flex;flex-direction:column;gap:6px}
+.cal-dayhead{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:4px 4px 2px;background:none;color:var(--ink);text-align:left;font-weight:400;min-height:44px}
+.cal-dayhead b{font-size:16px;font-weight:700}
+.cal-dayhead small{font-size:12.5px}
+.cal-weekday.today .cal-dayhead b{color:var(--accent-text)}
+.cal-weekday.selected .cal-dayhead{box-shadow:inset 3px 0 0 var(--accent);padding-left:10px}
+.cal-fest{margin:0 4px;font-size:13px;font-weight:650;color:var(--ink-2)}.cal-fest::before{content:"● ";color:#E0484F}
+.cal-more{width:100%;margin-bottom:16px}
+.cos-section{margin:22px 4px 10px;font-size:20px;letter-spacing:-.01em}
+.cos-moonsign{display:block;margin-top:2px}
+.cos-yiji{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}
+.cos-yiji ul{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:5px}
+.cos-yiji li{position:relative;padding-left:20px;font-size:14.5px;line-height:1.35}
+.cos-yiji li::before{content:"✓";position:absolute;left:0;top:0;font-weight:800;color:var(--ok)}
+.cos-yiji ul.avoid li::before{content:"✕";color:#E0484F}
+.cos-yiji .cos-foot{grid-column:1/-1;margin:8px 0 0;font-size:12.5px;color:var(--muted)}
+.cos-card.fest{box-shadow:var(--shadow-1),inset 4px 0 0 #E0484F}
+.cos-glyph{font-family:"Segoe UI Symbol","Noto Sans Symbols",var(--font);font-weight:400}
+.cos-hours{margin-top:6px}.cos-hours summary{min-height:44px;display:flex;align-items:center;font-weight:650;color:var(--accent-text);cursor:pointer}
+.cos-hours ol{list-style:none;margin:4px 0 6px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px 14px}
+.cos-hours li{display:flex;gap:10px;padding:3px 6px;border-radius:8px;font-size:14px;font-variant-numeric:tabular-nums}
+.cos-hours li span:first-child{min-width:44px;color:var(--muted)}
+.cos-hours li.night{opacity:.75}
+.cos-hours li.now{background:var(--accent-soft);color:var(--accent-text);font-weight:700;opacity:1}
+.cos-tarot{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.cos-tarot button{display:flex;align-items:center;gap:12px;min-height:52px;padding:6px 10px 6px 6px;border-radius:var(--r-md);background:var(--surface-2);color:var(--ink);text-align:left;font-weight:400}
+.cos-tarot button>span:last-child{display:flex;flex-direction:column}
+.cos-tarot b{font-size:15px}
+.cos-more-cal summary{display:flex;flex-direction:column;gap:2px;cursor:pointer;list-style:none;min-height:44px}
+.cos-more-cal summary::-webkit-details-marker{display:none}
+.cos-more-cal summary b::after{content:" ▾";color:var(--muted)}
+.cos-more-cal[open] summary b::after{content:" ▴"}
+.cal-form{display:flex;flex-direction:column;gap:12px}
+.cal-form .life-name-field{margin:0}
+.cal-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cal-grid2 .cal-full{grid-column:1/-1}
+.cal-check{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:600}
+.cal-check input{width:22px;height:22px;accent-color:var(--accent)}
+.cal-days{margin:-4px 0 0;flex-wrap:nowrap;gap:4px}.cal-days button{flex:1;min-width:0;padding:6px 0}
+.cal-file{display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.cal-facts dd a{color:var(--accent-text)}
+@media(max-width:360px){.cos-day{min-height:70px}.cos-ev{font-size:9.5px}.cal-when{min-width:74px}}
 /* Calm view: colour recedes, structure stays. */
 .life-calm .life-room-tile,.life-calm .life-room-hero{background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 5px 0 0 var(--room)}
 .life-calm .life-room-tile::after,.life-calm .life-room-hero::after{display:none}
@@ -880,7 +953,7 @@ th{color:var(--muted);font-weight:600}
 @media print{.life-nav,.life-topbar,.toast{display:none}.app{padding:0}}
 
 </style></head><body class="life-modern">
-<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v19</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view life-screen" id="videos"><div id="vaultContent"></div></section><section class="view " id="bodyhub"><header class="pagehead"><h1>Körper</h1></header><div class="body-feature"><div class="eyebrow">Training</div><h2 id="bodyPlan">Training</h2><p id="bodyPlanDetail"></p><button type="button" class="primary" onclick="openTodaysTraining()">Training öffnen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><div class="body-foot"><span id="homeTraining"></span><span>Deine bestätigten Gewichte</span></div></div>
+<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v20</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view life-screen" id="videos"><div id="vaultContent"></div></section><section class="view " id="bodyhub"><header class="pagehead"><h1>Körper</h1></header><div class="body-feature"><div class="eyebrow">Training</div><h2 id="bodyPlan">Training</h2><p id="bodyPlanDetail"></p><button type="button" class="primary" onclick="openTodaysTraining()">Training öffnen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><div class="body-foot"><span id="homeTraining"></span><span>Deine bestätigten Gewichte</span></div></div>
 <div class="routes"><button type="button" class="route" onclick="goView('nutrition')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-food"></use></svg></span><span class="grow"><b>Essen</b><small><span id="homeProtein">—</span> Protein erfasst · regelmäßig versorgt</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('recovery')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg></span><span class="grow"><b>Befinden & Zyklus</b><small>Tagesform, Schlaf, Zyklus</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('trends')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Fortschritt</b><small>Taille, Maße & dein Trainingsverlauf</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div><div class="quiet-callout"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-water"></use></svg><div><b>Wasser</b><p><span id="homeWater">—</span> heute</p></div><button type="button" class="small" onclick="addWater(.25)">+ 250 ml</button></div><div id="bodyLibrary" class="life-body-library"></div></section>
 <section class="view " id="mehub"><header class="pagehead"><h1>Ich</h1></header><div class="identity"><span class="avatar" data-me-initial>·</span><div><b data-me-name>Du</b><small>Muskelaufbau · Alltag · mehr Raum im Kopf</small></div></div><div class="routes"><button type="button" class="route" onclick="goView('goals')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Deine Richtung</b><small>Ziele, die zu deinem Leben passen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('plan')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg></span><span class="grow"><b>Dein Plan</b><small>Routinen, Training & Ausnahmen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('history')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg></span><span class="grow"><b>Verlauf</b><small>Was tatsächlich passiert ist</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('coach')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-spark"></use></svg></span><span class="grow"><b>Muster</b><small>Beobachtungen aus deinen Einträgen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div>
 <details class="disclosure"><summary>Was PULSE über dich weiß</summary><p class="tiny" id="eventCount"></p><div id="semanticMemory" class="memory-list"></div></details>
@@ -896,9 +969,102 @@ th{color:var(--muted);font-weight:600}
 <nav aria-label="Hauptnavigation" class="bottomnav" id="bottomNav"><button type="button" data-go="now" onclick="goView('now')" class="active" aria-current="page"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-home"></use></svg><span>Heute</span></button><button type="button" data-go="bodyhub" onclick="goView('bodyhub')" ><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-body"></use></svg><span>Körper</span></button><button type="button" data-go="brain" onclick="goView('brain')" ><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-brain"></use></svg><span>Brain</span></button><button type="button" data-go="mehub" onclick="goView('mehub')" ><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-user"></use></svg><span>Ich</span></button></nav><button type="button" id="captureAccessory" class="captureAccessory" onclick="openCapture()" aria-label="Etwas erfassen"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-plus"></use></svg><span>Erfassen</span></button>
 
 <div class="captureSheet" id="captureSheet" onclick="if(event.target===this)closeCapture()"><div class="capturePanel" role="dialog" aria-modal="true" aria-labelledby="captureTitle"><div class="sheet-handle" aria-hidden="true"></div><div class="row"><span class="eyebrow">PULSE nimmt es auf</span><button type="button" class="icon-button" aria-label="Erfassen schließen" onclick="closeCapture()"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"></use></svg></button></div><h2 id="captureTitle">Was ist gerade los?</h2><p>Du schreibst. PULSE sortiert mit.</p><label class="srOnly" for="captureText">Freitext erfassen</label><textarea id="captureText" rows="4" placeholder="Gegessen, gedacht, geschafft …" oninput="previewCapture()"></textarea><div class="life-input-tools"><button type="button" class="life-mic" data-target="captureText" aria-pressed="false" hidden onclick="pulseDictate('captureText',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>Sprechen</span></button></div><div id="captureHint" class="capture-understanding" aria-live="polite"></div><div id="captureFollowup" hidden><label><span id="captureAmountLabel">Fehlende Menge oder Portion</span><input id="captureAmount" type="text" placeholder="z. B. 150 g"/></label><p class="tiny">Du kannst auch den ursprünglichen Text oben ergänzen.</p><button type="button" class="primary" onclick="confirmCaptureFood()">Prüfen & eintragen</button></div><div id="captureSubmit" class="actions"><button type="button" class="primary" onclick="smartCapture()">Übernehmen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div><div class="captureHints"><button type="button" class="chip" onclick="captureHint('Ich habe gegessen: ')">Essen</button><button type="button" class="chip" onclick="captureHint('Morgen ')">Aufgabe</button><button type="button" class="chip" onclick="captureHint('Heute fühle ich mich ')">Befinden</button></div><p class="tiny">Unklare Angaben bleiben zur Prüfung erhalten.</p></div></div><nav id="lifeNav" class="life-nav" aria-label="Hauptnavigation"><button type="button" data-life-view="life" onclick="goView('life')" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="4"/><path d="M8 3v4M16 3v4M4 11h16M8 15h2M14 15h2"/></svg><span>Tag</span></button><button type="button" data-life-view="bodyhub" onclick="goView('bodyhub')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6M6.5 6v12M6.5 12h11M17.5 6v12M21 9v6"/></svg><span>Körper</span></button><button type="button" data-life-view="spaces" onclick="lifeOpenSpaces()"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><circle cx="17.5" cy="6.5" r="3.5"/><path d="m6.5 14 4 7h-8Z"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Räume</span></button><button type="button" class="life-nav-capture" onclick="lifeQuick()" aria-label="Erfassen: Notiz, Aufgabe, Termin oder Essen"><span aria-hidden="true">＋</span></button><button type="button" data-life-view="videos" onclick="lifeOpenVideos()"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="4"/><path d="m10.5 9.5 4 2.5-4 2.5Z"/></svg><span>Videos</span></button><button type="button" data-life-view="library" onclick="lifeOpenLibrary()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5C8 2 4 3 2 4v16c4-2 8-1 10 1 2-2 6-3 10-1V4c-2-1-6-2-10 1v16M5 8h4M15 8h4"/></svg><span>Sammlung</span></button></nav><div id="lifeSheet" class="modal life-sheet" onclick="if(event.target===this)lifeCloseSheet()"><div class="modalbox life-sheet-panel" role="dialog" aria-modal="true" aria-label="Dein Eintrag"><div class="life-sheet-top"><span class="life-kicker"></span><button type="button" class="life-iconbtn" aria-label="Schließen, Entwurf bleibt erhalten" onclick="lifeCloseSheet()">×</button></div><div id="lifeDetail" hidden></div><form id="lifeForm" onsubmit="lifeSaveEntry(event)" oninput="lifeRememberDraft();lifeUnderstand()"><h2 id="lifeEditorTitle">Neuer Eintrag</h2><p id="lifeEditorHint" class="life-detail-intro"></p><div class="life-form-row"><label>Was ist es?<select id="lifeKindInput" onchange="lifeKindChanged()"><option value="note">Notiz</option><option value="task">Aufgabe</option><option value="event">Termin</option><option value="project">Projekt</option><option value="ritual">Ritual</option><option value="recipe">Rezept</option></select></label><label>Welcher Raum?<select id="lifeRoomInput"></select></label></div><label class="life-title-label">Titel<input id="lifeTitle" maxlength="180" autocomplete="off" placeholder="Titel"/></label><label>Text<textarea id="lifeBody" rows="6" maxlength="60000"></textarea></label><div class="life-input-tools"><button type="button" class="life-mic" data-target="lifeBody" aria-pressed="false" hidden onclick="pulseDictate('lifeBody',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>Sprechen</span></button><label class="life-attach"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Foto</span><input type="file" accept="image/*" multiple class="srOnly" onchange="lifeAddPhotos(this.files);this.value=''"/></label></div><div id="lifePhotoRow" class="life-photo-row" hidden></div><div id="lifeUnderstand" class="life-understand" aria-live="polite"></div><details id="lifePlanning" class="life-editor-details"><summary>Zeit &amp; Planung</summary><div class="life-form-row"><label>Geplant für<input id="lifeDateInput" type="date"/></label><label>Uhrzeit · optional<input id="lifeTimeInput" type="time"/></label><label>Dauer in Minuten<input id="lifeDuration" type="number" min="1" max="1440" value="25"/></label><label>Verbindliche Frist<input id="lifeDeadline" type="date"/></label><label id="lifeRepeatLabel">Nach Erledigung wiederholen<select id="lifeRepeat"><option value="0">Einmalig</option><option value="1">Nach 1 Tag</option><option value="7">Nach 7 Tagen</option><option value="14">Nach 14 Tagen</option><option value="30">Nach 30 Tagen</option></select></label></div><p class="life-footnote">Plandatum ist flexibel, Frist ist verbindlich.</p></details><details class="life-editor-details"><summary>Schritte &amp; Verbindungen</summary><label><span id="lifeStepsLabel">Schritte · einer pro Zeile</span><textarea id="lifeStepsInput" rows="4" placeholder="Ein Schritt pro Zeile"></textarea></label><label>Gehört zu einem Projekt<select id="lifeParent"></select></label><label>Link · optional<input id="lifeUrl" type="url" placeholder="https://"/></label></details><input id="lifeSource" type="hidden"/><div class="life-editor-footer"><span id="lifeDraftState" role="status" aria-live="polite">Noch nicht gespeichert</span><button class="life-btn dark" type="submit">Speichern</button></div><button type="button" class="life-textbtn life-discard" onclick="lifeDiscardDraft()">Entwurf verwerfen</button></form></div></div><script>
+// SOURCE: domain/life/recur.js
+/* Calendar rules for events: all-day and multi-day spans, repeating series, skipped dates,
+   reminders. Pure functions on plain items; dates are local calendar days (YYYY-MM-DD). */
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseRecur=api})(globalThis,function(){
+ 'use strict';
+ const FREQS=['daily','weekdays','weekly','monthly','monthlyNth','yearly'];
+ const EXTRA=['location','endDate','recur','exdates','remind','ics'];
+ const DAY=86400000;
+ const ms=d=>Date.parse(d+'T12:00:00Z');
+ const iso=t=>new Date(t).toISOString().slice(0,10);
+ const add=(d,n)=>iso(ms(d)+n*DAY);
+ const diff=(a,b)=>Math.round((ms(b)-ms(a))/DAY);
+ const wd=d=>new Date(ms(d)).getUTCDay();// 0 = Sunday
+ const validDate=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&iso(ms(s))===s;
+ const monthsBetween=(a,b)=>(Number(b.slice(0,4))-Number(a.slice(0,4)))*12+Number(b.slice(5,7))-Number(a.slice(5,7));
+ const monthLength=d=>new Date(Date.UTC(Number(d.slice(0,4)),Number(d.slice(5,7)),0)).getUTCDate();
+ /* nth weekday of the month for a date: 1–5, or -1 when it is the last one. */
+ const nthOf=d=>Math.ceil(Number(d.slice(8))/7);
+ const isLast=d=>Number(d.slice(8))+7>monthLength(d);
+ /* Cleans the calendar fields of an event. Throws readable German messages. */
+ function normalize(x){
+  const out={};
+  out.location=String(x.location||'').replace(/\s+/g,' ').trim().slice(0,200);
+  out.endDate=x.endDate&&validDate(x.endDate)?x.endDate:'';
+  if(out.endDate&&x.date&&out.endDate<x.date)throw Error('Das Ende liegt vor dem Beginn.');
+  if(out.endDate===x.date)out.endDate='';
+  if(out.endDate&&diff(x.date,out.endDate)>366)throw Error('Ein Termin kann höchstens ein Jahr dauern.');
+  const r=x.recur;
+  if(r&&FREQS.includes(r.freq)){
+   const interval=Math.max(1,Math.min(99,Math.floor(Number(r.interval)||1)));
+   const until=r.until&&validDate(r.until)?r.until:'';if(until&&x.date&&until<x.date)throw Error('Die Wiederholung endet vor dem ersten Termin.');
+   const count=Math.max(0,Math.min(999,Math.floor(Number(r.count)||0)));
+   let byday=Array.isArray(r.byday)?[...new Set(r.byday.map(Number).filter(n=>n>=0&&n<=6))].sort():[];
+   if(r.freq==='weekly'&&!byday.length&&x.date)byday=[wd(x.date)];
+   out.recur={freq:r.freq,interval,until,count,...(r.freq==='weekly'?{byday}:{}),...(r.freq==='monthlyNth'?{nth:r.nth===-1?-1:(x.date?nthOf(x.date):1)}:{})};
+  }else out.recur=null;
+  out.exdates=Array.isArray(x.exdates)?[...new Set(x.exdates.filter(validDate))].sort().slice(-500):[];
+  const rem=x.remind;out.remind=rem===''||rem==null||!Number.isFinite(Number(rem))?null:Math.max(-1440,Math.min(40320,Math.round(Number(rem))));
+  out.ics=typeof x.ics==='string'?x.ics.slice(0,300):'';
+  return out;
+ }
+ /* Does a series starting at `x.date` have an occurrence that starts on `s`? (ignores exdates and count) */
+ function ruleMatches(x,s){
+  const r=x.recur,d0=x.date;if(!r||s<d0||(r.until&&s>r.until))return false;
+  switch(r.freq){
+   case 'daily':return diff(d0,s)%r.interval===0;
+   case 'weekdays':{const w=wd(s);return w>=1&&w<=5}
+   case 'weekly':{const mon=d=>add(d,-((wd(d)+6)%7));return (r.byday||[wd(d0)]).includes(wd(s))&&(diff(mon(d0),mon(s))/7)%r.interval===0}
+   case 'monthly':return s.slice(8)===d0.slice(8)&&monthsBetween(d0,s)%r.interval===0;
+   case 'monthlyNth':{if(wd(s)!==wd(d0)||monthsBetween(d0,s)%r.interval!==0)return false;return r.nth===-1?isLast(s):nthOf(s)===r.nth}
+   case 'yearly':return s.slice(5)===d0.slice(5)&&(Number(s.slice(0,4))-Number(d0.slice(0,4)))%r.interval===0;
+  }
+  return false;
+ }
+ /* Index (1-based) of the occurrence starting on `s`, counting from the series start. Capped for speed. */
+ function ordinal(x,s){let n=0;for(let d=x.date;d<=s&&n<=1000;d=add(d,1))if(ruleMatches(x,d))n++;return n}
+ function startsOn(x,s){
+  if(!x.date||!validDate(s))return false;
+  if((x.exdates||[]).includes(s))return false;
+  if(!x.recur)return s===x.date;
+  if(!ruleMatches(x,s))return false;
+  return !x.recur.count||ordinal(x,s)<=x.recur.count;
+ }
+ const span=x=>x.endDate&&x.endDate>x.date?diff(x.date,x.endDate):0;
+ /* The occurrence of `x` that covers `date`, or null: {start, end, day (1-based day of a multi-day span)}. */
+ function occurrence(x,date){
+  if(!x.date||!validDate(date))return null;const len=span(x);
+  for(let k=0;k<=len;k++){const s=add(date,-k);if(startsOn(x,s))return {start:s,end:add(s,len),day:k+1,days:len+1}}
+  return null;
+ }
+ const occursOn=(x,date)=>!!occurrence(x,date);
+ /* Start dates of `x` from `from` to `to` (inclusive), at most `limit`. */
+ function starts(x,from,to,limit=400){const out=[];if(!x.date)return out;let d=from<x.date?x.date:from;const last=x.recur?.until&&x.recur.until<to?x.recur.until:to;if(!x.recur)return x.date>=from&&x.date<=to&&startsOn(x,x.date)?[x.date]:[];for(;d<=last&&out.length<limit;d=add(d,1))if(startsOn(x,d))out.push(d);return out}
+ function next(x,from){const y=add(from,800);return starts(x,from,y,1)[0]||null}
+ /* Moment a reminder is due for an occurrence starting on `start`. All-day events start at 00:00. */
+ function remindAt(x,start,tzOffsetMs){if(x.remind==null)return null;const [h,m]=(x.time||'00:00').split(':').map(Number);return Date.parse(start+'T00:00:00Z')+(h*60+m)*60000-x.remind*60000-(tzOffsetMs||0)}
+ const WD=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],WDS=['So','Mo','Di','Mi','Do','Fr','Sa'];
+ const MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+ const fmt=d=>Number(d.slice(8))+'. '+MON[Number(d.slice(5,7))-1]+' '+d.slice(0,4);
+ /* German description: "Jeden Dienstag", "Alle 2 Wochen am Mo, Mi", "Monatlich am 3. Mittwoch" … */
+ function describe(x){
+  const r=x.recur;if(!r)return '';const n=r.interval,d0=x.date;let t='';
+  if(r.freq==='daily')t=n===1?'Täglich':'Alle '+n+' Tage';
+  else if(r.freq==='weekdays')t='Werktags (Mo–Fr)';
+  else if(r.freq==='weekly'){const days=(r.byday||[]).slice().sort((a,b)=>((a+6)%7)-((b+6)%7));t=n===1?(days.length===1?'Jeden '+WD[days[0]]:'Wöchentlich am '+days.map(i=>WDS[i]).join(', ')):'Alle '+n+' Wochen am '+days.map(i=>WDS[i]).join(', ')}
+  else if(r.freq==='monthly')t=(n===1?'Monatlich':'Alle '+n+' Monate')+' am '+Number(d0.slice(8))+'.';
+  else if(r.freq==='monthlyNth')t=(n===1?'Monatlich':'Alle '+n+' Monate')+' am '+(r.nth===-1?'letzten':r.nth+'.')+' '+WD[wd(d0)];
+  else if(r.freq==='yearly')t=(n===1?'Jährlich':'Alle '+n+' Jahre')+' am '+Number(d0.slice(8))+'. '+MON[Number(d0.slice(5,7))-1];
+  if(r.until)t+=', bis '+fmt(r.until);else if(r.count)t+=', '+r.count+'-mal';
+  return t;
+ }
+ return {FREQS,EXTRA,normalize,ruleMatches,startsOn,occurrence,occursOn,starts,next,remindAt,describe,add,diff,weekday:wd,nthOf,isLast,validDate};
+});
 // SOURCE: domain/life/model.js
 /* PULSE Lebensräume: shared records and local projections. No automatic completions. */
-(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseLife=api})(globalThis,function(){
+(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./recur.js'):root.PulseRecur);if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseLife=api})(globalThis,function(Recur){
 'use strict';
 const ROOMS=[
 {id:'alltag',name:'Alltag',sub:'Pläne, Projekte & kleine Schritte',color:'peach',symbol:'arch',prompt:'Was würde morgen ein bisschen leichter machen?'},
@@ -944,8 +1110,8 @@ function list(db,{archived=false}={}){
   out.push({id:store+':'+(r.id??i),origin:store,kind:r.type==='task'||store==='tasks'?'task':'note',title:body.split('\n')[0].slice(0,180),body:m.body??body,room:m.room||(/food|drink|workout|context/.test(r.type||'')?'koerper':'alltag'),date:r.due||'',time:r.time||'',deadline:m.deadline||'',duration:m.duration||25,status:r.status==='cancelled'?'archived':r.done?'done':r.deferred?'parked':m.status==='waiting'?'waiting':'open',parent:m.parent||'',source:m.source||'',steps:m.steps||[],url:m.url||'',createdAt:r.recordedAt||r.date||'',updatedAt:r.updatedAt||'',repeat:m.repeat||0,resume:m.resume||'',photos:m.photos||[]});
  }
  for(const r of db.events||[])if(r.type==='calendar-plan'&&r.status!=='superseded'&&(r.status!=='cancelled'||r.lifeMeta?.status==='archived')){
-  const m=r.lifeMeta||{};
-  out.push({id:'event:'+r.id,origin:'event',kind:'event',title:r.title||'Termin',body:m.body||'',room:m.room||'alltag',date:r.date||'',time:r.time||'',deadline:m.deadline||'',duration:m.duration||30,status:r.status==='cancelled'?'archived':r.status==='completed'?'done':'open',parent:m.parent||'',source:m.source||'',steps:m.steps||[],url:m.url||'',createdAt:r.recordedAt||'',updatedAt:r.updatedAt||'',resume:m.resume||'',photos:m.photos||[]});
+  const m=r.lifeMeta||{},extra={};for(const k of Recur.EXTRA)if(m[k]!=null)extra[k]=m[k];
+  out.push({...extra,id:'event:'+r.id,origin:'event',kind:'event',title:r.title||'Termin',body:m.body||'',room:m.room||'alltag',date:r.date||'',time:r.time||'',deadline:m.deadline||'',duration:m.duration||30,status:r.status==='cancelled'?'archived':r.status==='completed'?'done':'open',parent:m.parent||'',source:m.source||'',steps:m.steps||[],url:m.url||'',createdAt:r.recordedAt||'',updatedAt:r.updatedAt||'',resume:m.resume||'',photos:m.photos||[]});
  }
  return out.filter(x=>archived||x.status!=='archived');
 }
@@ -960,11 +1126,12 @@ function clean(fields,old={}){
  if(!validDate(x.date)||!validDate(x.deadline)||!validTime(x.time))throw Error('Bitte Datum und Uhrzeit prüfen.');
  if(x.time&&!x.date)throw Error('Zu einer Uhrzeit gehört auch ein Datum.');
  if(x.kind==='event'&&!x.date)throw Error('Wähle einen Tag für den Termin.');
- x.duration=Number(x.duration||25);if(!Number.isFinite(x.duration)||x.duration<1||x.duration>1440)throw Error('Dauer: 1 bis 1440 Minuten.');
+ x.duration=Number(x.duration||(x.kind==='event'?60:25));if(!Number.isFinite(x.duration)||x.duration<1||x.duration>1440)throw Error('Dauer: 1 bis 1440 Minuten.');
  if(x.url&&!/^https?:\/\/\S+$/i.test(x.url))throw Error('Ein Link beginnt mit https:// oder http://.');
  x.steps=Array.isArray(x.steps)?x.steps.map(s=>({text:String(s.text||'').slice(0,500),done:!!s.done})).filter(s=>s.text.trim()):[];
  x.repeat=[0,1,7,14,30].includes(Number(x.repeat))?Number(x.repeat):0;
  x.photos=Array.isArray(x.photos)?[...new Set(x.photos.filter(id=>typeof id==='string'&&/^ph-[a-z0-9]+$/.test(id)))].slice(0,8):[];
+ if(x.kind==='event')Object.assign(x,Recur.normalize(x));
  return x;
 }
 function create(db,fields,id,now){
@@ -982,7 +1149,7 @@ function update(db,id,fields,now){
  x.updatedAt=now;
  if(old.origin==='life'){const dest=ensure(db).items.find(r=>r.id===id);Object.assign(dest,x);delete dest.origin;return dest}
  const r=legacyRecord(db,id);if(!r)throw Error('Eintrag nicht gefunden.');
- r.lifeMeta={title:x.title,body:x.body,room:x.room,deadline:x.deadline,duration:x.duration,status:x.status,parent:x.parent,source:x.source,steps:x.steps,url:x.url,repeat:x.repeat,resume:x.resume,photos:x.photos};
+ r.lifeMeta={title:x.title,body:x.body,room:x.room,deadline:x.deadline,duration:x.duration,status:x.status,parent:x.parent,source:x.source,steps:x.steps,url:x.url,repeat:x.repeat,resume:x.resume,photos:x.photos,...(x.kind==='event'?Object.fromEntries(Recur.EXTRA.map(k=>[k,x[k]])):{})};
  if(old.origin==='event'){r.title=x.title;r.date=x.date;r.time=x.time;r.status=x.status==='archived'?'cancelled':x.status==='done'?'completed':'planned'}
  else {if(r.text!==undefined)r.text=x.title;else r.title=x.title;r.due=x.date||null;r.time=x.time;r.done=x.status==='done';r.deferred=['parked','archived'].includes(x.status);r.status=x.status==='archived'?'cancelled':r.done?'completed':'current'}
  r.updatedAt=now;return x;
@@ -993,7 +1160,15 @@ function toggle(db,id,now,today,newId){
  if(done&&x.repeat&&!list(db,{archived:true}).some(y=>y.repeatOf===x.id)){const next=offset(today,x.repeat);create(db,{...x,origin:undefined,title:x.title,status:'open',date:next,time:'',deadline:'',steps:x.steps.map(s=>({...s,done:false})),source:x.id,repeatOf:x.id,repeat:x.repeat},newId,now)}
  return done;
 }
-function day(db,date){return list(db).filter(x=>x.date===date&&!['parked','archived'].includes(x.status)&&['task','event','ritual'].includes(x.kind)).sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'))}
+function day(db,date){
+ const out=[];
+ for(const x of list(db)){
+  if(['parked','archived'].includes(x.status)||!['task','event','ritual'].includes(x.kind))continue;
+  if(x.kind==='event'&&(x.recur||x.endDate)){const o=Recur.occurrence(x,date);if(o)out.push({...x,date,seriesDate:x.date,occ:o});continue}
+  if(x.date===date)out.push(x);
+ }
+ return out.sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'));
+}
 function search(db,query='',kind='',roomId='',archived=false){
  const q=query.trim().toLocaleLowerCase('de');
  return list(db,{archived}).filter(x=>(!archived||x.status==='archived')&&(!kind||x.kind===kind)&&(!roomId||x.room===roomId)&&(!q||[x.title,x.body,room(x.room).name,...x.steps.map(s=>s.text)].join(' ').toLocaleLowerCase('de').includes(q))).sort((a,b)=>(b.updatedAt||b.createdAt).localeCompare(a.updatedAt||a.createdAt));
@@ -1011,6 +1186,102 @@ return {ROOMS,KINDS,ensure,validate,list,get,create,update,toggle,day,search,roo
 
 
 
+// SOURCE: domain/life/ics.js
+/* iCalendar (.ics) import and export, e.g. for moving from Google Calendar. Handles time zones,
+   all-day and multi-day events, RRULE (daily/weekly/monthly/yearly with INTERVAL, BYDAY, UNTIL,
+   COUNT), EXDATE, moved single instances (RECURRENCE-ID) and the first VALARM. */
+(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./recur.js'):root.PulseRecur);if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseICS=api})(globalThis,function(Recur){
+ 'use strict';
+ const unfold=t=>String(t||'').replace(/\r\n/g,'\n').replace(/\n[ \t]/g,'').split('\n');
+ const unescape=v=>v.replace(/\\n/gi,'\n').replace(/\\([,;\\])/g,'$1');
+ const escape=v=>String(v||'').replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/([,;])/g,'\\$1');
+ function prop(line){const i=line.indexOf(':');if(i<0)return null;const head=line.slice(0,i),value=line.slice(i+1),[name,...ps]=head.split(';'),params={};for(const p of ps){const [k,v]=p.split('=');params[k.toUpperCase()]=(v||'').replace(/^"|"$/g,'')}return {name:name.toUpperCase(),params,value}}
+ /* Offset (ms) of a time zone at an instant. */
+ function tzOffset(tz,utcMs){
+  try{const f=new Intl.DateTimeFormat('en-US',{timeZone:tz,hourCycle:'h23',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+   const p=Object.fromEntries(f.formatToParts(new Date(utcMs)).map(x=>[x.type,x.value]));
+   return Date.UTC(+p.year,+p.month-1,+p.day,+p.hour%24,+p.minute,+p.second)-utcMs}catch(_){return null}
+ }
+ function wallToUtc(y,mo,d,h,mi,s,tz){const guess=Date.UTC(y,mo-1,d,h,mi,s);const o1=tzOffset(tz,guess);if(o1==null)return null;const o2=tzOffset(tz,guess-o1);return guess-(o2==null?o1:o2)}
+ function utcToWall(ms,tz){const o=tzOffset(tz,ms)||0;const d=new Date(ms+o);return {date:d.toISOString().slice(0,10),time:d.toISOString().slice(11,16)}}
+ /* An ICS date/time in the target zone: {date, time ('' for all-day)}. */
+ function when(p,target){
+  if(!p)return null;const v=p.value.trim(),m=v.match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})?(Z)?)?$/);if(!m)return null;
+  const [,y,mo,d,h,mi,s,z]=m;const date=y+'-'+mo+'-'+d;
+  if(!h||p.params.VALUE==='DATE')return {date,time:'',allDay:true};
+  if(z)return {...utcToWall(Date.UTC(+y,+mo-1,+d,+h,+mi,+(s||0)),target),allDay:false};
+  if(p.params.TZID){const tz=p.params.TZID.replace(/^\/[^/]*\//,'');const u=wallToUtc(+y,+mo,+d,+h,+mi,+(s||0),tz);if(u!=null)return {...utcToWall(u,target),allDay:false}}
+  return {date,time:h+':'+mi,allDay:false};// floating time
+ }
+ const DAYS={SU:0,MO:1,TU:2,WE:3,TH:4,FR:5,SA:6};
+ function rrule(v,start,target){
+  const r=Object.fromEntries(v.split(';').map(x=>x.split('=')).map(([k,val])=>[k.toUpperCase(),val||'']));let simplified=false;
+  const interval=Number(r.INTERVAL)||1,count=Number(r.COUNT)||0;
+  let until='';if(r.UNTIL){const u=when({value:r.UNTIL,params:{}},target);until=u?u.date:''}
+  const byday=(r.BYDAY||'').split(',').filter(Boolean);
+  if(r.BYSETPOS||r.BYHOUR||r.BYMINUTE||r.BYWEEKNO||r.BYYEARDAY)simplified=true;
+  let out=null;
+  if(r.FREQ==='DAILY')out={freq:'daily',interval};
+  else if(r.FREQ==='WEEKLY'){const days=byday.map(b=>DAYS[b.slice(-2)]).filter(n=>n!=null);const wk=[1,2,3,4,5];out=interval===1&&days.length===5&&wk.every(d=>days.includes(d))?{freq:'weekdays',interval:1}:{freq:'weekly',interval,byday:days.length?days:[Recur.weekday(start)]}}
+  else if(r.FREQ==='MONTHLY'){const nth=byday.length===1&&byday[0].match(/^([+-]?\d)?(MO|TU|WE|TH|FR|SA|SU)$/);if(nth&&nth[1]){out={freq:'monthlyNth',interval,nth:Number(nth[1])<0?-1:Number(nth[1])}}else{out={freq:'monthly',interval};if(byday.length||(r.BYMONTHDAY&&Number(r.BYMONTHDAY)!==Number(start.slice(8))))simplified=true}}
+  else if(r.FREQ==='YEARLY'){out={freq:'yearly',interval};if(r.BYDAY||(r.BYMONTH&&r.BYMONTH.includes(',')))simplified=true}
+  else simplified=true;
+  return out?{recur:{...out,until,count},simplified}:{recur:null,simplified:true};
+ }
+ function trigger(v){const m=String(v||'').match(/^(-)?P(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/);if(!m)return null;const min=(+(m[2]||0))*10080+(+(m[3]||0))*1440+(+(m[4]||0))*60+(+(m[5]||0));return m[1]?min:-min}
+ function duration(v){const m=String(v||'').match(/^P(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?)?/);return m?(+(m[1]||0))*10080+(+(m[2]||0))*1440+(+(m[3]||0))*60+(+(m[4]||0)):0}
+ /* Parses an .ics text into event field objects for PulseLife.create (kind 'event'). */
+ function parse(text,{target='Europe/Berlin'}={}){
+  const lines=unfold(text),raw=[];let cur=null,alarm=false,depth=0;
+  for(const line of lines){
+   if(/^BEGIN:VEVENT/i.test(line)){cur={exdates:[]};depth=1;continue}
+   if(!cur)continue;
+   if(/^BEGIN:VALARM/i.test(line)){alarm=true;continue}if(/^END:VALARM/i.test(line)){alarm=false;continue}
+   if(/^BEGIN:/i.test(line)){depth++;continue}if(/^END:VEVENT/i.test(line)){raw.push(cur);cur=null;continue}if(/^END:/i.test(line)){depth--;continue}
+   const p=prop(line);if(!p)continue;
+   if(alarm){if(p.name==='TRIGGER'&&cur.remind==null&&p.params.RELATED!=='END'){const t=trigger(p.value);if(t!=null)cur.remind=t}continue}
+   if(p.name==='EXDATE')for(const v of p.value.split(','))cur.exdates.push({value:v,params:p.params});
+   else cur[p.name]=p;
+  }
+  const events=[],overrides=[];let simplified=0,skipped=0;
+  for(const r of raw){
+   const s=when(r.DTSTART,target);if(!s){skipped++;continue}
+   if(r.STATUS&&/CANCELLED/i.test(r.STATUS.value)){skipped++;continue}
+   const e=when(r.DTEND,target);
+   const x={kind:'event',title:unescape(r.SUMMARY?.value||'').trim()||'Termin',body:unescape(r.DESCRIPTION?.value||'').trim().slice(0,5000),location:unescape(r.LOCATION?.value||'').trim(),date:s.date,time:s.time,ics:(r.UID?.value||'').trim(),remind:r.remind??null,exdates:[]};
+   if(s.allDay){if(e&&e.date>s.date){const last=Recur.add(e.date,-1);if(last>s.date)x.endDate=last}}
+   else{let min=e?Math.round((Date.parse(e.date+'T'+e.time+':00Z')-Date.parse(s.date+'T'+s.time+':00Z'))/60000):duration(r.DURATION?.value);if(!(min>0))min=60;if(min>1440){x.endDate=e.date;x.duration=60}else x.duration=min}
+   if(r.RRULE){const rr=rrule(r.RRULE.value,s.date,target);if(rr.recur)x.recur=rr.recur;if(rr.simplified)simplified++}
+   for(const ex of r.exdates){const w=when(ex,target);if(w)x.exdates.push(w.date)}
+   if(r['RECURRENCE-ID']){const o=when(r['RECURRENCE-ID'],target);overrides.push({uid:x.ics,original:o?o.date:'',event:{...x,ics:x.ics+'#'+(o?o.date:x.date),recur:undefined}});continue}
+   events.push(x);
+  }
+  for(const o of overrides){const series=events.find(e=>e.ics===o.uid&&e.recur);if(series&&o.original)series.exdates.push(o.original);events.push(o.event)}
+  return {events,simplified,skipped};
+ }
+ const stamp=d=>d.replace(/-/g,'');
+ const RR={daily:'DAILY',weekdays:'WEEKLY',weekly:'WEEKLY',monthly:'MONTHLY',monthlyNth:'MONTHLY',yearly:'YEARLY'};
+ const BY=['SU','MO','TU','WE','TH','FR','SA'];
+ const fold=l=>{let out='';while(l.length>74){out+=l.slice(0,74)+'\r\n ';l=l.slice(74)}return out+l};
+ /* Events → .ics text. Timed events carry TZID of `tz`. */
+ function build(items,{tz='Europe/Berlin',now=new Date().toISOString()}={}){
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//PULSE//DE','CALSCALE:GREGORIAN'];
+  const dt=(d,t)=>stamp(d)+'T'+t.replace(':','')+'00';
+  for(const x of items){
+   if(x.kind!=='event'||!x.date)continue;
+   L.push('BEGIN:VEVENT','UID:'+(x.ics||String(x.id)+'@pulse'),'DTSTAMP:'+now.replace(/[-:]/g,'').slice(0,15)+'Z','SUMMARY:'+escape(x.title));
+   if(x.time){const end=new Date(Date.parse(x.date+'T'+x.time+':00Z')+(x.duration||60)*60000).toISOString();L.push('DTSTART;TZID='+tz+':'+dt(x.date,x.time),'DTEND;TZID='+tz+':'+dt(end.slice(0,10),end.slice(11,16)))}
+   else{L.push('DTSTART;VALUE=DATE:'+stamp(x.date),'DTEND;VALUE=DATE:'+stamp(Recur.add(x.endDate||x.date,1)))}
+   if(x.location)L.push('LOCATION:'+escape(x.location));if(x.body)L.push('DESCRIPTION:'+escape(x.body));
+   const r=x.recur;if(r){let s='FREQ='+RR[r.freq];if(r.interval>1)s+=';INTERVAL='+r.interval;if(r.freq==='weekdays')s+=';BYDAY=MO,TU,WE,TH,FR';if(r.freq==='weekly')s+=';BYDAY='+(r.byday||[]).map(i=>BY[i]).join(',');if(r.freq==='monthlyNth')s+=';BYDAY='+r.nth+BY[Recur.weekday(x.date)];if(r.until)s+=';UNTIL='+stamp(r.until)+(x.time?'T235959':'');else if(r.count)s+=';COUNT='+r.count;L.push('RRULE:'+s)}
+   if(x.exdates?.length)L.push(x.time?'EXDATE;TZID='+tz+':'+x.exdates.map(d=>dt(d,x.time)).join(','):'EXDATE;VALUE=DATE:'+x.exdates.map(stamp).join(','));
+   if(x.remind!=null)L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+escape(x.title),'TRIGGER:'+(x.remind>=0?'-PT'+x.remind+'M':'PT'+(-x.remind)+'M'),'END:VALARM');
+   L.push('END:VEVENT');
+  }
+  L.push('END:VCALENDAR');return L.map(fold).join('\r\n')+'\r\n';
+ }
+ return {parse,build,tzOffset,when,rrule,trigger};
+});
 // SOURCE: state/schema.js
 /* JSON boundary for schema 820. Unknown fields are deliberately preserved. */
 (function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('../domain/life/model.js'):root.PulseLife);if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseState=api})(globalThis,function(Life){
@@ -1656,7 +1927,7 @@ Smoothie|smoothie|55|0.6|12|0.2|1.5|250||1`;
    if(currentState!==undefined){const pending=JSON.stringify(state.normalize(currentState));if(expected===null||pending!==JSON.stringify(JSON.parse(expected))){assertUnchanged();write('pulseOS_pre_import_memory_backup',pending)}}
    return transact(prepared,'pulseOS_pre_import_backup');
   })}
-  function exportText(value,{wrapped=true,version='19.0.0',now=new Date()}={}){
+  function exportText(value,{wrapped=true,version='20.0.0',now=new Date()}={}){
    // Emergency export deliberately does not reject uncommitted in-memory data.
    return JSON.stringify(wrapped?{app:'PULSE',version,schemaVersion:value.schemaVersion||state.SCHEMA_VERSION,exportedAt:now.toISOString(),data:value}:value,null,2);
   }
@@ -2132,8 +2403,9 @@ function lifeReview(){
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
 }
 function lifeParkReview(id){if(lifeMutate(()=>PulseLife.update(db,id,{status:'parked'},new Date().toISOString()),'Geparkt'))lifeReview()}
-function lifeOpenItem(id){
+function lifeOpenItem(id,raw=false){
  const x=PulseLife.get(db,id);if(!x)return;
+ if(x.kind==='event'&&!raw)return calOpen(id,lifeSelectedDay&&PulseRecur.occursOn(x,lifeSelectedDay)?lifeSelectedDay:x.date);
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;const r=PulseLife.room(x.room),source=PulseLife.get(db,x.source),parent=PulseLife.get(db,x.parent);
  const children=PulseLife.list(db).filter(y=>y.parent===id||y.source===id);
  el.innerHTML='<div class="life-detail-mark '+r.color+'">'+lifeGlyph(r.symbol)+'</div><div class="life-detail-tags">'+lifePill(PulseLife.KINDS[x.kind])+lifePill(r.name)+'</div><h2 id="lifeDetailHeading" tabindex="-1">'+esc(x.title)+'</h2>'+
@@ -2173,7 +2445,7 @@ function lifeCompose(fields={}){
  if(draft){lifeFillEditor(draft);toast('Entwurf wiederhergestellt');return}
  lifeFillEditor({id:uid('life'),kind:'note',room:document.getElementById('appMain').dataset.view==='spaces'&&lifeCurrentRoom?lifeCurrentRoom:'alltag',title:'',body:'',date:'',time:'',deadline:'',duration:25,parent:'',source:'',steps:[],url:'',repeat:0,...fields});
 }
-function lifeEdit(id){const x=PulseLife.get(db,id);if(!x)return;if(lifeState().draft){lifeFillEditor(lifeState().draft);toast('Erst den offenen Entwurf speichern oder verwerfen.');return}lifeFillEditor(x)}
+function lifeEdit(id){const x=PulseLife.get(db,id);if(!x)return;if(x.kind==='event')return calEdit(id);if(lifeState().draft){lifeFillEditor(lifeState().draft);toast('Erst den offenen Entwurf speichern oder verwerfen.');return}lifeFillEditor(x)}
 function lifeFillEditor(x){
  lifeEditingId=x.id||uid('life');lifeEditorPhotos=Array.isArray(x.photos)?[...x.photos]:[];renderEditorPhotos();document.getElementById('lifeDetail').hidden=true;document.getElementById('lifeForm').hidden=false;
  const map={lifeTitle:'title',lifeBody:'body',lifeDateInput:'date',lifeTimeInput:'time',lifeDeadline:'deadline',lifeDuration:'duration',lifeSource:'source',lifeUrl:'url',lifeRepeat:'repeat'};
@@ -2211,7 +2483,7 @@ function lifeCloseSheet(){closeDialog(document.getElementById('lifeSheet'))}
 function lifeLegacy(v){goView(v);if(v==='workout')showWorkout(activePlan()||'A')}
 function lifeSettings(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
- el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 19</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p><div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 20</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p><div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
  (navigator.storage?.persisted?navigator.storage.persisted():Promise.resolve(false)).then(p=>{const e=document.getElementById('lifeStorageState');if(e)e.textContent=p?'Speicher: dauerhaft geschützt':'Speicher: nicht dauerhaft geschützt'}).catch(()=>{});
 }
@@ -2473,6 +2745,20 @@ add('sinn','practice','Laternenfest','Erster Vollmond des Jahres','Am 15. Tag de
 add('sinn','practice','Mondfest','Mitte des Herbstes · der hellste Vollmond','Am 15. Tag des 8. Mondmonats. Der Mond gilt als besonders rund und hell.\n\n– Mit jemandem draußen den Mond anschauen\n– Mondkuchen oder etwas Rundes teilen\n– Die Legende von Chang\'e lesen, die mit dem Elixier auf den Mond floh\n– Dankbarkeit für die Menschen, die nicht da sein können');
 add('sinn','practice','Geisterfest','15. Tag des 7. Mondmonats','Im Geistermonat gelten die Tore zur Unterwelt als offen. Am 15. werden die hungrigen Geister versorgt.\n\n– Eine kleine Gabe nach draußen stellen: Reis, Obst, Tee\n– Ein Licht auf Wasser setzen (eine Kerze in einer Schale reicht)\n– An Menschen denken, an die niemand mehr denkt\n– Danach bannen');
 
+// Almanach: westliche Magie, Astrologie, europäische Bräuche
+add('sinn','knowledge','Planetentage','Jeder Wochentag hat einen Planeten','Die Wochentage sind nach den sieben klassischen Planeten benannt. In der westlichen Magie gilt ein Tag als günstig für alles, was zu seinem Planeten passt.\n\nSonntag · Sonne ☉ – Erfolg, Sichtbarkeit, Lebenskraft · Gold\nMontag · Mond ☽ – Träume, Intuition, Zuhause · Silber\nDienstag · Mars ♂ – Mut, Kraft, Schutz · Rot\nMittwoch · Merkur ☿ – Sprache, Lernen, Schreiben · Orange\nDonnerstag · Jupiter ♃ – Wachstum, Fülle, Weisheit · Blau\nFreitag · Venus ♀ – Liebe, Kunst, Musik, Genuss · Grün\nSamstag · Saturn ♄ – Struktur, Abschluss, Bannen · Schwarz\n\nIm Deutschen sieht man es noch an „Sonntag“ und „Montag“, im Französischen an mardi (Mars), mercredi (Merkur), jeudi (Jupiter), vendredi (Venus).');
+add('sinn','knowledge','Planetenstunden','Die Stunden des Tages gehören auch Planeten','Der Tag von Sonnenaufgang bis Sonnenuntergang wird in zwölf gleiche „Stunden“ geteilt, die Nacht bis zum nächsten Sonnenaufgang ebenso. Im Sommer sind die Tagesstunden länger als 60 Minuten, im Winter kürzer.\n\nDie erste Stunde nach Sonnenaufgang gehört dem Planeten des Tages. Danach folgen die Planeten in der chaldäischen Reihenfolge:\nSaturn → Jupiter → Mars → Sonne → Venus → Merkur → Mond → wieder Saturn …\n\nSo passt eine Venusstunde gut für Musik und Liebe, eine Saturnstunde zum Bannen und Aufräumen. Der Kalender in Pulse rechnet die Stunden für Wuppertal aus.');
+add('sinn','knowledge','Der Mond in den Zeichen','Alle zwei bis drei Tage ein neues Zeichen','Der Mond wandert in etwa 27,3 Tagen einmal durch alle zwölf Tierkreiszeichen. In vielen Traditionen färbt das Zeichen die Stimmung des Tages.\n\nFeuer (Widder, Löwe, Schütze) – Antrieb, Mut, Bewegung\nErde (Stier, Jungfrau, Steinbock) – Körper, Ordnung, Handwerk\nLuft (Zwillinge, Waage, Wassermann) – Ideen, Gespräche, Schreiben\nWasser (Krebs, Skorpion, Fische) – Gefühl, Träume, Rituale\n\nPulse rechnet mit dem tropischen Tierkreis, wie in der westlichen Astrologie üblich. Der Kalender zeigt, wann der Mond das Zeichen wechselt.');
+add('sinn','knowledge','Die 28 Mondstationen','Manazil al-Qamar · nach Agrippa','Der Mond braucht gut 27 Tage durch den Himmel. Arabische Astronomen teilten seinen Weg in 28 Stationen, eine für jede Nacht. In der Renaissance-Magie (Picatrix, Agrippa) bekam jede Station eine Wirkung.\n\nDie Stationen beginnen hier bei 0° Widder und sind je 12°51′ breit. Der Kalender zeigt die Station des Tages mit Namen, Bedeutung und traditionellem Thema.\n\nViele Themen sind alt und drastisch (Feindschaft, Gefangene, Belagerung). Pulse gibt sie vereinfacht wieder. Am besten als Anregung lesen, nicht als Vorschrift.');
+add('sinn','knowledge','Tarot und Himmel','Zuordnungen des Golden Dawn','Der Hermetic Order of the Golden Dawn (um 1890) hat jede Tarotkarte einem Himmelsteil zugeordnet. Rider-Waite-Smith und Thoth folgen dem.\n\nZeichen → Große Arkana\nWidder Herrscher · Stier Hierophant · Zwillinge Liebende · Krebs Wagen · Löwe Kraft · Jungfrau Eremit · Waage Gerechtigkeit · Skorpion Tod · Schütze Mäßigkeit · Steinbock Teufel · Wassermann Stern · Fische Mond\n\nPlaneten → Große Arkana\nSonne Sonne · Mond Hohepriesterin · Merkur Magier · Venus Herrscherin · Mars Turm · Jupiter Rad · Saturn Welt\n\nDekane → Kleine Arkana\nJedes Zeichen hat drei Abschnitte zu 10°. Die Zahlenkarten 2 bis 10 verteilen sich darauf, beginnend mit der Zwei der Stäbe am Frühlingsanfang.\n\nDer Kalender zeigt dir jeden Tag die Karte der Sonne (Dekan), des Mondzeichens und des Planetentags.');
+add('sinn','knowledge','Der keltische Baumkalender','Dreizehn Mondmonate · nach Robert Graves','Dreizehn Bäume für dreizehn Monate, vom Birkenmonat ab dem 24. Dezember bis zum Holundermonat, dazu der „Tag ohne Baum“ am 23. Dezember.\n\nEhrlich gesagt: Der Kalender stammt von Robert Graves („The White Goddess“, 1948) und ist keine überlieferte keltische Tradition. Er beruht auf dem Ogham-Alphabet und ist heute in vielen modernen Strömungen beliebt.\n\nBirke – Neubeginn · Eberesche – Schutz · Esche – Verbindung · Erle – Mut · Weide – Intuition · Weißdorn – Lebenslust · Eiche – Kraft · Stechpalme – Wehrhaftigkeit · Hasel – Weisheit · Weinrebe – Freude · Efeu – Beharrlichkeit · Schilfrohr – Ahnen · Holunder – Wandlung');
+add('sinn','practice','Rauhnächte','Zwölf Nächte zwischen den Jahren','Die zwölf Nächte zwischen Heiligabend und Dreikönig gelten im deutschsprachigen Raum als Zeit außerhalb der Zeit. Jede Nacht steht für einen Monat des kommenden Jahres: die erste (24./25.12.) für Januar, die zwölfte (4./5.1.) für Dezember.\n\nBräuche:\n– Räuchern: Wohnung mit Beifuß, Salbei oder Weihrauch ausräuchern, Fenster danach öffnen\n– Träume notieren: Sie gelten als Hinweise auf den jeweiligen Monat\n– Keine Wäsche waschen, nichts Neues anfangen\n– Jeden Abend eine Frage an den kommenden Monat\n\nDer Kalender zeigt in den Rauhnächten, welcher Monat dran ist, und gibt eine Frage dazu.');
+add('sinn','practice','Die 13 Wünsche','Ein Ritual für die Rauhnächte','Vor dem 24. Dezember:\nSchreib 13 Wünsche für das neue Jahr auf je einen eigenen Zettel. Positiv und in der Gegenwart formulieren. Falte sie, misch sie.\n\nIn jeder der zwölf Rauhnächte:\nZieh einen Zettel, ohne ihn zu lesen, und verbrenne ihn. Diesen Wunsch gibst du ab, er wird „vom Universum“ erledigt.\n\nAm 6. Januar:\nDer letzte Zettel bleibt übrig. Lies ihn. Um diesen Wunsch kümmerst du dich selbst.\n\nPasst gut zur Chaos-Magie: Das Verbrennen ohne Lesen ist eine Form des Vergessens, wie bei Sigillen.');
+add('sinn','practice','Walpurgisnacht','30. April · Nacht der Hexen','In der Nacht auf den 1. Mai fliegen der Sage nach die Hexen auf den Brocken im Harz. Heute ein Fest der Freiheit, des Feuers und des Übergangs in den Sommer, eng verwandt mit Beltane.\n\n– Ein Feuer oder viele Kerzen\n– Tanzen, laut sein, Musik: ekstatische Gnosis\n– Etwas Altes symbolisch verbrennen\n– Blumen und Grün für den Mai holen');
+add('sinn','practice','Johannisnacht','23. Juni · Feuer zur Sonnenwende','Die Nacht vor dem Johannistag, kurz nach der Sommersonnenwende. Johannisfeuer werden entzündet und übersprungen.\n\n– Johanniskraut sammeln, es blüht um diese Zeit\n– Kräuter für den Winter trocknen\n– Ein Wunsch ins Feuer\n– Die kürzeste Nacht wachbleiben und die Dämmerung erleben');
+add('sinn','practice','Allerseelen und Día de los Muertos','1. und 2. November · die Toten besuchen','Allerseelen ist in Europa der Gedenktag für alle Verstorbenen. In Mexiko kommen am Día de los Muertos die Toten zu Besuch – nicht traurig, sondern als Fest.\n\n– Eine ofrenda (Altar): Fotos, Kerzen, Lieblingsessen und -getränke der Verstorbenen\n– Ringelblumen (Cempasúchil): Ihre Farbe und ihr Duft weisen den Weg\n– Geschichten über die Toten erzählen, ihre Musik hören\n– Auch Vorbilder und Künstlerinnen ehren, die dir etwas bedeutet haben\n\nSchließt gut an Samhain an.');
+add('sinn','knowledge','Blauer Mond und Schwarzer Mond','Zweiter Vollmond, zweiter Neumond','Ein Blauer Mond ist im heutigen Sprachgebrauch der zweite Vollmond in einem Kalendermonat. Das passiert etwa alle zweieinhalb Jahre („once in a blue moon“).\n\nEin Schwarzer Mond ist entsprechend der zweite Neumond in einem Monat.\n\nIn modernen Praktiken gelten beide als Bonus-Termine: der Blaue Mond für besondere Wünsche oder seltene Rituale, der Schwarze Mond für tiefe Schattenarbeit und Neuanfänge, die niemand sehen soll. Der Kalender markiert beide.');
+
 // Ideen & Lernen — Musik, Schreiben, Lesestoff
 add('ideen','practice','Gesangskarte für einen Song','Für Entscheidungen beim Einsingen','Druck dir den Text aus oder schreib ihn hier ab. Markiere Zeile für Zeile:\n\nDynamik: flüstern · normal · voll · geschrien\nAtem: wo holst du Luft?\nBetonung: welches Wort trägt die Zeile?\nFarbe: rau · klar · gebrochen · gesprochen\n\nNicht alles muss sofort entschieden sein. Markiere offene Stellen mit „?“ und probier dort zwei Varianten.');
 add('ideen','prompt','Eine Strophe nur aus Bildern','Songwriting','Schreib eine Strophe, ganz ohne Gefühlswörter (keine „Angst“, „Schmerz“, „Liebe“). Nur Dinge, Orte, Bewegungen. Das Gefühl soll trotzdem ankommen.');
@@ -2690,9 +2976,125 @@ return {TYPES,TAROT,SUITS,MAJORS,MOON_PHASES,tarotCard,moon,ENTRIES:E,forRoom,ge
  ];
  const ANIMALS={Ratte:'findig, wach, anpassungsfähig',Büffel:'ausdauernd, verlässlich, geduldig',Tiger:'mutig, impulsiv, kraftvoll',Hase:'feinfühlig, diplomatisch, vorsichtig',Drache:'charismatisch, ehrgeizig, groß denkend',Schlange:'klug, intuitiv, verschwiegen',Pferd:'frei, schnell, begeisterungsfähig',Ziege:'kreativ, sanft, gemeinschaftlich',Affe:'verspielt, erfinderisch, schlagfertig',Hahn:'genau, ehrlich, selbstbewusst',Hund:'treu, gerecht, wachsam',Schwein:'großzügig, genussfreudig, gutmütig'};
  const ELEMENTS={Holz:'Wachstum, Planung, Aufbruch',Feuer:'Antrieb, Sichtbarkeit, Leidenschaft',Erde:'Stabilität, Fürsorge, Mitte',Metall:'Klarheit, Struktur, Loslassen',Wasser:'Tiefe, Intuition, Ruhe'};
- return {TERMS,PHASES,ANIMALS,ELEMENTS};
+ /* Planetary days: traditional correspondences (Western magic, e.g. Agrippa, Golden Dawn). */
+ const PLANETS={
+  Sonne:{day:'Sonntag',color:'Gold, Gelb',metal:'Gold',themes:'Erfolg, Sichtbarkeit, Lebenskraft, Selbstausdruck',good:['Auftreten und sich zeigen','Ziele bekräftigen','Sonne und Licht tanken'],avoid:['sich klein machen']},
+  Mond:{day:'Montag',color:'Silber, Weiß',metal:'Silber',themes:'Träume, Intuition, Gefühle, Zuhause',good:['Träume notieren','Divination','für das Zuhause sorgen'],avoid:['harte Entscheidungen erzwingen']},
+  Mars:{day:'Dienstag',color:'Rot',metal:'Eisen',themes:'Mut, Kraft, Durchsetzung, Schutz',good:['Krafttraining','Grenzen setzen','Schutzzauber'],avoid:['Streit suchen']},
+  Merkur:{day:'Mittwoch',color:'Orange, schillernd',metal:'Quecksilber',themes:'Sprache, Lernen, Schreiben, Planung, Handel',good:['lernen und recherchieren','Nachrichten beantworten','Briefe und Mails'],avoid:['vage Absprachen']},
+  Jupiter:{day:'Donnerstag',color:'Blau, Purpur',metal:'Zinn',themes:'Wachstum, Fülle, Großzügigkeit, Weisheit',good:['groß planen','großzügig sein','Studium und Lehre'],avoid:['Maßlosigkeit']},
+  Venus:{day:'Freitag',color:'Grün, Rosa',metal:'Kupfer',themes:'Liebe, Schönheit, Kunst, Musik, Genuss',good:['singen und musizieren','Schönes gestalten','Beziehungen pflegen'],avoid:['Konfrontation']},
+  Saturn:{day:'Samstag',color:'Schwarz, Dunkelblau',metal:'Blei',themes:'Struktur, Grenzen, Abschluss, Bannen, Zeit',good:['aufräumen und abschließen','bannen','Routinen festigen'],avoid:['Neuanfänge aus einer Laune heraus']}
+ };
+ /* Moon sign by element: what the day favours. */
+ const MOON_ELEMENTS={
+  Feuer:{tone:'Antrieb und Mut',good:['Bewegung und Training','etwas Neues anstoßen','ekstatische Gnosis'],avoid:['langes Grübeln']},
+  Erde:{tone:'Körper und Ordnung',good:['kochen und Vorrat anlegen','Handwerk, Haushalt','Geld- und Papierkram'],avoid:['zu viel auf einmal']},
+  Luft:{tone:'Ideen und Austausch',good:['Gespräche','Schreiben und Songtexte','Pläne entwerfen'],avoid:['Rückzug ohne Grund']},
+  Wasser:{tone:'Gefühl und Tiefe',good:['Rituale und Tarot','Traumarbeit','Musik hören und fühlen'],avoid:['harte Kritik, auch an dir selbst']}
+ };
+ const SIGN_TEXT={Widder:'impulsiv, mutig, schnell',Stier:'sinnlich, beständig, genießend',Zwillinge:'neugierig, gesprächig, beweglich',Krebs:'fürsorglich, gefühlvoll, häuslich',Löwe:'strahlend, großzügig, kreativ',Jungfrau:'genau, ordnend, heilsam',Waage:'ausgleichend, ästhetisch, gesellig',Skorpion:'tief, intensiv, verwandelnd',Schütze:'weit, optimistisch, suchend',Steinbock:'strukturiert, ausdauernd, ernst',Wassermann:'eigenwillig, frei, gemeinschaftlich',Fische:'träumerisch, durchlässig, mitfühlend'};
+ /* Phase-based almanac advice (waxing builds, waning releases). */
+ const PHASE_ADVICE=[
+  {good:['Absichten formulieren','Sigillen bauen'],avoid:['Ergebnisse erwarten']},
+  {good:['erste kleine Schritte'],avoid:['Pläne zerreden']},
+  {good:['dranbleiben, handeln'],avoid:['beim ersten Widerstand aufgeben']},
+  {good:['verfeinern und nähren'],avoid:['Projekte abbrechen']},
+  {good:['feiern, sichtbar machen','Divination'],avoid:['wichtige Gespräche in Aufregung']},
+  {good:['teilen und weitergeben','auswerten'],avoid:['Neues beginnen']},
+  {good:['loslassen, ausmisten','bannen'],avoid:['neue Verpflichtungen']},
+  {good:['ausruhen, Träume'],avoid:['große Anstrengungen']}
+ ];
+ function almanac({phase,element,planet}){
+  const P=PLANETS[planet],E=MOON_ELEMENTS[element],A=PHASE_ADVICE[phase]||PHASE_ADVICE[0];
+  const uniq=a=>[...new Set(a)];
+  return {good:uniq([...A.good,...(E?E.good.slice(0,2):[]),...(P?P.good.slice(0,2):[])]).slice(0,6),avoid:uniq([...A.avoid,...(E?E.avoid:[]),...(P?P.avoid:[])]).slice(0,3)};
+ }
+ /* The 28 lunar mansions: Arabic name, meaning, use after Agrippa (simplified). */
+ const MANSIONS=[
+  ['Al-Sharatain','die zwei Zeichen','Aufbruch und Reisen; traditionell auch für Zwietracht'],['Al-Butain','der kleine Bauch','Finden und Festhalten'],['Al-Thurayya','die Plejaden','Gelingen, Handwerk, gute Geschäfte'],['Al-Dabaran','der Folgende','Trennung, Abgrenzung'],
+  ['Al-Haqa','das Haarbüschel','Lernen, Gunst, gute Heimkehr'],['Al-Hana','das Mal','Liebe und Freundschaft'],['Al-Dhira','der Arm','Gewinn, Freundschaft'],['Al-Nathra','die Krippe','Bindung und Schutz'],
+  ['Al-Tarf','der Blick','Vorsicht, Rückzug'],['Al-Jabha','die Stirn','Festigen und Stärken'],['Al-Zubra','die Mähne','Befreiung, Gewinn'],['Al-Sarfa','die Wende','Ernte, Arbeit'],
+  ['Al-Awwa','der Bellende','Bündnisse, Gewinn'],['Al-Simak','der Unbewaffnete','Heilen und Verbinden'],['Al-Ghafr','die Bedeckung','Suchen, Graben, Verborgenes'],['Al-Zubana','die Scheren','Handel, Bewegung, Befreiung'],
+  ['Al-Iklil','die Krone','Schutz und Treue'],['Al-Qalb','das Herz','Durchsetzen, Fundamente legen'],['Al-Shaula','der Stachel','Austreiben, Bannen'],['Al-Naaim','die Strauße','Zähmen, Bändigen'],
+  ['Al-Balda','die Stadt','Abschluss, Trennung'],['Sad al-Dhabih','Glück des Schlachters','Entkommen, Heilen'],['Sad Bula','Glück des Schluckers','Heilen, Auflösen'],['Sad al-Suud','Glück der Glücke','Glück, Liebe, Gelingen'],
+  ['Sad al-Akhbiya','Glück der Zelte','Botschaften, Abwehr'],['Al-Fargh al-Muqaddam','der vordere Ausguss','Gunst und Verbundenheit'],['Al-Fargh al-Muakhkhar','der hintere Ausguss','Wachstum, Heilung'],['Batn al-Hut','der Bauch des Fisches','Fülle, Vermehrung']
+ ];
+ const TREES={Birke:'Neubeginn, Reinigung',Eberesche:'Schutz, Vision',Esche:'Verbindung der Welten',Erle:'Standhaftigkeit, Mut',Weide:'Intuition, Mond, Fließen',Weißdorn:'Lebenslust, Schwelle',Eiche:'Kraft, Ausdauer',Stechpalme:'Schutz, Wehrhaftigkeit',Hasel:'Weisheit, Inspiration',Weinrebe:'Ernte, Freude',Efeu:'Verbundenheit, Beharrlichkeit',Schilfrohr:'Ahnen, Stimme, Tiefe',Holunder:'Ende und Wandlung','Tag ohne Baum':'der freie Tag zwischen den Jahren'};
+ /* Rauhnächte: each night stands for a month of the coming year. */
+ const RAUH=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'].map((m,i)=>({month:m,text:['Was will im neuen Jahr beginnen?','Was darf sich reinigen?','Wo will etwas wachsen?','Was öffnet sich?','Wofür brennst du?','Was ist in Fülle da?','Was trägt dich?','Was willst du ernten?','Was darf sich ordnen?','Was darfst du loslassen?','Was willst du ehren?','Wofür bist du dankbar?'][i]}));
+ return {TERMS,PHASES,ANIMALS,ELEMENTS,PLANETS,MOON_ELEMENTS,SIGN_TEXT,PHASE_ADVICE,almanac,MANSIONS,TREES,RAUH};
 });
 
+// SOURCE: domain/cosmos/astro.js
+/* Almanac astronomy: moon longitude (Meeus ch. 47, main terms, ≈0.1°), moon and sun signs,
+   sign changes, the 28 lunar mansions, sunrise/sunset, planetary days and hours, decans. */
+(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./calendar.js'):root.PulseCosmos);if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseAstro=api})(globalThis,function(Cosmos){
+ 'use strict';
+ const RAD=Math.PI/180,sin=d=>Math.sin(d*RAD),cos=d=>Math.cos(d*RAD),norm=d=>((d%360)+360)%360;
+ const jd=ms=>ms/86400000+2440587.5;
+ // [D, M, M', F, coefficient in 1e-6 degrees]
+ const TERMS=[[0,0,1,0,6288774],[2,0,-1,0,1274027],[2,0,0,0,658314],[0,0,2,0,213618],[0,1,0,0,-185116],[0,0,0,2,-114332],[2,0,-2,0,58793],[2,-1,-1,0,57066],[2,0,1,0,53322],[2,-1,0,0,45758],[0,1,-1,0,-40923],[1,0,0,0,-34720],[0,1,1,0,-30383],[2,0,0,-2,15327],[0,0,1,2,-12528],[0,0,1,-2,10980],[4,0,-1,0,10675],[0,0,3,0,10034],[4,0,-2,0,8548],[2,1,-1,0,-7888],[2,1,0,0,-6766],[1,0,-1,0,-5163],[1,1,0,0,4987],[2,-1,1,0,4036],[2,0,2,0,3994],[4,0,0,0,3861],[2,0,-3,0,3665],[0,1,-2,0,-2689],[2,0,-1,2,-2602],[2,-1,-2,0,2390],[1,0,1,0,-2348],[2,-2,0,0,2236],[0,1,2,0,-2120],[0,2,0,0,-2069]];
+ /* Geocentric ecliptic longitude of the moon (degrees, tropical) at an instant. */
+ function moonLongitude(ms){
+  const T=(jd(ms)+69/86400-2451545)/36525;
+  const L=218.3164477+481267.88123421*T-0.0015786*T*T,D=297.8501921+445267.1114034*T-0.0018819*T*T,M=357.5291092+35999.0502909*T-0.0001536*T*T,Mp=134.9633964+477198.8675055*T+0.0087414*T*T,F=93.2720950+483202.0175233*T-0.0036539*T*T;
+  const E=1-0.002516*T-0.0000074*T*T;let sum=0;
+  for(const [d,m,mp,f,c] of TERMS){const e=Math.abs(m)===1?E:Math.abs(m)===2?E*E:1;sum+=c*e*sin(d*D+m*M+mp*Mp+f*F)}
+  const A1=119.75+131.849*T,A2=53.09+479264.29*T;sum+=3958*sin(A1)+1962*sin(L-F)+318*sin(A2);
+  return norm(L+sum/1e6);
+ }
+ const sunLongitude=ms=>Cosmos.sunLongitude(jd(ms));
+ const SIGNS=[['Widder','♈','Feuer','Mars'],['Stier','♉','Erde','Venus'],['Zwillinge','♊','Luft','Merkur'],['Krebs','♋','Wasser','Mond'],['Löwe','♌','Feuer','Sonne'],['Jungfrau','♍','Erde','Merkur'],['Waage','♎','Luft','Venus'],['Skorpion','♏','Wasser','Mars'],['Schütze','♐','Feuer','Jupiter'],['Steinbock','♑','Erde','Saturn'],['Wassermann','♒','Luft','Saturn'],['Fische','♓','Wasser','Jupiter']];
+ const sign=lon=>{const i=Math.floor(norm(lon)/30),s=SIGNS[i];return {index:i,name:s[0],glyph:s[1]+'︎',element:s[2],ruler:s[3],degree:Math.floor(norm(lon)%30)}};
+ const moonSign=ms=>sign(moonLongitude(ms));
+ const sunSign=ms=>sign(sunLongitude(ms));
+ /* Moon sign changes between two instants: [{ms, from, to}] (bisection to the minute). */
+ function moonIngresses(from,to){
+  const out=[];let t=from,cur=moonSign(t).index;
+  for(let s=from+3600000;s<=to;s+=3600000){const i=moonSign(Math.min(s,to)).index;if(i!==cur){let a=t,b=Math.min(s,to);while(b-a>30000){const m=(a+b)/2;if(moonSign(m).index===cur)a=m;else b=m}out.push({ms:b,from:SIGNS[cur][0],to:SIGNS[i][0],glyph:SIGNS[i][1]+'︎'});cur=i}t=s}
+  return out;
+ }
+ /* 28 mansions of 12°51′ from 0° Aries (tropical, as in Agrippa). */
+ const mansion=ms=>Math.floor(moonLongitude(ms)/(360/28))+1;
+ /* Golden Dawn decan of the sun → minor arcana card: suit index (0 Stäbe,1 Kelche,2 Schwerter,3 Pentakel) and number 2–10. */
+ const DECAN_SUITS=[0,3,2,1];
+ function decanCard(lon){const d=Math.floor(norm(lon)/10),signI=Math.floor(d/3),num=2+(signI%3)*3+d%3,suit=DECAN_SUITS[signI%4];return {decan:d%3+1,suit,number:num,tarotIndex:22+suit*14+(num-1)}}
+ /* Major arcana for signs and planets (Golden Dawn). */
+ const SIGN_MAJOR=[4,5,6,7,8,9,11,13,14,15,17,18];
+ const PLANET_MAJOR={Sonne:19,Mond:2,Merkur:1,Venus:3,Mars:16,Jupiter:10,Saturn:21};
+ /* Sunrise and sunset (ms) for a local date at latitude/longitude (east positive). Sunrise equation, ±2 min. */
+ function sunTimes(date,lat=51.2562,lon=7.1508){
+  const noonUtc=Date.parse(date+'T12:00:00Z'),n=Math.round(jd(noonUtc)-2451545+0.0008);
+  const Js=n-lon/360,M=norm(357.5291+0.98560028*Js),C=1.9148*sin(M)+0.02*sin(2*M)+0.0003*sin(3*M),l=norm(M+C+180+102.9372);
+  const Jt=2451545+Js+0.0053*sin(M)-0.0069*sin(2*l),dec=Math.asin(sin(l)*sin(23.4397))/RAD;
+  const cw=(sin(-0.833)-sin(lat)*sin(dec))/(cos(lat)*cos(dec));if(cw<-1||cw>1)return null;
+  const w=Math.acos(cw)/RAD,toMs=j=>(j-2440587.5)*86400000;
+  return {rise:toMs(Jt-w/360),set:toMs(Jt+w/360),noon:toMs(Jt)};
+ }
+ const CHALDEAN=['Saturn','Jupiter','Mars','Sonne','Venus','Merkur','Mond'];
+ const DAY_RULER=['Sonne','Mond','Mars','Merkur','Jupiter','Venus','Saturn'];// Sunday … Saturday
+ const PLANET_GLYPH={Sonne:'☉',Mond:'☽',Merkur:'☿',Venus:'♀',Mars:'♂',Jupiter:'♃',Saturn:'♄'};
+ const weekday=date=>new Date(date+'T12:00:00Z').getUTCDay();
+ const dayRuler=date=>DAY_RULER[weekday(date)];
+ /* 24 planetary hours from sunrise of `date` to sunrise of the next day. */
+ function planetaryHours(date,lat,lon){
+  const a=sunTimes(date,lat,lon),next=new Date(Date.parse(date+'T12:00:00Z')+86400000).toISOString().slice(0,10),b=sunTimes(next,lat,lon);if(!a||!b)return [];
+  const dayLen=(a.set-a.rise)/12,nightLen=(b.rise-a.set)/12;let p=CHALDEAN.indexOf(dayRuler(date));const out=[];
+  for(let i=0;i<24;i++){const start=i<12?a.rise+i*dayLen:a.set+(i-12)*nightLen;out.push({n:i+1,day:i<12,planet:CHALDEAN[p],start,end:start+(i<12?dayLen:nightLen)});p=(p+1)%7}
+  return out;
+ }
+ /* Celtic tree months after Robert Graves (1948) – a modern system. */
+ const TREES=[['12-24','Birke'],['01-21','Eberesche'],['02-18','Esche'],['03-18','Erle'],['04-15','Weide'],['05-13','Weißdorn'],['06-10','Eiche'],['07-08','Stechpalme'],['08-05','Hasel'],['09-02','Weinrebe'],['09-30','Efeu'],['10-28','Schilfrohr'],['11-25','Holunder']];
+ function treeMonth(date){const md=date.slice(5);if(md==='12-23')return {name:'Tag ohne Baum',index:-1};if(md>='12-24'||md<'01-21')return {name:TREES[0][1],index:0};let idx=1;for(let i=1;i<TREES.length;i++)if(md>=TREES[i][0])idx=i;return {name:TREES[idx][1],index:idx}}
+ /* Rauhnächte: twelve nights, the first from 24 to 25 Dec, the twelfth from 4 to 5 Jan. Returns n for the evening of `date`, else 0. */
+ function rauhnacht(date){const md=date.slice(5);if(md>='12-24')return Number(md.slice(3))-23;if(md<='01-04')return Number(md.slice(3))+8;return 0}
+ /* Second full (blue) or new (black) moon within a calendar month, local time. */
+ function monthlyMoons(events,localDay){const by={};for(const e of events){const d=localDay(e.ms),k=e.type+d.slice(0,7);(by[k]=by[k]||[]).push(d)}const out={};for(const [k,days] of Object.entries(by))if(days.length>1)out[days[1]]=k.startsWith('full')?'blue':'black';return out}
+ const FIXED=[['04-30','Walpurgisnacht','Nacht der Hexen und des Übergangs in den Mai.','europa'],['06-23','Johannisnacht','Feuer zur Sommersonnenwende, Johanniskraut sammeln.','europa'],['11-01','Día de los Muertos','Mexiko: Die Toten kommen zu Besuch. Altäre, Ringelblumen, Erinnerung.','welt'],['11-02','Allerseelen','Gedenken an die Verstorbenen.','europa'],['12-24','Beginn der Rauhnächte','Zwölf Nächte zwischen den Jahren.','europa'],['01-05','Ende der Rauhnächte','Die Nacht auf den 6. Januar schließt die Zeit zwischen den Jahren ab.','europa'],['12-13','Luzia','Lichtfest im dunkelsten Teil des Jahres.','europa']];
+ function extraFestivals(year){return FIXED.map(([md,name,info,kind])=>({date:year+'-'+md,name,info,kind}))}
+ return {moonLongitude,sunLongitude,SIGNS,sign,moonSign,sunSign,moonIngresses,mansion,decanCard,SIGN_MAJOR,PLANET_MAJOR,sunTimes,CHALDEAN,DAY_RULER,PLANET_GLYPH,dayRuler,planetaryHours,treeMonth,rauhnacht,monthlyMoons,extraFestivals};
+});
 // SOURCE: domain/media/video.js
 /* YouTube links: recognise them and build the privacy-friendly embed address (youtube-nocookie). */
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseVideo=api})(globalThis,function(){
@@ -2967,96 +3369,271 @@ function libSearchHTML(q){
 
 
 // SOURCE: ui/cosmos.js
-/* Calendar view: month grid with exact moon phases, Chinese lunar dates, solar terms, wheel of the
-   year, the user's own entries and a practice for every moon phase. All dates in local time. */
-let cosmosDay=null;
+/* Kalender: appointments (month, week, list) and a daily almanac in the style of the Chinese
+   almanac – moon, moon sign, planetary day and hours, lunar mansion, tarot, festivals of many
+   traditions, practice for the moon phase. All dates in local time. */
+let cosmosDay=null,cosmosMode='month',cosmosListDays=60;
 const cosmosYears={};
-const COSMOS_LIB={'Chinesisches Neujahr':'sinn-neujahr-nach-dem-mondkalender',Laternenfest:'sinn-laternenfest',Mondfest:'sinn-mondfest',Geisterfest:'sinn-geisterfest',Samhain:'sinn-samhain',Yule:'sinn-yule',Imbolc:'sinn-imbolc',Ostara:'sinn-ostara',Beltane:'sinn-beltane',Litha:'sinn-litha',Lughnasadh:'sinn-lughnasadh',Mabon:'sinn-mabon'};
+const COSMOS_LIB={'Chinesisches Neujahr':'sinn-neujahr-nach-dem-mondkalender',Laternenfest:'sinn-laternenfest',Mondfest:'sinn-mondfest',Geisterfest:'sinn-geisterfest',Samhain:'sinn-samhain',Yule:'sinn-yule',Imbolc:'sinn-imbolc',Ostara:'sinn-ostara',Beltane:'sinn-beltane',Litha:'sinn-litha',Lughnasadh:'sinn-lughnasadh',Mabon:'sinn-mabon',Walpurgisnacht:'sinn-walpurgisnacht',Johannisnacht:'sinn-johannisnacht','Día de los Muertos':'sinn-allerseelen-und-di-a-de-los-muertos',Allerseelen:'sinn-allerseelen-und-di-a-de-los-muertos','Beginn der Rauhnächte':'sinn-rauhna-chte','Ende der Rauhnächte':'sinn-rauhna-chte','Blauer Mond':'sinn-blauer-mond-und-schwarzer-mond','Schwarzer Mond':'sinn-blauer-mond-und-schwarzer-mond'};
+const FEST_KIND={china:'Chinesisch',wheel:'Jahreskreis',europa:'Europäischer Brauch',welt:'Weltweit',moon:'Mond'};
 const cosmosLocal=ms=>PulseContext.localDay(new Date(ms));
 const cosmosTime=ms=>new Date(ms).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
 const cosmosDays=(a,b)=>Math.round((Date.parse(b+'T12:00:00')-Date.parse(a+'T12:00:00'))/864e5);
+const cosmosNoon=d=>new Date(d+'T12:00:00').getTime();
 function cosmosYear(y){
  if(cosmosYears[y])return cosmosYears[y];
  const from=new Date(y,0,1).getTime()-45*864e5,to=new Date(y+1,0,1).getTime()+45*864e5;
  const moons=PulseCosmos.moonEvents(from,to).map(e=>({...e,day:cosmosLocal(e.ms)}));
  const terms=[y-1,y,y+1].flatMap(x=>PulseCosmos.solarTerms(x)).map(t=>({...t,day:cosmosLocal(t.ms)}));
- const fests=PulseCosmos.festivals(y).map(f=>f.ms?{...f,date:cosmosLocal(f.ms)}:f);
+ const special=PulseAstro.monthlyMoons(moons,cosmosLocal);
+ const fests=[...PulseCosmos.festivals(y).map(f=>f.ms?{...f,date:cosmosLocal(f.ms)}:f),...PulseAstro.extraFestivals(y),
+  ...Object.entries(special).filter(([d])=>d.startsWith(String(y))).map(([date,k])=>k==='blue'?{date,name:'Blauer Mond',info:'Der zweite Vollmond in diesem Monat.',kind:'moon'}:{date,name:'Schwarzer Mond',info:'Der zweite Neumond in diesem Monat.',kind:'moon'})].sort((a,b)=>a.date.localeCompare(b.date));
  return cosmosYears[y]={moons,terms,fests};
 }
-/* Fraction of the lunation (0 = new, .5 = full) at an instant. */
-function cosmosFraction(ms,moons){
- const news=moons.filter(e=>e.type==='new'),prev=news.findLast(e=>e.ms<=ms),next=news.find(e=>e.ms>ms);
- return prev&&next?(ms-prev.ms)/(next.ms-prev.ms):0;
-}
+function cosmosFraction(ms,moons){const news=moons.filter(e=>e.type==='new'),prev=news.findLast(e=>e.ms<=ms),next=news.find(e=>e.ms>ms);return prev&&next?(ms-prev.ms)/(next.ms-prev.ms):0}
 /* Moon for a local day. Neumond, Vollmond and the quarters are named only on the day they happen. */
 function cosmosMoon(date){
  const Y=cosmosYear(Number(date.slice(0,4))),start=new Date(date+'T00:00:00').getTime(),end=start+864e5,noon=start+432e5;
  const f=cosmosFraction(noon,Y.moons),f0=cosmosFraction(start,Y.moons),f1=cosmosFraction(end,Y.moons);
- const event=Y.moons.find(e=>e.day===date);
- let index;
- if(event)index=event.type==='new'?0:4;
- else if(f0<.25&&f1>=.25)index=2;
- else if(f0<.75&&f1>=.75)index=6;
+ const event=Y.moons.find(e=>e.day===date);let index;
+ if(event)index=event.type==='new'?0:4;else if(f0<.25&&f1>=.25)index=2;else if(f0<.75&&f1>=.75)index=6;
  else{index=Math.floor(f*8+.5)%8;if(index===0)index=f>.5?7:1;else if(index===4)index=f<.5?3:5;else if(index===2)index=f<.25?1:3;else if(index===6)index=f<.75?5:7}
  const nextOf=type=>Y.moons.find(e=>e.type===type&&e.day>date)||cosmosYear(Number(date.slice(0,4))+1).moons.find(e=>e.type===type&&e.day>date);
- const nf=nextOf('full'),nn=nextOf('new');
- const [name,impulse]=PulseLibrary.MOON_PHASES[index];
- return {index,name,impulse,event,age:f*29.530588853,illumination:Math.round((1-Math.cos(2*Math.PI*f))/2*100),waxing:f<.5,
+ const prevNew=Y.moons.filter(e=>e.type==='new'&&e.day<=date).at(-1);
+ const nf=nextOf('full'),nn=nextOf('new'),[name,impulse]=PulseLibrary.MOON_PHASES[index];
+ return {index,name,impulse,event,age:f*29.530588853,illumination:Math.round((1-Math.cos(2*Math.PI*f))/2*100),waxing:f<.5,lunarDay:prevNew?cosmosDays(prevNew.day,date)+1:0,
   daysToFull:nf?cosmosDays(date,nf.day):0,daysToNew:nn?cosmosDays(date,nn.day):0,nextFull:nf,nextNew:nn};
 }
-function cosmosTerm(date){
- const T=cosmosYear(Number(date.slice(0,4))).terms,current=T.findLast(t=>t.day<=date),next=T.find(t=>t.day>date);
- return {current,next,today:current&&current.day===date};
-}
+function cosmosTerm(date){const T=cosmosYear(Number(date.slice(0,4))).terms,current=T.findLast(t=>t.day<=date),next=T.find(t=>t.day>date);return {current,next,today:current&&current.day===date}}
 const cosmosFests=date=>cosmosYear(Number(date.slice(0,4))).fests.filter(f=>f.date===date);
 function lifeOpenCalendar(date){cosmosDay=PulseLife.validDate(date||'')?date:(lifeSelectedDay||key());goView('calendar');renderCosmos()}
 function cosmosSelect(date){cosmosDay=date;renderCosmos();document.getElementById('cosmosDetail')?.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'start'})}
-function cosmosShift(n){const d=new Date(cosmosDay.slice(0,7)+'-01T12:00:00');d.setMonth(d.getMonth()+n);cosmosDay=PulseContext.localDay(d);renderCosmos()}
+function cosmosShift(n){if(cosmosMode==='week'){cosmosDay=PulseLife.offset(cosmosDay,7*n)}else{const d=new Date(cosmosDay.slice(0,7)+'-01T12:00:00');d.setMonth(d.getMonth()+n);cosmosDay=PulseContext.localDay(d)}renderCosmos()}
+function cosmosSetMode(m){cosmosMode=m;cosmosListDays=60;renderCosmos()}
 function cosmosToDay(date){lifeSelectedDay=date;goView('life');renderLifeToday()}
-function cosmosCell(d,date){
- const m=cosmosMoon(d),L=PulseCosmos.lunarDate(d),t=cosmosTerm(d),fest=cosmosFests(d),items=PulseLife.day(db,d).length;
- const glyph=m.event?(m.event.type==='new'?'<i class="cos-m new" title="Neumond"></i>':'<i class="cos-m full" title="Vollmond"></i>'):m.index===2?'<i class="cos-m first" title="Erstes Viertel"></i>':m.index===6?'<i class="cos-m last" title="Letztes Viertel"></i>':'';
- const lunar=L.day===1?(L.leap?'S':'')+L.month+'. Mo':String(L.day);
- const cls=['cos-day',d.slice(0,7)!==date.slice(0,7)?'outside':'',d===key()?'today':'',fest.length?'fest':'',fest.some(f=>f.kind==='wheel')?'wheel':''].filter(Boolean).join(' ');
- const label=lifeDate(d)+', '+m.name+(fest.length?', '+fest.map(f=>f.name).join(', '):'')+(t.today?', '+t.current.name:'')+(items?', '+items+(items===1?' Eintrag':' Einträge'):'');
- return '<button type="button" class="'+cls+'" aria-label="'+esc(label)+'" aria-pressed="'+(d===date)+'" onclick="'+lifeCall('cosmosSelect',d)+'"><b>'+Number(d.slice(8))+'</b><span class="cos-lunar'+(L.day===1?' start':'')+'">'+lunar+'</span><span class="cos-marks">'+glyph+(t.today?'<i class="cos-term" title="'+esc(t.current.name)+'"></i>':'')+(fest.length?'<i class="cos-fest"></i>':'')+(items?'<i class="cos-item"></i>':'')+'</span></button>';
+function cosmosJump(d){cosmosDay=d;if(cosmosMode==='list')cosmosMode='month';renderCosmos();document.getElementById('cosmosDetail')?.scrollIntoView({block:'start'})}
+/* ---------- Appointments ---------- */
+const calItems=date=>PulseLife.day(db,date).filter(x=>x.kind!=='task'||x.status!=='done');
+function calEnd(x){if(!x.time)return '';const t=Date.parse('2000-01-01T'+x.time+':00Z')+(x.duration||60)*60000;return new Date(t).toISOString().slice(11,16)}
+function calWhen(x){
+ if(x.occ&&x.occ.days>1)return x.time&&x.occ.day===1?x.time+' Uhr':'Tag '+x.occ.day+' von '+x.occ.days;
+ if(!x.time)return x.kind==='task'?'Aufgabe':'Ganztägig';
+ return x.kind==='event'?x.time+'–'+calEnd(x):x.time;
 }
-function cosmosCard(kicker,title,body,actions=''){return '<article class="cos-card"><span class="life-kicker">'+kicker+'</span><b>'+title+'</b>'+body+(actions?'<div class="cos-actions">'+actions+'</div>':'')+'</article>'}
+function calRow(x,date){
+ const r=PulseLife.room(x.room);
+ return '<button type="button" class="cal-row" onclick="'+lifeCall('calOpen',x.id,date)+'"><span class="cal-bar '+r.color+'" aria-hidden="true"></span><span class="cal-when">'+esc(calWhen(x))+'</span><span class="cal-what"><b>'+(x.kind==='task'?'☐ ':'')+esc(x.title)+'</b>'+(x.location||x.recur?'<small>'+esc([x.location,x.recur?'↻ '+PulseRecur.describe({...x,date:x.seriesDate||x.date}):''].filter(Boolean).join(' · '))+'</small>':'')+'</span></button>';
+}
+function cosmosCell(d,date){
+ const m=cosmosMoon(d),sign=PulseAstro.moonSign(cosmosNoon(d)),fest=cosmosFests(d),items=calItems(d);
+ const glyph=m.event?(m.event.type==='new'?'<i class="cos-m new" title="Neumond"></i>':'<i class="cos-m full" title="Vollmond"></i>'):m.index===2?'<i class="cos-m first" title="Erstes Viertel"></i>':m.index===6?'<i class="cos-m last" title="Letztes Viertel"></i>':'';
+ const cls=['cos-day',d.slice(0,7)!==date.slice(0,7)?'outside':'',d===key()?'today':'',fest.length?'fest':'',fest.some(f=>f.kind==='wheel')?'wheel':''].filter(Boolean).join(' ');
+ const label=lifeDate(d)+', '+m.name+', Mond in '+sign.name+(fest.length?', '+fest.map(f=>f.name).join(', '):'')+(items.length?', '+items.map(x=>(x.time?x.time+' ':'')+x.title).join(', '):'');
+ const chips=items.slice(0,2).map(x=>'<i class="cos-ev '+PulseLife.room(x.room).color+'">'+esc(x.title)+'</i>').join('')+(items.length>2?'<i class="cos-more">+'+(items.length-2)+'</i>':'');
+ return '<button type="button" class="'+cls+'" aria-label="'+esc(label)+'" aria-pressed="'+(d===date)+'" onclick="'+lifeCall('cosmosSelect',d)+'"><span class="cos-top"><b>'+Number(d.slice(8))+'</b><span class="cos-sky" aria-hidden="true">'+glyph+'<span class="cos-sign">'+sign.glyph+'</span></span></span><span class="cos-evs" aria-hidden="true">'+chips+'</span>'+(fest.length?'<span class="cos-marks" aria-hidden="true"><i class="cos-fest"></i></span>':'')+'</button>';
+}
+function cosmosMonth(date){
+ return '<div class="cos-grid" role="group" aria-label="Monat">'+['Mo','Di','Mi','Do','Fr','Sa','So'].map(t=>'<small>'+t+'</small>').join('')+PulseCalendar.monthDays(date.slice(0,7)).map(d=>cosmosCell(d,date)).join('')+'</div>'+
+  '<p class="cos-legend"><span><i class="cos-m new"></i>Neumond</span><span><i class="cos-m full"></i>Vollmond</span><span><span class="cos-sign">♓︎</span>Mondzeichen</span><span><i class="cos-fest"></i>Fest</span></p>';
+}
+function cosmosSkyLine(d){const m=cosmosMoon(d),s=PulseAstro.moonSign(cosmosNoon(d)),p=PulseAstro.dayRuler(d);return esc(m.name)+' · Mond in '+s.glyph+' '+esc(s.name)+' · '+PulseAstro.PLANET_GLYPH[p]+' '+esc(p)}
+function cosmosWeek(date){
+ const monday=PulseLife.offset(date,-((new Date(date+'T12:00:00').getDay()+6)%7));
+ return '<div class="cal-week">'+Array.from({length:7},(_,i)=>{const d=PulseLife.offset(monday,i),items=calItems(d),fest=cosmosFests(d);
+  return '<section class="cal-weekday'+(d===key()?' today':'')+(d===date?' selected':'')+'"><button type="button" class="cal-dayhead" onclick="'+lifeCall('cosmosSelect',d)+'"><b>'+esc(lifeDate(d,{weekday:'short',day:'numeric',month:'short'}))+'</b><small>'+cosmosSkyLine(d)+'</small></button>'+fest.map(f=>'<p class="cal-fest">'+esc(f.name)+'</p>').join('')+(items.length?items.map(x=>calRow(x,d)).join(''):'')+'</section>'}).join('')+'</div>';
+}
+function cosmosList(date){
+ let out='',shown=0;
+ for(let i=0;i<cosmosListDays;i++){const d=PulseLife.offset(date,i),items=calItems(d).filter(x=>x.kind!=='task');if(!items.length)continue;shown++;
+  out+='<section class="cal-weekday'+(d===key()?' today':'')+'"><button type="button" class="cal-dayhead" onclick="'+lifeCall('cosmosJump',d)+'"><b>'+esc(lifeDate(d,{weekday:'long',day:'numeric',month:'long'}))+'</b><small>'+(d===key()?'heute':cosmosDays(key(),d)===1?'morgen':cosmosDays(key(),d)>0?'in '+cosmosDays(key(),d)+' Tagen':'')+'</small></button>'+items.map(x=>calRow(x,d)).join('')+'</section>'}
+ return '<div class="cal-week">'+(shown?out:'<p class="life-none">Keine Termine in den nächsten '+cosmosListDays+' Tagen.</p>')+'</div>'+lifeButton('Weitere 60 Tage','cosmosListDays+=60;renderCosmos()','life-btn cal-more');
+}
+/* ---------- Almanac ---------- */
+function cosmosCard(kicker,title,body,actions='',cls=''){return '<article class="cos-card '+cls+'"><span class="life-kicker">'+kicker+'</span>'+(title?'<b>'+title+'</b>':'')+body+(actions?'<div class="cos-actions">'+actions+'</div>':'')+'</article>'}
+function cosmosAlmanac(date){
+ const m=cosmosMoon(date),noon=cosmosNoon(date),start=new Date(date+'T00:00:00').getTime();
+ const sign=PulseAstro.moonSign(noon),ingress=PulseAstro.moonIngresses(start,start+864e5),sun=PulseAstro.sunSign(noon),planet=PulseAstro.dayRuler(date),PL=PulseLore.PLANETS[planet];
+ const almanac=PulseLore.almanac({phase:m.index,element:sign.element,planet}),P=PulseLore.PHASES[m.index];
+ const when=m.event?(m.event.type==='new'?'Neumond':'Vollmond')+' um '+cosmosTime(m.event.ms)+' Uhr':moonLine(m);
+ let out='<h3 class="cos-section">Almanach</h3>';
+ out+='<div class="cos-moon-hero">'+moonSvg(m,76)+'<div><span class="life-kicker">Mondtag '+m.lunarDay+' · '+m.illumination+' % beleuchtet</span><b>'+esc(m.name)+'</b><small>'+esc(when)+'</small><small class="cos-moonsign">Mond in '+sign.glyph+' '+esc(sign.name)+' · '+esc(PulseLore.SIGN_TEXT[sign.name])+'</small>'+ingress.map(g=>'<small class="cos-moonsign">ab '+cosmosTime(g.ms)+' Uhr in '+g.glyph+' '+esc(g.to)+'</small>').join('')+'</div></div>';
+ out+='<article class="cos-card cos-yiji"><div><span class="life-kicker">Gut für</span><ul>'+almanac.good.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul></div><div><span class="life-kicker">Eher meiden</span><ul class="avoid">'+almanac.avoid.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul></div><p class="cos-foot">Traditionelle Zuordnungen aus Mondphase, Mondzeichen ('+esc(sign.element)+') und Planetentag.</p></article>';
+ for(const f of cosmosFests(date)){const lib=COSMOS_LIB[f.name];out+=cosmosCard(FEST_KIND[f.kind]||'Fest',esc(f.name),'<p>'+esc(f.info)+'</p>',lib?lifeButton('Ideen und Rituale',lifeCall('lifeOpenLib',lib),'life-textbtn'):'','fest')}
+ const rn=PulseAstro.rauhnacht(date);if(rn){const R=PulseLore.RAUH[rn-1];out+=cosmosCard('Rauhnacht '+rn+' von 12','Steht für den '+esc(R.month),'<p>'+esc(R.text)+'</p><p class="cos-practice">Träume dieser Nacht notieren. Beim Ritual der 13 Wünsche heute einen Zettel verbrennen.</p>',lifeButton('Rauhnächte',lifeCall('lifeOpenLib','sinn-rauhna-chte'),'life-textbtn')+lifeButton('Die 13 Wünsche',lifeCall('lifeOpenLib','sinn-die-13-wu-nsche'),'life-textbtn'),'fest')}
+ out+=cosmosCard('Praxis zur Mondphase',esc(P.title),'<p>'+esc(P.text)+'</p>',lifeButton('Anleitung',lifeCall('lifeOpenLib',P.lib),'life-textbtn'));
+ const hours=PulseAstro.planetaryHours(date),sunT=PulseAstro.sunTimes(date),now=Date.now(),cur=hours.find(h=>now>=h.start&&now<h.end);
+ out+=cosmosCard('Planetentag · '+esc(PL.day),'<span class="cos-glyph">'+PulseAstro.PLANET_GLYPH[planet]+'</span> '+esc(planet),'<p>'+esc(PL.themes)+'</p><dl class="cos-facts"><dt>Farbe</dt><dd>'+esc(PL.color)+'</dd><dt>Metall</dt><dd>'+esc(PL.metal)+'</dd>'+(sunT?'<dt>Sonne</dt><dd>Aufgang '+cosmosTime(sunT.rise)+' · Untergang '+cosmosTime(sunT.set)+'</dd>':'')+(cur?'<dt>Jetzt</dt><dd><b>'+PulseAstro.PLANET_GLYPH[cur.planet]+' '+esc(cur.planet)+'stunde</b> bis '+cosmosTime(cur.end)+'</dd>':'')+'</dl>'+
+  (hours.length?'<details class="cos-hours"><summary>Alle Planetenstunden</summary><ol>'+hours.map(h=>'<li class="'+(h===cur?'now':'')+(h.day?'':' night')+'"><span>'+cosmosTime(h.start)+'</span><span>'+PulseAstro.PLANET_GLYPH[h.planet]+' '+esc(h.planet)+'</span></li>').join('')+'</ol><small>Für Wuppertal berechnet. Tagstunden von Sonnenaufgang bis -untergang, Nachtstunden bis zum nächsten Aufgang.</small></details>':''),
+  lifeButton('Planetentage',lifeCall('lifeOpenLib','sinn-planetentage'),'life-textbtn')+lifeButton('Planetenstunden',lifeCall('lifeOpenLib','sinn-planetenstunden'),'life-textbtn'));
+ const mi=PulseAstro.mansion(noon),M=PulseLore.MANSIONS[mi-1];
+ out+=cosmosCard('Mondstation '+mi+' von 28',esc(M[0])+' <small>'+esc(M[1])+'</small>','<p>'+esc(M[2])+'</p>',lifeButton('Die 28 Mondstationen',lifeCall('lifeOpenLib','sinn-die-28-mondstationen'),'life-textbtn'));
+ const dc=PulseAstro.decanCard(PulseAstro.sunLongitude(noon)),T=PulseLibrary.TAROT,cards=[['Sonne · '+dc.decan+'. Dekan '+sun.name,dc.tarotIndex],['Mond in '+sign.name,PulseAstro.SIGN_MAJOR[sign.index]],['Planetentag '+planet,PulseAstro.PLANET_MAJOR[planet]]];
+ out+=cosmosCard('Tarot des Himmels','','<div class="cos-tarot">'+cards.map(([l,i])=>'<button type="button" onclick="'+lifeCall('lifeTarotOpen',i)+'"><span class="life-mini-card" aria-hidden="true">'+lifeGlyph('star')+'</span><span><b>'+esc(T[i].name)+'</b><small>'+esc(l)+'</small></span></button>').join('')+'</div>',lifeButton('Tarot und Himmel',lifeCall('lifeOpenLib','sinn-tarot-und-himmel'),'life-textbtn'));
+ const L=PulseCosmos.lunarDate(date),D=PulseCosmos.dayPillar(date),t=cosmosTerm(date),tree=PulseAstro.treeMonth(date),lore=t.current&&PulseLore.TERMS[t.current.pinyin];
+ out+='<details class="cos-card cos-more-cal"><summary><span class="life-kicker">Weitere Kalender</span><b>Baumkalender, chinesischer Kalender, Jahresabschnitt</b></summary>'+
+  '<dl class="cos-facts"><dt>Sonne</dt><dd>'+sun.glyph+' '+esc(sun.name)+' '+sun.degree+'°</dd><dt>Baum</dt><dd>'+esc(tree.name)+'<small>'+esc(PulseLore.TREES[tree.name]||'')+' · Baumkalender nach Robert Graves</small></dd>'+
+  '<dt>China</dt><dd>'+L.day+'. Tag des '+(L.leap?'Schaltmonats nach dem ':'')+L.month+'. Mondmonats<small>Jahr '+esc(L.element+'-'+L.animal)+' ('+esc(L.name)+') · Tag '+esc(D.element+'-'+D.animal)+'</small></dd>'+
+  (t.current?'<dt>Abschnitt</dt><dd>'+esc(t.current.name)+' ('+esc(t.current.pinyin)+')<small>'+esc(lore?lore[0]+' '+lore[1]:'')+'</small></dd>':'')+'</dl><div class="cos-actions">'+lifeButton('Baumkalender',lifeCall('lifeOpenLib','sinn-der-keltische-baumkalender'),'life-textbtn')+lifeButton('Chinesischer Kalender',lifeCall('lifeOpenLib','sinn-der-chinesische-mondkalender'),'life-textbtn')+lifeButton('24 Abschnitte',lifeCall('lifeOpenLib','sinn-die-24-jahresabschnitte'),'life-textbtn')+'</div></details>';
+ return out;
+}
+function cosmosDetail(date){
+ const items=calItems(date);
+ return '<section id="cosmosDetail" class="cos-detail"><div class="life-row"><h2>'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</h2>'+lifeButton('Im Tag öffnen',lifeCall('cosmosToDay',date),'life-textbtn')+'</div>'+
+  '<div class="cal-daylist">'+(items.length?items.map(x=>calRow(x,date)).join(''):'<p class="life-none">Keine Termine.</p>')+'<button type="button" class="cal-add" onclick="'+lifeCall('calEdit','',date)+'">'+lifeGlyph('plus')+'Termin am '+esc(lifeDate(date,{day:'numeric',month:'short'}))+'</button></div>'+
+  cosmosAlmanac(date)+'</section>';
+}
 function cosmosUpcoming(){
- const today=key(),y=Number(today.slice(0,4)),rows=[];
- const m=cosmosMoon(today);
+ const today=key(),y=Number(today.slice(0,4)),rows=[],m=cosmosMoon(today);
  if(m.nextNew)rows.push([m.nextNew.day,'Neumond',cosmosTime(m.nextNew.ms)+' Uhr']);
  if(m.nextFull)rows.push([m.nextFull.day,'Vollmond',cosmosTime(m.nextFull.ms)+' Uhr']);
- const t=cosmosTerm(today).next;if(t)rows.push([t.day,t.name,t.pinyin]);
- [...cosmosYear(y).fests,...cosmosYear(y+1).fests].filter(f=>f.date>today).slice(0,3).forEach(f=>rows.push([f.date,f.name,f.kind==='wheel'?'Jahreskreis':'Chinesisch']));
+ [...cosmosYear(y).fests,...cosmosYear(y+1).fests].filter(f=>f.date>today).slice(0,5).forEach(f=>rows.push([f.date,f.name,FEST_KIND[f.kind]||'']));
  rows.sort((a,b)=>a[0].localeCompare(b[0]));
- return '<section class="cos-upcoming"><h2>Demnächst</h2>'+rows.map(([d,name,sub])=>'<button type="button" class="cos-row" onclick="'+lifeCall('cosmosJump',d)+'"><span class="cos-row-date">'+esc(lifeDate(d,{day:'numeric',month:'short'}))+'<small>'+(cosmosDays(today,d)===1?'morgen':'in '+cosmosDays(today,d)+' T.')+'</small></span><span><b>'+esc(name)+'</b><small>'+esc(sub)+'</small></span></button>').join('')+'</section>';
-}
-function cosmosJump(d){cosmosDay=d;renderCosmos();document.getElementById('cosmosDetail')?.scrollIntoView({block:'start'})}
-function cosmosDetail(date){
- const m=cosmosMoon(date),P=PulseLore.PHASES[m.index],L=PulseCosmos.lunarDate(date),D=PulseCosmos.dayPillar(date),t=cosmosTerm(date),fests=cosmosFests(date),items=PulseLife.day(db,date);
- const when=m.event?(m.event.type==='new'?'Neumond':'Vollmond')+' um '+cosmosTime(m.event.ms)+' Uhr':moonLine(m);
- let out='<section id="cosmosDetail" class="cos-detail"><h2>'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</h2>';
- out+='<div class="cos-moon-hero">'+moonSvg(m,76)+'<div><span class="life-kicker">Mond · '+m.illumination+' % beleuchtet</span><b>'+esc(m.name)+'</b><small>'+esc(when)+'</small></div></div>';
- for(const f of fests){const lib=COSMOS_LIB[f.name];out+=cosmosCard(f.kind==='wheel'?'Jahreskreis':'Chinesisches Fest',esc(f.name),'<p>'+esc(f.info)+'</p>',lib?lifeButton('Ritual-Ideen',lifeCall('lifeOpenLib',lib),'life-textbtn'):'')}
- out+=cosmosCard('Praxis zur Mondphase',esc(P.title),'<p>'+esc(P.text)+'</p>',lifeButton('Anleitung',lifeCall('lifeOpenLib',P.lib),'life-textbtn'));
- const lore=t.current&&PulseLore.TERMS[t.current.pinyin];
- if(t.current)out+=cosmosCard('Jahresabschnitt · '+(t.today?'beginnt heute, '+cosmosTime(t.current.ms)+' Uhr':'seit '+esc(lifeDate(t.current.day,{day:'numeric',month:'short'}))),esc(t.current.name)+' <small>'+esc(t.current.pinyin)+'</small>',(lore?'<p>'+esc(lore[0])+'</p><p class="cos-practice"><b>Praxis:</b> '+esc(lore[1])+'</p>':'')+(t.next?'<small>Nächster: '+esc(t.next.name)+' am '+esc(lifeDate(t.next.day,{day:'numeric',month:'long'}))+'</small>':''),lifeButton('Die 24 Abschnitte',lifeCall('lifeOpenLib','sinn-die-24-jahresabschnitte'),'life-textbtn'));
- out+=cosmosCard('Chinesischer Mondkalender',L.day+'. Tag des '+(L.leap?'Schaltmonats nach dem ':'')+L.month+'. Monats',
-  '<dl class="cos-facts"><dt>Jahr</dt><dd>'+esc(L.element+'-'+L.animal)+' · '+esc(L.name)+'<small>'+esc(PulseLore.ANIMALS[L.animal]||'')+'</small></dd><dt>Tag</dt><dd>'+esc(D.element+'-'+D.animal)+' · '+esc(D.name)+'<small>'+esc(PulseLore.ELEMENTS[D.element]||'')+'</small></dd></dl>',
-  lifeButton('So funktioniert er',lifeCall('lifeOpenLib','sinn-der-chinesische-mondkalender'),'life-textbtn')+lifeButton('Die zwölf Tiere',lifeCall('lifeOpenLib','sinn-die-zwo-lf-tiere'),'life-textbtn'));
- out+='<div class="cos-items"><div class="life-row"><h3>Deine Einträge</h3>'+lifeButton('Im Tag öffnen',lifeCall('cosmosToDay',date),'life-textbtn')+'</div>'+(items.length?items.map(x=>lifeCard(x,{compact:true})).join(''):'<p class="life-muted">Nichts eingetragen.</p>')+'</div>';
- return out+'</section>';
+ return '<section class="cos-upcoming"><h2>Am Himmel und im Jahreskreis</h2>'+rows.map(([d,name,sub])=>'<button type="button" class="cos-row" onclick="'+lifeCall('cosmosJump',d)+'"><span class="cos-row-date">'+esc(lifeDate(d,{day:'numeric',month:'short'}))+'<small>'+(cosmosDays(today,d)===1?'morgen':'in '+cosmosDays(today,d)+' T.')+'</small></span><span><b>'+esc(name)+'</b><small>'+esc(sub)+'</small></span></button>').join('')+'</section>';
 }
 function renderCosmos(){
  const host=document.getElementById('cosmosContent');if(!host||document.getElementById('appMain').dataset.view!=='calendar')return;
  const date=cosmosDay||(cosmosDay=key());
- host.innerHTML='<header class="life-pagehead"><span class="life-kicker">Kalender</span><h1>'+esc(lifeDate(date,{month:'long',year:'numeric'}))+'</h1></header>'+
-  '<div class="cos-nav">'+lifeButton('‹',lifeCall('cosmosShift',-1),'life-iconbtn')+(date.slice(0,7)!==key().slice(0,7)||date!==key()?lifeButton('Heute',lifeCall('cosmosSelect',key()),'life-textbtn'):'<span></span>')+lifeButton('›',lifeCall('cosmosShift',1),'life-iconbtn')+'</div>'+
-  '<div class="cos-grid" role="group" aria-label="Monat">'+['Mo','Di','Mi','Do','Fr','Sa','So'].map(t=>'<small>'+t+'</small>').join('')+PulseCalendar.monthDays(date.slice(0,7)).map(d=>cosmosCell(d,date)).join('')+'</div>'+
-  '<p class="cos-legend"><span><i class="cos-m new"></i>Neumond</span><span><i class="cos-m full"></i>Vollmond</span><span><i class="cos-term"></i>Jahresabschnitt</span><span><i class="cos-fest"></i>Fest</span><span><i class="cos-item"></i>Eintrag</span><span><span class="cos-lunar">9</span>Mondtag</span></p>'+
-  cosmosDetail(date)+cosmosUpcoming();
+ const title=cosmosMode==='week'?'Woche ab '+lifeDate(PulseLife.offset(date,-((new Date(date+'T12:00:00').getDay()+6)%7)),{day:'numeric',month:'short'}):cosmosMode==='list'?'Termine':lifeDate(date,{month:'long',year:'numeric'});
+ host.innerHTML='<header class="life-pagehead cal-head"><div><span class="life-kicker">Kalender</span><h1>'+esc(title)+'</h1></div><div class="cal-head-actions">'+lifeButton(lifeGlyph('plus')+'<span>Termin</span>',lifeCall('calEdit','',date),'life-btn dark')+lifeButton('⋯','calMenu()','life-iconbtn')+'</div></header>'+
+  '<div class="cos-nav">'+(cosmosMode==='list'?'<span></span>':lifeButton('‹',lifeCall('cosmosShift',-1),'life-iconbtn'))+'<div class="life-seg" role="group" aria-label="Ansicht">'+[['month','Monat'],['week','Woche'],['list','Liste']].map(([k,l])=>'<button type="button" aria-pressed="'+(cosmosMode===k)+'" onclick="'+lifeCall('cosmosSetMode',k)+'">'+l+'</button>').join('')+'</div>'+(cosmosMode==='list'?'<span></span>':lifeButton('›',lifeCall('cosmosShift',1),'life-iconbtn'))+'</div>'+
+  (date!==key()?'<div class="cal-today">'+lifeButton('Heute',lifeCall('cosmosSelect',key()),'life-textbtn')+'</div>':'')+
+  (cosmosMode==='week'?cosmosWeek(date):cosmosMode==='list'?cosmosList(date):cosmosMonth(date))+
+  (cosmosMode==='list'?'':cosmosDetail(date)+cosmosUpcoming());
 }
+// SOURCE: ui/agenda.js
+/* Appointments: detail, editor (all-day, multi-day, repeats, reminders), .ics import and export,
+   and reminders while Pulse is open. */
+const CAL_TZ=(()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone||'Europe/Berlin'}catch(_){return 'Europe/Berlin'}})();
+const CAL_REMIND_TIMED=[['','Keine'],['0','Zur Startzeit'],['5','5 Minuten vorher'],['10','10 Minuten vorher'],['15','15 Minuten vorher'],['30','30 Minuten vorher'],['60','1 Stunde vorher'],['120','2 Stunden vorher'],['1440','1 Tag vorher']];
+const CAL_REMIND_ALLDAY=[['','Keine'],['-480','Am Tag um 8 Uhr'],['360','Am Vortag um 18 Uhr'],['1440','1 Tag vorher, 0 Uhr']];
+let calEditRecurDays=null;
+function calSheet(html,focus){document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;el.innerHTML=html;if(activeDialog!=='lifeSheet')openDialog(document.getElementById('lifeSheet'),focus||'#lifeDetailHeading');else document.querySelector(focus||'#lifeDetailHeading')?.focus()}
+function calRemindText(x){if(x.remind==null)return '';const list=x.time?CAL_REMIND_TIMED:CAL_REMIND_ALLDAY,hit=list.find(([v])=>v!==''&&Number(v)===x.remind);return hit?hit[1]:x.remind+' Minuten vorher'}
+/* ---------- Detail ---------- */
+function calOpen(id,date){
+ const x=PulseLife.get(db,id);if(!x)return;if(x.kind!=='event')return lifeOpenItem(id,true);
+ const occ=PulseRecur.occurrence(x,date)||{start:x.date,day:1,days:1},r=PulseLife.room(x.room),start=occ.start;
+ const dateLine=occ.days>1?lifeDate(start,{weekday:'short',day:'numeric',month:'long'})+' – '+lifeDate(PulseLife.offset(start,occ.days-1),{weekday:'short',day:'numeric',month:'long'}):lifeDate(start,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+ calSheet('<div class="life-detail-mark '+r.color+'">'+lifeGlyph(r.symbol)+'</div><div class="life-detail-tags">'+lifePill('Termin')+lifePill(r.name)+'</div><h2 id="lifeDetailHeading" tabindex="-1">'+esc(x.title)+'</h2>'+
+  '<dl class="cos-facts cal-facts"><dt>Wann</dt><dd>'+esc(dateLine)+'<small>'+esc(x.time?x.time+'–'+calEnd(x)+' Uhr':'ganztägig')+'</small></dd>'+
+  (x.recur?'<dt>Serie</dt><dd>↻ '+esc(PulseRecur.describe(x))+(x.exdates?.length?'<small>'+x.exdates.length+' ausgelassen</small>':'')+'</dd>':'')+
+  (x.location?'<dt>Ort</dt><dd><a href="geo:0,0?q='+encodeURIComponent(x.location)+'">'+esc(x.location)+'</a></dd>':'')+
+  (x.remind!=null?'<dt>Erinnerung</dt><dd>'+esc(calRemindText(x))+'</dd>':'')+'</dl>'+
+  (x.body?'<div class="life-prose">'+esc(x.body)+'</div>':'')+
+  '<div class="life-detail-actions">'+lifeButton('Bearbeiten',lifeCall('calEdit',id,start),'life-btn dark')+(x.recur?lifeButton('Nur diesen auslassen',lifeCall('calSkip',id,start),'life-btn'):'')+lifeButton(x.recur?'Ganze Serie löschen':'Löschen',lifeCall('calDelete',id),'life-textbtn danger')+'</div>'+
+  '<div class="life-sectionhead"><h3>Sichere Erinnerung</h3></div><p class="life-footnote">Pulse erinnert dich, solange die App offen ist. Für wichtige Termine kannst du die Erinnerung zusätzlich im Handy-Kalender ablegen. Der klingelt auch, wenn Pulse geschlossen ist.</p><div class="cos-actions">'+lifeButton('.ics-Datei für den Handy-Kalender',lifeCall('calPhoneReminder',id,start),'life-textbtn')+'</div>');
+}
+function calSkip(id,date){const x=PulseLife.get(db,id);if(!x)return;if(lifeMutate(()=>PulseLife.update(db,id,{exdates:[...(x.exdates||[]),date]},new Date().toISOString()),'Termin am '+lifeDate(date,{day:'numeric',month:'short'})+' ausgelassen'))lifeCloseSheet()}
+function calDelete(id){if(lifeMutate(()=>PulseLife.update(db,id,{status:'archived'},new Date().toISOString()),'Termin gelöscht · rückgängig möglich'))lifeCloseSheet()}
+/* ---------- Editor ---------- */
+function calRecurOptions(date,current){
+ const wd=PulseRecur.weekday(date),WD=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],n=PulseRecur.nthOf(date),M=lifeDate(date,{day:'numeric',month:'long'});
+ const opts=[['','Keine'],['daily','Täglich'],['weekdays','Werktags (Mo–Fr)'],['weekly','Wöchentlich'],['weekly2','Alle 2 Wochen'],['monthly','Monatlich am '+Number(date.slice(8))+'.'],['monthlyNth','Monatlich am '+n+'. '+WD[wd]]];
+ if(PulseRecur.isLast(date))opts.push(['monthlyLast','Monatlich am letzten '+WD[wd]]);opts.push(['yearly','Jährlich am '+M]);
+ return opts.map(([v,l])=>'<option value="'+v+'"'+(v===current?' selected':'')+'>'+esc(l)+'</option>').join('');
+}
+function calRecurKey(r){if(!r)return '';if(r.freq==='weekly'&&r.interval===2)return 'weekly2';if(r.freq==='monthlyNth'&&r.nth===-1)return 'monthlyLast';return r.freq}
+function calEdit(id,date){
+ const x=id?PulseLife.get(db,id):null;if(id&&!x)return;
+ const d=x?x.date:(PulseLife.validDate(date||'')?date:key()),allDay=x?!x.time:false,time=x?.time||(()=>{const h=new Date().getHours()+1;return String(Math.min(h,22)).padStart(2,'0')+':00'})();
+ const end=x&&x.time?calEnd(x):String(Math.min(Number(time.slice(0,2))+1,23)).padStart(2,'0')+':'+time.slice(3);
+ const r=x?.recur||null;calEditRecurDays=r?.freq==='weekly'?[...r.byday]:null;
+ calSheet('<h2 id="lifeDetailHeading" tabindex="-1">'+(x?'Termin bearbeiten':'Neuer Termin')+'</h2>'+(x?.recur?'<p class="life-footnote">Änderungen gelten für die ganze Serie.</p>':'')+
+  '<form class="cal-form" onsubmit="event.preventDefault();calSave('+(x?"'"+esc(x.id)+"'":"''")+')">'+
+  '<label class="life-name-field">Titel<input id="calTitle" required maxlength="180" value="'+esc(x?.title||'')+'" placeholder="z. B. Bandprobe"/></label>'+
+  '<label class="cal-check"><input type="checkbox" id="calAllDay"'+(allDay?' checked':'')+' onchange="calSync()"/> Ganztägig</label>'+
+  '<div class="cal-grid2"><label class="life-name-field cal-full">Datum<input id="calDate" type="date" required value="'+esc(d)+'" onchange="calSync()"/></label>'+
+  '<label class="life-name-field cal-timed">Beginn<input id="calStart" type="time" value="'+esc(time)+'" onchange="calSyncEnd()"/></label>'+
+  '<label class="life-name-field cal-timed">Ende<input id="calEnd" type="time" value="'+esc(end)+'"/></label>'+
+  '<label class="life-name-field cal-allday">Bis (mehrtägig)<input id="calEndDate" type="date" value="'+esc(x?.endDate||'')+'"/></label></div>'+
+  '<label class="life-name-field">Wiederholung<select id="calRecur" onchange="calSync()">'+calRecurOptions(d,calRecurKey(r))+'</select></label>'+
+  '<div id="calDays" class="vault-chips cal-days"></div>'+
+  '<div class="cal-grid2" id="calUntilRow"><label class="life-name-field">Endet<select id="calUntilMode" onchange="calSync()"><option value="">Nie</option><option value="date"'+(r?.until?' selected':'')+'>Am Datum</option></select></label><label class="life-name-field" id="calUntilWrap">Letzter Termin<input id="calUntil" type="date" value="'+esc(r?.until||'')+'"/></label></div>'+
+  '<label class="life-name-field">Ort<input id="calLocation" maxlength="200" value="'+esc(x?.location||'')+'" placeholder="optional"/></label>'+
+  '<label class="life-name-field">Erinnerung<select id="calRemind"></select></label>'+
+  '<label class="life-name-field">Raum<select id="calRoom">'+PulseLife.ROOMS.map(rm=>'<option value="'+rm.id+'"'+((x?.room||'alltag')===rm.id?' selected':'')+'>'+esc(rm.name)+'</option>').join('')+'</select></label>'+
+  '<label class="life-name-field">Notiz<textarea id="calBody" rows="3" placeholder="optional">'+esc(x?.body||'')+'</textarea></label>'+
+  '<div class="life-detail-actions"><button type="submit" class="life-btn dark">Speichern</button>'+lifeButton('Abbrechen','lifeCloseSheet()','life-btn')+'</div></form>','#calTitle');
+ calSync(x?.remind);
+}
+function calSyncEnd(){const s=document.getElementById('calStart').value,e=document.getElementById('calEnd');if(!s)return;const h=Math.min(Number(s.slice(0,2))+1,23);e.value=String(h).padStart(2,'0')+':'+s.slice(3)}
+function calSync(remind){
+ const allDay=document.getElementById('calAllDay').checked,date=document.getElementById('calDate').value||key(),rec=document.getElementById('calRecur');
+ document.querySelectorAll('.cal-timed').forEach(e=>e.hidden=allDay);document.querySelectorAll('.cal-allday').forEach(e=>e.hidden=!allDay);
+ const cur=rec.value;rec.innerHTML=calRecurOptions(date,cur);if(rec.value!==cur)rec.value=cur.startsWith('monthly')&&cur!=='monthly'?'monthlyNth':'';
+ const weekly=rec.value==='weekly'||rec.value==='weekly2';
+ if(weekly&&!calEditRecurDays)calEditRecurDays=[PulseRecur.weekday(date)];
+ const days=document.getElementById('calDays');days.hidden=!weekly;
+ days.innerHTML=weekly?[1,2,3,4,5,6,0].map(i=>'<button type="button" aria-pressed="'+calEditRecurDays.includes(i)+'" onclick="'+lifeCall('calToggleDay',i)+'">'+['So','Mo','Di','Mi','Do','Fr','Sa'][i]+'</button>').join(''):'';
+ document.getElementById('calUntilRow').hidden=!rec.value;document.getElementById('calUntilWrap').hidden=document.getElementById('calUntilMode').value!=='date';
+ const sel=document.getElementById('calRemind'),prev=remind!==undefined?(remind==null?'':String(remind)):sel.value;
+ const list=allDay?CAL_REMIND_ALLDAY:CAL_REMIND_TIMED;sel.innerHTML=list.map(([v,l])=>'<option value="'+v+'">'+esc(l)+'</option>').join('');sel.value=list.some(([v])=>v===prev)?prev:'';
+}
+function calToggleDay(i){const set=new Set(calEditRecurDays||[]);if(set.has(i)&&set.size>1)set.delete(i);else set.add(i);calEditRecurDays=[...set];calSync()}
+function calSave(id){
+ const v=k=>document.getElementById(k)?.value||'',allDay=document.getElementById('calAllDay').checked,date=v('calDate');
+ const fields={kind:'event',title:v('calTitle').trim(),date,room:v('calRoom'),location:v('calLocation'),body:v('calBody'),remind:v('calRemind')===''?null:Number(v('calRemind'))};
+ if(allDay){fields.time='';fields.duration=Number(PulseLife.get(db,id)?.duration)||60;fields.endDate=v('calEndDate')}
+ else{const s=v('calStart'),e=v('calEnd');if(!s)return toast('Bitte eine Startzeit angeben oder „Ganztägig“ wählen.');let min=(Date.parse('2000-01-01T'+(e||s)+':00Z')-Date.parse('2000-01-01T'+s+':00Z'))/60000;if(min<=0)min+=1440;fields.time=s;fields.duration=Math.min(1440,min||60);fields.endDate=''}
+ const k=v('calRecur');
+ if(k){const freq={weekly2:'weekly',monthlyLast:'monthlyNth'}[k]||k;fields.recur={freq,interval:k==='weekly2'?2:1,until:v('calUntilMode')==='date'?v('calUntil'):'',...(freq==='weekly'?{byday:calEditRecurDays||[PulseRecur.weekday(date)]}:{}),...(k==='monthlyLast'?{nth:-1}:{})}}else fields.recur=null;
+ const now=new Date().toISOString(),newId=id||uid('life');
+ const ok=lifeMutate(()=>id?PulseLife.update(db,id,fields,now):PulseLife.create(db,fields,newId,now),id?'Termin gespeichert':'Termin angelegt');
+ if(!ok)return;lifeCloseSheet();pulseTap();cosmosDay=date;renderCosmos();
+ if(fields.remind!=null)calAskPermission();
+}
+/* ---------- Import / Export ---------- */
+function calMenu(){
+ const perm=typeof Notification==='undefined'?'unsupported':Notification.permission;
+ calSheet('<h2 id="lifeDetailHeading" tabindex="-1">Kalender</h2>'+
+  '<div class="life-sectionhead"><h3>Von Google Kalender umziehen</h3></div><p class="life-footnote">Am Computer in Google Kalender: Einstellungen → Importieren und exportieren → Exportieren. Die ZIP-Datei entpacken und die .ics-Datei hier auswählen. Wiederholungen, Orte, Notizen und Erinnerungen werden übernommen, doppelte Termine erkannt.</p>'+
+  '<label class="life-btn dark cal-file">.ics-Datei importieren<input class="srOnly" type="file" accept=".ics,text/calendar" onchange="calImportFile(this.files[0]);this.value=\'\'"/></label>'+
+  '<div class="life-sectionhead"><h3>Exportieren</h3></div><p class="life-footnote">Alle Termine als .ics-Datei, z. B. für einen anderen Kalender oder als Sicherung.</p>'+lifeButton('Termine exportieren','calExport()','life-btn')+
+  '<div class="life-sectionhead"><h3>Erinnerungen</h3></div><p class="life-footnote">'+(perm==='granted'?'Benachrichtigungen sind erlaubt.':perm==='denied'?'Benachrichtigungen sind in Chrome blockiert. Erlauben über das Schloss-Symbol neben der Adresse oder in den App-Einstellungen von Android.':perm==='unsupported'?'Dieser Browser unterstützt keine Benachrichtigungen.':'Benachrichtigungen sind noch nicht erlaubt.')+' Erinnerungen kommen, solange Pulse offen ist oder kurz im Hintergrund lief. Ist Pulse ganz geschlossen, kann eine Web-App sich nicht von selbst melden.</p>'+(perm==='default'?lifeButton('Benachrichtigungen erlauben','calAskPermission(true)','life-btn'):'')+(perm==='granted'?lifeButton('Test-Benachrichtigung','calNotify(\'Pulse\',\'So sehen Erinnerungen aus.\',\'test\')','life-btn'):''));
+}
+let calPendingImport=null;
+async function calImportFile(file){
+ if(!file)return;let text='';try{text=await file.text()}catch(_){return toast('Die Datei konnte nicht gelesen werden.')}
+ let res;try{res=PulseICS.parse(text,{target:CAL_TZ})}catch(e){return toast('Diese Datei ist keine lesbare .ics-Datei.')}
+ if(!res.events.length)return toast('In der Datei wurden keine Termine gefunden.');
+ const cutoff=PulseLife.offset(key(),-365),old=res.events.filter(e=>!e.recur&&(e.endDate||e.date)<cutoff).length;
+ const existing=PulseLife.list(db,{archived:true}).filter(x=>x.kind==='event'),known=new Set(existing.map(x=>x.ics).filter(Boolean)),sig=new Set(existing.map(x=>x.title+'|'+x.date+'|'+x.time));
+ const fresh=res.events.filter(e=>!(e.ics&&known.has(e.ics))&&!sig.has(e.title+'|'+e.date+'|'+e.time));
+ calPendingImport={events:fresh,cutoff};
+ calSheet('<h2 id="lifeDetailHeading" tabindex="-1">Termine importieren</h2><dl class="cos-facts"><dt>Gefunden</dt><dd>'+res.events.length+' Termine<small>davon '+res.events.filter(e=>e.recur).length+' Serien</small></dd><dt>Schon da</dt><dd>'+(res.events.length-fresh.length)+'</dd><dt>Älter als 1 Jahr</dt><dd>'+old+'</dd>'+(res.simplified?'<dt>Vereinfacht</dt><dd>'+res.simplified+'<small>Seltene Wiederholungsregeln wurden vereinfacht übernommen. Bitte diese Serien kurz prüfen.</small></dd>':'')+'</dl>'+
+  '<label class="life-name-field">In Raum<select id="calImportRoom">'+PulseLife.ROOMS.map(rm=>'<option value="'+rm.id+'">'+esc(rm.name)+'</option>').join('')+'</select></label>'+
+  '<div class="life-detail-actions">'+lifeButton('Ab einem Jahr zurück importieren','calImportRun(true)','life-btn dark')+lifeButton('Alles importieren','calImportRun(false)','life-btn')+'</div><p class="life-footnote">Der Import lässt sich mit ↶ oben in einem Schritt rückgängig machen.</p>');
+}
+function calImportRun(recentOnly){
+ const p=calPendingImport;if(!p)return;calPendingImport=null;const room=document.getElementById('calImportRoom')?.value||'alltag',now=new Date().toISOString();
+ const list=recentOnly?p.events.filter(e=>e.recur?(!e.recur.until||e.recur.until>=p.cutoff):(e.endDate||e.date)>=p.cutoff):p.events;let n=0,bad=0;
+ const ok=lifeMutate(()=>{for(const e of list){try{PulseLife.create(db,{...e,room},uid('life'),now);n++}catch(_){bad++}}},'Import');
+ if(ok){lifeCloseSheet();renderCosmos();toast(n+(n===1?' Termin':' Termine')+' importiert'+(bad?', '+bad+' fehlerhaft übersprungen':''),'Rückgängig')}
+}
+function calDownload(text,name){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type:'text/calendar'}));a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000)}
+function calExport(){const items=PulseLife.list(db).filter(x=>x.kind==='event');if(!items.length)return toast('Noch keine Termine.');calDownload(PulseICS.build(items,{tz:CAL_TZ}),'PULSE_Kalender_'+key()+'.ics');toast(items.length+(items.length===1?' Termin':' Termine')+' exportiert')}
+function calPhoneReminder(id,start){const x=PulseLife.get(db,id);if(!x)return;const one={...x,date:start,recur:null,exdates:[],endDate:x.endDate?PulseLife.offset(start,PulseRecur.diff(x.date,x.endDate)):'',remind:x.remind??(x.time?15:-480),ics:(x.ics||x.id)+'-'+start};calDownload(PulseICS.build([one],{tz:CAL_TZ}),'Termin_'+start+'.ics');toast('Datei mit dem Handy-Kalender öffnen, dann speichern.')}
+/* ---------- Reminders while Pulse is open ---------- */
+function calAskPermission(force){if(typeof Notification==='undefined')return;if(Notification.permission==='default'){Notification.requestPermission().then(p=>{if(p==='granted')toast('Erinnerungen sind jetzt erlaubt.');if(force)calMenu()}).catch(()=>{})}}
+function calNotify(title,body,tag){
+ toast(title+(body?' · '+body:''));pulseSound('chime');pulseTap([20,80,20]);
+ if(typeof Notification==='undefined'||Notification.permission!=='granted')return;
+ const opts={body,tag,icon:'icons/icon-192.png',badge:'icons/icon-192.png',data:{url:'./#calendar'}};
+ (navigator.serviceWorker?.ready||Promise.reject()).then(r=>r.showNotification(title,opts)).catch(()=>{try{new Notification(title,opts)}catch(_){}});
+}
+function calRemindTick(){
+ if(!db)return;const now=Date.now(),today=key(),sent=db.uiPrefs.reminded=db.uiPrefs.reminded||{};let changed=false;
+ for(const k of Object.keys(sent))if(now-sent[k]>4*864e5){delete sent[k];changed=true}
+ for(const x of PulseLife.list(db))if(x.kind==='event'&&x.remind!=null)for(const s of PulseRecur.starts(x,PulseLife.offset(today,-1),PulseLife.offset(today,2),5)){
+  const startMs=new Date(s+'T'+(x.time||'00:00')+':00').getTime(),at=startMs-x.remind*60000,k=x.id+'|'+s;
+  const endMs=x.time?startMs+(x.duration||60)*60000:startMs+864e5;
+  if(now>=at&&now<Math.max(endMs,at+3600000)&&!sent[k]){sent[k]=now;changed=true;calNotify(x.title,(x.time?(s===today?'Heute ':lifeDate(s,{weekday:'short'})+' ')+x.time+' Uhr':lifeDate(s,{weekday:'long',day:'numeric',month:'short'}))+(x.location?' · '+x.location:''),k)}
+ }
+ if(changed)save();
+}
+setInterval(()=>{if(document.visibilityState==='visible')calRemindTick()},30000);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')setTimeout(calRemindTick,800)});
+setTimeout(calRemindTick,2500);
 // SOURCE: ui/feel.js
 /* Look and feel: theme (automatic, light, dark), optional sounds, the breathing day pulse,
    and YouTube videos that load only after a tap. */

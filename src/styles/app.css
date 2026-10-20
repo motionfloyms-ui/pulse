@@ -857,7 +857,7 @@ th{color:var(--muted);font-weight:600}
 .vault-actions .life-btn[aria-pressed="true"]:first-child{background:#F1B92B;color:#2B2100}
 .vault-block{margin:18px 0 0}.vault-block h3{margin:0 0 8px;font-size:16px}
 .vault-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
-.vault-chips button{min-height:40px;padding:6px 14px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);font-size:14px;font-weight:600;box-shadow:inset 0 0 0 1px var(--line)}
+.vault-chips button{min-height:44px;padding:6px 14px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);font-size:14px;font-weight:600;box-shadow:inset 0 0 0 1px var(--line)}
 .vault-chips button[aria-pressed="true"]{background:var(--accent);color:var(--accent-on);box-shadow:none}
 .vault-inline{display:flex;gap:8px;align-items:center}.vault-inline input{flex:1;min-width:0}
 .vault-inline .vault-time{flex:0 0 76px;text-align:center;font-variant-numeric:tabular-nums}
@@ -868,6 +868,79 @@ th{color:var(--muted);font-weight:600}
 .vault-mark b{min-width:52px;color:var(--accent-text);font-variant-numeric:tabular-nums}
 .life-textbtn.danger{color:var(--danger)}
 @media(max-width:360px){.vault-stats{grid-template-columns:1fr 1fr}.vault-stat.hero{grid-column:1/-1}.vault-grid,.vault-shelves{gap:9px}}
+/* Kalender v20: appointments and almanac */
+.cal-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.cal-head-actions{display:flex;align-items:center;gap:8px;flex:none}
+.cal-head-actions .life-btn{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:8px 16px}
+.cal-head-actions .life-btn svg{width:18px;height:18px}
+.cos-nav .life-seg{flex:1;max-width:300px}.cos-nav .life-seg button{flex:1}
+.cal-today{display:flex;justify-content:center;margin:-4px 0 6px}
+.cos-grid{gap:2px;padding:6px}
+.cos-day{justify-content:flex-start;align-items:stretch;gap:2px;min-height:78px;padding:4px 3px;text-align:left;overflow:hidden}
+.cos-top{display:flex;align-items:center;justify-content:space-between;gap:2px;min-height:20px}
+.cos-top b{font-size:14.5px}
+.cos-sky{display:inline-flex;align-items:center;gap:2px;color:var(--muted)}
+.cos-sign{font-size:11.5px;line-height:1;font-family:"Segoe UI Symbol","Noto Sans Symbols 2","Noto Sans Symbols",var(--font)}
+.cos-day .cos-m{width:8px;height:8px}
+.cos-evs{display:flex;flex-direction:column;gap:2px;min-width:0}
+.cos-ev{display:block;padding:1px 4px;border-radius:5px;font-size:10.5px;line-height:1.35;font-style:normal;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:clip}
+.cos-more{font-size:10.5px;font-style:normal;font-weight:650;color:var(--muted);padding-left:3px}
+.cos-day .cos-marks{margin-top:auto;justify-content:flex-start}
+.cos-day[aria-pressed="true"] .cos-sky,.cos-day[aria-pressed="true"] .cos-more{color:inherit}
+.cos-day[aria-pressed="true"] .cos-ev{box-shadow:0 0 0 1px rgb(255 255 255/.35)}
+.cal-daylist{display:flex;flex-direction:column;gap:6px;margin:0 0 6px}
+.cal-row{display:flex;align-items:stretch;gap:12px;width:100%;min-height:52px;padding:10px 14px 10px 10px;border-radius:var(--r-md);background:var(--surface);box-shadow:var(--shadow-1);color:var(--ink);text-align:left;font-weight:400;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.cal-row:active{transform:scale(.98)}
+.cal-bar{flex:none;width:4px;border-radius:4px;background:var(--room)}
+.cal-when{flex:none;min-width:86px;font-size:13.5px;font-weight:650;color:var(--ink-2);font-variant-numeric:tabular-nums;padding-top:1px}
+.cal-what{display:flex;flex-direction:column;gap:2px;min-width:0}
+.cal-what b{font-size:15.5px;font-weight:650;overflow-wrap:anywhere}
+.cal-what small{font-size:12.5px}
+.cal-add{display:flex;align-items:center;gap:8px;min-height:48px;padding:8px 14px;border-radius:var(--r-md);background:transparent;color:var(--accent-text);font-weight:650;box-shadow:inset 0 0 0 1.5px var(--line)}
+.cal-add svg{width:18px;height:18px}
+.cal-week{display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
+.cal-weekday{display:flex;flex-direction:column;gap:6px}
+.cal-dayhead{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:4px 4px 2px;background:none;color:var(--ink);text-align:left;font-weight:400;min-height:44px}
+.cal-dayhead b{font-size:16px;font-weight:700}
+.cal-dayhead small{font-size:12.5px}
+.cal-weekday.today .cal-dayhead b{color:var(--accent-text)}
+.cal-weekday.selected .cal-dayhead{box-shadow:inset 3px 0 0 var(--accent);padding-left:10px}
+.cal-fest{margin:0 4px;font-size:13px;font-weight:650;color:var(--ink-2)}.cal-fest::before{content:"● ";color:#E0484F}
+.cal-more{width:100%;margin-bottom:16px}
+.cos-section{margin:22px 4px 10px;font-size:20px;letter-spacing:-.01em}
+.cos-moonsign{display:block;margin-top:2px}
+.cos-yiji{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}
+.cos-yiji ul{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:5px}
+.cos-yiji li{position:relative;padding-left:20px;font-size:14.5px;line-height:1.35}
+.cos-yiji li::before{content:"✓";position:absolute;left:0;top:0;font-weight:800;color:var(--ok)}
+.cos-yiji ul.avoid li::before{content:"✕";color:#E0484F}
+.cos-yiji .cos-foot{grid-column:1/-1;margin:8px 0 0;font-size:12.5px;color:var(--muted)}
+.cos-card.fest{box-shadow:var(--shadow-1),inset 4px 0 0 #E0484F}
+.cos-glyph{font-family:"Segoe UI Symbol","Noto Sans Symbols",var(--font);font-weight:400}
+.cos-hours{margin-top:6px}.cos-hours summary{min-height:44px;display:flex;align-items:center;font-weight:650;color:var(--accent-text);cursor:pointer}
+.cos-hours ol{list-style:none;margin:4px 0 6px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px 14px}
+.cos-hours li{display:flex;gap:10px;padding:3px 6px;border-radius:8px;font-size:14px;font-variant-numeric:tabular-nums}
+.cos-hours li span:first-child{min-width:44px;color:var(--muted)}
+.cos-hours li.night{opacity:.75}
+.cos-hours li.now{background:var(--accent-soft);color:var(--accent-text);font-weight:700;opacity:1}
+.cos-tarot{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.cos-tarot button{display:flex;align-items:center;gap:12px;min-height:52px;padding:6px 10px 6px 6px;border-radius:var(--r-md);background:var(--surface-2);color:var(--ink);text-align:left;font-weight:400}
+.cos-tarot button>span:last-child{display:flex;flex-direction:column}
+.cos-tarot b{font-size:15px}
+.cos-more-cal summary{display:flex;flex-direction:column;gap:2px;cursor:pointer;list-style:none;min-height:44px}
+.cos-more-cal summary::-webkit-details-marker{display:none}
+.cos-more-cal summary b::after{content:" ▾";color:var(--muted)}
+.cos-more-cal[open] summary b::after{content:" ▴"}
+.cal-form{display:flex;flex-direction:column;gap:12px}
+.cal-form .life-name-field{margin:0}
+.cal-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cal-grid2 .cal-full{grid-column:1/-1}
+.cal-check{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:600}
+.cal-check input{width:22px;height:22px;accent-color:var(--accent)}
+.cal-days{margin:-4px 0 0;flex-wrap:nowrap;gap:4px}.cal-days button{flex:1;min-width:0;padding:6px 0}
+.cal-file{display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.cal-facts dd a{color:var(--accent-text)}
+@media(max-width:360px){.cos-day{min-height:70px}.cos-ev{font-size:9.5px}.cal-when{min-width:74px}}
 /* Calm view: colour recedes, structure stays. */
 .life-calm .life-room-tile,.life-calm .life-room-hero{background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 5px 0 0 var(--room)}
 .life-calm .life-room-tile::after,.life-calm .life-room-hero::after{display:none}
