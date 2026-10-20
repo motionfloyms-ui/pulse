@@ -1,0 +1,37 @@
+{
+ "prefix": "\n",
+ "styles": [
+  "font.css",
+  "app.css"
+ ],
+ "scripts": [
+  "domain/life/model.js",
+  "state/schema.js",
+  "domain/memory/records.js",
+  "migrations/legacy-820.js",
+  "migrations/context-830.js",
+  "migrations/return-20261019.js",
+  "migrations/unify-1500.js",
+  "domain/context/engine.js",
+  "domain/brain/parser.js",
+  "domain/body/progress.js",
+  "domain/body/session.js",
+  "domain/body/drinks.js",
+  "domain/brain/calendar.js",
+  "storage/local-store.js",
+  "ui/storage-status.js",
+  "ui/core-flows.js",
+  "ui/food-flows.js",
+  "ui/experience.js",
+  "ui/drink-flows.js",
+  "ui/life.js",
+  "domain/content/library.js",
+  "ui/library.js",
+  "storage/photos.js",
+  "ui/voice.js",
+  "ui/understand.js",
+  "ui/tarot.js",
+  "ui/app-shell.js",
+  "app.js"
+ ]
+}

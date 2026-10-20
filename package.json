@@ -1,0 +1,10 @@
+{
+  "name": "pulse",
+  "private": true,
+  "description": "PULSE – persönliche Lebensräume-App (Single-File-PWA)",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test \"tests/*.test.cjs\"",
+    "check": "node build.mjs && node tests/bundle-check.mjs && node --test \"tests/*.test.cjs\""
+  }
+}

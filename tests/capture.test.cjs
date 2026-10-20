@@ -1,0 +1,13 @@
+const test=require('node:test'),assert=require('node:assert/strict');const {js}=require('./helpers.cjs');
+const C=js('domain/brain/parser.js'),Ctx=js('domain/context/engine.js');const off=Ctx.offset,T='2026-10-20';
+const type=t=>C.interpret(t,T,off).type;
+test('tasks with future words',()=>{assert.equal(type('Morgen Katzenfutter kaufen'),'task');assert.equal(C.interpret('Morgen Katzenfutter kaufen',T,off).due,'2026-10-21')});
+test('food, drink and workout',()=>{assert.equal(type('150 g Skyr gegessen'),'food');assert.equal(type('250 ml Wasser getrunken'),'drink');assert.equal(type('Latzug 30 kg 10 wdh'),'workout')});
+test('shopping with kilos is not a workout',()=>assert.notEqual(type('2 kg Kartoffeln gekauft'),'workout'));
+test('recovery and clearing context',()=>{assert.equal(type('Heute starke Schmerzen'),'recovery');assert.equal(type('mir geht es wieder gut'),'context-clear')});
+test('workout parser understands spoken numbers',()=>{assert.deepEqual(C.workout('Beinpresse vierzig kilo zwölf Wiederholungen'),{exercise:'Beinpresse (07)',kg:40,reps:12});assert.deepEqual(C.workout('Latzug zweiunddreißig komma fünf kilo neun wdh'),{exercise:'Latzug (05)',kg:32.5,reps:9});assert.equal(C.workout('Glute Drive 40,5 kg 10 reps').kg,40.5)});
+const W=t=>C.when(t,T,off);
+test('when: relative days and clock times',()=>{assert.deepEqual(W('Zahnarzt morgen um 15 Uhr'),{date:'2026-10-21',time:'15:00'});assert.deepEqual(W('übermorgen 9:30'),{date:'2026-10-22',time:'09:30'})});
+test('when: weekday means the next one, never today',()=>{assert.equal(W('Freitag anrufen').date,'2026-10-23');assert.equal(W('Dienstag Probe').date,'2026-10-27')});
+test('when: past day without year rolls into next year',()=>{assert.equal(W('am 24.10.').date,'2026-10-24');assert.equal(W('am 3.1.').date,'2027-01-03')});
+test('when: invalid dates and plain text stay empty',()=>{assert.deepEqual(W('am 31.2.'),{date:'',time:''});assert.deepEqual(W('Wäsche waschen'),{date:'',time:''})});
