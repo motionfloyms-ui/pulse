@@ -256,7 +256,12 @@ async function installPulse(){if(!deferredInstallPrompt)return toast('Installati
 render();showWorkout((db.activeWorkout&&db.activeWorkout.date===key()?db.activeWorkout.plan:null)||activePlan()||'A');goView(lifeStartView(location.hash),{historyMode:'replace',focus:false});
 if('scrollRestoration' in history)history.scrollRestoration='manual';
 for(const ev of ['load','pageshow'])addEventListener(ev,()=>{scrollTo(0,0);setTimeout(()=>scrollTo(0,0),60)});
-if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
+ const hadController=!!navigator.serviceWorker.controller;let reloading=false;
+ navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(reg=>{const check=()=>reg.update().catch(()=>{});document.addEventListener('visibilitychange',()=>{if(!document.hidden)check()});setInterval(check,30*60000)}).catch(()=>{});
+ // A new version took over: reload once, but never while something is being typed or a sheet is open.
+ navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!hadController||reloading)return;const busy=activeDialog||document.activeElement?.matches?.('input,textarea,select');if(busy){toast('PULSE wurde aktualisiert. Beim nächsten Öffnen siehst du die neue Version.');return}reloading=true;location.reload()});
+}
 document.querySelectorAll('.life-mic').forEach(b=>b.hidden=!pulseSpeechSupported());
 handleLaunchParams();requestDurableStorage();
 setTimeout(()=>PulsePhotos.collect(photoReferences()).catch(()=>{}),4000);
