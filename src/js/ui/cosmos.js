@@ -36,14 +36,15 @@ function cosmosMoon(date){
 }
 function cosmosTerm(date){const T=cosmosYear(Number(date.slice(0,4))).terms,current=T.findLast(t=>t.day<=date),next=T.find(t=>t.day>date);return {current,next,today:current&&current.day===date}}
 const cosmosFests=date=>cosmosYear(Number(date.slice(0,4))).fests.filter(f=>f.date===date);
-function lifeOpenCalendar(date){cosmosDay=PulseLife.validDate(date||'')?date:(lifeSelectedDay||key());goView('calendar');renderCosmos()}
+function lifeOpenCalendar(date){cosmosDay=PulseLife.validDate(date||'')?date:(lifeSelectedDay||key());goView('calendar')}
 function cosmosSelect(date){cosmosDay=date;renderCosmos();document.getElementById('cosmosDetail')?.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'start'})}
 function cosmosShift(n){if(cosmosMode==='week'){cosmosDay=PulseLife.offset(cosmosDay,7*n)}else{const d=new Date(cosmosDay.slice(0,7)+'-01T12:00:00');d.setMonth(d.getMonth()+n);cosmosDay=PulseContext.localDay(d)}renderCosmos()}
 function cosmosSetMode(m){cosmosMode=m;cosmosListDays=60;renderCosmos()}
 function cosmosToDay(date){lifeSelectedDay=date;goView('life');renderLifeToday()}
 function cosmosJump(d){cosmosDay=d;if(cosmosMode==='list')cosmosMode='month';renderCosmos();document.getElementById('cosmosDetail')?.scrollIntoView({block:'start'})}
 /* ---------- Appointments ---------- */
-const calItems=date=>PulseLife.day(db,date).filter(x=>x.kind!=='task'||x.status!=='done');
+let calList=null;
+const calItems=date=>(calList?PulseLife.dayFrom(calList,date):PulseLife.day(db,date)).filter(x=>x.kind!=='task'||x.status!=='done');
 function calEnd(x){if(!x.time)return '';const t=Date.parse('2000-01-01T'+x.time+':00Z')+(x.duration||60)*60000;return new Date(t).toISOString().slice(11,16)}
 function calWhen(x){
  if(x.occ&&x.occ.days>1)return x.time&&x.occ.day===1?x.time+' Uhr':'Tag '+x.occ.day+' von '+x.occ.days;
@@ -122,11 +123,12 @@ function cosmosUpcoming(){
 }
 function renderCosmos(){
  const host=document.getElementById('cosmosContent');if(!host||document.getElementById('appMain').dataset.view!=='calendar')return;
- const date=cosmosDay||(cosmosDay=key());
+ const date=cosmosDay||(cosmosDay=key());calList=PulseLife.list(db);
  const title=cosmosMode==='week'?'Woche ab '+lifeDate(PulseLife.offset(date,-((new Date(date+'T12:00:00').getDay()+6)%7)),{day:'numeric',month:'short'}):cosmosMode==='list'?'Termine':lifeDate(date,{month:'long',year:'numeric'});
  host.innerHTML='<header class="life-pagehead cal-head"><div><span class="life-kicker">Kalender</span><h1>'+esc(title)+'</h1></div><div class="cal-head-actions">'+lifeButton(lifeGlyph('plus')+'<span>Termin</span>',lifeCall('calEdit','',date),'life-btn dark')+lifeButton('⋯','calMenu()','life-iconbtn')+'</div></header>'+
   '<div class="cos-nav">'+(cosmosMode==='list'?'<span></span>':lifeButton('‹',lifeCall('cosmosShift',-1),'life-iconbtn'))+'<div class="life-seg" role="group" aria-label="Ansicht">'+[['month','Monat'],['week','Woche'],['list','Liste']].map(([k,l])=>'<button type="button" aria-pressed="'+(cosmosMode===k)+'" onclick="'+lifeCall('cosmosSetMode',k)+'">'+l+'</button>').join('')+'</div>'+(cosmosMode==='list'?'<span></span>':lifeButton('›',lifeCall('cosmosShift',1),'life-iconbtn'))+'</div>'+
   (date!==key()?'<div class="cal-today">'+lifeButton('Heute',lifeCall('cosmosSelect',key()),'life-textbtn')+'</div>':'')+
   (cosmosMode==='week'?cosmosWeek(date):cosmosMode==='list'?cosmosList(date):cosmosMonth(date))+
   (cosmosMode==='list'?'':cosmosDetail(date)+cosmosUpcoming());
+ calList=null;
 }

@@ -96,9 +96,11 @@ function toggle(db,id,now,today,newId){
  if(done&&x.repeat&&!list(db,{archived:true}).some(y=>y.repeatOf===x.id)){const next=offset(today,x.repeat);create(db,{...x,origin:undefined,title:x.title,status:'open',date:next,time:'',deadline:'',steps:x.steps.map(s=>({...s,done:false})),source:x.id,repeatOf:x.id,repeat:x.repeat},newId,now)}
  return done;
 }
-function day(db,date){
+function day(db,date){return dayFrom(list(db),date)}
+/* Same as day(), from an already built list (one list for a whole month view). */
+function dayFrom(items,date){
  const out=[];
- for(const x of list(db)){
+ for(const x of items){
   if(['parked','archived'].includes(x.status)||!['task','event','ritual'].includes(x.kind))continue;
   if(x.kind==='event'&&(x.recur||x.endDate)){const o=Recur.occurrence(x,date);if(o)out.push({...x,date,seriesDate:x.date,occ:o});continue}
   if(x.date===date)out.push(x);
@@ -117,7 +119,7 @@ function startFocus(db,item,minutes,now){
 function remaining(f,now){if(!f)return 0;return f.state==='running'?Math.max(0,Math.ceil((f.endsAt-now)/1000)):Math.max(0,Math.ceil(f.remaining))}
 function pauseFocus(db,now,resume){const f=ensure(db).focus;if(!f)return;f.remaining=remaining(f,now);f.state='paused';f.endsAt=null;if(resume!==undefined)f.resume=String(resume)}
 function resumeFocus(db,now){const f=ensure(db).focus;if(!f)return;f.state='running';f.endsAt=now+f.remaining*1000}
-return {ROOMS,KINDS,ensure,validate,list,get,create,update,toggle,day,search,room,offset,validDate,validTime,startFocus,remaining,pauseFocus,resumeFocus,clone};
+return {ROOMS,KINDS,ensure,validate,list,get,create,update,toggle,day,dayFrom,search,room,offset,validDate,validTime,startFocus,remaining,pauseFocus,resumeFocus,clone};
 });
 
 

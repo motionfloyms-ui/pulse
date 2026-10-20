@@ -2,7 +2,7 @@
 /* Sigillen-Werkstatt: build, charge (full-screen gnosis with sound and timer), forget, record results. */
 let sigilDraft={intent:'',method:'rad',style:'geschwungen',seed:null,vowels:false},sigilReady=false,sigilCharge=null;
 const sigilNow=()=>new Date().toISOString();
-function lifeOpenSigils(){goView('sigils');renderSigils()}
+function lifeOpenSigils(){goView('sigils')}
 function sigilPrepare(){if(sigilReady||!db)return;sigilReady=true;PulseSigil.normalize(db)}
 function sigilSeed(){return sigilDraft.seed??PulseSigil.hash(sigilDraft.intent)}
 function sigilPreview(){
@@ -82,6 +82,7 @@ async function sigilStart(id,minutes=3,mode='still'){
  if(!PulseSoundscape.playing())PulseSoundscape.play('drone');
  document.querySelectorAll('#sigilOverlay .sound-chips').forEach(x=>x.outerHTML=soundChips('Klang'));
  el.hidden=false;document.body.classList.add('sigil-open');el.querySelector('button')?.focus();
+ overlayEnter('sigil',()=>{if(sigilCharge&&!sigilCharge.done)sigilEnd(true);if(sigilCharge)sigilFinish(sigilCharge.id,false)});
  sigilCharge.timer=setInterval(sigilTick,250);
 }
 function sigilTick(){if(!sigilCharge)return;const left=Math.max(0,Math.ceil((sigilCharge.end-Date.now())/1000));const c=document.getElementById('sigilClock');if(c)c.textContent=lifeClock(left);if(!left)sigilEnd(false)}
@@ -95,6 +96,7 @@ function sigilEnd(early){
  el.querySelector('button')?.focus();
 }
 function sigilFinish(id,forget){
+ overlayLeave();
  if(forget){try{PulseSigil.forget(db,id,sigilNow());save()}catch(_){}}
  const el=document.getElementById('sigilOverlay');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('sigil-open');sigilCharge=null;renderSigils();skyCheck();
  if(forget)toast('Vergessen. Lass sie arbeiten.');

@@ -5,6 +5,7 @@
   "scripts": {
     "build": "node build.mjs",
     "test": "node --test \"tests/*.test.cjs\"",
-    "check": "node build.mjs && node tests/bundle-check.mjs && node --test \"tests/*.test.cjs\""
+    "check": "node build.mjs && node tests/bundle-check.mjs && node --test \"tests/*.test.cjs\"",
+    "e2e": "node tests/e2e/smoke.mjs"
   }
 }

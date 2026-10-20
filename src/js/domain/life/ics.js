@@ -74,6 +74,8 @@
  const stamp=d=>d.replace(/-/g,'');
  const RR={daily:'DAILY',weekdays:'WEEKLY',weekly:'WEEKLY',monthly:'MONTHLY',monthlyNth:'MONTHLY',yearly:'YEARLY'};
  const BY=['SU','MO','TU','WE','TH','FR','SA'];
+ /* RFC 5545: with a TZID start, UNTIL must be UTC – the end of that local day. */
+ function untilUtc(d,tz){const [y,m,dd]=d.split('-').map(Number),guess=Date.UTC(y,m-1,dd,23,59,59),o=tzOffset(tz,guess)||0;return new Date(guess-o).toISOString().replace(/[-:]/g,'').slice(0,15)+'Z'}
  const fold=l=>{let out='';while(l.length>74){out+=l.slice(0,74)+'\r\n ';l=l.slice(74)}return out+l};
  /* Events → .ics text. Timed events carry TZID of `tz`. */
  function build(items,{tz='Europe/Berlin',now=new Date().toISOString()}={}){
@@ -85,7 +87,7 @@
    if(x.time){const end=new Date(Date.parse(x.date+'T'+x.time+':00Z')+(x.duration||60)*60000).toISOString();L.push('DTSTART;TZID='+tz+':'+dt(x.date,x.time),'DTEND;TZID='+tz+':'+dt(end.slice(0,10),end.slice(11,16)))}
    else{L.push('DTSTART;VALUE=DATE:'+stamp(x.date),'DTEND;VALUE=DATE:'+stamp(Recur.add(x.endDate||x.date,1)))}
    if(x.location)L.push('LOCATION:'+escape(x.location));if(x.body)L.push('DESCRIPTION:'+escape(x.body));
-   const r=x.recur;if(r){let s='FREQ='+RR[r.freq];if(r.interval>1)s+=';INTERVAL='+r.interval;if(r.freq==='weekdays')s+=';BYDAY=MO,TU,WE,TH,FR';if(r.freq==='weekly')s+=';BYDAY='+(r.byday||[]).map(i=>BY[i]).join(',');if(r.freq==='monthlyNth')s+=';BYDAY='+r.nth+BY[Recur.weekday(x.date)];if(r.until)s+=';UNTIL='+stamp(r.until)+(x.time?'T235959':'');else if(r.count)s+=';COUNT='+r.count;L.push('RRULE:'+s)}
+   const r=x.recur;if(r){let s='FREQ='+RR[r.freq];if(r.interval>1)s+=';INTERVAL='+r.interval;if(r.freq==='weekdays')s+=';BYDAY=MO,TU,WE,TH,FR';if(r.freq==='weekly')s+=';BYDAY='+(r.byday||[]).map(i=>BY[i]).join(',');if(r.freq==='monthlyNth')s+=';BYDAY='+r.nth+BY[Recur.weekday(x.date)];if(r.until)s+=';UNTIL='+(x.time?untilUtc(r.until,tz):stamp(r.until));else if(r.count)s+=';COUNT='+r.count;L.push('RRULE:'+s)}
    if(x.exdates?.length)L.push(x.time?'EXDATE;TZID='+tz+':'+x.exdates.map(d=>dt(d,x.time)).join(','):'EXDATE;VALUE=DATE:'+x.exdates.map(stamp).join(','));
    if(x.remind!=null)L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+escape(x.title),'TRIGGER:'+(x.remind>=0?'-PT'+x.remind+'M':'PT'+(-x.remind)+'M'),'END:VALARM');
    L.push('END:VEVENT');

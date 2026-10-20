@@ -3,7 +3,7 @@
 let songOpenId=null,songTab='karte',songSel=null,songReady=false,songSaveTimer=null,songStage=null,songWarm=null,songRefQuery='';
 const songNow=()=>new Date().toISOString();
 const DYN_COLOR={leise:'#7FB3E6',normal:'#9AA3B5',voll:'#F1B92B',belt:'#FF8A3D',scream:'#E0484F',growl:'#9B2C5A'};
-function lifeOpenSongs(id=null){songOpenId=id;songSel=null;goView('songs');renderSongs()}
+function lifeOpenSongs(id=null){songFlush();songOpenId=id;songSel=null;goView('songs')}
 function songPrepare(){if(songReady||!db)return;songReady=true;PulseSong.normalize(db)}
 function songSave(){if(!save())return false;renderSongs();return true}
 function songTry(fn){try{fn();return true}catch(e){toast(e.message);return false}}
@@ -15,6 +15,7 @@ function songCard(s){
 function renderSongs(){
  const host=document.getElementById('songContent');if(!host||document.getElementById('appMain').dataset.view!=='songs')return;
  if(['songLyrics','songNoteInput','songTakeNote','songRefSearch'].includes(document.activeElement?.id))return;
+ songFlush();
  songPrepare();const all=PulseSong.ensure(db).items;
  const s=songOpenId&&PulseSong.get(db,songOpenId);
  if(!s){songOpenId=null;
@@ -31,7 +32,7 @@ function renderSongs(){
   '<div class="vault-tabs life-seg" role="group" aria-label="Bereich">'+tabs.map(([k,l])=>'<button type="button" aria-pressed="'+(songTab===k)+'" onclick="'+lifeCall('songSetTab',k)+'">'+l+'</button>').join('')+'</div>'+
   '<div id="songPane">'+songPane(s)+'</div>';
 }
-function songSetTab(k){songTab=k;songSel=null;renderSongs()}
+function songSetTab(k){songFlush();songTab=k;songSel=null;renderSongs()}
 function songPane(s){
  if(songTab==='text')return '<div class="cal-grid2"><label class="life-name-field">Tempo (BPM)<input id="songBpm" type="number" inputmode="numeric" min="0" max="300" value="'+(s.bpm||'')+'" placeholder="z. B. 92" onchange="'+lifeCall('songSet',s.id,'bpm','#songBpm')+'"/></label><label class="life-name-field">Tonart<input id="songKey" maxlength="20" value="'+esc(s.key)+'" placeholder="z. B. d-Moll" onchange="'+lifeCall('songSet',s.id,'key','#songKey')+'"/></label></div>'+
   '<label class="life-name-field">Text<textarea id="songLyrics" class="song-lyrics" rows="14" placeholder="Text hier einfügen.\n\nLeerzeile = neuer Abschnitt\n[Refrain] = Abschnittsname\n/ = kurz atmen mitten in der Zeile" oninput="'+lifeCall('songLyricsInput',s.id)+'">'+esc(s.lyrics)+'</textarea></label>'+
@@ -43,7 +44,7 @@ function songPane(s){
   const vids=PulseVault.ensure(db).items,linked=vids.filter(v=>s.refs.includes(v.id)),q=songRefQuery.trim().toLocaleLowerCase('de');
   const pick=vids.filter(v=>!s.refs.includes(v.id)&&(!q||[v.title,v.channel,v.note].join(' ').toLocaleLowerCase('de').includes(q))).slice(0,30);
   return (linked.length?'<div class="vault-grid">'+linked.map(v=>'<div class="song-ref">'+vaultCard(v)+lifeButton('Lösen',lifeCall('songLink',s.id,v.id,false),'life-textbtn')+'</div>').join('')+'</div>':'<p class="life-none">Noch keine Referenzen. Verknüpfe Videos aus deiner Sammlung, z. B. die Version, nach der ihr klingen wollt, oder Technik-Tutorials.</p>')+
-   (vids.length?'<div class="vault-block"><h3>Aus deiner Sammlung verknüpfen</h3><label class="life-search">'+lifeGlyph('search')+'<input id="songRefSearch" type="search" aria-label="Videos suchen" placeholder="Suchen …" value="'+esc(songRefQuery)+'" oninput="songRefQuery=this.value;document.getElementById(\'songRefPick\').innerHTML=songRefList()"/></label><div id="songRefPick">'+songRefList()+'</div></div>':'<p class="life-footnote">Deine Videosammlung ist noch leer.</p>');
+   (vids.length?'<div class="vault-block"><h3>Aus deinen Videos verknüpfen</h3><label class="life-search">'+lifeGlyph('search')+'<input id="songRefSearch" type="search" aria-label="Videos suchen" placeholder="Suchen …" value="'+esc(songRefQuery)+'" oninput="songRefQuery=this.value;document.getElementById(\'songRefPick\').innerHTML=songRefList()"/></label><div id="songRefPick">'+songRefList()+'</div></div>':'<p class="life-footnote">Deine Videosammlung ist noch leer.</p>');
  }
  const sections=PulseSong.parse(s.lyrics);
  if(!sections.length)return lifeEmpty('Noch kein Text.','Füge den Text unter „Text“ ein, dann kannst du ihn hier Zeile für Zeile markieren.',lifeCall('songSetTab','text'),'Zum Text');
@@ -60,15 +61,20 @@ function songLine(s,l){
  const n=s.notes[l.key]||{},sel=songSel===l.key,tags=songTags(n);
  return '<div class="song-line'+(sel?' sel':'')+'" style="--dyn:'+(DYN_COLOR[n.dyn]||'var(--line-strong)')+'"><button type="button" class="song-line-head" aria-expanded="'+sel+'" aria-label="Zeile bearbeiten: '+esc(l.text)+'" onclick="'+lifeCall('songSelect',l.key)+'">'+(n.breath?'<span class="song-breath">◡</span>':'<span class="song-dot"></span>')+'</button><div class="song-line-body"><p class="song-words">'+songWordsHTML(l,n,false)+'</p>'+(tags.length||n.note?'<p class="song-meta">'+esc(tags.join(' · '))+(n.note?(tags.length?' · ':'')+'<i>'+esc(n.note)+'</i>':'')+'</p>':'')+
   (sel?'<div class="song-tools"><div class="vault-chips" role="group" aria-label="Dynamik">'+PulseSong.DYN.map(([k,lb])=>'<button type="button" aria-pressed="'+(n.dyn===k)+'" style="--chip:'+DYN_COLOR[k]+'" onclick="'+lifeCall('songNote',l.key,'dyn',n.dyn===k?null:k)+'">'+lb+'</button>').join('')+'</div><div class="vault-chips" role="group" aria-label="Klangfarbe">'+PulseSong.COLOR.map(([k,lb])=>'<button type="button" aria-pressed="'+(n.color===k)+'" onclick="'+lifeCall('songNote',l.key,'color',n.color===k?null:k)+'">'+lb+'</button>').join('')+'</div>'+
-   '<div class="vault-chips"><button type="button" aria-pressed="'+!!n.breath+'" onclick="'+lifeCall('songNote',l.key,'breath',!n.breath)+'">◡ Atmen davor</button></div><div class="vault-inline"><label class="srOnly" for="songNoteInput">Notiz zur Zeile</label><input id="songNoteInput" data-key="'+esc(l.key)+'" maxlength="300" value="'+esc(n.note||'')+'" placeholder="Notiz, z. B. Stimme bricht hier absichtlich" onkeydown="if(event.key===\'Enter\'){event.preventDefault();songNoteSave(this.dataset.key)}"/>'+lifeButton('OK',lifeCall('songNoteSave',l.key),'life-btn')+'</div></div>':'')+'</div></div>';
+   '<div class="vault-chips"><button type="button" aria-pressed="'+!!n.breath+'" onclick="'+lifeCall('songNote',l.key,'breath',!n.breath)+'">◡ Atmen davor</button></div><div class="vault-inline"><label class="srOnly" for="songNoteInput">Notiz zur Zeile</label><input id="songNoteInput" data-key="'+esc(l.key)+'" maxlength="300" value="'+esc(n.note||'')+'" placeholder="Notiz, z. B. Stimme bricht hier absichtlich" onchange="songNoteSave(this.dataset.key,true)" onkeydown="if(event.key===\'Enter\'){event.preventDefault();songNoteSave(this.dataset.key)}"/>'+lifeButton('OK',lifeCall('songNoteSave',l.key),'life-btn')+'</div></div>':'')+'</div></div>';
 }
 function songSelect(k){songSel=songSel===k?null:k;renderSongs()}
 function songMutate(fn){if(!songTry(fn))return;songSave();skyCheck()}
 function songEmph(k,i){songMutate(()=>PulseSong.toggleEmphasis(db,songOpenId,k,i,songNow()));pulseTap(5)}
 function songNote(k,field,v){songMutate(()=>PulseSong.annotate(db,songOpenId,k,{[field]:v},songNow()));pulseTap(5)}
-function songNoteSave(k){const v=document.getElementById('songNoteInput')?.value||'';document.getElementById('songNoteInput')?.blur();songMutate(()=>PulseSong.annotate(db,songOpenId,k,{note:v},songNow()))}
+function songNoteSave(k,silent){const el=document.getElementById('songNoteInput');const v=el?.value||'';if(silent){try{PulseSong.annotate(db,songOpenId,k,{note:v},songNow());save()}catch(_){}return}el?.blur();songMutate(()=>PulseSong.annotate(db,songOpenId,k,{note:v},songNow()))}
 function songSet(id,field,v){if(typeof v==='string'&&v.startsWith('#'))v=document.querySelector(v)?.value;songMutate(()=>PulseSong.update(db,id,{[field]:v},songNow()))}
-function songLyricsInput(id){clearTimeout(songSaveTimer);songSaveTimer=setTimeout(()=>{const v=document.getElementById('songLyrics')?.value;if(v==null)return;try{PulseSong.update(db,id,{lyrics:v},songNow());save()}catch(_){}},500)}
+/* Lyrics are kept as typed and written shortly after; switching tabs or leaving saves at once. */
+let songPending=null;
+function songLyricsInput(id){const el=document.getElementById('songLyrics');if(!el)return;songPending={id,v:el.value};clearTimeout(songSaveTimer);songSaveTimer=setTimeout(songFlush,500)}
+function songFlush(){clearTimeout(songSaveTimer);const p=songPending;songPending=null;if(!p)return;try{PulseSong.update(db,p.id,{lyrics:p.v},songNow());save()}catch(_){}}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')songFlush()});
+window.addEventListener('pagehide',()=>songFlush());
 function songNew(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
  el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Neuer Song</h2><label class="life-name-field">Titel<input id="songNewTitle" maxlength="120" placeholder="Songtitel"/></label><label class="life-name-field">Text (optional)<textarea id="songNewLyrics" rows="8" placeholder="Text einfügen, Leerzeile = neuer Abschnitt"></textarea></label><div class="life-detail-actions">'+lifeButton('Anlegen','songCreate()','life-btn dark')+lifeButton('Abbrechen','lifeCloseSheet()','life-btn')+'</div>';
@@ -88,11 +94,13 @@ async function songShare(id){const s=PulseSong.get(db,id);if(!s)return;const tex
 function songMetro(id){const s=PulseSong.get(db,id);if(PulseMetronome.running()){PulseMetronome.stop();renderSongs();return}PulseMetronome.start(s?.bpm||90,b=>{document.querySelectorAll('.metro-dot').forEach(d=>{d.classList.toggle('accent',b===0);d.classList.remove('beat');void d.offsetWidth;d.classList.add('beat')})});renderSongs()}
 /* ---------- Stage mode ---------- */
 async function songStageOpen(id){
+ songFlush();
  const s=PulseSong.get(db,id);if(!s)return;const lines=PulseSong.parse(s.lyrics).flatMap((sec,si)=>sec.map((l,i)=>({...l,label:i===0?sec.label||'':'',first:i===0&&si>0})));
  if(!lines.length)return toast('Der Song hat noch keinen Text.');
  let lock=null;try{lock=await navigator.wakeLock?.request('screen')}catch(_){}
  songStage={id,lines,i:0,lock};
  let el=document.getElementById('songStage');if(!el){el=document.createElement('div');el.id='songStage';document.body.appendChild(el)}
+ overlayEnter('stage',()=>songStageClose());
  el.className='song-stage';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-label','Bühnenmodus: '+s.title);el.hidden=false;document.body.classList.add('sigil-open');
  el.innerHTML='<div class="song-stage-top"><b>'+esc(s.title)+'</b><span class="metro-dot" aria-hidden="true"></span><button type="button" onclick="'+lifeCall('songStageMetro',id)+'">'+(PulseMetronome.running()?'Klick aus':'Klick'+(s.bpm?' '+s.bpm:''))+'</button><button type="button" onclick="songStageClose()" aria-label="Schließen">✕</button></div>'+
   '<div class="song-stage-lines" onclick="songStageMove(1)">'+lines.map((l,i)=>{const n=s.notes[l.key]||{},tags=songTags(n);return (l.label||l.first?'<p class="song-stage-label">'+esc(l.label||'·')+'</p>':'')+'<p class="song-stage-line" data-i="'+i+'" style="--dyn:'+(DYN_COLOR[n.dyn]||'transparent')+'">'+(n.breath?'<span class="song-breath">◡</span> ':'')+songWordsHTML(l,n,true)+(tags.length||n.note?'<small>'+esc(tags.join(' · '))+(n.note?(tags.length?' · ':'')+esc(n.note):'')+'</small>':'')+'</p>'}).join('')+'</div>'+
@@ -101,7 +109,7 @@ async function songStageOpen(id){
 }
 function songStageMove(d){if(!songStage)return;songStage.i=Math.max(0,Math.min(songStage.lines.length-1,songStage.i+d));document.querySelectorAll('.song-stage-line').forEach(p=>p.classList.toggle('now',Number(p.dataset.i)===songStage.i));const cur=document.querySelector('.song-stage-line.now');cur?.scrollIntoView({block:'center',behavior:reducedMotion()?'auto':'smooth'});const pos=document.getElementById('songStagePos');if(pos)pos.textContent=(songStage.i+1)+' / '+songStage.lines.length}
 function songStageMetro(id){songMetro(id);const s=PulseSong.get(db,id),b=document.querySelector('.song-stage-top button');if(b)b.textContent=PulseMetronome.running()?'Klick aus':'Klick'+(s?.bpm?' '+s.bpm:'')}
-function songStageClose(){if(!songStage)return;try{songStage.lock?.release()}catch(_){}PulseMetronome.stop();songStage=null;const el=document.getElementById('songStage');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('sigil-open');renderSongs()}
+function songStageClose(){if(!songStage)return;overlayLeave();try{songStage.lock?.release()}catch(_){}PulseMetronome.stop();songStage=null;const el=document.getElementById('songStage');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('sigil-open');renderSongs()}
 document.addEventListener('keydown',e=>{if(songStage){if(e.key==='Escape')songStageClose();else if(['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();songStageMove(1)}else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();songStageMove(-1)}}if(songWarm&&e.key==='Escape')songWarmClose()});
 /* ---------- Warm-up ---------- */
 const WARM_ROOTS=[['A2',110],['C3',130.81],['E3',164.81],['G3',196],['A3',220],['C4',261.63]];
@@ -114,6 +122,7 @@ function songWarmStart(extreme=false,root=null){
  songWarmClose(true);const r=root??(Number(db.uiPrefs.warmRoot)||220);db.uiPrefs.warmRoot=r;
  songWarm={steps:warmSteps(extreme),i:0,left:0,paused:false,timer:null,extreme,root:r,tone:false};
  let el=document.getElementById('songWarm');if(!el){el=document.createElement('div');el.id='songWarm';document.body.appendChild(el)}
+ overlayEnter('warm',()=>songWarmClose());
  el.className='song-stage warm';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-label','Einsingen');el.hidden=false;document.body.classList.add('sigil-open');
  warmGo(0);songWarm.timer=setInterval(warmTick,1000);
 }
@@ -130,4 +139,4 @@ function warmTick(){const w=songWarm;if(!w||w.paused)return;w.left--;const c=doc
 function warmPause(){const w=songWarm;if(!w)return;w.paused=!w.paused;if(w.paused)PulseTone.stop();else if(w.tone)PulseTone.play(w.root);warmRender()}
 function warmRoot(f){const w=songWarm;if(!w)return;w.root=f;db.uiPrefs.warmRoot=f;save();if(w.tone&&!w.paused)PulseTone.play(f);warmRender()}
 function warmDone(){const n=PulseSong.warmup(db,key());save();songWarmClose();pulseSound('chime');toast('Eingesungen. Das war Nummer '+n+'.');skyCheck()}
-function songWarmClose(silent){const w=songWarm;if(w){clearInterval(w.timer);PulseTone.stop()}songWarm=null;const el=document.getElementById('songWarm');if(el){el.hidden=true;el.innerHTML=''}if(!silent)document.body.classList.remove('sigil-open')}
+function songWarmClose(silent){if(!silent)overlayLeave();const w=songWarm;if(w){clearInterval(w.timer);PulseTone.stop()}songWarm=null;const el=document.getElementById('songWarm');if(el){el.hidden=true;el.innerHTML=''}if(!silent)document.body.classList.remove('sigil-open')}

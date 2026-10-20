@@ -32,3 +32,11 @@ test('playlist links',()=>{
  assert.equal(V.watch({list:'PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG'}),'https://www.youtube.com/playlist?list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG');
  assert.equal(V.findAny('Meine Liste: https://youtube.com/playlist?list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG.').type,'playlist');
 });
+test('share titles from the YouTube app are cleaned',()=>{
+ assert.equal(V.shareTitle('Watch "How to growl safely" on YouTube'),'How to growl safely');
+ assert.equal(V.shareTitle('Sieh dir „Hip Thrust Technik“ auf YouTube an'),'Hip Thrust Technik');
+ assert.equal(V.shareTitle('Bekijk “Tarot voor beginners” op YouTube'),'Tarot voor beginners');
+ assert.equal(V.shareTitle('Watch on YouTube'),'');
+ assert.equal(V.shareTitle('Mein Lieblingslied'),'Mein Lieblingslied');
+ assert.equal(V.shareTitle(''),'');
+});

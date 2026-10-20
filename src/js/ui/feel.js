@@ -3,7 +3,9 @@
    and YouTube videos that load only after a tap. */
 const THEME_COLORS={light:'#F2F1F6',dark:'#08090E'};
 function pulseThemeChoice(){const t=db?.uiPrefs?.theme;return ['light','dark'].includes(t)?t:'auto'}
+let appliedTheme=null;
 function applyTheme(t=pulseThemeChoice()){
+ if(t===appliedTheme)return;appliedTheme=t;
  const root=document.documentElement;if(t==='auto')root.removeAttribute('data-theme');else root.dataset.theme=t;
  try{localStorage.setItem('pulseTheme',t)}catch(_){}
  document.querySelectorAll('meta[name="theme-color"]').forEach(m=>{const media=m.getAttribute('media')||'';m.setAttribute('content',t==='auto'?(media.includes('dark')?THEME_COLORS.dark:THEME_COLORS.light):THEME_COLORS[t])});
@@ -66,3 +68,16 @@ function videoPlay(id,start,short){
  host.querySelector('.pulse-video-play')?.replaceWith(f);
 }
 function itemVideo(x){return x?(PulseVideo.parse(x.url)||PulseVideo.find(x.body)):null}
+/* Storage gauge for the settings: localStorage holds about 5.2 million characters per site. */
+function storageUsageHTML(){
+ let u;try{u=storage.usage()}catch(_){return ''}
+ const pct=Math.min(100,Math.round(u.used/u.quota*100)),mb=n=>(n/1e6).toLocaleString('de-DE',{maximumFractionDigits:1});
+ return '<div class="life-settings-row storage-row"><div><b>Speicher im Browser</b><p>'+mb(u.used)+' von etwa '+mb(u.quota)+' Mio. Zeichen belegt ('+pct+' %)'+(u.backups?', davon '+mb(u.backups)+' Mio. für ältere Sicherungskopien':'')+'.'+(pct>=70?' Es wird eng: Backup exportieren und Sicherungskopien löschen.':'')+'</p><span class="vault-bar'+(pct>=70?' warn':'')+'" aria-hidden="true"><i style="width:'+pct+'%"></i></span></div>'+(u.backups?lifeButton('Kopien löschen','storageDropBackups()','life-btn'):'')+'</div>';
+}
+function storageDropBackups(){try{storage.dropBackups();toast('Ältere Sicherungskopien gelöscht')}catch(e){toast(e.message)}lifeSettings()}
+/* Full-screen overlays (sigil charging, stage mode, warm-up): background inert, Android back closes them. */
+let overlayOpen=null,overlayBackPending=false;
+function overlayEnter(id,onBack){if(overlayOpen)return;overlayOpen={id,onBack};backgroundInert(true);try{history.pushState({...(history.state||{}),pulseOverlay:id},'',location.hash)}catch(_){}}
+function overlayLeave(){if(!overlayOpen)return;overlayOpen=null;backgroundInert(false);if(history.state?.pulseOverlay){overlayBackPending=true;history.back()}}
+/* Called first by the popstate handler; true when the event belonged to an overlay. */
+function overlayPop(){if(overlayBackPending){overlayBackPending=false;return true}if(overlayOpen){const o=overlayOpen;overlayOpen=null;backgroundInert(false);try{o.onBack()}catch(_){}return true}return false}

@@ -3,7 +3,7 @@
    Plus the "Gestern" line on the Tag screen and the cut-up machine. */
 const skyPhase=d=>cosmosMoon(d).index;
 function skyData(){return PulseSky.badges(db,{today:key(),proteinGoal:goalValue('protein'),phaseOf:skyPhase})}
-function lifeOpenSky(){goView('sky');renderSky()}
+function lifeOpenSky(){goView('sky')}
 /* Announces stars that lit up since the last check. The first run only records. */
 function skyCheck(){
  if(!db||(typeof sigilCharge!=='undefined'&&sigilCharge&&!sigilCharge.done))return;const known=db.uiPrefs.stars;const lit=skyData().filter(b=>b.done).map(b=>b.id);

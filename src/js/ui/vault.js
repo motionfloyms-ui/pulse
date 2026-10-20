@@ -1,6 +1,6 @@
 // SOURCE: ui/vault.js
 /* Videos tab: the collection with shelves, status, favourites, marked moments and milestones. */
-let vaultFilter='all',vaultTab='list',vaultSort='neu',vaultShelf='',vaultRoom='',vaultChannel='',vaultQuery='',vaultReady=false,vaultOpenId=null;
+let vaultFilter='all',vaultTab='list',vaultSort='neu',vaultShelf='',vaultRoom='',vaultChannel='',vaultQuery='',vaultReady=false,vaultOpenId=null,vaultLimit=60;
 const vaultMetaTried=new Set();
 const vaultNow=()=>new Date().toISOString();
 const vaultThumbs=()=>db.uiPrefs.videoMeta!==false;
@@ -11,10 +11,10 @@ function vaultImg(x,size){if(!vaultThumbs())return '';if(vaultIsList(x))return x
 const LIST_ICON='<svg class="vault-listicon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h11M4 12h11M4 17h7M17 14v6l4-3z"/></svg>';
 function vaultPrepare(){
  if(vaultReady||!db)return;vaultReady=true;
- PulseVault.normalize(db);const moved=PulseVault.adoptFromLife(db,vaultNow());
+ PulseVault.normalize(db);const moved=db.uiPrefs.vaultAdopted?0:PulseVault.adoptFromLife(db,vaultNow());if(!db.uiPrefs.vaultAdopted){db.uiPrefs.vaultAdopted=true;if(!moved)save()}
  if(moved){save();setTimeout(()=>toast(moved===1?'Ein Video ist in den neuen Videos-Tab umgezogen.':moved+' Videos sind in den neuen Videos-Tab umgezogen.'),900)}
 }
-function lifeOpenVideos(){goView('videos');renderVault()}
+function lifeOpenVideos(){goView('videos')}
 function vaultSave(){if(!save())return false;renderVault();return true}
 function vaultTry(fn){try{fn();return true}catch(e){toast(e.message);return false}}
 /* Adds a link; duplicates open the existing video. Returns the item or null. */
@@ -22,19 +22,26 @@ function vaultAdd(url,extra={}){
  vaultPrepare();
  const before=PulseVault.ensure(db).items.length;let r;
  try{r=PulseVault.add(db,{url,...extra},vaultNow())}catch(e){toast(e.message);return null}
- if(r.duplicate){toast('Schon in deiner Sammlung: '+vaultNo(r.item.no)+', seit '+lifeDate(r.item.addedAt.slice(0,10),{day:'numeric',month:'long'})+'.');pulseTap([10,40,10]);return r.item}
+ if(r.duplicate){toast('Schon bei deinen Videos: '+vaultNo(r.item.no)+', seit '+lifeDate(r.item.addedAt.slice(0,10),{day:'numeric',month:'long'})+'.');pulseTap([10,40,10]);return r.item}
  if(!save())return null;
  const m=PulseVault.reached(before,before+1);
- if(m&&m>1){pulseSound('chime');pulseTap([12,60,18,60,24]);toast('Meilenstein: '+m+' Videos in deiner Sammlung.')}
- else{pulseSound('pop');pulseTap();toast(vaultNo(r.item.no)+' in deiner Sammlung')}
+ if(m&&m>1){pulseSound('chime');pulseTap([12,60,18,60,24]);toast('Meilenstein: '+m+' Videos gesammelt.')}
+ else{pulseSound('pop');pulseTap();toast(vaultNo(r.item.no)+' gesammelt')}
  vaultFetchMeta(r.item.id);renderVault();return r.item;
 }
 /* Title and channel via YouTube's oEmbed. Only when previews are switched on. */
+/* YouTube's own oEmbed first; if the browser blocks it (CORS) or it fails, the open service noembed.com. */
+const VAULT_META=[u=>'https://www.youtube.com/oembed?format=json&url='+encodeURIComponent(u),u=>'https://noembed.com/embed?url='+encodeURIComponent(u)];
+let vaultMetaSource=0;
+async function vaultMetaJson(u){
+ for(let i=0;i<VAULT_META.length;i++){const k=(vaultMetaSource+i)%VAULT_META.length;
+  try{const r=await fetch(VAULT_META[k](u),{credentials:'omit',referrerPolicy:'no-referrer'});if(!r.ok)continue;const j=await r.json();if(j&&!j.error&&(j.title||j.author_name)){vaultMetaSource=k;return j}}catch(_){}}
+ return null;
+}
 async function vaultFetchMeta(id){
  const x=PulseVault.get(db,id);if(!x||!vaultThumbs()||vaultMetaTried.has(x.id)||!navigator.onLine)return;vaultMetaTried.add(x.id);
  try{
-  const res=await fetch('https://www.youtube.com/oembed?format=json&url='+encodeURIComponent(PulseVideo.watch(vaultRef(x,0))),{credentials:'omit',referrerPolicy:'no-referrer'});
-  if(!res.ok)return;const j=await res.json();const y=PulseVault.get(db,id);if(!y)return;
+  const j=await vaultMetaJson(PulseVideo.watch(vaultRef(x,0)));if(!j)return;const y=PulseVault.get(db,id);if(!y)return;
   const fields={};if(!y.title&&j.title)fields.title=j.title;if(!y.channel&&j.author_name)fields.channel=j.author_name;if(vaultIsList(y)&&!y.thumb&&j.thumbnail_url)fields.thumb=String(j.thumbnail_url).replace(/^http:/,'https:');
   if(!y.room&&fields.title){const room=PulseVideo.room(fields.title,y);if(room)fields.room=room}
   if(Object.keys(fields).length){PulseVault.update(db,id,fields,vaultNow());save();renderVault();if(vaultOpenId===id)vaultRefresh(id)}
@@ -51,18 +58,20 @@ function vaultCard(x){
  return '<button type="button" class="vault-card" aria-label="'+esc(vaultNo(x.no)+' '+label)+'" onclick="'+lifeCall('vaultOpen',x.id)+'">'+vaultThumb(x)+'<span class="vault-info"><b>'+(x.fav?'<span class="vault-star" aria-hidden="true">★</span> ':'')+esc(x.title||'Ohne Titel')+'</b><small>'+esc([x.channel,x.shelves.map(vaultShelfName).join(' · ')].filter(Boolean).join(' · ')||(x.room?PulseLife.room(x.room).name:'Noch nicht einsortiert'))+'</small></span></button>';
 }
 function vaultSet(k,v){
+ vaultLimit=60;
  if(k==='filter')vaultFilter=v;else if(k==='tab'){vaultTab=v;if(v!=='list'){vaultShelf='';vaultRoom='';vaultChannel=''}}else if(k==='sort')vaultSort=v;
  else if(k==='shelf'){vaultShelf=v;vaultRoom='';vaultChannel='';vaultTab='list'}else if(k==='room'){vaultRoom=v;vaultShelf='';vaultChannel='';vaultTab='list'}else if(k==='channel'){vaultChannel=v;vaultShelf='';vaultRoom='';vaultTab='list'}
  renderVault();
 }
-function vaultSearch(v){vaultQuery=v;renderVaultResults()}
+function vaultSearch(v){vaultQuery=v;vaultLimit=60;renderVaultResults()}
+function vaultMore(){vaultLimit+=60;renderVaultResults()}
 function vaultPaste(){const f=document.getElementById('vaultLink'),v=f?.value.trim();if(!v)return f?.focus();const link=(v.match(/https?:\/\/\S+/)||[v])[0];const rest=v.replace(link,'').trim(),x=vaultAdd(link,{title:rest,room:PulseVideo.room(rest,PulseVideo.parseAny(link)||{})});if(x){f.value='';if(!x.title||!x.shelves.length)vaultOpen(x.id)}}
 async function vaultClipboard(){try{const t=await navigator.clipboard.readText();const f=document.getElementById('vaultLink');if(f){f.value=t;vaultPaste()}}catch(_){toast('Einfügen ist hier nicht erlaubt. Lang auf das Feld tippen und „Einfügen“ wählen.')}}
 function vaultRandom(){const x=PulseVault.random(db,'neu')||PulseVault.random(db,'all');if(!x)return toast('Noch keine Videos.');vaultOpen(x.id)}
 function vaultStats(){
  const s=PulseVault.stats(db),pct=s.total?Math.round(s.seen/s.total*100):0;
  const prog=s.next?Math.round((s.total-s.prev)/(s.next-s.prev)*100):100;
- return '<div class="vault-stats"><div class="vault-stat hero"><span class="life-kicker">In deiner Sammlung</span><b class="vault-big">'+s.total+'</b><small>'+(s.first?'seit '+esc(lifeDate(s.first.slice(0,10),{day:'numeric',month:'long',year:'numeric'})):'Noch leer')+(s.playlists?' · davon '+s.playlists+(s.playlists===1?' Playlist':' Playlists'):'')+' · '+s.shelves+(s.shelves===1?' Regal':' Regale')+(s.channels?' · '+s.channels+(s.channels===1?' Kanal':' Kanäle'):'')+'</small></div>'+
+ return '<div class="vault-stats"><div class="vault-stat hero"><span class="life-kicker">Gesammelt</span><b class="vault-big">'+s.total+'</b><small>'+(s.first?'seit '+esc(lifeDate(s.first.slice(0,10),{day:'numeric',month:'long',year:'numeric'})):'Noch leer')+(s.playlists?' · davon '+s.playlists+(s.playlists===1?' Playlist':' Playlists'):'')+' · '+s.shelves+(s.shelves===1?' Regal':' Regale')+(s.channels?' · '+s.channels+(s.channels===1?' Kanal':' Kanäle'):'')+'</small></div>'+
   '<div class="vault-stat"><b class="vault-mid">'+s.seen+'<span class="vault-of">/'+s.total+'</span></b><small>gesehen</small><span class="vault-bar seen" aria-hidden="true"><i style="width:'+pct+'%"></i></span></div>'+
   '<div class="vault-stat"><b class="vault-mid"><span class="vault-star" aria-hidden="true">★</span> '+s.fav+'</b><small>Favoriten</small></div>'+
   '<div class="vault-stat"><b class="vault-mid">'+(s.next||'✓')+'</b><small>'+(s.next?'Meilenstein · noch '+s.left:'Alle Meilensteine')+'</small><span class="vault-bar" aria-hidden="true"><i style="width:'+prog+'%"></i></span></div></div>';
@@ -81,7 +90,7 @@ function vaultGroupTile(name,emoji,items,call,cls=''){
 function renderVaultResults(){
  const el=document.getElementById('vaultResults');if(!el)return;
  const items=PulseVault.ensure(db).items;
- if(!items.length){el.innerHTML=lifeEmpty('Deine Sammlung ist noch leer.','In der YouTube-App auf „Teilen“ tippen und Pulse wählen, oder oben einen Link einfügen. Jedes Video bekommt eine Nummer, Duplikate werden erkannt.');return}
+ if(!items.length){el.innerHTML=lifeEmpty('Noch keine Videos.','In der YouTube-App auf „Teilen“ tippen und Pulse wählen, oder oben einen Link einfügen. Jedes Video bekommt eine Nummer, Duplikate werden erkannt.');return}
  if(vaultTab==='shelf'&&!vaultQuery.trim()){
   const groups=PulseVault.groups(db,'shelf');
   el.innerHTML='<div class="vault-shelves">'+groups.map(g=>vaultGroupTile(g.name,g.emoji,g.items,lifeCall('vaultSet','shelf',g.key),g.key==='none'?'loose':'')).join('')+'<button type="button" class="vault-shelf new" onclick="vaultNewShelf()"><span class="vault-mosaic">'+lifeGlyph('plus')+'</span><span class="vault-shelf-info"><b>Neues Regal</b><small>z. B. Growls, Hip Thrust, Sigillen</small></span></button></div>';return}
@@ -94,13 +103,13 @@ function renderVaultResults(){
  const scope=vaultShelf?(vaultShelf==='none'?'Ohne Regal':vaultShelfName(vaultShelf)):vaultRoom?(vaultRoom==='none'?'Ohne Raum':PulseLife.room(vaultRoom).name):vaultChannel?vaultChannel:'';
  el.innerHTML=(scope?'<div class="vault-scope"><span>'+(vaultShelf?'Regal':vaultRoom?'Raum':'Kanal')+': <b>'+esc(scope)+'</b></span>'+(vaultShelf&&vaultShelf!=='none'?lifeButton('Bearbeiten',lifeCall('vaultEditShelf',vaultShelf),'life-textbtn'):'')+lifeButton('Alle zeigen',lifeCall('vaultSet','tab','list'),'life-textbtn')+'</div>':'')+
   '<div class="vault-listhead"><span>'+list.length+(list.length&&list.every(vaultIsList)?(list.length===1?' Playlist':' Playlists'):(list.length===1?' Eintrag':' Einträge'))+'</span><label class="vault-sort">Sortieren <select onchange="vaultSet(\'sort\',this.value)">'+[['neu','Neueste zuerst'],['alt','Älteste zuerst'],['nummer','Nach Nummer'],['titel','Titel A–Z'],['kanal','Kanal A–Z']].map(([v,l])=>'<option value="'+v+'"'+(vaultSort===v?' selected':'')+'>'+l+'</option>').join('')+'</select></label></div>'+
-  (list.length?'<div class="vault-grid">'+list.map(vaultCard).join('')+'</div>':'<p class="life-none">Keine Videos in dieser Auswahl.</p>');
+  (list.length?'<div class="vault-grid">'+list.slice(0,vaultLimit).map(vaultCard).join('')+'</div>'+(list.length>vaultLimit?lifeButton('Weitere '+Math.min(60,list.length-vaultLimit)+' anzeigen','vaultMore()','life-btn cal-more'):''):'<p class="life-none">Keine Videos in dieser Auswahl.</p>');
 }
 function renderVault(){
  const host=document.getElementById('vaultContent');if(!host||document.getElementById('appMain').dataset.view!=='videos')return;
  vaultPrepare();
  const active=document.activeElement?.id;if(active==='vaultSearch'){renderVaultResults();return}
- host.innerHTML='<header class="life-pagehead"><span class="life-kicker">Deine Sammlung</span><h1>Videos</h1></header>'+vaultStats()+
+ host.innerHTML='<header class="life-pagehead"><span class="life-kicker">Deine Fundstücke</span><h1>Videos</h1></header>'+vaultStats()+
   '<div class="vault-add"><label class="srOnly" for="vaultLink">YouTube-Link</label><input id="vaultLink" type="url" inputmode="url" placeholder="YouTube-Link einfügen" onkeydown="if(event.key===\'Enter\'){event.preventDefault();vaultPaste()}"/>'+(navigator.clipboard?.readText?'<button type="button" class="life-btn" onclick="vaultClipboard()">Einfügen</button>':'')+'<button type="button" class="life-btn dark" onclick="vaultPaste()">Hinzufügen</button></div>'+
   '<div class="vault-tools"><label class="life-search">'+lifeGlyph('search')+'<input id="vaultSearch" type="search" aria-label="Videos durchsuchen" placeholder="Titel, Kanal, Notiz, #Nummer …" value="'+esc(vaultQuery)+'" oninput="vaultSearch(this.value)"/></label>'+lifeButton('Zufall','vaultRandom()','life-btn')+'</div>'+
   vaultTabs()+'<div id="vaultResults"></div>';
@@ -125,17 +134,20 @@ function vaultRefresh(id){
  const x=PulseVault.get(db,id),el=document.getElementById('vaultMeta');if(!x||!el)return;
  const shelves=PulseVault.ensure(db).shelves;
  el.innerHTML='<p class="vault-meta-line"><b>'+vaultNo(x.no)+'</b>'+(vaultIsList(x)?' · Playlist':'')+' · gespeichert am '+esc(lifeDate(x.addedAt.slice(0,10),{day:'numeric',month:'long',year:'numeric'}))+(x.seen?' · '+x.seen+'× gesehen':'')+'</p>'+
-  '<label class="srOnly" for="vaultTitle">Titel</label><textarea id="vaultTitle" class="vault-title" rows="1" placeholder="Titel" onchange="'+lifeCall('vaultField',x.id,'title')+'">'+esc(x.title)+'</textarea><h2 id="lifeDetailHeading" class="srOnly" tabindex="-1">'+esc(x.title||(vaultIsList(x)?'Playlist ':'Video ')+vaultNo(x.no))+'</h2>'+
+  '<label class="srOnly" for="vaultTitle">Titel</label><textarea id="vaultTitle" class="vault-title" rows="1" placeholder="Titel" oninput="'+lifeCall('vaultFieldInput',x.id,'title')+'">'+esc(x.title)+'</textarea><h2 id="lifeDetailHeading" class="srOnly" tabindex="-1">'+esc(x.title||(vaultIsList(x)?'Playlist ':'Video ')+vaultNo(x.no))+'</h2>'+
   (x.channel?'<p class="vault-channel">'+esc(x.channel)+'</p>':'')+
   '<div class="vault-actions"><button type="button" class="life-btn'+(x.fav?' dark':'')+'" aria-pressed="'+x.fav+'" onclick="'+lifeCall('vaultToggle',x.id,'fav')+'">★ Favorit</button><button type="button" class="life-btn'+(x.status==='gesehen'?' dark':'')+'" aria-pressed="'+(x.status==='gesehen')+'" onclick="'+lifeCall('vaultToggle',x.id,'seen')+'">'+(x.status==='gesehen'?'Gesehen':'Als gesehen markieren')+'</button></div>'+
   '<div class="vault-block"><h3>Regale</h3><div class="vault-chips">'+shelves.map(h=>'<button type="button" aria-pressed="'+x.shelves.includes(h.id)+'" onclick="'+lifeCall('vaultShelfToggle',x.id,h.id)+'">'+esc((h.emoji?h.emoji+' ':'')+h.name)+'</button>').join('')+'</div><div class="vault-inline"><label class="srOnly" for="vaultNewShelf">Neues Regal</label><input id="vaultNewShelf" placeholder="Neues Regal, z. B. Growls" maxlength="40" onkeydown="if(event.key===\'Enter\'){event.preventDefault();vaultQuickShelf(\''+x.id+'\')}"/>'+lifeButton('Anlegen',lifeCall('vaultQuickShelf',x.id),'life-btn')+'</div></div>'+
   '<div class="vault-block"><h3>Raum</h3><select class="vault-room" aria-label="Raum" onchange="vaultRoomSet(\''+x.id+'\',this.value)"><option value="">Kein Raum</option>'+PulseLife.ROOMS.map(r=>'<option value="'+r.id+'"'+(x.room===r.id?' selected':'')+'>'+esc(r.name)+'</option>').join('')+'</select></div>'+
   (vaultIsList(x)?'':'<div class="vault-block"><h3>Stellen</h3>'+(x.marks.length?'<ul class="vault-marks">'+x.marks.map(m=>'<li><button type="button" class="vault-mark" onclick="'+lifeCall('vaultPlay',x.id,m.t)+'"><b>'+PulseVault.fmtTime(m.t)+'</b><span>'+esc(m.text||'Stelle')+'</span></button><button type="button" class="life-iconbtn" aria-label="Stelle '+PulseVault.fmtTime(m.t)+' löschen" onclick="'+lifeCall('vaultMarkRemove',x.id,m.t)+'">'+lifeGlyph('close')+'</button></li>').join('')+'</ul>':'<p class="life-footnote">Merk dir Stellen wie „1:23 Atemtechnik“. Ein Tipp spielt genau dort ab.</p>')+
   '<div class="vault-inline"><label class="srOnly" for="vaultMarkTime">Zeit</label><input id="vaultMarkTime" class="vault-time" inputmode="numeric" placeholder="1:23"/><label class="srOnly" for="vaultMarkText">Was passiert dort?</label><input id="vaultMarkText" placeholder="Was passiert dort?" maxlength="200" onkeydown="if(event.key===\'Enter\'){event.preventDefault();vaultMarkAdd(\''+x.id+'\')}"/>'+lifeButton('Merken',lifeCall('vaultMarkAdd',x.id),'life-btn')+'</div></div>')+
-  '<div class="vault-block"><h3>Notiz</h3><label class="srOnly" for="vaultNote">Notiz</label><textarea id="vaultNote" rows="3" placeholder="Warum gesammelt, was ausprobieren …" onchange="'+lifeCall('vaultField',x.id,'note')+'">'+esc(x.note)+'</textarea></div>'+
+  '<div class="vault-block"><h3>Notiz</h3><label class="srOnly" for="vaultNote">Notiz</label><textarea id="vaultNote" rows="3" placeholder="Warum gesammelt, was ausprobieren …" oninput="'+lifeCall('vaultFieldInput',x.id,'note')+'">'+esc(x.note)+'</textarea></div>'+
   '<div class="life-detail-actions"><a class="life-btn" href="'+esc(PulseVideo.watch(vaultRef(x)))+'" target="_blank" rel="noopener noreferrer">In YouTube öffnen ↗</a>'+lifeButton('Entfernen',lifeCall('vaultRemove',x.id),'life-textbtn danger')+'</div>';
 }
 function vaultChange(id,fn){if(!vaultTry(fn))return;save();vaultRefresh(id);renderVault()}
+/* Title and note are taken over while typing, so closing the sheet with the back button loses nothing. */
+let vaultFieldTimer=null;
+function vaultFieldInput(id,field){const v=document.getElementById(field==='title'?'vaultTitle':'vaultNote')?.value||'';try{PulseVault.update(db,id,{[field]:v},vaultNow())}catch(_){return}clearTimeout(vaultFieldTimer);vaultFieldTimer=setTimeout(()=>{save();renderVault()},500)}
 function vaultField(id,field){const v=document.getElementById(field==='title'?'vaultTitle':'vaultNote')?.value||'';vaultChange(id,()=>PulseVault.update(db,id,{[field]:v},vaultNow()))}
 function vaultToggle(id,what){const x=PulseVault.get(db,id);if(!x)return;vaultChange(id,()=>PulseVault.update(db,id,what==='fav'?{fav:!x.fav}:{status:x.status==='gesehen'?'neu':'gesehen'},vaultNow()));if(what==='fav'&&!x.fav)pulseTap();else if(what==='seen'&&x.status==='gesehen'){pulseSound('pop');pulseTap()}}
 function vaultShelfToggle(id,shelf){const x=PulseVault.get(db,id);if(!x)return;vaultChange(id,()=>PulseVault.setShelf(db,id,shelf,!x.shelves.includes(shelf),vaultNow()))}
@@ -169,4 +181,4 @@ function vaultEditShelf(id){
 }
 function vaultDeleteShelf(id){pushUndo({type:'videos',before:PulseLife.clone(db.videos)});PulseVault.removeShelf(db,id);vaultShelf='';vaultTab='shelf';save();lifeCloseSheet();renderVault();toast('Regal gelöscht','Rückgängig')}
 function lifeSetVideoMeta(){db.uiPrefs.videoMeta=db.uiPrefs.videoMeta===false;if(save()){lifeSettings();renderVault()}}
-function videoSettingsHTML(){return '<div class="life-settings-row"><div><b>Vorschaubilder und Titel von YouTube</b><p>Lädt Bild, Titel und Kanal direkt von YouTube. Wenn aus, geht nichts an YouTube, bis du ein Video abspielst.</p></div>'+lifeButton(db.uiPrefs.videoMeta===false?'Aus':'An','lifeSetVideoMeta()','life-btn')+'</div>'}
+function videoSettingsHTML(){return '<div class="life-settings-row"><div><b>Vorschaubilder und Titel von YouTube</b><p>Lädt Bild, Titel und Kanal von YouTube. Klappt das direkt nicht, fragt Pulse den offenen Dienst noembed.com. Wenn aus, geht nichts nach außen, bis du ein Video abspielst.</p></div>'+lifeButton(db.uiPrefs.videoMeta===false?'Aus':'An','lifeSetVideoMeta()','life-btn')+'</div>'}

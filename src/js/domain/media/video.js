@@ -50,5 +50,11 @@
   for(const [id,re] of ROOMS){const c=(t.match(new RegExp(re.source,'g'))||[]).length;if(c>n){best=id;n=c}}
   return best||(video&&video.music?'ideen':'');
  }
- return {parse,parseList,parseAny,find,findAny,embed,watch,seconds,room};
+ /* The YouTube app shares a subject like 'Watch "Title" on YouTube' (localised). Keep only the title. */
+ function shareTitle(t){
+  t=String(t||'').replace(/\s+/g,' ').trim();if(!t)return '';
+  if(/youtube/i.test(t)){const m=t.match(/[„“"«»‚‘‹›「]\s*(.+?)\s*[“”"«»‘’‹›」]/);if(m)return m[1].trim();if(/^(watch|sieh|schau|mira|bekijk|regarde|guarda|assista)\b/i.test(t)||/youtube\s*$/i.test(t))return ''}
+  return t;
+ }
+ return {parse,parseList,parseAny,find,findAny,embed,watch,seconds,room,shareTitle};
 });

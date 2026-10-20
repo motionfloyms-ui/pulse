@@ -37,6 +37,7 @@
   const majors=[...cards].filter(i=>i<22).length,vids=db.videos?.items||[],shelves=db.videos?.shelves||[],marks=vids.reduce((a,v)=>a+(v.marks?.length||0),0);
   const sg=db.magic?.sigils||[],life=db.life?.items||[],events=life.filter(x=>x.kind==='event').length+(db.events||[]).filter(e=>e&&e.type==='calendar-plan').length;
   const songs=db.songs?.items||[],songMarks=songs.reduce((a,s)=>a+Object.keys(s.notes||{}).length,0),takes=songs.reduce((a,s)=>a+(s.takes?.length||0),0),warm=(db.songs?.warmups||[]).length;
+  const own=life.filter(x=>!x.ics).length;
   const phases=new Set();if(phaseOf)for(const [d,p] of Object.entries(A.pts))if(p>0)phases.add(phaseOf(d));
   const B=(group,id,title,desc,value,need)=>({group,id,title,desc,value:Math.min(value,need),need,done:value>=need});
   const list=[
@@ -64,8 +65,8 @@
    B('hueterin','p30','Eiweißmonat','An 30 Tagen das Proteinziel',A.protDays,30),
    B('hueterin','h7','Gut gewässert','An 7 Tagen das Wasserziel',A.waterDays,7),
    B('hueterin','h30','Quelle','An 30 Tagen das Wasserziel',A.waterDays,30),
-   B('chronistin','n10','Erste Seiten','10 eigene Einträge',life.length,10),
-   B('chronistin','n100','Hundert Seiten','100 eigene Einträge',life.length,100),
+   B('chronistin','n10','Erste Seiten','10 eigene Einträge',own,10),
+   B('chronistin','n100','Hundert Seiten','100 eigene Einträge',own,100),
    B('chronistin','e10','Terminkalender','10 Termine',events,10),
    B('chronistin','ics','Umgezogen','Termine aus einer .ics-Datei übernommen',life.some(x=>x.ics)?1:0,1),
    B('chronistin','m25','Stellenjägerin','25 Stellen in Videos gemerkt',marks,25),

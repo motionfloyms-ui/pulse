@@ -18,6 +18,7 @@ Dazu: Sigillen-Werkstatt (Buchstabenrad oder Saturnquadrat, Laden im Vollbild, V
 
 ```
 npm run check   # bauen, Bundle prüfen, Tests
+npm run e2e     # Browser-Test: Hauptabläufe und jeder Knopf jeder Ansicht (braucht playwright)
 ```
 
 Testdaten sind erfunden. Persönliche Daten gehören nie ins Repository, sie kommen über das Backup in die App.

@@ -88,7 +88,7 @@ function quickAnalyze(raw){
 }
 function quickDescribe(q){
  const names={note:'Notiz',task:'Aufgabe',event:'Termin',meal:'Mahlzeit'};
- if(q.kind==='video')return (q.video==='playlist'?'Playlist':'Video')+' in deiner Sammlung'+(q.room&&q.room!=='alltag'?' · '+PulseLife.room(q.room).name:'');
+ if(q.kind==='video')return (q.video==='playlist'?'Playlist':'Video')+' für den Videos-Tab'+(q.room&&q.room!=='alltag'?' · '+PulseLife.room(q.room).name:'');
  if(q.kind==='capture')return {workout:'Trainingssatz zum Prüfen',recovery:'Erholungstag für heute',context:'Befinden für heute','context-clear':'Befinden: wieder normal','historical-review':'Notiz mit vergangenem Datum',food:'Essen · Menge wird abgefragt',drink:'Getränk'}[q.type]||'Eintrag';
  const when=q.when.date&&(q.kind==='task'||q.kind==='event')?' · '+lifeDate(q.when.date,{weekday:'short',day:'numeric',month:'short'})+(q.when.time&&q.kind==='event'?' '+q.when.time:''):'';
  return names[q.kind]+(q.kind==='meal'&&q.kcal?' · '+q.kcal+' kcal':'')+when+(q.kind==='meal'?'':' · '+PulseLife.room(q.room).name);

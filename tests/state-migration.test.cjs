@@ -28,3 +28,13 @@ test('storage detects edits from another window',()=>{const mem=new Map();const 
  const s=Store.create({getStorage:()=>storage,state:State,migrate:v=>Unify.run(v,key)});const db=s.load();db.waterGoal=3;s.save(db);mem.set('pulseOS',mem.get('pulseOS').replace('"waterGoal":3','"waterGoal":4'));assert.throws(()=>s.save(db),e=>e.code==='CONFLICT')});
 test('a backup round-trips through export and restore',()=>{const mem=new Map();const storage={getItem:k=>mem.has(k)?mem.get(k):null,setItem:(k,v)=>mem.set(k,String(v))};
  const s=Store.create({getStorage:()=>storage,state:State,migrate:v=>Unify.run(v,key)});const db=s.load();const text=s.exportText(Unify.run(legacy(),key));const restored=s.restore(text,db);assert.equal(restored.life.items.length,6);assert.ok(mem.has('pulseOS_pre_import_backup'))});
+test('a full quota makes old safety copies give way to the current data',()=>{
+ const mem=new Map(),LIMIT=60000;const used=()=>[...mem].reduce((a,[k,v])=>a+k.length+v.length,0);
+ const storage={getItem:k=>mem.has(k)?mem.get(k):null,setItem:(k,v)=>{const old=mem.has(k)?k.length+mem.get(k).length:0;if(used()-old+k.length+String(v).length>LIMIT){const e=new Error('quota');e.name='QuotaExceededError';throw e}mem.set(k,String(v))},removeItem:k=>mem.delete(k),get length(){return mem.size},key:i=>[...mem.keys()][i]};
+ const s=Store.create({getStorage:()=>storage,state:State,migrate:v=>Unify.run(v,key)});const db=s.load();
+ mem.set('pulseOS_pre_migration_backup','x'.repeat(30000));
+ db.settings.note='y'.repeat(29500);assert.doesNotThrow(()=>s.save(db));
+ assert.equal(mem.has('pulseOS_pre_migration_backup'),false,'old copy removed');assert.ok(mem.get('pulseOS').includes('yyyy'));
+ const u=s.usage();assert.ok(u.used>25000&&u.freedBackups);
+ db.settings.note='z'.repeat(70000);assert.throws(()=>s.save(db),e=>e.code==='WRITE_FAILED');
+});

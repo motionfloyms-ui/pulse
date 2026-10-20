@@ -97,7 +97,7 @@ test('export and re-import keep the essentials',()=>{
  const {events}=I.parse(GOOGLE,{target:'Europe/Berlin'});
  const items=events.map((e,i)=>({id:'x'+i,...e,...R.normalize(e)}));
  const text=I.build(items,{tz:'Europe/Berlin',now:'2026-10-21T10:00:00.000Z'});
- assert.match(text,/RRULE:FREQ=WEEKLY;BYDAY=TU;UNTIL=20261231T235959/);
+ assert.match(text,/RRULE:FREQ=WEEKLY;BYDAY=TU;UNTIL=20261231T225959Z/);
  assert.match(text,/DTSTART;VALUE=DATE:20261228\r\nDTEND;VALUE=DATE:20270103/);
  const again=I.parse(text,{target:'Europe/Berlin'}).events;
  assert.equal(again.length,events.length);
