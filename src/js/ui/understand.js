@@ -13,6 +13,7 @@ function lifeUnderstand(){
   const parts=i.type==='food'?parseFoodText(raw):[],known=parts.filter(p=>!p.unknown),kcal=Math.round(known.reduce((a,p)=>a+(p.nut?.kcal||0),0));
   offers.push(['Als '+(i.type==='drink'?'Getränk':'Mahlzeit')+' eintragen'+(known.length&&known.length===parts.length?' · '+kcal+' kcal':''),'lifeRouteCapture()']);
  }
+ if(i.type==='note'){const parts=parseFoodText(raw);if(parts.length&&parts.every(p=>!p.unknown)){const kcal=Math.round(parts.reduce((a,p)=>a+(p.nut?.kcal||0),0));offers.push(['Als Mahlzeit eintragen · '+kcal+' kcal','lifeRouteFood()'])}}
  if(i.type==='workout')offers.push(['Als Trainingssatz prüfen','lifeRouteCapture()']);
  if(i.type==='recovery'||i.type==='context'||i.type==='context-clear')offers.push([i.type==='recovery'?'Heute als Erholungstag markieren':'Als Befinden für heute speichern','lifeRouteCapture()']);
  if(when.date){
@@ -26,6 +27,11 @@ function lifeApplyWhen(kind,date,time){
  document.getElementById('lifeDateInput').value=date;document.getElementById('lifeTimeInput').value=time||'';
  lifeKindChanged(false);document.getElementById('lifePlanning').open=true;lifeRememberDraft();lifeUnderstand();
  toast((kind==='event'?'Termin':'Aufgabe')+' für '+lifeDate(date,{weekday:'long',day:'numeric',month:'long'})+(time?' um '+time:'')+' vorbereitet. Speichern mit „Aufheben“.');
+}
+function lifeRouteFood(){
+ const raw=[document.getElementById('lifeTitle').value,document.getElementById('lifeBody').value].filter(x=>x.trim()).join(' ').trim();if(!raw)return;
+ pulseStopDictation();const meal=directFoodCapture(raw);if(!meal)return toast('Bitte die Mengen prüfen.');
+ lifeState().draft=null;lifeEditorPhotos=[];save();lifeCloseSheet();render();toast(intakeMessage(meal),'Rückgängig');
 }
 function lifeRouteCapture(){
  const raw=[document.getElementById('lifeTitle').value,document.getElementById('lifeBody').value].filter(x=>x.trim()).join(' ').trim();

@@ -43,6 +43,39 @@
   for(const k of NUTRIENTS)out[k]=round((base[k]||0)*factor);return out;
  }
  const validBarcode=code=>/^\d{8}$|^\d{12,14}$/.test(String(code||''));
- return {NUTRIENTS,fromOpenFoodFacts,own,portion,grams,validBarcode};
+ /* Amounts in everyday German: 150 g, 0,5 kg, 250 ml, 2 EL, eine Handvoll, 2 Scheiben, zwei Bananen,
+    eine halbe Pizza, 2 Portionen. Without an amount the usual portion applies. */
+ const WORDNUM={ein:1,eine:1,einen:1,einem:1,eins:1,zwei:2,drei:3,vier:4,'fünf':5,fuenf:5,sechs:6,sieben:7,acht:8,neun:9,zehn:10,halb:.5,halbe:.5,halber:.5,halbes:.5,halben:.5,anderthalb:1.5,eineinhalb:1.5};
+ const N='(\\d+(?:[.,]\\d+)?|'+Object.keys(WORDNUM).sort((a,b)=>b.length-a.length).join('|')+')';
+ const qty=s=>{s=String(s).toLocaleLowerCase('de');return Object.hasOwn(WORDNUM,s)?WORDNUM[s]:Number(s.replace(',','.'))};
+ const de=n=>String(Math.round(n*10)/10).replace('.',',');
+ const UNITS=[['kg|kilo',{g:1000}],['g|gramm',{g:1}],['ml|milliliter',{g:1,ml:true}],['l|liter',{g:1000,ml:true}],['el|esslöffel',{g:15,unit:'EL'}],['tl|teelöffel',{g:5,unit:'TL'}],['handvoll|hand voll',{g:30,unit:'Handvoll'}],['portionen|portion|teller|schüsseln|schüssel|schalen|schale',{portion:true}],['scheiben|scheibe',{count:true,unit:'Scheibe'}],['x|stück|stueck|stk',{count:true}]];
+ function measure(text,food){
+  const t=(' '+String(text||'').toLocaleLowerCase('de')+' ').replace(/(\s)(?:ein|eine|einen|einem)\s+(?=halb)/g,'$1');
+  for(const [words,u] of UNITS){const m=t.match(new RegExp('(?:^|[^\\p{L}\\d])'+N+'\\s*(?:'+words+')(?![\\p{L}])','u'));if(m){const q=qty(m[1]);if(u.g)return {grams:q*u.g,ml:!!u.ml,unit:u.unit,q};if(u.portion)return {portions:q};return {count:q,unit:u.unit}}}
+  const bare=t.match(new RegExp('(?:^|\\s)'+N+'\\s+(?!g\\b|ml\\b)\\S','u'));
+  if(bare)return (food.perPiece||food.pieceG)?{count:qty(bare[1])}:{portions:qty(bare[1])};
+  return {};
+ }
+ const scale=(base,f)=>{const o={};for(const k of NUTRIENTS)o[k]=round((base[k]||0)*f);return o};
+ function nutrition(food,text){
+  const m=measure(text,food),per=food.per100,piece=food.perPiece;
+  const byGrams=(g,label)=>!(g>0)?{error:'Menge prüfen'}:per?{nut:scale(per,g/100),amount:g,label}:{error:'Wie viele Stück?'};
+  if(m.grams!=null){const base=m.ml&&food.per100Ml?food.per100Ml:per;if(!(m.grams>0))return {error:'Menge prüfen'};if(!base)return {error:'Wie viele Stück?'};return {nut:scale(base,m.grams/100),amount:m.grams,label:m.unit?de(m.q)+' '+m.unit+' (≈ '+de(m.grams)+' g)':de(m.grams)+(m.ml?' ml':' g')}}
+  if(m.count!=null){if(!(m.count>0))return {error:'Stückzahl prüfen'};
+   if(piece)return {nut:scale(piece,m.count),amount:m.count,label:de(m.count)+' Stück'};
+   if(food.pieceG)return byGrams(m.count*food.pieceG,de(m.count)+' '+(m.unit==='Scheibe'?(m.count<=1?'Scheibe':'Scheiben'):'Stück')+' (≈ '+de(m.count*food.pieceG)+' g)');
+   if(food.defaultG)return byGrams(m.count*food.defaultG,de(m.count)+(m.count<=1?' Portion':' Portionen')+' (≈ '+de(m.count*food.defaultG)+' g)');
+   return {error:'Welche Menge in Gramm?'}}
+  if(m.portions!=null){if(!(m.portions>0))return {error:'Menge prüfen'};
+   if(food.defaultG)return byGrams(m.portions*food.defaultG,de(m.portions)+(m.portions<=1?' Portion':' Portionen')+' (≈ '+de(m.portions*food.defaultG)+' g)');
+   if(piece)return {nut:scale(piece,m.portions),amount:m.portions,label:de(m.portions)+' Stück'};
+   if(food.pieceG)return byGrams(m.portions*food.pieceG,de(m.portions)+' Stück (≈ '+de(m.portions*food.pieceG)+' g)');
+   return {error:'Welche Menge in Gramm?'}}
+  if(food.defaultG&&per)return byGrams(food.defaultG,'übliche Portion (≈ '+de(food.defaultG)+' g)');
+  if(piece)return {nut:scale(piece,1),amount:1,label:'1 Stück'};
+  return {error:'Welche Menge?'};
+ }
+ return {NUTRIENTS,fromOpenFoodFacts,own,portion,grams,validBarcode,measure,nutrition};
 });
 

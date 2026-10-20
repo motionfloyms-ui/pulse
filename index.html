@@ -638,6 +638,7 @@ th{color:var(--muted);font-weight:600}
 .life-day-aside.is-busy{display:none}
 .life-day-layout:has(.life-day-aside.is-busy){grid-template-columns:minmax(0,1fr)}
 @media(max-width:360px){.food-today{grid-template-columns:1fr}}
+.food-missing-actions{display:flex;flex-wrap:wrap;gap:0 18px}
 /* Calm view: colour recedes, structure stays. */
 .life-calm .life-room-tile,.life-calm .life-room-hero{background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 5px 0 0 var(--room)}
 .life-calm .life-room-tile::after,.life-calm .life-room-hero::after{display:none}
@@ -647,7 +648,7 @@ th{color:var(--muted);font-weight:600}
 @media print{.life-nav,.life-topbar,.toast{display:none}.app{padding:0}}
 
 </style></head><body class="life-modern">
-<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b><small>In deinem Tempo.</small></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v16</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view " id="bodyhub"><header class="pagehead"><div class="eyebrow">Körper</div><h1>Dein Körper.</h1></header><div class="body-feature"><div class="eyebrow">Kraft &amp; Form</div><h2 id="bodyPlan">Dein Training.</h2><p id="bodyPlanDetail">Glutes, Schultern, Rücken. Eine Einheit nach der anderen.</p><button type="button" class="primary" onclick="openTodaysTraining()">Training öffnen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><div class="body-foot"><span id="homeTraining"></span><span>Deine bestätigten Gewichte</span></div></div>
+<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b><small>In deinem Tempo.</small></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v17</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view " id="bodyhub"><header class="pagehead"><div class="eyebrow">Körper</div><h1>Dein Körper.</h1></header><div class="body-feature"><div class="eyebrow">Kraft &amp; Form</div><h2 id="bodyPlan">Dein Training.</h2><p id="bodyPlanDetail">Glutes, Schultern, Rücken. Eine Einheit nach der anderen.</p><button type="button" class="primary" onclick="openTodaysTraining()">Training öffnen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><div class="body-foot"><span id="homeTraining"></span><span>Deine bestätigten Gewichte</span></div></div>
 <div class="routes"><button type="button" class="route" onclick="goView('nutrition')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-food"></use></svg></span><span class="grow"><b>Essen</b><small><span id="homeProtein">—</span> Protein erfasst · regelmäßig versorgt</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('recovery')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg></span><span class="grow"><b>Recovery & Zyklus</b><small>Kapazität zuerst. Dein Tag passt sich an.</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('trends')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Fortschritt</b><small>Taille, Maße & dein Trainingsverlauf</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div><div class="quiet-callout"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-water"></use></svg><div><b>Auch kleine Schritte zählen.</b><p><span id="homeWater">—</span> Wasser heute erfasst.</p></div><button type="button" class="small" onclick="addWater(.25)">+ 250 ml</button></div><div id="bodyLibrary" class="life-body-library"></div></section>
 <section class="view " id="mehub"><header class="pagehead"><div class="eyebrow">Ich</div><h1>Deins.</h1></header><div class="identity"><span class="avatar" data-me-initial>·</span><div><b data-me-name>Du</b><small>Muskelaufbau · Alltag · mehr Raum im Kopf</small></div></div><div class="routes"><button type="button" class="route" onclick="goView('goals')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Deine Richtung</b><small>Ziele, die zu deinem Leben passen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('plan')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg></span><span class="grow"><b>Dein Plan</b><small>Routinen, Training & Ausnahmen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('history')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg></span><span class="grow"><b>Verlauf</b><small>Was tatsächlich passiert ist</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('coach')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-spark"></use></svg></span><span class="grow"><b>Muster</b><small>Beobachtungen aus deinen Einträgen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div>
 <details class="disclosure"><summary>Was PULSE über dich weiß</summary><p class="tiny" id="eventCount"></p><div id="semanticMemory" class="memory-list"></div></details>
@@ -1138,6 +1139,152 @@ return {run};
 });
 
 
+// SOURCE: domain/body/food-table.js
+/* Everyday foods with typical values per 100 g (liquids: per 100 ml). Rounded reference values,
+   marked as estimates in the app. Columns: name | aliases | kcal | protein | carbs | fat | fiber | portion g | piece g | liquid */
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseFoodTable=api})(globalThis,function(){
+ 'use strict';
+ const ROWS=`
+Brötchen|brötchen,semmel,schrippe,weizenbrötchen|270|9|52|2|3|60|60
+Vollkornbrötchen|vollkornbrötchen,körnerbrötchen|240|9|42|3|6|70|70
+Laugenbrötchen|laugenbrötchen,laugenstange|280|9|53|3|2|70|70
+Brezel|brezel,breze,brezeln,laugenbrezel|290|8|56|3|2|85|85
+Croissant|croissant,croissants|410|8|46|21|2|60|60
+Toastbrot|toast,toastbrot,toastscheibe|260|8|48|4|3|50|25
+Mischbrot|brot,mischbrot,graubrot,brotscheibe|230|7|46|1.5|5|45|45
+Vollkornbrot|vollkornbrot,schwarzbrot,roggenbrot|220|8|40|2|7|50|50
+Knäckebrot|knäckebrot,knäcke|360|10|66|1.5|14|20|10
+Haferflocken|haferflocken,porridge,haferbrei|370|13.5|59|7|10|50|
+Müsli|müsli,granola,knuspermüsli|380|9|63|9|7|60|
+Cornflakes|cornflakes|378|7|84|0.9|3|30|
+Nudeln (roh)|nudeln,pasta,spaghetti,penne,fusilli,makkaroni|355|12.5|71|1.5|3|100|
+Nudeln (gekocht)|nudeln gekocht,gekochte nudeln,pasta gekocht|155|5.5|30|0.9|1.8|250|
+Reis (roh)|reis,basmatireis,jasminreis,vollkornreis|350|7|77|0.6|1.4|75|
+Reis (gekocht)|reis gekocht,gekochter reis|130|2.7|28|0.3|0.4|200|
+Couscous (roh)|couscous,bulgur|360|12|72|1.5|5|70|
+Quinoa (roh)|quinoa|368|14|64|6|7|70|
+Kartoffeln|kartoffel,kartoffeln,pellkartoffeln,salzkartoffeln|77|2|17|0.1|2.2|250|100
+Süßkartoffel|süßkartoffel,süßkartoffeln|86|1.6|20|0.1|3|200|200
+Pommes frites|pommes,pommes frites,fritten|290|3.4|36|15|3|150|
+Bratkartoffeln|bratkartoffeln|150|2.5|20|7|2|250|
+Weizentortilla|tortilla,tortillas,wrap,wraps|300|8|50|7|3|40|40
+Pizza Margherita|pizza,pizza margherita|250|10|30|10|2|350|
+Tiefkühlpizza|tiefkühlpizza,tk-pizza,tk pizza|240|9|28|10|2|350|
+Lasagne|lasagne|150|8|12|8|1|350|
+Döner|döner,döner kebab,doener,dürüm|215|12|20|10|2|350|
+Burger|burger,hamburger,cheeseburger|250|13|25|11|1.5|220|220
+Currywurst|currywurst|220|10|8|16|0.5|200|
+Bratwurst|bratwurst,bratwürste|300|13|1|27|0|100|100
+Falafel|falafel|330|13|32|17|5|120|20
+Hummus|hummus,humus|240|7|14|17|6|50|
+Gemüsesuppe|gemüsesuppe,suppe|40|1.5|6|1|1.5|300|
+Linsensuppe|linsensuppe,linseneintopf|90|5|12|2|4|350|
+Chili sin Carne|chili sin carne,chili|100|5|12|2.5|5|350|
+Milch 1,5 %|milch,fettarme milch|47|3.4|4.8|1.5|0|200||1
+Vollmilch|vollmilch|64|3.3|4.8|3.6|0|200||1
+Haferdrink|haferdrink,hafermilch|46|1|7|1.5|0.8|200||1
+Sojadrink|sojadrink,sojamilch|40|3.3|2.5|1.8|0.5|200||1
+Naturjoghurt|joghurt,naturjoghurt,jogurt|66|3.5|4.5|3.5|0|150|
+Griechischer Joghurt|griechischer joghurt,greek yogurt|120|4.5|4|10|0|150|
+Speisequark 20 %|speisequark,sahnequark|110|12|3|5|0|125|
+Gouda|gouda,käse,käsescheibe,scheibe käse|360|25|0|28|0|30|20
+Cheddar|cheddar|400|25|1|33|0|30|20
+Mozzarella|mozzarella|250|18|1|19|0|125|125
+Feta|feta,schafskäse,hirtenkäse|260|17|1|21|0|50|
+Parmesan|parmesan,hartkäse|390|33|0|29|0|10|
+Halloumi|halloumi,grillkäse|320|22|2|25|0|100|
+Frischkäse|frischkäse|240|6|3|23|0|30|
+Butter|butter|740|0.7|0.6|82|0|10|
+Schlagsahne|sahne,schlagsahne|300|2.4|3.4|31|0|30||1
+Räuchertofu|räuchertofu|160|17|2|9|1|100|
+Tempeh|tempeh|190|19|8|11|5|100|
+Seitan|seitan|140|25|5|2|0.5|100|
+Edamame|edamame|120|11|7|5|5|100|
+Kidneybohnen|kidneybohnen,bohnen,schwarze bohnen|125|8.5|21|0.5|6.5|120|
+Kichererbsen|kichererbsen|140|7.5|19|2.5|6.5|120|
+Linsen (gekocht)|linsen,linsen gekocht|116|9|20|0.4|8|150|
+Rote Linsen (roh)|rote linsen|345|24|49|1.5|11|60|
+Erdnussmus|erdnussbutter,erdnussmus|600|25|13|50|8|15|
+Nussmischung|nüsse,nussmischung|620|17|10|55|8|30|
+Studentenfutter|studentenfutter|480|13|40|30|7|30|
+Mandeln|mandeln|590|21|6|52|12|25|
+Walnüsse|walnüsse|670|15|7|65|6|25|
+Apfel|apfel,äpfel|52|0.3|12|0.2|2.4|150|150
+Banane|banane,bananen|90|1.1|20|0.3|2.6|120|120
+Birne|birne,birnen|57|0.4|13|0.1|3.1|160|160
+Orange|orange,orangen,apfelsine|47|0.9|9|0.1|2.4|180|180
+Mandarine|mandarine,mandarinen,clementine,clementinen|50|0.8|10|0.3|1.8|70|70
+Weintrauben|trauben,weintrauben|69|0.7|16|0.2|0.9|125|
+Erdbeeren|erdbeeren|32|0.7|5.5|0.3|2|150|
+Heidelbeeren|heidelbeeren,blaubeeren|57|0.7|12|0.3|2.4|125|
+Mango|mango|60|0.8|13|0.4|1.6|150|
+Kiwi|kiwi,kiwis|61|1.1|10|0.5|3|75|75
+Ananas|ananas|50|0.5|12|0.1|1.4|150|
+Avocado|avocado,avocados|160|2|2|15|7|140|140
+Datteln|datteln,dattel|280|2.5|66|0.4|8|40|8
+Tomate|tomate,tomaten,cherrytomaten|18|0.9|3|0.2|1.2|100|100
+Gurke|gurke,gurken|15|0.6|2.5|0.1|0.5|100|
+Paprika|paprika|30|1|5|0.3|2|150|150
+Karotte|karotte,karotten,möhre,möhren|41|0.9|8|0.2|2.8|80|80
+Brokkoli|brokkoli,broccoli|34|2.8|4|0.4|2.6|200|
+Spinat|spinat|23|2.9|1.4|0.4|2.2|150|
+Blattsalat|salat,blattsalat,eisbergsalat,rucola|15|1.2|2|0.2|1.3|80|
+Zucchini|zucchini|17|1.2|2.5|0.3|1|200|
+Zwiebel|zwiebel,zwiebeln|40|1.1|8|0.1|1.7|80|80
+Mais|mais|80|2.8|14|1.2|2.5|100|
+Erbsen|erbsen|80|5|10|0.4|5|150|
+Blumenkohl|blumenkohl|25|2|3|0.3|2|200|
+Vollmilchschokolade|schokolade,vollmilchschokolade,schoki|535|7.5|57|30|2|25|
+Zartbitterschokolade|zartbitterschokolade,zartbitter|580|8|34|43|11|25|
+Gummibärchen|gummibärchen,haribo,fruchtgummi|340|6.5|77|0.1|0|25|
+Kekse|keks,kekse,butterkeks,butterkekse|440|7|73|12|2.5|30|5
+Kartoffelchips|chips,kartoffelchips|540|6|50|34|4|50|
+Erdnussflips|erdnussflips,flips,sun flips|480|12|48|26|4|40|
+Speiseeis|eis,eiscreme,speiseeis|200|3.5|24|10|0|100|
+Rührkuchen|kuchen,rührkuchen,marmorkuchen|380|6|50|18|1|80|
+Käsekuchen|käsekuchen|250|7|25|13|0.5|120|
+Apfelkuchen|apfelkuchen|250|3|35|11|1.5|120|
+Proteinriegel|proteinriegel|360|30|35|10|6|50|50
+Müsliriegel|müsliriegel|400|6|65|13|4|25|25
+Honig|honig|300|0.4|80|0|0|20|
+Marmelade|marmelade,konfitüre|250|0.4|60|0.1|1|20|
+Nuss-Nougat-Creme|nutella,nuss-nougat-creme|540|6|57|31|3.5|15|
+Hähnchenbrust|hähnchen,hähnchenbrust,hühnchen,hühnerbrust|110|23|0|1.5|0|150|
+Hackfleisch|hack,hackfleisch|250|18|0|20|0|125|
+Rindersteak|steak,rindersteak|130|22|0|4.5|0|200|
+Kochschinken|schinken,kochschinken|110|19|1|3.5|0|40|20
+Salami|salami|380|20|1|33|0|30|10
+Fleischwurst|fleischwurst|280|12|1|25|0|50|25
+Wiener Würstchen|würstchen,wiener,wiener würstchen|260|13|1|23|0|100|50
+Mayonnaise|mayo,mayonnaise|680|1|2|75|0|15|
+Remoulade|remoulade|560|1|5|60|0|15|
+Ketchup|ketchup|110|1.5|24|0.2|1|15|
+Öl|öl,olivenöl,rapsöl|884|0|0|100|0|10||1
+Pesto|pesto|450|5|5|45|2|30|
+Tomatensoße|tomatensoße,tomatensauce,passata|50|1.5|8|1|1.5|150|
+Orangensaft|orangensaft,o-saft|45|0.7|9|0.2|0.2|200||1
+Apfelsaft|apfelsaft|46|0.1|11|0|0|200||1
+Apfelschorle|apfelschorle,saftschorle,schorle|24|0|5.5|0|0|300||1
+Cola|cola,coca-cola|42|0|10.6|0|0|330||1
+Cola Zero|cola zero,cola light,coke zero|0.3|0|0|0|0|330||1
+Bier|bier,pils,weizen|43|0.5|3.6|0|0|500||1
+Wein|wein,rotwein,weißwein|80|0.1|2.6|0|0|200||1
+Latte macchiato|latte,latte macchiato,milchkaffee|50|2.5|3.5|2.5|0|300||1
+Cappuccino|cappuccino|40|2.5|3|2|0|200||1
+Kaffee|kaffee,espresso|2|0.2|0|0|0|200||1
+Tee|tee|1|0|0.2|0|0|250||1
+Energy Drink|energy,energy drink,energydrink|46|0|11|0|0|250||1
+Smoothie|smoothie|55|0.6|12|0.2|1.5|250||1`;
+ const FOODS=ROWS.trim().split('\n').map(line=>{
+  const [name,aliases,kcal,protein,carbs,fat,fiber,portion,piece,liquid]=line.split('|');
+  const per={kcal:+kcal,protein:+protein,carbs:+carbs,fat:+fat,fiber:+fiber};
+  const f={id:'tab-'+name.toLowerCase().normalize('NFKD').replace(/[^\w]+/g,'-').replace(/^-|-$/g,''),name,aliases:aliases.split(','),per100:per,confidence:'geschaetzt',source:'table'};
+  if(portion)f.defaultG=+portion;if(piece)f.pieceG=+piece;if(liquid)f.per100Ml=per;
+  return f;
+ });
+ return {FOODS};
+});
+
 // SOURCE: domain/body/foods.js
 /* Food records: own foods and products from Open Food Facts. Values are per 100 g (or per piece). */
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseFoods=api})(globalThis,function(){
@@ -1183,7 +1330,40 @@ return {run};
   for(const k of NUTRIENTS)out[k]=round((base[k]||0)*factor);return out;
  }
  const validBarcode=code=>/^\d{8}$|^\d{12,14}$/.test(String(code||''));
- return {NUTRIENTS,fromOpenFoodFacts,own,portion,grams,validBarcode};
+ /* Amounts in everyday German: 150 g, 0,5 kg, 250 ml, 2 EL, eine Handvoll, 2 Scheiben, zwei Bananen,
+    eine halbe Pizza, 2 Portionen. Without an amount the usual portion applies. */
+ const WORDNUM={ein:1,eine:1,einen:1,einem:1,eins:1,zwei:2,drei:3,vier:4,'fünf':5,fuenf:5,sechs:6,sieben:7,acht:8,neun:9,zehn:10,halb:.5,halbe:.5,halber:.5,halbes:.5,halben:.5,anderthalb:1.5,eineinhalb:1.5};
+ const N='(\\d+(?:[.,]\\d+)?|'+Object.keys(WORDNUM).sort((a,b)=>b.length-a.length).join('|')+')';
+ const qty=s=>{s=String(s).toLocaleLowerCase('de');return Object.hasOwn(WORDNUM,s)?WORDNUM[s]:Number(s.replace(',','.'))};
+ const de=n=>String(Math.round(n*10)/10).replace('.',',');
+ const UNITS=[['kg|kilo',{g:1000}],['g|gramm',{g:1}],['ml|milliliter',{g:1,ml:true}],['l|liter',{g:1000,ml:true}],['el|esslöffel',{g:15,unit:'EL'}],['tl|teelöffel',{g:5,unit:'TL'}],['handvoll|hand voll',{g:30,unit:'Handvoll'}],['portionen|portion|teller|schüsseln|schüssel|schalen|schale',{portion:true}],['scheiben|scheibe',{count:true,unit:'Scheibe'}],['x|stück|stueck|stk',{count:true}]];
+ function measure(text,food){
+  const t=(' '+String(text||'').toLocaleLowerCase('de')+' ').replace(/(\s)(?:ein|eine|einen|einem)\s+(?=halb)/g,'$1');
+  for(const [words,u] of UNITS){const m=t.match(new RegExp('(?:^|[^\\p{L}\\d])'+N+'\\s*(?:'+words+')(?![\\p{L}])','u'));if(m){const q=qty(m[1]);if(u.g)return {grams:q*u.g,ml:!!u.ml,unit:u.unit,q};if(u.portion)return {portions:q};return {count:q,unit:u.unit}}}
+  const bare=t.match(new RegExp('(?:^|\\s)'+N+'\\s+(?!g\\b|ml\\b)\\S','u'));
+  if(bare)return (food.perPiece||food.pieceG)?{count:qty(bare[1])}:{portions:qty(bare[1])};
+  return {};
+ }
+ const scale=(base,f)=>{const o={};for(const k of NUTRIENTS)o[k]=round((base[k]||0)*f);return o};
+ function nutrition(food,text){
+  const m=measure(text,food),per=food.per100,piece=food.perPiece;
+  const byGrams=(g,label)=>!(g>0)?{error:'Menge prüfen'}:per?{nut:scale(per,g/100),amount:g,label}:{error:'Wie viele Stück?'};
+  if(m.grams!=null){const base=m.ml&&food.per100Ml?food.per100Ml:per;if(!(m.grams>0))return {error:'Menge prüfen'};if(!base)return {error:'Wie viele Stück?'};return {nut:scale(base,m.grams/100),amount:m.grams,label:m.unit?de(m.q)+' '+m.unit+' (≈ '+de(m.grams)+' g)':de(m.grams)+(m.ml?' ml':' g')}}
+  if(m.count!=null){if(!(m.count>0))return {error:'Stückzahl prüfen'};
+   if(piece)return {nut:scale(piece,m.count),amount:m.count,label:de(m.count)+' Stück'};
+   if(food.pieceG)return byGrams(m.count*food.pieceG,de(m.count)+' '+(m.unit==='Scheibe'?(m.count<=1?'Scheibe':'Scheiben'):'Stück')+' (≈ '+de(m.count*food.pieceG)+' g)');
+   if(food.defaultG)return byGrams(m.count*food.defaultG,de(m.count)+(m.count<=1?' Portion':' Portionen')+' (≈ '+de(m.count*food.defaultG)+' g)');
+   return {error:'Welche Menge in Gramm?'}}
+  if(m.portions!=null){if(!(m.portions>0))return {error:'Menge prüfen'};
+   if(food.defaultG)return byGrams(m.portions*food.defaultG,de(m.portions)+(m.portions<=1?' Portion':' Portionen')+' (≈ '+de(m.portions*food.defaultG)+' g)');
+   if(piece)return {nut:scale(piece,m.portions),amount:m.portions,label:de(m.portions)+' Stück'};
+   if(food.pieceG)return byGrams(m.portions*food.pieceG,de(m.portions)+' Stück (≈ '+de(m.portions*food.pieceG)+' g)');
+   return {error:'Welche Menge in Gramm?'}}
+  if(food.defaultG&&per)return byGrams(food.defaultG,'übliche Portion (≈ '+de(food.defaultG)+' g)');
+  if(piece)return {nut:scale(piece,1),amount:1,label:'1 Stück'};
+  return {error:'Welche Menge?'};
+ }
+ return {NUTRIENTS,fromOpenFoodFacts,own,portion,grams,validBarcode,measure,nutrition};
 });
 
 // SOURCE: domain/brain/calendar.js
@@ -1244,7 +1424,7 @@ return {run};
    if(currentState!==undefined){const pending=JSON.stringify(state.normalize(currentState));if(expected===null||pending!==JSON.stringify(JSON.parse(expected))){assertUnchanged();write('pulseOS_pre_import_memory_backup',pending)}}
    return transact(prepared,'pulseOS_pre_import_backup');
   })}
-  function exportText(value,{wrapped=true,version='16.1.0',now=new Date()}={}){
+  function exportText(value,{wrapped=true,version='17.0.0',now=new Date()}={}){
    // Emergency export deliberately does not reject uncommitted in-memory data.
    return JSON.stringify(wrapped?{app:'PULSE',version,schemaVersion:value.schemaVersion||state.SCHEMA_VERSION,exportedAt:now.toISOString(),data:value}:value,null,2);
   }
@@ -1328,10 +1508,10 @@ function setHomeTrainingDone(done){const event=db.events.find(e=>e.type==='home-
 // SOURCE: ui/food-flows.js
 /* Food intake: one commit path, explicit quantities, review before uncertain data. */
 let pendingFoodCapture=null;
-function allFoods(){return [...db.foodLibrary,...BUILTIN_FOODS]}
+function allFoods(){return [...db.foodLibrary,...BUILTIN_FOODS,...PulseFoodTable.FOODS]}
 function foodMatches(txt){const low=txt.toLocaleLowerCase('de'),matches=[];for(const food of allFoods())for(const alias of (food.aliases||[food.name])){const escaped=alias.toLocaleLowerCase('de').replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const re=new RegExp('(^|[^\\p{L}])('+escaped+')(?=$|[^\\p{L}])','gu');for(const m of low.matchAll(re))matches.push({food,length:alias.length,start:m.index+m[1].length,end:m.index+m[1].length+m[2].length})}matches.sort((a,b)=>b.length-a.length);const selected=[];for(const m of matches)if(!selected.some(x=>m.start<x.end&&m.end>x.start))selected.push(m);return selected}
 function foodMatch(txt){return foodMatches(txt)[0]?.food}
-function parseFoodPart(part){const matches=foodMatches(part),f=matches[0]?.food;if(matches.length>1)return {raw:part,unknown:true,reason:'Bitte Lebensmittel und Mengen getrennt angeben'};if(!f)return {raw:part.trim(),unknown:true,reason:'Lebensmittel noch unklar'};if(/-\s*\d/.test(part))return {raw:part,food:f,unknown:true,reason:'Menge prüfen'};const gram=part.match(/(\d+(?:[,.]\d+)?)\s*g\b/i),piece=part.match(/(\d+|ein|eine|einen|zwei|drei)\s*(?:x|stück|stueck|eier?|ei\b)/i)||(f.perPiece&&!gram?part.match(/(?:^|\s)(\d+|ein|eine|einen|zwei|drei)\s+(?!g\b|ml\b)\S/i):null);let amount=null,nut=null,label='';if(gram&&f.per100){amount=Number(gram[1].replace(',','.'));if(amount<=0)return {raw:part,food:f,unknown:true,reason:'Menge prüfen'};nut=nutritionScale(f.per100,amount/100);label=amount+' g'}else if(f.perPiece&&piece){amount=({ein:1,eine:1,einen:1,zwei:2,drei:3}[piece[1].toLowerCase()]??Number(piece[1]));if(!(amount>0))return {raw:part,food:f,unknown:true,reason:'Stückzahl prüfen'};nut=nutritionScale(f.perPiece,amount);label=amount+' Stück'}else if(f.defaultG&&f.per100){amount=f.defaultG;nut=nutritionScale(f.per100,amount/100);label=amount+' g · gespeicherte Portion'}else return {raw:part.trim(),food:f,unknown:true,reason:'Welche Menge?'};return {raw:part.trim(),food:f,amount,label,nut,confidence:f.confidence||'geschaetzt'}}
+function parseFoodPart(part){const matches=foodMatches(part),f=matches[0]?.food;if(matches.length>1)return {raw:part,unknown:true,reason:'Bitte Lebensmittel und Mengen getrennt angeben'};if(!f)return {raw:part.trim(),unknown:true,reason:'Lebensmittel noch unklar'};if(/-\s*\d/.test(part))return {raw:part,food:f,unknown:true,reason:'Menge prüfen'};const r=PulseFoods.nutrition(f,part);if(r.error)return {raw:part.trim(),food:f,unknown:true,reason:r.error};return {raw:part.trim(),food:f,amount:r.amount,label:r.label,nut:r.nut,confidence:f.confidence||'geschaetzt'}}
 function parseFoodText(text){return text.replace(/(\d),(\d)/g,'$1.$2').split(/[,;+]|\bund\b|\bmit\b/gi).map(x=>x.trim()).filter(Boolean).map(parseFoodPart)}
 function commitMeal(meal){const m={id:uid('meal'),date:key(),time:new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}),...meal};for(const k of ['kcal','protein','carbs','fat','fiber'])if(!Number.isFinite(m[k])||m[k]<0)throw new Error('Bitte die Nährwerte prüfen.');db.meals.push(m);pushUndo({type:'meal',id:m.id});const d=today();for(const k of ['kcal','protein','carbs','fat','fiber'])d[k]=nums(d[k]+m[k]);d.meals++;emit('meal.logged',{mealId:m.id,name:m.name},{source:m.source||'user',confidence:m.confidence||'confirmed'});return m}
 function directFoodCapture(raw){const template=findMealTemplate(raw),text=template?.text||raw,parts=parseFoodText(text);if(!parts.length||parts.some(p=>p.unknown))return null;const totals={kcal:0,protein:0,carbs:0,fat:0,fiber:0};for(const p of parts)for(const k of Object.keys(totals))totals[k]=nums(totals[k]+p.nut[k]);const estimated=parts.some(p=>p.confidence==='geschaetzt');return commitMeal({name:template?.label||parts.map(p=>p.food.name+' '+p.label).join(' + '),...totals,note:'',source:template?'saved':'natural-language',confidence:estimated?'estimated':'calculated',rawText:raw})}
@@ -1425,15 +1605,15 @@ function renderSmartPreview() {
   for(const part of known)for(const nutrient of Object.keys(sum))sum[nutrient]=nums(sum[nutrient]+(part.nut[nutrient]||0));
   draft.known=known;draft.unknown=unknown;draft.sum=sum;
   box.innerHTML='<div class="note"><b>'+(unknown.length?'Eine Angabe fehlt noch.':'So habe ich es verstanden.')+'</b>'+known.map(part=>'<p>'+esc(part.food.name)+' · '+esc(part.label)+'</p>').join('')+
-    unknown.map(part=>'<p><b>'+esc(part.raw)+'</b><br>'+esc(part.reason||'Bitte die Menge oder das Lebensmittel präzisieren.')+(part.food?'':'<br><button type="button" class="life-textbtn" onclick="'+lifeCall('lifeFoodEditor',null,{name:part.raw.replace(/[\d.,]+\s*(g|ml|stück|x)?\b/gi,'').replace(/\s+/g,' ').trim()})+'">Als eigenes Lebensmittel anlegen</button>')+'</p>').join('')+
-    (known.length?'<p>'+sum.kcal+' kcal · '+sum.protein+' g Protein'+(known.some(part=>part.confidence==='geschaetzt')?' · geschätzt':'')+'</p>':'')+
+    unknown.map(part=>'<p><b>'+esc(part.raw)+'</b><br>'+esc(part.reason||'Bitte die Menge oder das Lebensmittel präzisieren.')+(part.food?'':(n=>'<br><span class="food-missing-actions"><button type="button" class="life-textbtn" onclick="'+lifeCall('lifeFoodSearch',n)+'">Online suchen</button><button type="button" class="life-textbtn" onclick="'+lifeCall('lifeFoodEditor',null,{name:n})+'">Selbst anlegen</button></span>')(part.raw.replace(/[\d.,]+\s*(g|ml|stück|x)?\b/gi,'').replace(/\s+/g,' ').trim()))+'</p>').join('')+
+    (known.length?'<p>'+Math.round(sum.kcal)+' kcal · '+de(sum.protein)+' g Protein'+(known.some(part=>part.confidence==='geschaetzt')?' · geschätzt':'')+'</p>':'')+
     '<div class="actions"><button type="button" class="primary" onclick="saveSmartFood()" '+(unknown.length||!known.length?'disabled':'')+'>Mahlzeit eintragen</button><button type="button" class="text-button" onclick="clearSmartFood()">Verwerfen</button></div></div>';
 }
 function renderNutrition() {
   const d=today();
-  for(const [id,value] of [['nKcal',d.kcal],['nProt',d.protein+' g'],['nCarb',d.carbs+' g'],['nFat',d.fat+' g']])document.getElementById(id).textContent=value;
+  for(const [id,value] of [['nKcal',Math.round(d.kcal)],['nProt',de(d.protein)+' g'],['nCarb',de(d.carbs)+' g'],['nFat',de(d.fat)+' g']])document.getElementById(id).textContent=value;
   document.getElementById('mealList').innerHTML=db.meals.filter(meal=>meal.date===key()).slice().reverse().map(meal=>
-    '<div class="item mealItem"><div class="grow"><small>'+esc(meal.time||'Zeit offen')+'</small><b>'+esc(meal.name)+'</b><div class="muted">'+esc(meal.protein)+' g Protein · '+esc(meal.kcal)+' kcal'+(meal.confidence==='estimated'?' · geschätzt':'')+'</div></div><button type="button" class="icon-button danger" aria-label="'+esc(meal.name)+' löschen" onclick="removeMeal('+db.meals.indexOf(meal)+')">'+uiIcon('close')+'</button></div>'
+    '<div class="item mealItem"><div class="grow"><small>'+esc(meal.time||'Zeit offen')+'</small><b>'+esc(meal.name)+'</b><div class="muted">'+de(meal.protein)+' g Protein · '+Math.round(meal.kcal)+' kcal'+(meal.confidence==='estimated'?' · geschätzt':'')+'</div></div><button type="button" class="icon-button danger" aria-label="'+esc(meal.name)+' löschen" onclick="removeMeal('+db.meals.indexOf(meal)+')">'+uiIcon('close')+'</button></div>'
   ).join('')||'<div class="empty">Hier erscheinen deine Mahlzeiten. Du musst nichts nachtragen, um neu anzufangen.</div>';
   document.getElementById('macroBars').innerHTML='<div class="quiet-note">'+esc(nutritionNextAction())+'</div>';
   renderFoodToday();renderFoodLibrary();
@@ -1558,7 +1738,7 @@ function directDrinkCapture(raw){
   delete drink.ok;db.drinks.push(drink);applyDrink(drink,1);pushUndo({type:'drink',id:drink.id});emit('drink.logged',{drinkId:drink.id,ml:drink.ml},{source:'user',confidence:drink.confidence});return drink;
 }
 function directIntakeCapture(raw){return interpretCapture(raw).type==='drink'?directDrinkCapture(raw):directFoodCapture(raw)}
-function intakeMessage(record){return record.kind==='drink'?record.name+' · '+record.ml+' ml eingetragen'+(record.waterMl?' · zum Wasser hinzugefügt':record.nutrition?'':' · Nährwerte offen'):record.name+' eingetragen · '+record.kcal+' kcal · '+record.protein+' g Protein'}
+function intakeMessage(record){return record.kind==='drink'?record.name+' · '+record.ml+' ml eingetragen'+(record.waterMl?' · zum Wasser hinzugefügt':record.nutrition?'':' · Nährwerte offen'):record.name+' eingetragen · '+Math.round(record.kcal)+' kcal · '+de(record.protein)+' g Protein'}
 function removeDrink(id){
   const index=db.drinks.findIndex(x=>x.id===id);if(index<0)return;
   const record=db.drinks[index];pushUndo({type:'drink-delete',record:JSON.parse(JSON.stringify(record)),index});applyDrink(record,-1);db.drinks.splice(index,1);setDrinkCapture(record,false);save();toast('Getränk entfernt','Rückgängig');
@@ -1824,7 +2004,7 @@ function lifeCloseSheet(){closeDialog(document.getElementById('lifeSheet'))}
 function lifeLegacy(v){goView(v);if(v==='workout')showWorkout(activePlan()||'A')}
 function lifeSettings(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
- el.innerHTML='<span class="life-kicker">Dein PULSE</span><h2 id="lifeDetailHeading" tabindex="-1">So passt es zu dir.</h2><p class="life-detail-intro">PULSE 16.1</p><label class="life-name-field">Wie soll PULSE dich nennen?<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruheansicht</b><p>Weniger Schmuck und Bewegung. Deine Inhalte bleiben sichtbar.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div><div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p><div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Bisherige Einträge & Einstellungen ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
+ el.innerHTML='<span class="life-kicker">Dein PULSE</span><h2 id="lifeDetailHeading" tabindex="-1">So passt es zu dir.</h2><p class="life-detail-intro">PULSE 17</p><label class="life-name-field">Wie soll PULSE dich nennen?<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruheansicht</b><p>Weniger Schmuck und Bewegung. Deine Inhalte bleiben sichtbar.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div><div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p><div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Bisherige Einträge & Einstellungen ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
  (navigator.storage?.persisted?navigator.storage.persisted():Promise.resolve(false)).then(p=>{const e=document.getElementById('lifeStorageState');if(e)e.textContent=p?'Speicher: dauerhaft geschützt':'Speicher: nicht dauerhaft geschützt'}).catch(()=>{});
 }
@@ -2345,6 +2525,7 @@ function lifeUnderstand(){
   const parts=i.type==='food'?parseFoodText(raw):[],known=parts.filter(p=>!p.unknown),kcal=Math.round(known.reduce((a,p)=>a+(p.nut?.kcal||0),0));
   offers.push(['Als '+(i.type==='drink'?'Getränk':'Mahlzeit')+' eintragen'+(known.length&&known.length===parts.length?' · '+kcal+' kcal':''),'lifeRouteCapture()']);
  }
+ if(i.type==='note'){const parts=parseFoodText(raw);if(parts.length&&parts.every(p=>!p.unknown)){const kcal=Math.round(parts.reduce((a,p)=>a+(p.nut?.kcal||0),0));offers.push(['Als Mahlzeit eintragen · '+kcal+' kcal','lifeRouteFood()'])}}
  if(i.type==='workout')offers.push(['Als Trainingssatz prüfen','lifeRouteCapture()']);
  if(i.type==='recovery'||i.type==='context'||i.type==='context-clear')offers.push([i.type==='recovery'?'Heute als Erholungstag markieren':'Als Befinden für heute speichern','lifeRouteCapture()']);
  if(when.date){
@@ -2358,6 +2539,11 @@ function lifeApplyWhen(kind,date,time){
  document.getElementById('lifeDateInput').value=date;document.getElementById('lifeTimeInput').value=time||'';
  lifeKindChanged(false);document.getElementById('lifePlanning').open=true;lifeRememberDraft();lifeUnderstand();
  toast((kind==='event'?'Termin':'Aufgabe')+' für '+lifeDate(date,{weekday:'long',day:'numeric',month:'long'})+(time?' um '+time:'')+' vorbereitet. Speichern mit „Aufheben“.');
+}
+function lifeRouteFood(){
+ const raw=[document.getElementById('lifeTitle').value,document.getElementById('lifeBody').value].filter(x=>x.trim()).join(' ').trim();if(!raw)return;
+ pulseStopDictation();const meal=directFoodCapture(raw);if(!meal)return toast('Bitte die Mengen prüfen.');
+ lifeState().draft=null;lifeEditorPhotos=[];save();lifeCloseSheet();render();toast(intakeMessage(meal),'Rückgängig');
 }
 function lifeRouteCapture(){
  const raw=[document.getElementById('lifeTitle').value,document.getElementById('lifeBody').value].filter(x=>x.trim()).join(' ').trim();
@@ -2455,6 +2641,28 @@ function lifeBodyCard(date){
  const c=pulseContext(),d=today(),p=goalValue('protein'),t=c.training;
  const training=c.mode==='recovery'?'Erholung':t?.completed?'Training erledigt':t?.active?'Training läuft':t?.kind==='home'?'Heimtraining':t?'Training '+t.plan:'Kein Training';
  return '<button type="button" class="life-body-card" onclick="goView(\'bodyhub\')"><span class="green">'+lifeGlyph('leaf')+'</span><span class="grow"><b>'+esc(training)+'</b><small>'+Math.round(d.protein||0)+(p?' von '+p:'')+' g Protein · '+de(d.water)+' L Wasser · '+(d.meals||0)+' '+(d.meals===1?'Mahlzeit':'Mahlzeiten')+'</small></span><i aria-hidden="true">›</i></button>';
+}
+
+/* Name search in Open Food Facts for branded products the table does not know. */
+async function lifeFoodSearch(term){
+ libDetailShell('<span class="life-kicker">Lebensmittel suchen</span><h2 id="lifeDetailHeading" tabindex="-1">Online nachschlagen</h2><p class="life-detail-intro">Sucht in Open Food Facts, einer freien Datenbank mit Packungsangaben. Was du auswählst, merkt sich PULSE.</p><form onsubmit="event.preventDefault();lifeFoodSearchRun(this.q.value)"><label>Wonach suchst du?<input name="q" value="'+esc(term||'')+'" autocomplete="off" enterkeyhint="search"/></label><div class="life-detail-actions"><button class="life-btn dark" type="submit">Suchen</button></div></form><div id="foodSearchResults" aria-live="polite"></div>');
+ if(term&&term.trim().length>=2)lifeFoodSearchRun(term);
+}
+let foodSearchHits=[];
+async function lifeFoodSearchRun(term){
+ const box=document.getElementById('foodSearchResults');if(!box)return;term=String(term||'').trim();if(term.length<2)return toast('Bitte mindestens zwei Buchstaben.');
+ box.innerHTML='<p class="capture-understanding">Suche „'+esc(term)+'“ …</p>';
+ try{
+  const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),10000);
+  const res=await fetch('https://world.openfoodfacts.org/cgi/search.pl?search_terms='+encodeURIComponent(term)+'&search_simple=1&action=process&json=1&page_size=12&lc=de&fields=code,product_name,product_name_de,generic_name,brands,nutriments,serving_size',{signal:ctrl.signal});clearTimeout(timer);
+  const data=res.ok?await res.json():{};
+  foodSearchHits=(data.products||[]).map(p=>PulseFoods.fromOpenFoodFacts({status:1,product:p},p.code)).filter(f=>f&&PulseFoods.validBarcode(f.barcode)).slice(0,10);
+  box.innerHTML=foodSearchHits.length?'<div class="life-tarot-list">'+foodSearchHits.map((f,i)=>'<button type="button" onclick="lifeFoodPick('+i+')"><span class="grow"><b>'+esc(f.name)+'</b><small>'+esc([f.brand,de(f.per100.kcal)+' kcal · '+de(f.per100.protein)+' g Protein pro 100 g'].filter(Boolean).join(' · '))+'</small></span><span aria-hidden="true">＋</span></button>').join('')+'</div>':'<div class="note"><b>Nichts Passendes gefunden.</b><p>Versuch einen kürzeren Begriff oder leg es selbst an.</p><div class="actions">'+lifeButton('Selbst anlegen',lifeCall('lifeFoodEditor',null,{name:term}),'life-btn')+'</div></div>';
+ }catch(_){box.innerHTML='<div class="note"><b>Keine Verbindung zur Datenbank.</b><p>Ohne Internet geht nur die eingebaute Tabelle und was du gespeichert hast.</p></div>'}
+}
+function lifeFoodPick(i){
+ const f=foodSearchHits[i];if(!f)return;rememberFood(f);
+ if(save()){lifeCloseSheet();render();toast(f.name+' gemerkt');const t=document.getElementById('smartFoodText');if(t?.value.trim()&&document.getElementById('appMain').dataset.view==='nutrition')understandFood()}
 }
 // SOURCE: ui/tarot.js
 /* Tarot practice: daily card history, personal meanings, drawn spreads. */

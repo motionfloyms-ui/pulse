@@ -14,7 +14,7 @@ function directDrinkCapture(raw){
   delete drink.ok;db.drinks.push(drink);applyDrink(drink,1);pushUndo({type:'drink',id:drink.id});emit('drink.logged',{drinkId:drink.id,ml:drink.ml},{source:'user',confidence:drink.confidence});return drink;
 }
 function directIntakeCapture(raw){return interpretCapture(raw).type==='drink'?directDrinkCapture(raw):directFoodCapture(raw)}
-function intakeMessage(record){return record.kind==='drink'?record.name+' · '+record.ml+' ml eingetragen'+(record.waterMl?' · zum Wasser hinzugefügt':record.nutrition?'':' · Nährwerte offen'):record.name+' eingetragen · '+record.kcal+' kcal · '+record.protein+' g Protein'}
+function intakeMessage(record){return record.kind==='drink'?record.name+' · '+record.ml+' ml eingetragen'+(record.waterMl?' · zum Wasser hinzugefügt':record.nutrition?'':' · Nährwerte offen'):record.name+' eingetragen · '+Math.round(record.kcal)+' kcal · '+de(record.protein)+' g Protein'}
 function removeDrink(id){
   const index=db.drinks.findIndex(x=>x.id===id);if(index<0)return;
   const record=db.drinks[index];pushUndo({type:'drink-delete',record:JSON.parse(JSON.stringify(record)),index});applyDrink(record,-1);db.drinks.splice(index,1);setDrinkCapture(record,false);save();toast('Getränk entfernt','Rückgängig');

@@ -17,6 +17,7 @@
   "domain/body/progress.js",
   "domain/body/session.js",
   "domain/body/drinks.js",
+  "domain/body/food-table.js",
   "domain/body/foods.js",
   "domain/brain/calendar.js",
   "storage/local-store.js",

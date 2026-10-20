@@ -84,15 +84,15 @@ function renderSmartPreview() {
   for(const part of known)for(const nutrient of Object.keys(sum))sum[nutrient]=nums(sum[nutrient]+(part.nut[nutrient]||0));
   draft.known=known;draft.unknown=unknown;draft.sum=sum;
   box.innerHTML='<div class="note"><b>'+(unknown.length?'Eine Angabe fehlt noch.':'So habe ich es verstanden.')+'</b>'+known.map(part=>'<p>'+esc(part.food.name)+' · '+esc(part.label)+'</p>').join('')+
-    unknown.map(part=>'<p><b>'+esc(part.raw)+'</b><br>'+esc(part.reason||'Bitte die Menge oder das Lebensmittel präzisieren.')+(part.food?'':'<br><button type="button" class="life-textbtn" onclick="'+lifeCall('lifeFoodEditor',null,{name:part.raw.replace(/[\d.,]+\s*(g|ml|stück|x)?\b/gi,'').replace(/\s+/g,' ').trim()})+'">Als eigenes Lebensmittel anlegen</button>')+'</p>').join('')+
-    (known.length?'<p>'+sum.kcal+' kcal · '+sum.protein+' g Protein'+(known.some(part=>part.confidence==='geschaetzt')?' · geschätzt':'')+'</p>':'')+
+    unknown.map(part=>'<p><b>'+esc(part.raw)+'</b><br>'+esc(part.reason||'Bitte die Menge oder das Lebensmittel präzisieren.')+(part.food?'':(n=>'<br><span class="food-missing-actions"><button type="button" class="life-textbtn" onclick="'+lifeCall('lifeFoodSearch',n)+'">Online suchen</button><button type="button" class="life-textbtn" onclick="'+lifeCall('lifeFoodEditor',null,{name:n})+'">Selbst anlegen</button></span>')(part.raw.replace(/[\d.,]+\s*(g|ml|stück|x)?\b/gi,'').replace(/\s+/g,' ').trim()))+'</p>').join('')+
+    (known.length?'<p>'+Math.round(sum.kcal)+' kcal · '+de(sum.protein)+' g Protein'+(known.some(part=>part.confidence==='geschaetzt')?' · geschätzt':'')+'</p>':'')+
     '<div class="actions"><button type="button" class="primary" onclick="saveSmartFood()" '+(unknown.length||!known.length?'disabled':'')+'>Mahlzeit eintragen</button><button type="button" class="text-button" onclick="clearSmartFood()">Verwerfen</button></div></div>';
 }
 function renderNutrition() {
   const d=today();
-  for(const [id,value] of [['nKcal',d.kcal],['nProt',d.protein+' g'],['nCarb',d.carbs+' g'],['nFat',d.fat+' g']])document.getElementById(id).textContent=value;
+  for(const [id,value] of [['nKcal',Math.round(d.kcal)],['nProt',de(d.protein)+' g'],['nCarb',de(d.carbs)+' g'],['nFat',de(d.fat)+' g']])document.getElementById(id).textContent=value;
   document.getElementById('mealList').innerHTML=db.meals.filter(meal=>meal.date===key()).slice().reverse().map(meal=>
-    '<div class="item mealItem"><div class="grow"><small>'+esc(meal.time||'Zeit offen')+'</small><b>'+esc(meal.name)+'</b><div class="muted">'+esc(meal.protein)+' g Protein · '+esc(meal.kcal)+' kcal'+(meal.confidence==='estimated'?' · geschätzt':'')+'</div></div><button type="button" class="icon-button danger" aria-label="'+esc(meal.name)+' löschen" onclick="removeMeal('+db.meals.indexOf(meal)+')">'+uiIcon('close')+'</button></div>'
+    '<div class="item mealItem"><div class="grow"><small>'+esc(meal.time||'Zeit offen')+'</small><b>'+esc(meal.name)+'</b><div class="muted">'+de(meal.protein)+' g Protein · '+Math.round(meal.kcal)+' kcal'+(meal.confidence==='estimated'?' · geschätzt':'')+'</div></div><button type="button" class="icon-button danger" aria-label="'+esc(meal.name)+' löschen" onclick="removeMeal('+db.meals.indexOf(meal)+')">'+uiIcon('close')+'</button></div>'
   ).join('')||'<div class="empty">Hier erscheinen deine Mahlzeiten. Du musst nichts nachtragen, um neu anzufangen.</div>';
   document.getElementById('macroBars').innerHTML='<div class="quiet-note">'+esc(nutritionNextAction())+'</div>';
   renderFoodToday();renderFoodLibrary();

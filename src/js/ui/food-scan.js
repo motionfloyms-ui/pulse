@@ -85,3 +85,25 @@ function lifeBodyCard(date){
  const training=c.mode==='recovery'?'Erholung':t?.completed?'Training erledigt':t?.active?'Training läuft':t?.kind==='home'?'Heimtraining':t?'Training '+t.plan:'Kein Training';
  return '<button type="button" class="life-body-card" onclick="goView(\'bodyhub\')"><span class="green">'+lifeGlyph('leaf')+'</span><span class="grow"><b>'+esc(training)+'</b><small>'+Math.round(d.protein||0)+(p?' von '+p:'')+' g Protein · '+de(d.water)+' L Wasser · '+(d.meals||0)+' '+(d.meals===1?'Mahlzeit':'Mahlzeiten')+'</small></span><i aria-hidden="true">›</i></button>';
 }
+
+/* Name search in Open Food Facts for branded products the table does not know. */
+async function lifeFoodSearch(term){
+ libDetailShell('<span class="life-kicker">Lebensmittel suchen</span><h2 id="lifeDetailHeading" tabindex="-1">Online nachschlagen</h2><p class="life-detail-intro">Sucht in Open Food Facts, einer freien Datenbank mit Packungsangaben. Was du auswählst, merkt sich PULSE.</p><form onsubmit="event.preventDefault();lifeFoodSearchRun(this.q.value)"><label>Wonach suchst du?<input name="q" value="'+esc(term||'')+'" autocomplete="off" enterkeyhint="search"/></label><div class="life-detail-actions"><button class="life-btn dark" type="submit">Suchen</button></div></form><div id="foodSearchResults" aria-live="polite"></div>');
+ if(term&&term.trim().length>=2)lifeFoodSearchRun(term);
+}
+let foodSearchHits=[];
+async function lifeFoodSearchRun(term){
+ const box=document.getElementById('foodSearchResults');if(!box)return;term=String(term||'').trim();if(term.length<2)return toast('Bitte mindestens zwei Buchstaben.');
+ box.innerHTML='<p class="capture-understanding">Suche „'+esc(term)+'“ …</p>';
+ try{
+  const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),10000);
+  const res=await fetch('https://world.openfoodfacts.org/cgi/search.pl?search_terms='+encodeURIComponent(term)+'&search_simple=1&action=process&json=1&page_size=12&lc=de&fields=code,product_name,product_name_de,generic_name,brands,nutriments,serving_size',{signal:ctrl.signal});clearTimeout(timer);
+  const data=res.ok?await res.json():{};
+  foodSearchHits=(data.products||[]).map(p=>PulseFoods.fromOpenFoodFacts({status:1,product:p},p.code)).filter(f=>f&&PulseFoods.validBarcode(f.barcode)).slice(0,10);
+  box.innerHTML=foodSearchHits.length?'<div class="life-tarot-list">'+foodSearchHits.map((f,i)=>'<button type="button" onclick="lifeFoodPick('+i+')"><span class="grow"><b>'+esc(f.name)+'</b><small>'+esc([f.brand,de(f.per100.kcal)+' kcal · '+de(f.per100.protein)+' g Protein pro 100 g'].filter(Boolean).join(' · '))+'</small></span><span aria-hidden="true">＋</span></button>').join('')+'</div>':'<div class="note"><b>Nichts Passendes gefunden.</b><p>Versuch einen kürzeren Begriff oder leg es selbst an.</p><div class="actions">'+lifeButton('Selbst anlegen',lifeCall('lifeFoodEditor',null,{name:term}),'life-btn')+'</div></div>';
+ }catch(_){box.innerHTML='<div class="note"><b>Keine Verbindung zur Datenbank.</b><p>Ohne Internet geht nur die eingebaute Tabelle und was du gespeichert hast.</p></div>'}
+}
+function lifeFoodPick(i){
+ const f=foodSearchHits[i];if(!f)return;rememberFood(f);
+ if(save()){lifeCloseSheet();render();toast(f.name+' gemerkt');const t=document.getElementById('smartFoodText');if(t?.value.trim()&&document.getElementById('appMain').dataset.view==='nutrition')understandFood()}
+}

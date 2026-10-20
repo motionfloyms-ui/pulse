@@ -635,6 +635,7 @@ th{color:var(--muted);font-weight:600}
 .life-day-aside.is-busy{display:none}
 .life-day-layout:has(.life-day-aside.is-busy){grid-template-columns:minmax(0,1fr)}
 @media(max-width:360px){.food-today{grid-template-columns:1fr}}
+.food-missing-actions{display:flex;flex-wrap:wrap;gap:0 18px}
 /* Calm view: colour recedes, structure stays. */
 .life-calm .life-room-tile,.life-calm .life-room-hero{background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 5px 0 0 var(--room)}
 .life-calm .life-room-tile::after,.life-calm .life-room-hero::after{display:none}
