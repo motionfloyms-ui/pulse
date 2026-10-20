@@ -2,16 +2,16 @@
 /* Lebensräume UI. New shell; existing body tools use their established commands. */
 let lifeSelectedDay=null,lifeMonthOpen=false,lifeCurrentRoom=null,lifeQuery='',lifeKindFilter='',lifeEditingId=null,lifeRenderedDate=null;
 const lifeTemplates={
-gedanke:{kind:'note',room:'innen',title:'',body:'',hint:'Ein Gedanke darf erst einmal einfach da sein.'},
-reflexion:{kind:'note',room:'innen',title:'Was gerade in mir los ist',body:'Was beschäftigt mich?\n\nWas brauche ich?\n\nWas darf heute offen bleiben?\n'},
+gedanke:{kind:'note',room:'innen',title:'',body:'',hint:''},
+reflexion:{kind:'note',room:'innen',title:'Was gerade in mir los ist',body:'Was beschäftigt mich?\n\nWas brauche ich?\n\nWas kann warten?\n'},
 ritual:{kind:'ritual',room:'sinn',title:'Mein eigenes Ritual',body:'Meine Absicht:\n\nWas ich dafür brauche:\n\nMeine Praxis:\n\nWas ich mitnehmen möchte:\n',duration:10},
-traum:{kind:'note',room:'sinn',title:'Ein Traum, der bleibt',body:'Woran erinnere ich mich?\n\nBilder und Gefühle:\n\nMeine persönliche Deutung:\n'},
-natur:{kind:'note',room:'draussen',title:'Draußen entdeckt',body:'Ort:\n\nWas mir aufgefallen ist:\n\nWas ich darüber herausfinden möchte:\n'},
-idee:{kind:'project',room:'ideen',title:'Etwas ausprobieren',body:'Die Idee:\n\nWas mich daran reizt:\n\nEin erster kleiner Versuch:\n'},
-rezept:{kind:'recipe',room:'koerper',title:'Ein Essen, das mir guttut',body:'So mache ich es:\n\n',steps:[],hint:'Zutaten unten einzeln eintragen. Daraus entsteht später deine Einkaufsliste.'},
-kontakt:{kind:'task',room:'menschen',title:'Gemeinsame Zeit möglich machen',body:'Mit wem?\n\nEine Idee für uns:\n',duration:10},
-haushalt:{kind:'task',room:'zuhause',title:'Ein kleines Stück Zuhause',body:'Was würde den Ort angenehmer machen?\n',duration:10},
-papier:{kind:'project',room:'alltag',title:'Einen Vorgang klären',body:'Worum geht es?\n\nUnterlagen / Quelle:\n\nWarte ich auf jemanden?\n\nNächster Schritt:\n'}
+traum:{kind:'note',room:'sinn',title:'Traum',body:'Woran erinnere ich mich?\n\nBilder und Gefühle:\n\nMeine persönliche Deutung:\n'},
+natur:{kind:'note',room:'draussen',title:'Beobachtung',body:'Ort:\n\nWas mir aufgefallen ist:\n\nWas ich darüber herausfinden möchte:\n'},
+idee:{kind:'project',room:'ideen',title:'Neue Idee',body:'Die Idee:\n\nWas mich daran reizt:\n\nEin erster kleiner Versuch:\n'},
+rezept:{kind:'recipe',room:'koerper',title:'Rezept',body:'So mache ich es:\n\n',steps:[],hint:'Zutaten unten einzeln eintragen. Daraus entsteht später deine Einkaufsliste.'},
+kontakt:{kind:'task',room:'menschen',title:'Treffen planen',body:'Mit wem?\n\nEine Idee für uns:\n',duration:10},
+haushalt:{kind:'task',room:'zuhause',title:'Haushalt',body:'Was ist zu tun?\n',duration:10},
+papier:{kind:'project',room:'alltag',title:'Vorgang klären',body:'Worum geht es?\n\nUnterlagen / Quelle:\n\nWarte ich auf jemanden?\n\nNächster Schritt:\n'}
 };
 function lifeCall(name,...args){return esc(name+'('+args.map(x=>JSON.stringify(x)).join(',')+')')}
 function lifeButton(label,call,cls='life-btn'){return '<button type="button" class="'+cls+'" onclick="'+call+'">'+label+'</button>'}
@@ -52,45 +52,21 @@ function lifeCard(x,{compact=false}={}){
  const r=PulseLife.room(x.room),status={done:'Erledigt',waiting:'Wartet',parked:'Geparkt'}[x.status];
  const tags=[PulseLife.KINDS[x.kind],status,x.deadline?'Frist '+lifeDate(x.deadline,{day:'numeric',month:'short'}):'',x.photos?.length?x.photos.length+(x.photos.length===1?' Foto':' Fotos'):''].filter(Boolean).join(' · ');
  const check=x.kind==='task'?'<button type="button" class="life-check '+(x.status==='done'?'checked':'')+'" aria-label="'+esc((x.status==='done'?'Wieder öffnen: ':'Erledigen: ')+x.title)+'" onclick="'+lifeCall('lifeToggle',x.id)+'">'+(x.status==='done'?lifeGlyph('check'):'<span></span>')+'</button>':'<span class="life-entry-symbol '+r.color+'">'+lifeGlyph(r.symbol)+'</span>';
- return '<article class="life-entry '+(compact?'compact ':'')+(x.status==='done'?'is-done':'')+'">'+check+'<button type="button" class="life-entry-open" onclick="'+lifeCall('lifeOpenItem',x.id)+'"><span class="life-entry-title">'+esc(x.title)+'</span><span class="life-entry-meta">'+esc(tags)+'</span>'+(!compact&&x.body?'<span class="life-entry-excerpt">'+esc(x.body.slice(0,130))+'</span>':'')+'</button><span class="life-entry-arrow" aria-hidden="true">↗</span></article>';
+ return '<article class="life-entry '+(compact?'compact ':'')+(x.status==='done'?'is-done':'')+(x.id===lifeJustDone&&Date.now()-lifeJustDoneAt<1500?' just-done':'')+'">'+check+'<button type="button" class="life-entry-open" onclick="'+lifeCall('lifeOpenItem',x.id)+'"><span class="life-entry-title">'+esc(x.title)+'</span><span class="life-entry-meta">'+esc(tags)+'</span>'+(!compact&&x.body?'<span class="life-entry-excerpt">'+esc(x.body.slice(0,130))+'</span>':'')+'</button><span class="life-entry-arrow" aria-hidden="true">↗</span></article>';
 }
-function lifeEmpty(title,text,action,label='Etwas festhalten'){return '<div class="life-empty"><b>'+title+'</b><p>'+text+'</p>'+(action?lifeButton(label,action,'life-textbtn'):'')+'</div>'}
-function renderLifeToday(){
- const host=document.getElementById('lifeTodayContent');if(!host)return;const date=lifeSelectedDay||key();lifeSelectedDay=date;
- const items=PulseLife.day(db,date),all=PulseLife.list(db),monday=PulseLife.offset(date,-((new Date(date+'T12:00:00').getDay()+6)%7));
- const loose=all.filter(x=>x.kind==='task'&&x.status==='open'&&!x.date).slice(0,3),overdue=all.filter(x=>x.kind==='task'&&x.status!=='done'&&x.status!=='parked'&&((x.deadline&&x.deadline<key())||(x.date&&x.date<key())));
- const dayTitle=date===key()?'Heute':date===PulseLife.offset(key(),1)?'Morgen':lifeDate(date,{weekday:'long'});
- const week=Array.from({length:7},(_,i)=>{const d=PulseLife.offset(monday,i);return '<button type="button" class="life-weekday '+(d===date?'selected':'')+'" aria-label="'+esc(lifeDate(d))+'" aria-pressed="'+(d===date)+'" onclick="'+lifeCall('lifeSelectDay',d)+'"><small>'+['Mo','Di','Mi','Do','Fr','Sa','So'][i]+'</small><b>'+Number(d.slice(8))+'</b><i class="'+(PulseLife.day(db,d).length?'filled':'')+'"></i></button>'}).join('');
- let month='';
- if(lifeMonthOpen)month='<div class="life-month"><div class="life-row">'+lifeButton('‹',lifeCall('lifeShiftMonth',-1),'life-iconbtn')+'<b>'+esc(lifeDate(date,{month:'long',year:'numeric'}))+'</b>'+lifeButton('›',lifeCall('lifeShiftMonth',1),'life-iconbtn')+'</div><div class="life-monthgrid">'+['M','D','M','D','F','S','S'].map(t=>'<small>'+t+'</small>').join('')+PulseCalendar.monthDays(date.slice(0,7)).map(d=>'<button type="button" aria-label="'+esc(lifeDate(d))+'" aria-pressed="'+(d===date)+'" class="'+(d.slice(0,7)!==date.slice(0,7)?'outside':'')+'" onclick="'+lifeCall('lifeSelectDay',d)+'">'+Number(d.slice(8))+(PulseLife.day(db,d).length?'<i></i>':'')+'</button>').join('')+'</div></div>';
- const timed=items.filter(x=>x.time),anytime=items.filter(x=>!x.time);
- const focus=lifeState().focus;
- host.innerHTML='<header class="life-pagehead life-greeting"><span class="life-kicker">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span><h1>'+esc(date===key()?lifeGreeting():dayTitle)+'</h1></header>'+
- '<div class="life-day-controls">'+lifeButton('‹',lifeCall('lifeMoveDay',-7),'life-iconbtn')+'<div class="life-week">'+week+'</div>'+lifeButton('›',lifeCall('lifeMoveDay',7),'life-iconbtn')+'</div>'+
- '<div class="life-calendar-tools">'+lifeButton(lifeMonthOpen?'Monat schließen':'Monat öffnen',lifeCall('lifeShowMonth'),'life-textbtn')+lifeButton('Zu heute',lifeCall('lifeSelectDay',key()),'life-textbtn')+'</div>'+month+
- (focus?'<button type="button" class="life-focus-banner" onclick="goView(\'focus\')"><span class="life-live-dot"></span><span><b>'+esc(focus.title)+'</b><small>'+(focus.state==='paused'?'Pausiert · dein Stand ist aufgehoben':'Fokus läuft')+'</small></span><span id="lifeMiniClock">'+lifeClock(PulseLife.remaining(focus,Date.now()))+'</span></button>':'')+
- '<div class="life-capture-wrap"><button type="button" class="life-capture-line" onclick="lifeCompose()">'+lifeGlyph('plus')+'<span>'+(lifeState().draft?'Dein Entwurf wartet.':'Was geht dir durch den Kopf?')+'</span></button>'+(pulseSpeechSupported()?'<button type="button" class="life-capture-mic" aria-label="Per Sprache festhalten" onclick="lifeComposeVoice()"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"3\" width=\"6\" height=\"11\" rx=\"3\"/><path d=\"M5 11a7 7 0 0 0 14 0M12 18v3\"/></svg></button>':'')+'</div>'+
- lifeBodyCard(date)+lifeTodayStrip(date)+lifeSystemRows(date)+(date===key()?lifeReviewRows():'')+'<div class="life-day-layout"><div><div class="life-sectionhead"><h2>Dein Tagesfaden</h2>'+lifeButton('＋ Termin',lifeCall('lifeCompose',{kind:'event',date}),'life-textbtn')+'</div><div class="life-agenda">'+
- (timed.length?timed.map(x=>'<div class="life-time-row"><time>'+esc(x.time)+'</time><div class="life-timed-entry '+PulseLife.room(x.room).color+'">'+lifeCard(x,{compact:true})+'<small>'+x.duration+' Min. eingeplant</small></div></div>').join(''):'<div class="life-free-time"><span class="life-freetime-line"></span><div><b>Ein Stück Freiraum.</b><p>Hier ist noch keine feste Zeit verplant.</p>'+lifeButton('Etwas einplanen',lifeCall('lifeCompose',{kind:'event',date}),'life-textbtn')+'</div></div>')+'</div>'+
- '<div class="life-sectionhead"><h2>Ohne feste Uhrzeit</h2>'+lifeButton('＋ Aufgabe',lifeCall('lifeCompose',{kind:'task',date}),'life-textbtn')+'</div>'+
- (anytime.length?anytime.map(x=>lifeCard(x,{compact:true})).join(''):lifeEmpty('Der Tag muss nicht voll sein.','Du kannst eine Aufgabe dazunehmen oder ihn offen lassen.'))+
- (loose.length?'<div class="life-sectionhead"><h2>Noch ohne Platz</h2>'+lifeButton('Alle ansehen',lifeCall('lifeOpenLibrary','task'),'life-textbtn')+'</div>'+loose.map(x=>lifeCard(x,{compact:true})).join(''):'')+
- (overdue.length?'<button class="life-return-row" type="button" onclick="lifeReview()"><span>↶</span><div><b>'+overdue.length+' lose '+(overdue.length===1?'Ende':'Enden')+'</b><small>In Ruhe neu entscheiden</small></div><span>→</span></button>':'')+
- '</div><aside class="life-day-aside'+(items.length||loose.length?' is-busy':'')+'"><article class="life-invitation"><div class="life-invitation-art">'+lifeGlyph('star')+'<i></i><i></i></div><span class="life-kicker">Eine Einladung</span><h2>Was darf heute einfach sein?</h2><p>Ein Gedanke. Ein kleiner Wunsch. Etwas, das nur dir gehört.</p>'+lifeButton('Festhalten ↗',lifeCall('lifeTemplate','gedanke'),'life-btn dark')+'</article>'+
- '<div class="life-sectionhead"><h2>Deine Wege</h2>'+lifeButton('Alle Räume',lifeCall('lifeOpenSpaces'),'life-textbtn')+'</div><div class="life-shortcuts">'+[['innen','Gedanken entwirren','reflexion'],['sinn','Ein eigenes Ritual','ritual'],['ideen','Etwas ausprobieren','idee']].map(([r,t,k])=>'<button type="button" onclick="'+lifeCall('lifeTemplate',k)+'"><span class="'+PulseLife.room(r).color+'">'+lifeGlyph(PulseLife.room(r).symbol)+'</span><b>'+t+'</b><i>↗</i></button>').join('')+'</div></aside></div>';
-}
+function lifeEmpty(title,text,action,label='Hinzufügen'){return '<div class="life-empty"><b>'+title+'</b><p>'+text+'</p>'+(action?lifeButton(label,action,'life-textbtn'):'')+'</div>'}
 function lifeOpenSpaces(id=null){lifeCurrentRoom=id;goView('spaces');renderLifeSpaces()}
 function renderLifeSpaces(){
  const el=document.getElementById('lifeSpaceContent');if(!el)return;
- if(!lifeCurrentRoom){el.innerHTML=lifeHeader('Dein ganzes Leben','Viele Seiten.<br>Alles du.','Jeder Raum hat Platz für Gedanken, Vorhaben und Dinge, die bleiben.')+'<div class="life-room-grid">'+PulseLife.ROOMS.map(r=>{const n=PulseLife.list(db).filter(x=>x.room===r.id);return '<button type="button" class="life-room-tile '+r.color+'" onclick="'+lifeCall('lifeOpenSpaces',r.id)+'"><span class="life-room-number">'+String(PulseLife.ROOMS.indexOf(r)+1).padStart(2,'0')+'</span>'+lifeGlyph(r.symbol)+'<span class="life-room-title">'+r.name+'</span><span class="life-room-sub">'+r.sub+'</span><span class="life-room-foot">'+(n.length?n.length+' eigene · ':'')+PulseLibrary.forRoom(r.id).length+' Inhalte'+' <b>↗</b></span></button>'}).join('')+'</div>';return}
+ if(!lifeCurrentRoom){el.innerHTML=lifeHeader('','Räume','')+'<div class="life-room-grid">'+PulseLife.ROOMS.map(r=>{const n=PulseLife.list(db).filter(x=>x.room===r.id);return '<button type="button" class="life-room-tile '+r.color+'" onclick="'+lifeCall('lifeOpenSpaces',r.id)+'"><span class="life-room-number">'+String(PulseLife.ROOMS.indexOf(r)+1).padStart(2,'0')+'</span>'+lifeGlyph(r.symbol)+'<span class="life-room-title">'+r.name+'</span><span class="life-room-sub">'+r.sub+'</span><span class="life-room-foot">'+(n.length?n.length+' eigene · ':'')+PulseLibrary.forRoom(r.id).length+' Inhalte'+' <b>↗</b></span></button>'}).join('')+'</div>';return}
  const r=PulseLife.room(lifeCurrentRoom),items=PulseLife.search(db,'','',r.id),prompts={alltag:['papier','haushalt'],innen:['reflexion','gedanke'],sinn:['ritual','traum'],koerper:['rezept'],menschen:['kontakt'],ideen:['idee'],draussen:['natur'],zuhause:['haushalt']};
- const names={papier:'Einen Vorgang klären',haushalt:'Eine kleine Veränderung',reflexion:'Gedanken entwirren',gedanke:'Frei schreiben',ritual:'Ein eigenes Ritual',traum:'Einen Traum festhalten',rezept:'Lieblingsessen sammeln',kontakt:'Gemeinsame Zeit',idee:'Eine Idee entwickeln',natur:'Eine Entdeckung'};
- el.innerHTML=lifeButton('← Alle Lebensräume',lifeCall('lifeOpenSpaces'),'life-back')+'<header class="life-room-hero '+r.color+'"><div><span class="life-kicker">Dein Lebensraum</span><h1>'+r.name+'</h1><p>'+r.sub+'</p></div>'+lifeGlyph(r.symbol)+'</header>'+
- '<p class="life-room-question">'+r.prompt+'</p><div class="life-room-actions">'+lifeButton('＋ Festhalten',lifeCall('lifeCompose',{room:r.id}),'life-btn dark')+lifeButton('＋ Vorhaben',lifeCall('lifeCompose',{room:r.id,kind:'project'}),'life-btn')+'</div>'+
+ const names={papier:'Vorgang (Papierkram)',haushalt:'Haushalt',reflexion:'Reflexion',gedanke:'Freie Notiz',ritual:'Ritual',traum:'Traumtagebuch',rezept:'Rezept',kontakt:'Treffen planen',idee:'Projektidee',natur:'Beobachtung'};
+ el.innerHTML=lifeButton('← Alle Lebensräume',lifeCall('lifeOpenSpaces'),'life-back')+'<header class="life-room-hero '+r.color+'"><div><h1>'+r.name+'</h1><p>'+r.sub+'</p></div>'+lifeGlyph(r.symbol)+'</header>'+
+ '<div class="life-room-actions">'+lifeButton('＋ Eintrag',lifeCall('lifeCompose',{room:r.id}),'life-btn dark')+lifeButton('＋ Projekt',lifeCall('lifeCompose',{room:r.id,kind:'project'}),'life-btn')+'</div>'+
  (r.id==='koerper'?'<div class="life-tool-ribbon">'+[['Essen & Trinken','nutrition'],['Training','workout'],['Befinden','recovery'],['Körperverlauf','history']].map(([t,v])=>lifeButton(t+' ↗',lifeCall('lifeLegacy',v),'life-tool-link')).join('')+'</div>':'')+
- lifeLibSection(r.id)+'<div class="life-sectionhead"><h2>Ein möglicher Anfang</h2><span class="life-subtle">Vorlagen, keine Pflichten</span></div><div class="life-template-row">'+(prompts[r.id]||[]).map(t=>lifeButton(names[t]+' ↗',lifeCall('lifeTemplate',t),'life-template')).join('')+'</div>'+
- '<div class="life-sectionhead"><h2>Was hier wächst</h2><span class="life-subtle">'+items.length+' Einträge</span></div>'+
- (items.length?items.map(x=>lifeCard(x)).join(''):lifeEmpty('Noch unbeschrieben.','Deine eigenen Gedanken und Vorhaben füllen diesen Raum.'));
+ lifeLibSection(r.id)+'<div class="life-sectionhead"><h2>Vorlagen</h2></div><div class="life-template-row">'+(prompts[r.id]||[]).map(t=>lifeButton(names[t]+' ↗',lifeCall('lifeTemplate',t),'life-template')).join('')+'</div>'+
+ '<div class="life-sectionhead"><h2>Deine Einträge</h2><span class="life-subtle">'+items.length+' Einträge</span></div>'+
+ (items.length?items.map(x=>lifeCard(x)).join(''):lifeEmpty('Noch keine Einträge in diesem Raum.',''));
 }
 function lifeOpenLibrary(kind='',query=''){lifeKindFilter=kind;lifeQuery=query;goView('library');renderLifeLibrary();if(query==='')document.getElementById('lifeSearch')?.focus()}
 function lifeFilter(kind){lifeKindFilter=kind;renderLifeLibrary()}
@@ -101,11 +77,11 @@ function renderLifeLibraryResults(){
  const items=PulseLife.search(db,lifeQuery,lifeKindFilter==='archive'?'':lifeKindFilter,'',lifeKindFilter==='archive');
  const own=items.length?'<p class="life-result-count">'+items.length+' '+(items.length===1?'eigener Eintrag':'eigene Einträge')+'</p>'+items.map(x=>lifeCard(x)).join(''):'';
  const lib=lifeQuery.trim()&&!lifeKindFilter?libSearchHTML(lifeQuery):'';
- el.innerHTML=own+lib||lifeEmpty(lifeQuery?'Hier ist noch keine Spur.':'Deine Sammlung beginnt mit einem Gedanken.',lifeQuery?'Versuch einen anderen Begriff. Durchsucht werden deine Einträge, die Bibliothek und alle Tarotkarten.':'Notizen, Ideen, Rezepte und Vorhaben bleiben hier wiederfindbar. Fertige Inhalte findest du unter „Bibliothek“.',lifeCall('lifeFilter','lib'),'Bibliothek öffnen');
+ el.innerHTML=own+lib||lifeEmpty(lifeQuery?'Keine Treffer.':'Noch keine Einträge.',lifeQuery?'Gesucht wird in deinen Einträgen, der Bibliothek und allen Tarotkarten.':'Fertige Inhalte findest du unter „Bibliothek“.',lifeCall('lifeFilter','lib'),'Bibliothek öffnen');
 }
 function renderLifeLibrary(){
  const el=document.getElementById('lifeLibraryContent');if(!el)return;
- el.innerHTML=lifeHeader('Dein Gedächtnis','Alles, was bleibt.','Gedanken dürfen wieder auftauchen.')+'<label class="life-search">'+lifeGlyph('search')+'<input id="lifeSearch" type="search" aria-label="Sammlung durchsuchen" placeholder="Suchen: Einträge, Rezepte, Tarot …" oninput="lifeSearchChanged(this.value)" value="'+esc(lifeQuery)+'"/></label><div class="life-filterbar">'+[['','Alles'],['lib','Bibliothek'],...Object.entries(PulseLife.KINDS),['archive','Archiv']].map(([k,label])=>'<button type="button" aria-pressed="'+(lifeKindFilter===k)+'" onclick="'+lifeCall('lifeFilter',k)+'">'+label+'</button>').join('')+'</div><div id="lifeLibraryResults"></div>';
+ el.innerHTML=lifeHeader('','Sammlung','')+'<label class="life-search">'+lifeGlyph('search')+'<input id="lifeSearch" type="search" aria-label="Sammlung durchsuchen" placeholder="Suchen: Einträge, Rezepte, Tarot …" oninput="lifeSearchChanged(this.value)" value="'+esc(lifeQuery)+'"/></label><div class="life-filterbar">'+[['','Alles'],['lib','Bibliothek'],...Object.entries(PulseLife.KINDS),['archive','Archiv']].map(([k,label])=>'<button type="button" aria-pressed="'+(lifeKindFilter===k)+'" onclick="'+lifeCall('lifeFilter',k)+'">'+label+'</button>').join('')+'</div><div id="lifeLibraryResults"></div>';
  renderLifeLibraryResults();
 }
 function lifeClock(sec){return Math.floor(sec/60).toString().padStart(2,'0')+':'+Math.floor(sec%60).toString().padStart(2,'0')}
@@ -114,24 +90,24 @@ function renderLifeFocus(){
  const f=lifeState().focus;
  if(!f){
  const candidates=PulseLife.list(db).filter(x=>['task','ritual'].includes(x.kind)&&x.status==='open').slice(0,8);
- el.innerHTML=lifeHeader('Ein geschützter Moment','Hier. Jetzt.','Du bestimmst, wie lange und wofür.')+'<div class="life-focus-idle"><div class="life-idle-orbit">'+lifeGlyph('focus')+'</div><h2>Ein bisschen Zeit für dich.</h2><p>Zum Anfangen, Nachdenken oder einfach Dasein.</p><div class="life-duration-choices">'+[5,10,25].map(n=>lifeButton(n+' Minuten',lifeCall('lifeBeginFocus',null,n),'life-btn '+(n===10?'dark':''))).join('')+'</div></div><div class="life-sectionhead"><h2>Oder etwas mitnehmen</h2></div>'+(candidates.length?candidates.map(x=>'<div class="life-focus-choice">'+lifeCard(x,{compact:true})+lifeButton('Starten',lifeCall('lifeBeginFocus',x.id,x.duration||10),'life-textbtn')+'</div>').join(''):lifeEmpty('Ein freier Anfang.','Aufgaben und Rituale aus deinen Räumen kannst du hier mitnehmen.'));return}
+ el.innerHTML=lifeHeader('','Fokus-Timer','')+'<div class="life-focus-idle"><div class="life-idle-orbit">'+lifeGlyph('focus')+'</div><h2>Timer starten</h2><p>Frei oder für eine Aufgabe unten.</p><div class="life-duration-choices">'+[5,10,25].map(n=>lifeButton(n+' Minuten',lifeCall('lifeBeginFocus',null,n),'life-btn '+(n===10?'dark':''))).join('')+'</div></div><div class="life-sectionhead"><h2>Für eine Aufgabe</h2></div>'+(candidates.length?candidates.map(x=>'<div class="life-focus-choice">'+lifeCard(x,{compact:true})+lifeButton('Starten',lifeCall('lifeBeginFocus',x.id,x.duration||10),'life-textbtn')+'</div>').join(''):lifeEmpty('Keine offenen Aufgaben oder Rituale.',''));return}
  const left=PulseLife.remaining(f,Date.now()),item=PulseLife.get(db,f.id);
- el.innerHTML=lifeHeader(f.state==='paused'?'Dein Moment wartet':'Ein geschützter Moment',esc(f.title))+
- '<div class="life-focus-stage"><div id="lifeFocusRing" class="life-focus-ring" style="--progress:'+(Math.max(0,Math.min(100,left/f.total*100)))+'%"><div><span id="lifeFocusClock" role="timer" aria-live="off">'+lifeClock(left)+'</span><span id="lifeFocusStatus">'+(f.state==='paused'?'Pausiert':left?'Zeit, die dir gehört':'Dein Zeitfenster ist vorbei')+'</span></div></div>'+
+ el.innerHTML=lifeHeader(f.state==='paused'?'Pausiert':'Läuft',esc(f.title))+
+ '<div class="life-focus-stage"><div id="lifeFocusRing" class="life-focus-ring" style="--progress:'+(Math.max(0,Math.min(100,left/f.total*100)))+'%"><div><span id="lifeFocusClock" role="timer" aria-live="off">'+lifeClock(left)+'</span><span id="lifeFocusStatus">'+(f.state==='paused'?'Pausiert':left?'verbleibend':'Zeit abgelaufen')+'</span></div></div>'+
  '<div class="life-duration-choices">'+lifeButton(f.state==='paused'?'Weiter':'Pause',lifeCall('lifePauseToggle'),'life-btn dark')+lifeButton('＋ 5 Min.',lifeCall('lifeAddFocus',5),'life-btn')+'</div></div>'+
- '<label class="life-resume-label">Ein Faden zum Wiederaufnehmen<textarea id="lifeResumeNote" rows="2" placeholder="Wo möchtest du weitermachen?" oninput="lifeRememberResume(this.value)">'+esc(f.resume||'')+'</textarea></label>'+
+ '<label class="life-resume-label">Notiz zum Weitermachen<textarea id="lifeResumeNote" rows="2" placeholder="Wo machst du weiter?" oninput="lifeRememberResume(this.value)">'+esc(f.resume||'')+'</textarea></label>'+
  (item?'<div class="life-focus-context"><b>'+esc(item.title)+'</b><p>'+esc(item.body.slice(0,400))+'</p>'+lifeButton('Eintrag öffnen ↗',lifeCall('lifeOpenItem',item.id),'life-textbtn')+'</div>':'')+
- '<div class="life-focus-finish">'+(item?.kind==='task'?lifeButton('Aufgabe erledigt',lifeCall('lifeFinishFocus',true),'life-btn dark'):'')+lifeButton('Für jetzt beenden',lifeCall('lifeFinishFocus',false),'life-btn')+'</div><p class="life-footnote">Ein abgelaufener Timer hakt nichts automatisch ab.</p>';
+ '<div class="life-focus-finish">'+(item?.kind==='task'?lifeButton('Aufgabe erledigt',lifeCall('lifeFinishFocus',true),'life-btn dark'):'')+lifeButton('Beenden',lifeCall('lifeFinishFocus',false),'life-btn')+'</div><p class="life-footnote">Ein abgelaufener Timer hakt nichts ab.</p>';
 }
 function lifeTick(){
  const f=db?.life?.focus;if(!f)return;const left=PulseLife.remaining(f,Date.now());
  const clock=document.getElementById('lifeFocusClock'),mini=document.getElementById('lifeMiniClock'),ring=document.getElementById('lifeFocusRing'),status=document.getElementById('lifeFocusStatus');
  if(clock)clock.textContent=lifeClock(left);if(mini)mini.textContent=lifeClock(left);
  if(ring)ring.style.setProperty('--progress',Math.max(0,Math.min(100,left/f.total*100))+'%');
- if(status)status.textContent=f.state==='paused'?'Pausiert':left?'Zeit, die dir gehört':'Dein Zeitfenster ist vorbei';
+ if(status)status.textContent=f.state==='paused'?'Pausiert':left?'verbleibend':'Zeit abgelaufen';
 }
 function lifeBeginFocus(id,minutes){
- if(lifeState().focus){goView('focus');return toast('Dein bisheriger Moment wartet. Du kannst ihn dort beenden.')}
+ if(lifeState().focus){goView('focus');return toast('Es läuft bereits ein Timer.')}
  const item=id?PulseLife.get(db,id):null;
  try{PulseLife.startFocus(db,item,minutes,Date.now());if(save()){goView('focus');renderLifeFocus()}}catch(e){toast(e.message)}
 }
@@ -142,7 +118,7 @@ function lifeFinishFocus(complete){
  const f=lifeState().focus;if(!f)return;
  if(complete&&f.id&&PulseLife.get(db,f.id)?.kind==='task'&&PulseLife.get(db,f.id).status!=='done'){if(!lifeMutate(()=>PulseLife.toggle(db,f.id,new Date().toISOString(),key(),uid('life')),'Aufgabe erledigt'))return}
  if(f.id&&f.resume&&PulseLife.get(db,f.id))PulseLife.update(db,f.id,{resume:f.resume},new Date().toISOString());
- lifeState().focus=null;if(save()){renderLifeFocus();toast('Für diesen Moment abgeschlossen.')}
+ lifeState().focus=null;if(save()){renderLifeFocus();toast('Timer beendet')}
 }
 function lifeSnapshots(){return {items:PulseLife.clone(lifeState().items),inbox:PulseLife.clone(db.inbox),tasks:PulseLife.clone(db.tasks),events:PulseLife.clone(db.events)}}
 function lifeArray(name){return name==='items'?lifeState().items:db[name]}
@@ -160,16 +136,16 @@ function undoLife(action){
  for(const c of [...action.changes].reverse()){const arr=lifeArray(c.name),i=arr.findIndex((x,j)=>String(x.id??j)===String(c.id));if(c.before===null)arr.splice(i,1);else arr[i]=c.before}
  if(save()){renderLife();toast('Änderung zurückgenommen')}
 }
-function lifeToggle(id){lifeMutate(()=>PulseLife.toggle(db,id,new Date().toISOString(),key(),uid('life')),'Aufgabe aktualisiert')}
-function lifeStatus(id,status){if(lifeMutate(()=>PulseLife.update(db,id,{status},new Date().toISOString()),status==='parked'?'Für später aufgehoben':'Aktualisiert'))lifeOpenItem(id)}
+function lifeToggle(id){const was=PulseLife.get(db,id)?.status;if(was!=='done'){lifeJustDone=id;lifeJustDoneAt=Date.now();pulseTap()}lifeMutate(()=>PulseLife.toggle(db,id,new Date().toISOString(),key(),uid('life')),'Aufgabe aktualisiert')}
+function lifeStatus(id,status){if(lifeMutate(()=>PulseLife.update(db,id,{status},new Date().toISOString()),status==='parked'?'Geparkt':'Aktualisiert'))lifeOpenItem(id)}
 function lifePlanTomorrow(id){if(lifeMutate(()=>PulseLife.update(db,id,{date:PulseLife.offset(key(),1),time:'',status:'open'},new Date().toISOString()),'Für morgen eingeplant'))lifeReview()}
 function lifeReview(){
  const items=PulseLife.list(db).filter(x=>x.kind==='task'&&!['done','parked'].includes(x.status)&&((x.date&&x.date<key())||(x.deadline&&x.deadline<key())));
- document.getElementById('lifeForm').hidden=true;const detail=document.getElementById('lifeDetail');detail.hidden=false;detail.innerHTML='<span class="life-kicker">Zurückkommen darf leicht sein</span><h2 id="lifeDetailHeading" tabindex="-1">Lose Enden.</h2><p class="life-detail-intro">Was ist noch wichtig? Du kannst neu planen, parken oder den Eintrag öffnen. Eine echte Frist bleibt erhalten.</p>'+
- (items.length?items.map(x=>lifeCard(x,{compact:true})+'<div class="life-review-actions">'+lifeButton('Morgen',lifeCall('lifePlanTomorrow',x.id),'life-btn')+lifeButton('Parken',lifeCall('lifeParkReview',x.id),'life-textbtn')+'</div>').join(''):lifeEmpty('Für den Moment sortiert.','Hier sind gerade keine alten Pläne offen.'));
+ document.getElementById('lifeForm').hidden=true;const detail=document.getElementById('lifeDetail');detail.hidden=false;detail.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Überfällig</h2><p class="life-detail-intro">Auf morgen legen oder parken. Fristen bleiben bestehen.</p>'+
+ (items.length?items.map(x=>lifeCard(x,{compact:true})+'<div class="life-review-actions">'+lifeButton('Morgen',lifeCall('lifePlanTomorrow',x.id),'life-btn')+lifeButton('Parken',lifeCall('lifeParkReview',x.id),'life-textbtn')+'</div>').join(''):lifeEmpty('Nichts überfällig.',''));
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
 }
-function lifeParkReview(id){if(lifeMutate(()=>PulseLife.update(db,id,{status:'parked'},new Date().toISOString()),'Für später aufgehoben'))lifeReview()}
+function lifeParkReview(id){if(lifeMutate(()=>PulseLife.update(db,id,{status:'parked'},new Date().toISOString()),'Geparkt'))lifeReview()}
 function lifeOpenItem(id){
  const x=PulseLife.get(db,id);if(!x)return;
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;const r=PulseLife.room(x.room),source=PulseLife.get(db,x.source),parent=PulseLife.get(db,x.parent);
@@ -181,16 +157,16 @@ function lifeOpenItem(id){
  (source?'<button type="button" class="life-source" onclick="'+lifeCall('lifeOpenItem',source.id)+'">Entstanden aus: '+esc(source.title)+' ↗</button>':'')+
  '<div class="life-prose">'+esc(x.body||'')+'</div>'+(x.photos?.length?'<div class="life-photo-grid">'+photoTiles(x.photos)+'</div>':'')+
  (x.url?'<a class="life-source" href="'+esc(x.url)+'" target="_blank" rel="noopener noreferrer">Quelle öffnen ↗</a>':'')+
- (x.steps.length?'<div class="life-steps"><h3>'+(x.kind==='recipe'?'Zutaten':'Kleine Schritte')+'</h3>'+x.steps.map((s,i)=>'<label><input type="checkbox" '+(s.done?'checked':'')+' onchange="'+lifeCall('lifeToggleStep',id,i)+'"/><span>'+esc(s.text)+'</span></label>').join('')+'</div>':'')+
- (x.resume?'<div class="life-resume-card"><b>Hier warst du stehen geblieben</b><p>'+esc(x.resume)+'</p></div>':'')+
+ (x.steps.length?'<div class="life-steps"><h3>'+(x.kind==='recipe'?'Zutaten':'Schritte')+'</h3>'+x.steps.map((s,i)=>'<label><input type="checkbox" '+(s.done?'checked':'')+' onchange="'+lifeCall('lifeToggleStep',id,i)+'"/><span>'+esc(s.text)+'</span></label>').join('')+'</div>':'')+
+ (x.resume?'<div class="life-resume-card"><b>Notiz zum Weitermachen</b><p>'+esc(x.resume)+'</p></div>':'')+
  '<div class="life-detail-actions">'+lifeButton('Bearbeiten',lifeCall('lifeEdit',id),'life-btn')+
- (['task','ritual'].includes(x.kind)?lifeButton('Zeit dafür nehmen',lifeCall('lifeBeginFocus',id,x.duration),'life-btn dark'):'')+
+ (['task','ritual'].includes(x.kind)?lifeButton('Fokus-Timer starten',lifeCall('lifeBeginFocus',id,x.duration),'life-btn dark'):'')+
  (x.kind==='task'?lifeButton(x.status==='done'?'Wieder öffnen':'Erledigt',lifeCall('lifeToggleDetail',id),'life-btn dark'):'')+
  (['note','project'].includes(x.kind)?lifeButton('Nächster Schritt',lifeCall('lifeDerive',id,'task'),'life-btn dark'):'')+
  (x.kind==='project'?lifeButton('Notiz dazu',lifeCall('lifeDerive',id,'note'),'life-btn'):'')+
  (x.kind==='recipe'?lifeButton('Einkaufsliste erstellen',lifeCall('lifeShopping',id),'life-btn dark'):'')+
  (x.kind==='ritual'?lifeButton('Erfahrung festhalten',lifeCall('lifeDerive',id,'note'),'life-btn'):'')+'</div>'+
- (['task','event'].includes(x.kind)?'<div class="life-statusline">'+lifePill({done:'Erledigt',open:'Offen',waiting:'Warte auf …',parked:'Für später'}[x.status]||'Offen')+(x.kind==='task'?lifeButton(x.status==='waiting'?'Weiter geht’s':'Warte auf …',lifeCall('lifeStatus',id,x.status==='waiting'?'open':'waiting'),'life-textbtn')+lifeButton(x.status==='parked'?'Wieder aufnehmen':'Parken',lifeCall('lifeStatus',id,x.status==='parked'?'open':'parked'),'life-textbtn'):'')+'</div>':'')+
+ (['task','event'].includes(x.kind)?'<div class="life-statusline">'+lifePill({done:'Erledigt',open:'Offen',waiting:'Warte auf …',parked:'Geparkt'}[x.status]||'Offen')+(x.kind==='task'?lifeButton(x.status==='waiting'?'Nicht mehr warten':'Warte auf …',lifeCall('lifeStatus',id,x.status==='waiting'?'open':'waiting'),'life-textbtn')+lifeButton(x.status==='parked'?'Wieder aufnehmen':'Parken',lifeCall('lifeStatus',id,x.status==='parked'?'open':'parked'),'life-textbtn'):'')+'</div>':'')+
  (children.length?'<div class="life-sectionhead"><h3>Verbunden</h3></div>'+children.map(y=>lifeCard(y,{compact:true})).join(''):'')+
  '<div class="life-detail-bottom">'+(x.status==='archived'?lifeButton('Aus dem Archiv zurückholen',lifeCall('lifeStatus',id,'open'),'life-textbtn'):lifeButton('Archivieren',lifeCall('lifeArchive',id),'life-textbtn'))+'</div>';
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');PulsePhotos.hydrate(el);
@@ -208,10 +184,10 @@ function lifeShopping(id){
 }
 function lifeCompose(fields={}){
  const draft=lifeState().draft;
- if(draft){lifeFillEditor(draft);toast('Dein gespeicherter Entwurf ist wieder da.');return}
+ if(draft){lifeFillEditor(draft);toast('Entwurf wiederhergestellt');return}
  lifeFillEditor({id:uid('life'),kind:'note',room:document.getElementById('appMain').dataset.view==='spaces'&&lifeCurrentRoom?lifeCurrentRoom:'alltag',title:'',body:'',date:'',time:'',deadline:'',duration:25,parent:'',source:'',steps:[],url:'',repeat:0,...fields});
 }
-function lifeEdit(id){const x=PulseLife.get(db,id);if(!x)return;if(lifeState().draft){lifeFillEditor(lifeState().draft);toast('Zuerst wartet noch dein Entwurf.');return}lifeFillEditor(x)}
+function lifeEdit(id){const x=PulseLife.get(db,id);if(!x)return;if(lifeState().draft){lifeFillEditor(lifeState().draft);toast('Erst den offenen Entwurf speichern oder verwerfen.');return}lifeFillEditor(x)}
 function lifeFillEditor(x){
  lifeEditingId=x.id||uid('life');lifeEditorPhotos=Array.isArray(x.photos)?[...x.photos]:[];renderEditorPhotos();document.getElementById('lifeDetail').hidden=true;document.getElementById('lifeForm').hidden=false;
  const map={lifeTitle:'title',lifeBody:'body',lifeDateInput:'date',lifeTimeInput:'time',lifeDeadline:'deadline',lifeDuration:'duration',lifeSource:'source',lifeUrl:'url',lifeRepeat:'repeat'};
@@ -223,8 +199,8 @@ function lifeFillEditor(x){
  document.getElementById('lifeParent').innerHTML='<option value="">Kein Projekt</option>'+PulseLife.list(db).filter(y=>y.kind==='project'&&y.id!==lifeEditingId).map(y=>'<option value="'+esc(y.id)+'">'+esc(y.title)+'</option>').join('');
  document.getElementById('lifeParent').value=x.parent||'';
  document.getElementById('lifeStepsInput').value=(x.steps||[]).map(s=>s.text).join('\n');
- document.getElementById('lifeEditorHint').textContent=x.hint||'Ein eigener Eintrag. Du entscheidest, was daraus wird.';
- document.getElementById('lifeEditorTitle').textContent=PulseLife.get(db,lifeEditingId)?'Weiterdenken.':'Was darf bleiben?';
+ document.getElementById('lifeEditorHint').textContent=x.hint||'';
+ document.getElementById('lifeEditorTitle').textContent=PulseLife.get(db,lifeEditingId)?'Bearbeiten':'Neuer Eintrag';
  document.getElementById('lifeDraftState').textContent=lifeState().draft?'Entwurf wiederhergestellt':'Noch nicht gespeichert';
  lifeKindChanged(false);
  openDialog(document.getElementById('lifeSheet'),'#lifeTitle');lifeUnderstand();
@@ -237,11 +213,11 @@ function lifeReadForm(){
  x.photos=[...lifeEditorPhotos];
  return x;
 }
-function lifeKindChanged(remember=true){const k=document.getElementById('lifeKindInput').value;document.getElementById('lifeStepsLabel').textContent=k==='recipe'?'Zutaten · eine pro Zeile':'Kleine Schritte · einer pro Zeile';document.getElementById('lifeRepeatLabel').hidden=k!=='task';document.getElementById('lifePlanning').open=k==='event';if(remember)lifeRememberDraft()}
+function lifeKindChanged(remember=true){const k=document.getElementById('lifeKindInput').value;document.getElementById('lifeStepsLabel').textContent=k==='recipe'?'Zutaten · eine pro Zeile':'Schritte · einer pro Zeile';document.getElementById('lifeRepeatLabel').hidden=k!=='task';document.getElementById('lifePlanning').open=k==='event';if(remember)lifeRememberDraft()}
 function lifeRememberDraft(){if(document.getElementById('lifeForm').hidden||activeDialog!=='lifeSheet')return;lifeState().draft=lifeReadForm();const ok=save();document.getElementById('lifeDraftState').textContent=ok?'Entwurf gesichert':'Entwurf noch nicht gespeichert'}
 function lifeSaveEntry(event){
  event?.preventDefault();const x=lifeReadForm(),oldDraft=lifeState().draft;
- const ok=lifeMutate(()=>{if(PulseLife.get(db,x.id))PulseLife.update(db,x.id,x,new Date().toISOString());else PulseLife.create(db,x,x.id,new Date().toISOString());lifeState().draft=null},'Dein Eintrag ist aufgehoben.');
+ const ok=lifeMutate(()=>{if(PulseLife.get(db,x.id))PulseLife.update(db,x.id,x,new Date().toISOString());else PulseLife.create(db,x,x.id,new Date().toISOString());lifeState().draft=null},'Gespeichert');
  if(ok){lifeCloseSheet();lifeEditingId=null}else lifeState().draft=oldDraft||x;
 }
 function lifeDiscardDraft(){lifeState().draft=null;lifeEditorPhotos=[];if(save()){lifeCloseSheet();toast('Entwurf verworfen');PulsePhotos.collect(photoReferences()).catch(()=>{})}}
@@ -249,7 +225,7 @@ function lifeCloseSheet(){closeDialog(document.getElementById('lifeSheet'))}
 function lifeLegacy(v){goView(v);if(v==='workout')showWorkout(activePlan()||'A')}
 function lifeSettings(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
- el.innerHTML='<span class="life-kicker">Dein PULSE</span><h2 id="lifeDetailHeading" tabindex="-1">So passt es zu dir.</h2><p class="life-detail-intro">PULSE 17</p><label class="life-name-field">Wie soll PULSE dich nennen?<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruheansicht</b><p>Weniger Schmuck und Bewegung. Deine Inhalte bleiben sichtbar.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div><div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p><div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Bisherige Einträge & Einstellungen ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 18</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div><div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p><div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
  (navigator.storage?.persisted?navigator.storage.persisted():Promise.resolve(false)).then(p=>{const e=document.getElementById('lifeStorageState');if(e)e.textContent=p?'Speicher: dauerhaft geschützt':'Speicher: nicht dauerhaft geschützt'}).catch(()=>{});
 }

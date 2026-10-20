@@ -8,8 +8,8 @@ function renderAuraHome() {
   document.getElementById('homeProtein').textContent=Math.round(d.protein||0)+' g';
   document.getElementById('homeWater').textContent=Number(d.water||0).toFixed(1)+' L';
   document.getElementById('homeTraining').textContent=training?.completed?'Erledigt':training?.kind==='home'?'Heimtraining':training?'Plan '+training.plan:'Nach Kapazität';
-  document.getElementById('bodyPlan').textContent=context.mode==='recovery'?'Heute zählt Erholung.':training?.completed?'Deine Einheit ist drin.':training?.kind==='home'?'Bewegung, die mitreist.':training?'Dein Plan '+training.plan+'.':'Kraft braucht auch Pausen.';
-  document.getElementById('bodyPlanDetail').textContent=context.mode==='recovery'?'Dein Plan bleibt bereit. Heute musst du kein Training nachholen.':training?.kind==='home'?'Dein geplantes Heimtraining. Erst nach der Einheit als erledigt eintragen.':context.returnPolicy?'Diese Woche weniger Umfang. Zwei Sätze pro Übung, 6–7/10 Anstrengung. Kein Nachholen.':'Glutes, Schultern, Rücken. Deine letzten bestätigten Gewichte sind vorbereitet.';
+  document.getElementById('bodyPlan').textContent=context.mode==='recovery'?'Erholungstag':training?.completed?'Training erledigt':training?.kind==='home'?'Heimtraining heute':training?'Plan '+training.plan+' heute':'Heute kein Training';
+  document.getElementById('bodyPlanDetail').textContent=context.mode==='recovery'?'Training und Schrittziel pausieren heute.':training?.kind==='home'?'Nach der Einheit als erledigt eintragen.':context.returnPolicy?'Wiedereinstieg: 2 Sätze pro Übung, RPE 6–7.':'Glutes, Schultern, Rücken. Letzte Gewichte sind vorausgefüllt.';
 }
 function openTodaysTraining() {
   const context=pulseContext();
@@ -21,9 +21,9 @@ function renderExperience() {
   const mode=effectiveMode();
   document.querySelectorAll('[data-capacity]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.capacity===mode)));
   document.getElementById('capacityExplanation').textContent=mode==='recovery'
-    ?'Versorgung und Erholung zuerst. Training und Schrittziel pausieren für heute.'
-    :mode==='low'?'Heute reicht weniger. Wichtige Aufgaben und Versorgung behalten ihren Platz.'
-    :'Dein normaler Rhythmus ist bereit. Du kannst die Erwartungen jederzeit anpassen.';
+    ?'Training und Schrittziel pausieren heute.'
+    :mode==='low'?'Reduzierter Tag: nur das Nötigste.'
+    :'Normaler Tag.';
   document.getElementById('planRhythm').innerHTML=PulseContext.mealSlots(key()).map(slot=>
     '<div class="rhythm-row"><time>'+slot.time+'</time><b>'+esc(slot.label)+'</b></div>'
   ).join('');
@@ -93,7 +93,7 @@ function renderNutrition() {
   for(const [id,value] of [['nKcal',Math.round(d.kcal)],['nProt',de(d.protein)+' g'],['nCarb',de(d.carbs)+' g'],['nFat',de(d.fat)+' g']])document.getElementById(id).textContent=value;
   document.getElementById('mealList').innerHTML=db.meals.filter(meal=>meal.date===key()).slice().reverse().map(meal=>
     '<div class="item mealItem"><div class="grow"><small>'+esc(meal.time||'Zeit offen')+'</small><b>'+esc(meal.name)+'</b><div class="muted">'+de(meal.protein)+' g Protein · '+Math.round(meal.kcal)+' kcal'+(meal.confidence==='estimated'?' · geschätzt':'')+'</div></div><button type="button" class="icon-button danger" aria-label="'+esc(meal.name)+' löschen" onclick="removeMeal('+db.meals.indexOf(meal)+')">'+uiIcon('close')+'</button></div>'
-  ).join('')||'<div class="empty">Hier erscheinen deine Mahlzeiten. Du musst nichts nachtragen, um neu anzufangen.</div>';
+  ).join('')||'<div class="empty">Noch keine Mahlzeiten heute.</div>';
   document.getElementById('macroBars').innerHTML='<div class="quiet-note">'+esc(nutritionNextAction())+'</div>';
   renderFoodToday();renderFoodLibrary();
 }
@@ -124,7 +124,7 @@ function advanceWorkoutFocus(plan,index){
 function renderWorkoutSummary(plan,session){
   const box=document.getElementById('workoutSummary');box.hidden=!session.closed;
   if(!session.closed){box.innerHTML='';return}
-  box.innerHTML='<div class="eyebrow">Für heute geschafft</div><h2 id="workoutSummaryTitle" tabindex="-1">Deine Einheit ist drin.</h2><p>'+session.records.length+' '+(session.records.length===1?'erfasster Satz':'erfasste Sätze')+' · '+session.exerciseCount+' '+(session.exerciseCount===1?'Übung':'Übungen')+' · Plan '+esc(plan)+'</p><div class="session-receipt">'+
+  box.innerHTML='<div class="eyebrow">Training</div><h2 id="workoutSummaryTitle" tabindex="-1">Abgeschlossen</h2><p>'+session.records.length+' '+(session.records.length===1?'erfasster Satz':'erfasste Sätze')+' · '+session.exerciseCount+' '+(session.exerciseCount===1?'Übung':'Übungen')+' · Plan '+esc(plan)+'</p><div class="session-receipt">'+
     [...new Set(session.records.map(x=>x.exercise))].map(name=>'<div><b>'+esc(name)+'</b><span>'+session.records.filter(x=>x.exercise===name).map(x=>esc(x.kg)+' kg × '+esc(x.reps)).join(' / ')+'</span></div>').join('')+'</div><p class="tiny">'+(session.averageEffort===null?'Keine Anstrengung erfasst.':'Ø Anstrengung '+session.averageEffort+'/10 aus '+session.effortCount+' erfassten Angaben.')+' Du musst keine weiteren Sätze ergänzen.</p><div class="actions"><button type="button" class="primary" onclick="goView(\'now\')">Zurück zu Heute '+uiIcon('arrow')+'</button><button type="button" class="text-button" onclick="resumeWorkout()">Einheit weiterführen</button></div>';
 }
 function resumeWorkout(){

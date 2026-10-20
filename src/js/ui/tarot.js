@@ -18,7 +18,7 @@ function lifeSpread(kind){
 }
 function renderSpread(){
  if(!lastSpread)return;const sp=SPREADS[lastSpread.kind];
- libDetailShell('<span class="life-kicker">Legung</span><h2 id="lifeDetailHeading" tabindex="-1">'+esc(sp.name)+'</h2><p class="life-detail-intro">Lies zuerst nur die Positionen, dann die Karten. Mit deinem eigenen Deck kannst du genauso legen und die Karten hier nachschlagen.</p><ol class="life-spread">'+
+ libDetailShell('<span class="life-kicker">Legung</span><h2 id="lifeDetailHeading" tabindex="-1">'+esc(sp.name)+'</h2><p class="life-detail-intro">Mit eigenem Deck: selbst legen und die Karten hier nachschlagen.</p><ol class="life-spread">'+
   lastSpread.cards.map((i,k)=>{const c=PulseLibrary.TAROT[i];return '<li><button type="button" onclick="'+lifeCall('lifeTarotOpen',i)+'"><span class="life-spread-pos">'+esc(sp.positions[k])+'</span><b>'+esc(c.name)+'</b><small>'+esc(c.keywords.split(' – ')[0])+'</small></button></li>'}).join('')+'</ol>'+
   '<div class="life-detail-actions">'+lifeButton('Als Notiz speichern',lifeCall('lifeSpreadNote'),'life-btn dark')+lifeButton('Neu legen',lifeCall('lifeSpread',lastSpread.kind),'life-btn')+'</div><div class="life-tarot-links">'+Object.entries(SPREADS).filter(([k])=>k!==lastSpread.kind).map(([k,v])=>lifeButton(v.name,lifeCall('lifeSpread',k),'life-tool-link')).join('')+'</div>');
 }
@@ -28,8 +28,8 @@ function lifeSpreadNote(){
 }
 function lifeTarotHistory(){
  const h=[...tarotPrefs().tarotHistory].reverse(),st=tarotStats();
- libDetailShell('<span class="life-kicker">Dein Tarot-Verlauf</span><h2 id="lifeDetailHeading" tabindex="-1">'+st.days+' '+(st.days===1?'Tageskarte':'Tageskarten')+'</h2>'+(st.top?'<p class="life-detail-intro">Am häufigsten: '+esc(st.top.card.name)+' ('+st.top.n+'×)</p>':'<p class="life-detail-intro">Wiederholungen zeigen sich mit der Zeit.</p>')+
-  (h.length?'<div class="life-tarot-list">'+h.slice(0,60).map(x=>{const c=PulseLibrary.TAROT[x.index];return '<button type="button" onclick="'+lifeCall('lifeTarotOpen',x.index)+'"><span class="life-tarot-num">'+esc(x.date.slice(8,10)+'.'+x.date.slice(5,7)+'.')+'</span><span class="grow"><b>'+esc(c.name)+'</b><small>'+(x.source==='deck'?'Aus deinem Deck':'Digital gezogen')+(st.count[x.index]>1?' · '+st.count[x.index]+'× insgesamt':'')+'</small></span><span aria-hidden="true">›</span></button>'}).join('')+'</div>':lifeEmpty('Noch keine Tageskarte.','Zieh heute deine erste – digital oder aus deinem Deck.',lifeCall('lifeDrawCard'),'Karte ziehen')));
+ libDetailShell('<span class="life-kicker">Dein Tarot-Verlauf</span><h2 id="lifeDetailHeading" tabindex="-1">'+st.days+' '+(st.days===1?'Tageskarte':'Tageskarten')+'</h2>'+(st.top?'<p class="life-detail-intro">Am häufigsten: '+esc(st.top.card.name)+' ('+st.top.n+'×)</p>':'')+
+  (h.length?'<div class="life-tarot-list">'+h.slice(0,60).map(x=>{const c=PulseLibrary.TAROT[x.index];return '<button type="button" onclick="'+lifeCall('lifeTarotOpen',x.index)+'"><span class="life-tarot-num">'+esc(x.date.slice(8,10)+'.'+x.date.slice(5,7)+'.')+'</span><span class="grow"><b>'+esc(c.name)+'</b><small>'+(x.source==='deck'?'Aus deinem Deck':'Digital gezogen')+(st.count[x.index]>1?' · '+st.count[x.index]+'× insgesamt':'')+'</small></span><span aria-hidden="true">›</span></button>'}).join('')+'</div>':lifeEmpty('Noch keine Tageskarte.','Digital oder aus deinem Deck.',lifeCall('lifeDrawCard'),'Karte ziehen')));
 }
 let tarotNoteTimer=null;
 function lifeTarotNoteFrom(i){lifeTarotNoteInput(i,event.target.value);const st=document.getElementById('lifeTarotNoteState');if(st)st.textContent='Wird gespeichert …'}

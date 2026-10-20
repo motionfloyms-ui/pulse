@@ -33,6 +33,7 @@
   "ui/voice.js",
   "ui/understand.js",
   "ui/food-scan.js",
+  "ui/today.js",
   "ui/tarot.js",
   "ui/app-shell.js",
   "app.js"

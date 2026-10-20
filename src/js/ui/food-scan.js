@@ -79,13 +79,6 @@ function renderFoodToday(){
  el.innerHTML='<div><small>Protein</small><b>'+Math.round(d.protein||0)+(p?' <span>/ '+p+' g</span>':' g')+'</b>'+bar(d.protein||0,p)+'</div><div><small>Energie</small><b>'+Math.round(d.kcal||0)+(k?' <span>/ '+k+'</span>':'')+' <span>kcal</span></b>'+bar(d.kcal||0,k)+'</div><div><small>Wasser</small><b>'+de(d.water)+' <span>/ '+de(w)+' L</span></b>'+bar(d.water||0,w)+'<button type="button" class="small" onclick="addWater(.25)">+ 250 ml</button></div>';
 }
 /* Tag: one compact line for the body, so the day screen knows about training and food. */
-function lifeBodyCard(date){
- if(date!==key())return '';
- const c=pulseContext(),d=today(),p=goalValue('protein'),t=c.training;
- const training=c.mode==='recovery'?'Erholung':t?.completed?'Training erledigt':t?.active?'Training läuft':t?.kind==='home'?'Heimtraining':t?'Training '+t.plan:'Kein Training';
- return '<button type="button" class="life-body-card" onclick="goView(\'bodyhub\')"><span class="green">'+lifeGlyph('leaf')+'</span><span class="grow"><b>'+esc(training)+'</b><small>'+Math.round(d.protein||0)+(p?' von '+p:'')+' g Protein · '+de(d.water)+' L Wasser · '+(d.meals||0)+' '+(d.meals===1?'Mahlzeit':'Mahlzeiten')+'</small></span><i aria-hidden="true">›</i></button>';
-}
-
 /* Name search in Open Food Facts for branded products the table does not know. */
 async function lifeFoodSearch(term){
  libDetailShell('<span class="life-kicker">Lebensmittel suchen</span><h2 id="lifeDetailHeading" tabindex="-1">Online nachschlagen</h2><p class="life-detail-intro">Sucht in Open Food Facts, einer freien Datenbank mit Packungsangaben. Was du auswählst, merkt sich PULSE.</p><form onsubmit="event.preventDefault();lifeFoodSearchRun(this.q.value)"><label>Wonach suchst du?<input name="q" value="'+esc(term||'')+'" autocomplete="off" enterkeyhint="search"/></label><div class="life-detail-actions"><button class="life-btn dark" type="submit">Suchen</button></div></form><div id="foodSearchResults" aria-live="polite"></div>');

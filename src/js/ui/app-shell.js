@@ -10,7 +10,7 @@ function handleLaunchParams(){
  history.replaceState(history.state,'',location.pathname+location.hash);
  setTimeout(()=>{
   if(title||text||url){const link=/^https?:\/\//i.test(url)?url:(text.match(/https?:\/\/\S+/)||[''])[0];lifeReceiveShare({kind:'note',title:title||(text.replace(link,'').trim().split('\n')[0]||'Geteilt').slice(0,120),body:text.replace(link,'').trim(),url:link})}
-  else if(action==='compose')lifeCompose();
+  else if(action==='compose')lifeQuick();
   else if(action==='voice')lifeComposeVoice();
   else if(action==='food')goView('nutrition');
   else if(action==='training')openTodaysTraining();
@@ -27,7 +27,7 @@ function lifeReviewOpen(token){const e=brainEntries().find(x=>x.key===token);if(
 function lifeReviewDismiss(token){const e=brainEntries().find(x=>x.key===token);if(!e)return;lifeMutate(()=>{e.record.done=true;e.record.status='cancelled'},'Verworfen')}
 function lifeReviewRows(){
  const items=lifeReviewItems();if(!items.length)return '';
- return '<div class="life-sectionhead"><h2>Noch zu klären</h2><span class="life-subtle">'+items.length+' offen</span></div><div class="life-today-list">'+items.slice(0,4).map(e=>'<div class="life-today-row life-review-row"><span class="peach">'+lifeGlyph('arch')+'</span><button type="button" class="grow life-review-open" onclick="'+lifeCall('lifeReviewOpen',e.key)+'"><b>'+esc(e.text.slice(0,80))+'</b><small>'+esc(REVIEW_LABEL[e.type])+'</small></button><button type="button" class="life-review-x" aria-label="Verwerfen: '+esc(e.text.slice(0,40))+'" onclick="'+lifeCall('lifeReviewDismiss',e.key)+'">×</button></div>').join('')+'</div>';
+ return '<div class="life-sectionhead"><h2>Zu prüfen</h2><span class="life-subtle">'+items.length+' offen</span></div><div class="life-today-list">'+items.slice(0,4).map(e=>'<div class="life-today-row life-review-row"><span class="peach">'+lifeGlyph('arch')+'</span><button type="button" class="grow life-review-open" onclick="'+lifeCall('lifeReviewOpen',e.key)+'"><b>'+esc(e.text.slice(0,80))+'</b><small>'+esc(REVIEW_LABEL[e.type])+'</small></button><button type="button" class="life-review-x" aria-label="Verwerfen: '+esc(e.text.slice(0,40))+'" onclick="'+lifeCall('lifeReviewDismiss',e.key)+'">×</button></div>').join('')+'</div>';
 }
 function lifeSystemRows(date){
  if(date!==key())return '';const rows=[],age=backupAgeDays(),hasData=PulseLife.list(db).length>0||db.workouts.length>0;

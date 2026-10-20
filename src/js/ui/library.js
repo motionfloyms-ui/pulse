@@ -23,27 +23,18 @@ function moonSvg(m,size=44){
 }
 function moonLine(m){return m.index===4?'Heute Vollmond':m.index===0?'Heute Neumond':m.waxing?'Vollmond in '+m.daysToFull+' '+(m.daysToFull===1?'Tag':'Tagen'):'Neumond in '+m.daysToNew+' '+(m.daysToNew===1?'Tag':'Tagen')}
 function libTodayCard(){const t=lifeState().preferences.tarot;return t&&t.date===key()&&Number.isInteger(t.index)&&t.index>=0&&t.index<78?{...t,card:PulseLibrary.TAROT[t.index]}:null}
-function lifeTodayStrip(date){
- const m=PulseLibrary.moon(date),recipe=PulseLibrary.daily(date,'recipe','koerper'),prompt=PulseLibrary.daily(date,'prompt','innen'),isToday=date===key(),card=isToday?libTodayCard():null;
- const tarot=!isToday?'':card
-  ?'<button type="button" class="life-tonight-card picked" onclick="'+lifeCall('lifeTarotOpen',card.index)+'"><span class="life-mini-card">'+lifeGlyph('star')+'</span><b>'+esc(card.card.name)+'</b><small>Deine Tageskarte</small></button>'
-  :'<div class="life-tonight-card"><span class="life-mini-card back"></span><span class="life-today-actions">'+lifeButton('Karte ziehen',lifeCall('lifeDrawCard'),'life-textbtn')+lifeButton('Aus meinem Deck',lifeCall('lifeTarotBrowse','major',true),'life-textbtn')+'</span></div>';
- const row=(e,color,glyph,label)=>e?'<button type="button" class="life-today-row" onclick="'+lifeCall('lifeOpenLib',e.id)+'"><span class="'+color+'">'+lifeGlyph(glyph)+'</span><span class="grow"><b>'+esc(e.title)+'</b><small>'+esc(label)+'</small></span><i aria-hidden="true">›</i></button>':'';
- return '<section class="life-tonight" aria-label="Mond und Tageskarte"><button type="button" class="life-tonight-moon" onclick="'+lifeCall('lifeOpenSpaces','sinn')+'">'+moonSvg(m,56)+'<span><span class="life-kicker">Mond · '+m.illumination+' %</span><b>'+esc(m.name)+'</b><small>'+esc(moonLine(m))+'</small></span></button>'+tarot+'</section>'+
-  '<div class="life-today-list">'+row(recipe,'green','leaf','Rezeptidee · '+(recipe?recipe.sub.split(' · ')[0]:''))+row(prompt,'lilac','wave','Schreibimpuls')+'</div>';
-}
 function lifeLibSection(roomId){
  const entries=PulseLibrary.forRoom(roomId);let widgets='';
  if(roomId==='sinn'){
   const m=PulseLibrary.moon(key()),card=libTodayCard();
   widgets='<div class="life-lib-widgets"><div class="life-moon-panel">'+moonSvg(m,64)+'<div><span class="life-kicker">Mond heute · '+m.illumination+' % beleuchtet</span><b>'+esc(m.name)+'</b><p>'+esc(m.impulse)+'</p><small>'+esc(moonLine(m))+'</small></div></div>'+
-  '<div class="life-tarot-panel"><span class="life-kicker">Tarot</span>'+(card?'<b>Heute: '+esc(card.card.name)+'</b><p>'+esc(card.card.question)+'</p>'+lifeButton('Karte ansehen',lifeCall('lifeTarotOpen',card.index),'life-btn'):'<b>Deine Tageskarte</b><p>Ziehe digital – oder trag die Karte ein, die du aus deinem Deck gezogen hast.</p><div class="life-room-actions">'+lifeButton('Digital ziehen',lifeCall('lifeDrawCard'),'life-btn dark')+lifeButton('Aus meinem Deck',lifeCall('lifeTarotBrowse','major',true),'life-btn')+'</div>')+
+  '<div class="life-tarot-panel"><span class="life-kicker">Tarot</span>'+(card?'<b>Heute: '+esc(card.card.name)+'</b><p>'+esc(card.card.question)+'</p>'+lifeButton('Karte ansehen',lifeCall('lifeTarotOpen',card.index),'life-btn'):'<b>Deine Tageskarte</b><p>Digital ziehen oder die Karte aus deinem Deck eintragen.</p><div class="life-room-actions">'+lifeButton('Digital ziehen',lifeCall('lifeDrawCard'),'life-btn dark')+lifeButton('Aus meinem Deck',lifeCall('lifeTarotBrowse','major',true),'life-btn')+'</div>')+
   (()=>{const st=tarotStats();return '<div class="life-tarot-stats"><b>'+st.days+'</b><span>'+(st.days===1?'Tageskarte':'Tageskarten')+(st.top?' · am häufigsten '+esc(st.top.card.name)+' ('+st.top.n+'×)':'')+'</span>'+(st.days?lifeButton('Verlauf',lifeCall('lifeTarotHistory'),'life-textbtn'):'')+'</div>'})()+
   '<div class="life-room-actions">'+lifeButton('Drei Karten legen',lifeCall('lifeSpread','drei'),'life-btn')+lifeButton('Entscheidung legen',lifeCall('lifeSpread','kreuz'),'life-btn')+'</div>'+
   '<div class="life-tarot-links">'+[['major','Große Arkana'],['staebe','Stäbe'],['kelche','Kelche'],['schwerter','Schwerter'],['pentakel','Pentakel']].map(([f,l])=>lifeButton(l,lifeCall('lifeTarotBrowse',f,false),'life-tool-link')).join('')+'</div></div></div>';
  }
  if(roomId==='draussen'){const s=PulseLibrary.seasonal(key());widgets='<div class="life-season"><span class="life-kicker">Jetzt im '+s.name+'</span><ul>'+s.ideas.map(i=>'<li>'+esc(i)+'</li>').join('')+'</ul></div>'}
- return '<div class="life-sectionhead"><h2>Schon da</h2><span class="life-subtle">'+entries.length+' Inhalte · lesen oder übernehmen</span></div>'+widgets+libGroups(entries);
+ return '<div class="life-sectionhead"><h2>Schon da</h2><span class="life-subtle">'+entries.length+' Inhalte</span></div>'+widgets+libGroups(entries);
 }
 function libDetailShell(html){document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;el.innerHTML=html;openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');el.closest('.life-sheet-panel')?.scrollTo?.(0,0)}
 function lifeOpenLib(id){
@@ -52,9 +43,9 @@ function lifeOpenLib(id){
  const primary=e.type==='prompt'?lifeButton('Jetzt dazu schreiben',lifeCall('lifeLibWrite',id),'life-btn dark'):mine?lifeButton('In deiner Sammlung öffnen',lifeCall('lifeOpenItem',mine.id),'life-btn dark'):lifeButton('In meine Sammlung',lifeCall('lifeAdoptLib',id),'life-btn dark');
  libDetailShell('<div class="life-detail-mark '+r.color+'">'+lifeGlyph(r.symbol)+'</div><div class="life-detail-tags">'+lifePill(PulseLibrary.TYPES[e.type])+lifePill(r.name)+lifePill('Aus der Bibliothek')+'</div><h2 id="lifeDetailHeading" tabindex="-1">'+esc(e.title)+'</h2><p class="life-detail-date">'+esc(e.sub)+'</p>'+steps+'<div class="life-prose">'+esc(e.body)+'</div><div class="life-detail-actions">'+primary+
   (e.type==='recipe'?lifeButton('Einkaufsliste',lifeCall('lifeLibShopping',id),'life-btn'):'')+
-  (e.type==='practice'?lifeButton('Zeit dafür nehmen',lifeCall('lifeLibFocus',id),'life-btn'):'')+
+  (e.type==='practice'?lifeButton('Fokus-Timer starten',lifeCall('lifeLibFocus',id),'life-btn'):'')+
   (e.type==='recipe'?lifeButton('Einplanen',lifeCall('lifeLibPlan',id),'life-btn'):'')+
-  '</div><p class="life-footnote">Bibliotheksinhalte gehören zur App. Was du übernimmst, gehört dir und lässt sich frei bearbeiten.</p>');
+  '</div><p class="life-footnote">Übernommene Inhalte kannst du frei bearbeiten.</p>');
 }
 function libFields(e){
  const base={room:e.room,title:e.title,source:'lib:'+e.id};
@@ -91,7 +82,7 @@ function lifeTarotOpen(i){
  libDetailShell('<div class="life-tarot-face">'+(c.arcana==='major'?'<span>'+toRoman(c.number)+'</span>':'<span>'+esc(c.element)+'</span>')+lifeGlyph('star')+'</div><div class="life-detail-tags">'+lifePill(c.arcana==='major'?'Große Arkana':'Kleine Arkana')+(isToday?lifePill('Deine Tageskarte'):'')+'</div><h2 id="lifeDetailHeading" tabindex="-1">'+esc(c.name)+'</h2>'+(c.wildUnknown?'<p class="life-detail-date">In The Wild Unknown: '+esc(c.wildUnknown)+'</p>':'')+
   '<div class="life-tarot-meaning"><h3>Bedeutung</h3><p>'+esc(c.keywords)+'</p><h3>Umgekehrt</h3><p>'+esc(c.reversed)+'</p><h3>Eine Frage dazu</h3><p class="life-tarot-q">'+esc(c.question)+'</p></div>'+
   '<label class="life-tarot-mine">Meine Bedeutung<textarea rows="3" placeholder="Was sagt dir diese Karte – in deinem Deck, mit deinen Worten?" oninput="'+lifeCall('lifeTarotNoteFrom',i)+'">'+esc(tarotPrefs().tarotNotes[i]||'')+'</textarea><small id="lifeTarotNoteState" aria-live="polite">'+((tarotStats().count[i]||0)?'Bisher '+tarotStats().count[i]+'× als Tageskarte':'Noch nie als Tageskarte gezogen')+'</small></label>'+
-  '<div class="life-detail-actions">'+lifeButton('Notiz dazu schreiben',lifeCall('lifeTarotRecord',i),'life-btn dark')+(isToday?'':lifeButton('Als Tageskarte',lifeCall('lifePickCard',i),'life-btn'))+lifeButton(c.arcana==='major'?'Alle großen Arkana':'Alle '+PulseLibrary.SUITS.find(s=>s.id===c.suit).name,lifeCall('lifeTarotBrowse',c.arcana==='major'?'major':c.suit,false),'life-textbtn')+'</div><p class="life-footnote">Kurze Lesehilfen in eigenen Worten. Deine eigene Wahrnehmung des Bildes zählt mehr.</p>');
+  '<div class="life-detail-actions">'+lifeButton('Notiz dazu schreiben',lifeCall('lifeTarotRecord',i),'life-btn dark')+(isToday?'':lifeButton('Als Tageskarte',lifeCall('lifePickCard',i),'life-btn'))+lifeButton(c.arcana==='major'?'Alle großen Arkana':'Alle '+PulseLibrary.SUITS.find(s=>s.id===c.suit).name,lifeCall('lifeTarotBrowse',c.arcana==='major'?'major':c.suit,false),'life-textbtn')+'</div><p class="life-footnote">Kurzbedeutungen. Deutungen unterscheiden sich je nach Deck.</p>');
 }
 function lifeSetCard(index,source){
  const prefs=tarotPrefs(),previous=prefs.tarot,history=prefs.tarotHistory.slice();

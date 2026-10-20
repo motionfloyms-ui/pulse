@@ -26,7 +26,7 @@ function lifeApplyWhen(kind,date,time){
  const k=document.getElementById('lifeKindInput');if(!k.disabled)k.value=kind;
  document.getElementById('lifeDateInput').value=date;document.getElementById('lifeTimeInput').value=time||'';
  lifeKindChanged(false);document.getElementById('lifePlanning').open=true;lifeRememberDraft();lifeUnderstand();
- toast((kind==='event'?'Termin':'Aufgabe')+' für '+lifeDate(date,{weekday:'long',day:'numeric',month:'long'})+(time?' um '+time:'')+' vorbereitet. Speichern mit „Aufheben“.');
+ toast((kind==='event'?'Termin':'Aufgabe')+' für '+lifeDate(date,{weekday:'long',day:'numeric',month:'long'})+(time?' um '+time:'')+' vorbereitet. Mit „Speichern“ sichern.');
 }
 function lifeRouteFood(){
  const raw=[document.getElementById('lifeTitle').value,document.getElementById('lifeBody').value].filter(x=>x.trim()).join(' ').trim();if(!raw)return;

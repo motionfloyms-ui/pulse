@@ -36,5 +36,5 @@ function pulseDictate(targetId){
  };
  round();
 }
-function lifeComposeVoice(){lifeCompose();setTimeout(()=>pulseDictate('lifeBody'),250)}
+function lifeComposeVoice(){lifeQuick(true)}
 
