@@ -46,11 +46,9 @@ function lifeTemplate(keyName){const t=lifeTemplates[keyName];if(t)lifeCompose(t
 function lifeGreeting(){const h=new Date().getHours();return (h<5?'Gute Nacht':h<11?'Guten Morgen':h<17?'Hallo':h<22?'Guten Abend':'Gute Nacht')+((db.settings.name||'').trim()?', '+db.settings.name.trim():'')}
 function lifeSelectDay(day){if(!PulseLife.validDate(day))return;lifeSelectedDay=day;renderLifeToday()}
 function lifeMoveDay(n){lifeSelectDay(PulseLife.offset(lifeSelectedDay||key(),n))}
-function lifeShowMonth(){lifeMonthOpen=!lifeMonthOpen;renderLifeToday()}
-function lifeShiftMonth(n){const d=new Date((lifeSelectedDay||key()).slice(0,7)+'-01T12:00:00');d.setMonth(d.getMonth()+n);lifeSelectDay(PulseContext.localDay(d))}
 function lifeCard(x,{compact=false}={}){
  const r=PulseLife.room(x.room),status={done:'Erledigt',waiting:'Wartet',parked:'Geparkt'}[x.status];
- const tags=[PulseLife.KINDS[x.kind],status,x.deadline?'Frist '+lifeDate(x.deadline,{day:'numeric',month:'short'}):'',x.photos?.length?x.photos.length+(x.photos.length===1?' Foto':' Fotos'):''].filter(Boolean).join(' · ');
+ const tags=[PulseLife.KINDS[x.kind],status,x.deadline?'Frist '+lifeDate(x.deadline,{day:'numeric',month:'short'}):'',x.photos?.length?x.photos.length+(x.photos.length===1?' Foto':' Fotos'):'',itemVideo(x)?'Video':''].filter(Boolean).join(' · ');
  const check=x.kind==='task'?'<button type="button" class="life-check '+(x.status==='done'?'checked':'')+'" aria-label="'+esc((x.status==='done'?'Wieder öffnen: ':'Erledigen: ')+x.title)+'" onclick="'+lifeCall('lifeToggle',x.id)+'">'+(x.status==='done'?lifeGlyph('check'):'<span></span>')+'</button>':'<span class="life-entry-symbol '+r.color+'">'+lifeGlyph(r.symbol)+'</span>';
  return '<article class="life-entry '+(compact?'compact ':'')+(x.status==='done'?'is-done':'')+(x.id===lifeJustDone&&Date.now()-lifeJustDoneAt<1500?' just-done':'')+'">'+check+'<button type="button" class="life-entry-open" onclick="'+lifeCall('lifeOpenItem',x.id)+'"><span class="life-entry-title">'+esc(x.title)+'</span><span class="life-entry-meta">'+esc(tags)+'</span>'+(!compact&&x.body?'<span class="life-entry-excerpt">'+esc(x.body.slice(0,130))+'</span>':'')+'</button><span class="life-entry-arrow" aria-hidden="true">↗</span></article>';
 }
@@ -136,7 +134,7 @@ function undoLife(action){
  for(const c of [...action.changes].reverse()){const arr=lifeArray(c.name),i=arr.findIndex((x,j)=>String(x.id??j)===String(c.id));if(c.before===null)arr.splice(i,1);else arr[i]=c.before}
  if(save()){renderLife();toast('Änderung zurückgenommen')}
 }
-function lifeToggle(id){const was=PulseLife.get(db,id)?.status;if(was!=='done'){lifeJustDone=id;lifeJustDoneAt=Date.now();pulseTap()}lifeMutate(()=>PulseLife.toggle(db,id,new Date().toISOString(),key(),uid('life')),'Aufgabe aktualisiert')}
+function lifeToggle(id){const was=PulseLife.get(db,id)?.status;if(was!=='done'){lifeJustDone=id;lifeJustDoneAt=Date.now();pulseTap()}if(lifeMutate(()=>PulseLife.toggle(db,id,new Date().toISOString(),key(),uid('life')),'Aufgabe aktualisiert')&&was!=='done')pulseCelebrate()}
 function lifeStatus(id,status){if(lifeMutate(()=>PulseLife.update(db,id,{status},new Date().toISOString()),status==='parked'?'Geparkt':'Aktualisiert'))lifeOpenItem(id)}
 function lifePlanTomorrow(id){if(lifeMutate(()=>PulseLife.update(db,id,{date:PulseLife.offset(key(),1),time:'',status:'open'},new Date().toISOString()),'Für morgen eingeplant'))lifeReview()}
 function lifeReview(){
@@ -156,7 +154,7 @@ function lifeOpenItem(id){
  (parent?'<button type="button" class="life-source" onclick="'+lifeCall('lifeOpenItem',parent.id)+'">Teil von: '+esc(parent.title)+' ↗</button>':'')+
  (source?'<button type="button" class="life-source" onclick="'+lifeCall('lifeOpenItem',source.id)+'">Entstanden aus: '+esc(source.title)+' ↗</button>':'')+
  '<div class="life-prose">'+esc(x.body||'')+'</div>'+(x.photos?.length?'<div class="life-photo-grid">'+photoTiles(x.photos)+'</div>':'')+
- (x.url?'<a class="life-source" href="'+esc(x.url)+'" target="_blank" rel="noopener noreferrer">Quelle öffnen ↗</a>':'')+
+ (itemVideo(x)?videoCard(itemVideo(x),x.title):'')+(x.url&&!PulseVideo.parse(x.url)?'<a class="life-source" href="'+esc(x.url)+'" target="_blank" rel="noopener noreferrer">Quelle öffnen ↗</a>':'')+
  (x.steps.length?'<div class="life-steps"><h3>'+(x.kind==='recipe'?'Zutaten':'Schritte')+'</h3>'+x.steps.map((s,i)=>'<label><input type="checkbox" '+(s.done?'checked':'')+' onchange="'+lifeCall('lifeToggleStep',id,i)+'"/><span>'+esc(s.text)+'</span></label>').join('')+'</div>':'')+
  (x.resume?'<div class="life-resume-card"><b>Notiz zum Weitermachen</b><p>'+esc(x.resume)+'</p></div>':'')+
  '<div class="life-detail-actions">'+lifeButton('Bearbeiten',lifeCall('lifeEdit',id),'life-btn')+
@@ -225,7 +223,7 @@ function lifeCloseSheet(){closeDialog(document.getElementById('lifeSheet'))}
 function lifeLegacy(v){goView(v);if(v==='workout')showWorkout(activePlan()||'A')}
 function lifeSettings(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
- el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 18</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div><div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p><div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 19</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p><div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
  (navigator.storage?.persisted?navigator.storage.persisted():Promise.resolve(false)).then(p=>{const e=document.getElementById('lifeStorageState');if(e)e.textContent=p?'Speicher: dauerhaft geschützt':'Speicher: nicht dauerhaft geschützt'}).catch(()=>{});
 }
@@ -235,10 +233,10 @@ function renderLife(){
  if(!document.getElementById('lifeTodayContent'))return;
  const view=document.getElementById('appMain').dataset.view||'life';
  if(lifeRenderedDate&&lifeRenderedDate!==key()&&lifeSelectedDay===lifeRenderedDate)lifeSelectedDay=key();lifeRenderedDate=key();
- document.body.classList.toggle('life-calm',!!lifeState().preferences.calm);
+ document.body.classList.toggle('life-calm',!!lifeState().preferences.calm);applyTheme();
  document.querySelectorAll('#lifeNav [data-life-view]').forEach(b=>{const active=b.dataset.lifeView===libTab(view);b.setAttribute('aria-current',active?'page':'false')});
  if(document.activeElement?.id!=='lifeSearch')renderLifeLibrary();
- renderLifeToday();renderLifeSpaces();renderLifeFocus();renderBodyLibrary();
+ renderLifeToday();renderLifeSpaces();renderLifeFocus();renderCosmos();renderBodyLibrary();
  const nm=(db.settings.name||'').trim();document.querySelectorAll('[data-me-name]').forEach(e=>e.textContent=nm||'Du');document.querySelectorAll('[data-me-initial]').forEach(e=>e.textContent=nm?nm[0].toUpperCase():'·');
 }
 function renderBodyLibrary(){
@@ -248,7 +246,7 @@ function renderBodyLibrary(){
  el.innerHTML='<div class="life-sectionhead"><h2>Deine Trainingspläne</h2><span class="life-subtle">Mo · Mi · Fr</span></div>'+plan('A')+plan('B')+lifeLibSection('koerper');
 }
 function lifeNavigation(v){
- const modern=['life','spaces','library','focus'].includes(v);
+ const modern=['life','spaces','library','focus','calendar'].includes(v);
  document.body.classList.toggle('life-modern',modern);
  document.body.classList.toggle('life-legacy',!modern);
  renderLife();

@@ -28,25 +28,26 @@ function tileNext(){
  return '<button type="button" class="pulse-tile tile-next" onclick="'+lifeCall('lifeOpenItem',x.id)+'"><span class="pulse-tile-head">'+(x.time?'Um '+esc(x.time):'Aufgabe heute')+'</span><b class="pulse-tile-value">'+esc(x.title)+'</b><small>'+esc(PulseLife.room(x.room).name)+'</small></button>';
 }
 function tileNight(){
- const m=PulseLibrary.moon(key()),card=libTodayCard();
+ const m=cosmosMoon(key()),card=libTodayCard();
  const tarot=card?'<button type="button" class="life-tonight-card picked" onclick="'+lifeCall('lifeTarotOpen',card.index)+'"><span class="life-mini-card">'+lifeGlyph('star')+'</span><b>'+esc(card.card.name)+'</b><small>Tageskarte</small></button>'
   :'<div class="life-tonight-card"><span class="life-mini-card back"></span><span class="life-today-actions">'+lifeButton('Karte ziehen',lifeCall('lifeDrawCard'),'life-textbtn')+lifeButton('Aus meinem Deck',lifeCall('lifeTarotBrowse','major',true),'life-textbtn')+'</span></div>';
- return '<section class="life-tonight span2" aria-label="Mond und Tageskarte"><button type="button" class="life-tonight-moon" onclick="'+lifeCall('lifeOpenSpaces','sinn')+'">'+moonSvg(m,52)+'<span><span class="life-kicker">Mond · '+m.illumination+' %</span><b>'+esc(m.name)+'</b><small>'+esc(moonLine(m))+'</small></span></button>'+tarot+'</section>';
+ return '<section class="life-tonight span2" aria-label="Mond und Tageskarte"><button type="button" class="life-tonight-moon" onclick="'+lifeCall('lifeOpenCalendar',key())+'">'+moonSvg(m,52)+'<span><span class="life-kicker">Mond · '+m.illumination+' %</span><b>'+esc(m.name)+'</b><small>'+esc(moonLine(m))+'</small></span></button>'+tarot+'</section>';
 }
 function tileEvening(){return '<button type="button" class="pulse-tile tile-evening" onclick="'+lifeCall('lifeOpenLib','sinn-tagesabschluss')+'"><span class="pulse-tile-head">Abends</span><b class="pulse-tile-value">Tagesabschluss</b><small>Drei Sätze zum Tag</small></button>'}
 function tileRecipe(){const r=PulseLibrary.daily(key(),'recipe','koerper');return r?'<button type="button" class="pulse-tile tile-recipe" onclick="'+lifeCall('lifeOpenLib',r.id)+'"><span class="pulse-tile-head">Rezeptidee</span><b class="pulse-tile-value">'+esc(r.title)+'</b><small>'+esc(r.sub.split(' · ')[0])+'</small></button>':''}
 function lifeTiles(){
  const order={morning:['next','night','body','training','recipe'],day:['body','training','next','recipe','night'],evening:['next','evening','night','body','training']}[dayPeriod()];
  const build={body:tileBody,training:tileTraining,next:tileNext,night:tileNight,evening:tileEvening,recipe:tileRecipe};
- return '<div class="pulse-bento">'+order.map(k=>build[k]()).join('')+'</div>';
+ const tiles=order.map(k=>build[k]()).filter(Boolean);
+ /* Asymmetric bento: the first tile is the wide hero; a lone half tile at the end stretches. */
+ if(tiles[0]&&!tiles[0].includes('span2'))tiles[0]=tiles[0].replace('class="pulse-tile ','class="pulse-tile span2 ');
+ if(tiles[0])tiles[0]=tiles[0].replace(/class="(pulse-tile|life-tonight)/,'class="$1 hero');
+ let half=0;tiles.forEach((t,i)=>{if(t.includes('span2'))half=0;else{half++;if(half%2===1&&(i===tiles.length-1||tiles[i+1].includes('span2')))tiles[i]=t.replace('class="pulse-tile ','class="pulse-tile span2 ')}});
+ return '<div class="pulse-bento">'+tiles.join('')+'</div>';
 }
 function weekStrip(date){
  const monday=PulseLife.offset(date,-((new Date(date+'T12:00:00').getDay()+6)%7));
  return '<div class="life-day-controls">'+lifeButton('‹',lifeCall('lifeMoveDay',-7),'life-iconbtn')+'<div class="life-week">'+Array.from({length:7},(_,i)=>{const d=PulseLife.offset(monday,i);return '<button type="button" class="life-weekday '+(d===date?'selected':'')+'" aria-label="'+esc(lifeDate(d))+'" aria-pressed="'+(d===date)+'" onclick="'+lifeCall('lifeSelectDay',d)+'"><small>'+['Mo','Di','Mi','Do','Fr','Sa','So'][i]+'</small><b>'+Number(d.slice(8))+'</b><i class="'+(PulseLife.day(db,d).length?'filled':'')+'"></i></button>'}).join('')+'</div>'+lifeButton('›',lifeCall('lifeMoveDay',7),'life-iconbtn')+'</div>';
-}
-function monthPanel(date){
- if(!lifeMonthOpen)return '';
- return '<div class="life-month"><div class="life-row">'+lifeButton('‹',lifeCall('lifeShiftMonth',-1),'life-iconbtn')+'<b>'+esc(lifeDate(date,{month:'long',year:'numeric'}))+'</b>'+lifeButton('›',lifeCall('lifeShiftMonth',1),'life-iconbtn')+'</div><div class="life-monthgrid">'+['M','D','M','D','F','S','S'].map(t=>'<small>'+t+'</small>').join('')+PulseCalendar.monthDays(date.slice(0,7)).map(d=>'<button type="button" aria-label="'+esc(lifeDate(d))+'" aria-pressed="'+(d===date)+'" class="'+(d.slice(0,7)!==date.slice(0,7)?'outside':'')+'" onclick="'+lifeCall('lifeSelectDay',d)+'">'+Number(d.slice(8))+(PulseLife.day(db,d).length?'<i></i>':'')+'</button>').join('')+'</div></div>';
 }
 function renderLifeToday(){
  const host=document.getElementById('lifeTodayContent');if(!host)return;const date=lifeSelectedDay||key();lifeSelectedDay=date;const isToday=date===key();
@@ -54,8 +55,8 @@ function renderLifeToday(){
  const loose=all.filter(x=>x.kind==='task'&&x.status==='open'&&!x.date).slice(0,3),overdue=all.filter(x=>x.kind==='task'&&!['done','parked','archived'].includes(x.status)&&((x.deadline&&x.deadline<key())||(x.date&&x.date<key())));
  const timed=items.filter(x=>x.time),anytime=items.filter(x=>!x.time),focus=lifeState().focus;
  const title=isToday?lifeGreeting():date===PulseLife.offset(key(),1)?'Morgen':lifeDate(date,{weekday:'long'});
- host.innerHTML='<header class="life-pagehead life-greeting"><span class="life-kicker">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span><h1>'+esc(title)+'</h1></header>'+
-  weekStrip(date)+'<div class="life-calendar-tools">'+lifeButton(lifeMonthOpen?'Monat schließen':'Monat',lifeCall('lifeShowMonth'),'life-textbtn')+(isToday?'':lifeButton('Heute',lifeCall('lifeSelectDay',key()),'life-textbtn'))+'</div>'+monthPanel(date)+
+ host.innerHTML='<header class="life-pagehead life-greeting"><div><span class="life-kicker">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span><h1>'+esc(title)+'</h1></div>'+(isToday?pulseCore():'')+'</header>'+
+  weekStrip(date)+'<div class="life-calendar-tools">'+lifeButton('Kalender',lifeCall('lifeOpenCalendar',date),'life-textbtn')+(isToday?'':lifeButton('Heute',lifeCall('lifeSelectDay',key()),'life-textbtn'))+'</div>'+
   (focus?'<button type="button" class="life-focus-banner" onclick="goView(\'focus\')"><span class="life-live-dot"></span><span><b>'+esc(focus.title)+'</b><small>'+(focus.state==='paused'?'Timer pausiert':'Timer läuft')+'</small></span><span id="lifeMiniClock">'+lifeClock(PulseLife.remaining(focus,Date.now()))+'</span></button>':'')+
   '<div class="life-capture-wrap"><button type="button" class="life-capture-line" onclick="lifeQuick()">'+lifeGlyph('plus')+'<span>'+(lifeState().draft?'Entwurf fortsetzen':'Notiz, Termin, Essen …')+'</span></button>'+(pulseSpeechSupported()?'<button type="button" class="life-capture-mic" aria-label="Per Sprache erfassen" onclick="lifeQuick(true)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>':'')+'</div>'+
   (isToday?lifeTiles()+lifeSystemRows(date)+lifeReviewRows():'')+
@@ -74,14 +75,15 @@ function quickAnalyze(raw){
  text=text.replace(/(^|\s)#([\p{L}-]+)/gu,(m,sp,tag)=>{const r=ROOM_TAGS[tag.toLocaleLowerCase('de')];if(r&&!room){room=r;return sp}return m}).replace(/\s+/g,' ').trim();
  const i=interpretCapture(text),when=parseWhen(text),parts=text?parseFoodText(text):[],foodOk=parts.length>0&&parts.every(p=>!p.unknown);
  const amount=/\d|\b(ein|eine|einen|zwei|drei|vier|fünf|halbe?)\b/i.test(text);
- let kind='note';
+ let kind='note';const link=(text.match(/https?:\/\/\S+/)||[''])[0];
  if(i.type==='food'||i.type==='drink')kind=foodOk||i.type==='drink'?'meal':'capture';
  else if(['workout','recovery','context','context-clear','historical-review'].includes(i.type))kind='capture';
  else if(when.date)kind=when.time?'event':'task';
  else if(i.type==='task')kind='task';
  else if(foodOk&&amount)kind='meal';
+ if(link&&(kind==='meal'||kind==='capture'))kind='note';
  if(quickOverride&&!(quickOverride==='meal'&&!(foodOk||i.type==='drink'))&&!(quickOverride==='event'&&!when.date))kind=quickOverride;
- return {text,room:room||(kind==='meal'?'koerper':'alltag'),kind,when,type:i.type,foodOk,kcal:Math.round(parts.reduce((a,p)=>a+(p.nut?.kcal||0),0))};
+ return {text,link,room:room||(kind==='meal'?'koerper':'alltag'),kind,when,type:i.type,foodOk,kcal:Math.round(parts.reduce((a,p)=>a+(p.nut?.kcal||0),0))};
 }
 function quickDescribe(q){
  const names={note:'Notiz',task:'Aufgabe',event:'Termin',meal:'Mahlzeit'};
@@ -108,7 +110,8 @@ function quickSave(){
  pulseStopDictation();
  if(q.kind==='meal'){const m=directIntakeCapture(q.text);if(!m){quickOverride='capture';return quickSave()}save();lifeCloseSheet();render();pulseTap();return toast(intakeMessage(m),'Rückgängig')}
  if(q.kind==='capture'){lifeCloseSheet();const r=universalCapture(q.text);if(r.type==='food-review'){const token=pendingFoodCapture;setTimeout(()=>{openCapture();pendingFoodCapture=token;showFoodFollowup(q.text)},320);return}render();pulseTap();return toast(r.message,['food','drink'].includes(r.type)?'Rückgängig':'')}
- const lines=q.text.split('\n'),fields={kind:q.kind,room:q.room,title:lines[0].slice(0,180),body:lines.slice(1).join('\n').trim()};
+ const rest=q.link?q.text.replace(q.link,'').trim():q.text,lines=rest.split('\n'),fields={kind:q.kind,room:q.room,title:(lines[0]||(PulseVideo.parse(q.link)?'YouTube-Video':'Link')).slice(0,180),body:lines.slice(1).join('\n').trim()};
+ if(q.link)fields.url=q.link.replace(/[).,;!?]+$/,'');
  if(q.kind!=='note'&&q.when.date){fields.date=q.when.date;if(q.kind==='event')fields.time=q.when.time||''}
  if(q.kind==='event'&&!fields.date)fields.date=key();
  const id=uid('life');if(lifeMutate(()=>PulseLife.create(db,fields,id,new Date().toISOString()),quickDescribe(q).split(' · ')[0]+' gespeichert')){lifeCloseSheet();pulseTap()}

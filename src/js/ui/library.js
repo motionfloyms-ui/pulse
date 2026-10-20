@@ -1,7 +1,7 @@
 // SOURCE: ui/library.js
 /* Content surfaces: room library, today strip, tarot. Reading never writes; adopting does. */
 const LIB_GROUP_LIMIT=4;
-function libTab(view){return ['bodyhub','workout','nutrition','recovery','trends'].includes(view)?'bodyhub':['life','spaces','library','focus'].includes(view)?view:'spaces'}
+function libTab(view){if(view==='calendar')return 'life';return ['bodyhub','workout','nutrition','recovery','trends'].includes(view)?'bodyhub':['life','spaces','library','focus'].includes(view)?view:'spaces'}
 function libAdopted(id){return PulseLife.list(db).find(x=>x.source==='lib:'+id)||null}
 function libCard(e){
  const r=PulseLife.room(e.room),mine=libAdopted(e.id);
@@ -26,8 +26,8 @@ function libTodayCard(){const t=lifeState().preferences.tarot;return t&&t.date==
 function lifeLibSection(roomId){
  const entries=PulseLibrary.forRoom(roomId);let widgets='';
  if(roomId==='sinn'){
-  const m=PulseLibrary.moon(key()),card=libTodayCard();
-  widgets='<div class="life-lib-widgets"><div class="life-moon-panel">'+moonSvg(m,64)+'<div><span class="life-kicker">Mond heute · '+m.illumination+' % beleuchtet</span><b>'+esc(m.name)+'</b><p>'+esc(m.impulse)+'</p><small>'+esc(moonLine(m))+'</small></div></div>'+
+  const m=cosmosMoon(key()),card=libTodayCard();
+  widgets='<div class="life-lib-widgets"><div class="life-moon-panel">'+moonSvg(m,64)+'<div><span class="life-kicker">Mond heute · '+m.illumination+' % beleuchtet</span><b>'+esc(m.name)+'</b><p>'+esc(m.impulse)+'</p><p class="cos-practice"><b>Praxis:</b> '+esc(PulseLore.PHASES[m.index].title)+'</p><small>'+esc(moonLine(m))+'</small><div class="life-room-actions">'+lifeButton('Kalender',lifeCall('lifeOpenCalendar',key()),'life-btn')+lifeButton('Anleitung',lifeCall('lifeOpenLib',PulseLore.PHASES[m.index].lib),'life-textbtn')+'</div></div></div>'+
   '<div class="life-tarot-panel"><span class="life-kicker">Tarot</span>'+(card?'<b>Heute: '+esc(card.card.name)+'</b><p>'+esc(card.card.question)+'</p>'+lifeButton('Karte ansehen',lifeCall('lifeTarotOpen',card.index),'life-btn'):'<b>Deine Tageskarte</b><p>Digital ziehen oder die Karte aus deinem Deck eintragen.</p><div class="life-room-actions">'+lifeButton('Digital ziehen',lifeCall('lifeDrawCard'),'life-btn dark')+lifeButton('Aus meinem Deck',lifeCall('lifeTarotBrowse','major',true),'life-btn')+'</div>')+
   (()=>{const st=tarotStats();return '<div class="life-tarot-stats"><b>'+st.days+'</b><span>'+(st.days===1?'Tageskarte':'Tageskarten')+(st.top?' · am häufigsten '+esc(st.top.card.name)+' ('+st.top.n+'×)':'')+'</span>'+(st.days?lifeButton('Verlauf',lifeCall('lifeTarotHistory'),'life-textbtn'):'')+'</div>'})()+
   '<div class="life-room-actions">'+lifeButton('Drei Karten legen',lifeCall('lifeSpread','drei'),'life-btn')+lifeButton('Entscheidung legen',lifeCall('lifeSpread','kreuz'),'life-btn')+'</div>'+

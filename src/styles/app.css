@@ -1,4 +1,4 @@
-/* PULSE 13 · one stylesheet. Tokens first, then base, shell, life screens, body tools, sheets. */
+/* PULSE 19 · one stylesheet. Tokens first, then base, shell, life screens, body tools, sheets. */
 :root{
  color-scheme:light dark;
  --canvas:#F2F1F6;--surface:#FFFFFF;--surface-2:#F6F5FA;--fill:#ECEAF2;--fill-strong:#DFDCE8;
@@ -12,18 +12,33 @@
  --font:"Bricolage Grotesque",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
  --bar:color-mix(in srgb,var(--surface) 95%,transparent);
 }
-@media(prefers-color-scheme:dark){:root{
- --canvas:#0E0D14;--surface:#1A1922;--surface-2:#22202C;--fill:#2A2836;--fill-strong:#353243;
- --ink:#F3F2F8;--ink-2:#CFCBDD;--muted:#A8A4BA;--line:#2C2A37;--line-strong:#403D4E;
- --accent:#8A79FF;--accent-hover:#9C8DFF;--accent-on:#14102E;--accent-soft:#2A2550;--accent-text:#AA9DFF;
- --night:#17133A;--night-2:#2A2266;
- --shadow-1:0 0 0 1px rgb(255 255 255/.04);--shadow-2:0 20px 40px -16px rgb(0 0 0/.7),0 0 0 1px rgb(255 255 255/.06);
+/* Obsidian: deep canvas, glass-lit surfaces. Applies automatically or when chosen in the settings. */
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --canvas:#08090E;--surface:#12131B;--surface-2:#181A24;--fill:#21232F;--fill-strong:#2B2E3C;
+ --ink:#F3F4F6;--ink-2:#C9CCD6;--muted:#8E95A5;--line:#23252F;--line-strong:#383B48;
+ --accent:#8B7BFF;--accent-hover:#9D8FFF;--accent-on:#120E2E;--accent-soft:#221E44;--accent-text:#AFA4FF;
+ --night:#141233;--night-2:#272063;
+ --shadow-1:inset 0 1px 0 rgb(255 255 255/.07),0 0 0 1px rgb(255 255 255/.055);--shadow-2:0 24px 48px -20px rgb(0 0 0/.85),0 0 0 1px rgb(255 255 255/.08);
+ color-scheme:dark;
 }}
+:root[data-theme="dark"]{
+ --canvas:#08090E;--surface:#12131B;--surface-2:#181A24;--fill:#21232F;--fill-strong:#2B2E3C;
+ --ink:#F3F4F6;--ink-2:#C9CCD6;--muted:#8E95A5;--line:#23252F;--line-strong:#383B48;
+ --accent:#8B7BFF;--accent-hover:#9D8FFF;--accent-on:#120E2E;--accent-soft:#221E44;--accent-text:#AFA4FF;
+ --night:#141233;--night-2:#272063;
+ --shadow-1:inset 0 1px 0 rgb(255 255 255/.07),0 0 0 1px rgb(255 255 255/.055);--shadow-2:0 24px 48px -20px rgb(0 0 0/.85),0 0 0 1px rgb(255 255 255/.08);
+ color-scheme:dark;
+}
+:root[data-theme="light"]{color-scheme:light}
 /* Room colour system: one hue per room, soft + deep derived automatically (light and dark). */
 .peach{--room:#C2502A}.lilac{--room:#6F4FD8}.plum{--room:#3B2E95}.green{--room:#11805A}.rose{--room:#C42B59}.yellow{--room:#F1B92B;--room-on:#2B2100}.blue{--room:#1F6FB2}.sand{--room:#8F6235}.plum-soft{--room:#5B45E0}
 .peach,.lilac,.plum,.green,.rose,.yellow,.blue,.sand,.plum-soft{--room-soft:color-mix(in srgb,var(--room) 15%,var(--surface));--room-deep:color-mix(in srgb,var(--room) 68%,var(--ink));background:var(--room-soft);color:var(--room-deep)}
 .yellow{--room-deep:#6E5100}
-@media(prefers-color-scheme:dark){.peach,.lilac,.plum,.green,.rose,.yellow,.blue,.sand,.plum-soft{--room-soft:color-mix(in srgb,var(--room) 30%,var(--surface));--room-deep:color-mix(in srgb,var(--room) 40%,var(--ink))}.yellow{--room-deep:#F4D27C}}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .peach,:root:not([data-theme="light"]) .lilac,:root:not([data-theme="light"]) .plum,:root:not([data-theme="light"]) .green,:root:not([data-theme="light"]) .rose,:root:not([data-theme="light"]) .yellow,:root:not([data-theme="light"]) .blue,:root:not([data-theme="light"]) .sand,:root:not([data-theme="light"]) .plum-soft{--room-soft:color-mix(in srgb,var(--room) 26%,var(--surface));--room-deep:color-mix(in srgb,var(--room) 40%,var(--ink))}}
+:root[data-theme="dark"] .peach,:root[data-theme="dark"] .lilac,:root[data-theme="dark"] .plum,:root[data-theme="dark"] .green,:root[data-theme="dark"] .rose,:root[data-theme="dark"] .yellow,:root[data-theme="dark"] .blue,:root[data-theme="dark"] .sand,:root[data-theme="dark"] .plum-soft{--room-soft:color-mix(in srgb,var(--room) 26%,var(--surface));--room-deep:color-mix(in srgb,var(--room) 40%,var(--ink))}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .yellow{--room-deep:#F4D27C}}
+:root[data-theme="dark"] .yellow{--room-deep:#F4D27C}
+
 
 /* ---------- Base ---------- */
 *{box-sizing:border-box}
@@ -677,6 +692,104 @@ th{color:var(--muted);font-weight:600}
 @keyframes strike{from{background-size:0 1.5px}to{background-size:100% 1.5px}}
 .life-check.checked::before{animation:pop .3s ease-out}
 @keyframes pop{50%{transform:scale(1.18)}}
+
+/* ---------- v19: calendar, day pulse, glass, motion, video ---------- */
+.life-greeting{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.life-greeting>div{min-width:0}
+.pulse-core{--c:color-mix(in oklab,#FF5E7E calc(var(--p) * 100%),#6B5BFF);position:relative;flex:none;display:grid;place-items:center;width:68px;height:68px;margin:0 2px 4px 0;padding:0;border-radius:50%;background:none;box-shadow:none}
+.pulse-core::before{content:"";position:absolute;inset:-6px;border-radius:50%;background:radial-gradient(circle,var(--c) 0%,transparent 68%);opacity:.5;animation:breathe calc(6s - var(--p) * 3.4s) ease-in-out infinite}
+.pulse-core-orb{position:absolute;inset:10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,color-mix(in oklab,var(--c) 70%,white),color-mix(in oklab,var(--c) 78%,black) 75%);box-shadow:0 0 18px -2px var(--c),inset 0 1px 0 rgb(255 255 255/.35)}
+.pulse-core b{position:relative;font-size:17px;font-weight:750;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:-.02em;text-shadow:0 1px 3px rgb(0 0 0/.35)}
+@keyframes breathe{0%,100%{transform:scale(.8);opacity:.3}50%{transform:scale(1.12);opacity:.7}}
+.pulse-tile.hero{min-height:128px;padding:18px 20px}
+.pulse-tile.hero .pulse-tile-value{font-size:24px;-webkit-line-clamp:2}
+.pulse-tile,.life-entry,.cos-day,.cos-row,.life-capture-line,.pulse-core{transition:transform .35s cubic-bezier(.34,1.56,.64,1),background-color .2s}
+.pulse-tile:active,.cos-row:active,.life-capture-line:active,.pulse-core:active{transform:scale(.97)}
+.cos-day:active{transform:scale(.92)}
+.pulse-tile-value,.pulse-ring b,.cos-day b,#lifeMiniClock,.life-tarot-stats b{font-variant-numeric:tabular-nums}
+.life-seg{display:inline-flex;flex:none;gap:2px;padding:3px;border-radius:999px;background:var(--fill)}
+.life-seg button{min-height:38px;padding:4px 12px;border-radius:999px;background:transparent;color:var(--ink-2);font-size:14px;font-weight:600}
+.life-seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-on)}
+.life-settings-row{flex-wrap:wrap}.life-settings-row>div:first-child{flex:1 1 180px}
+/* Calendar */
+.cos-nav{display:flex;align-items:center;justify-content:space-between;margin:-4px 0 8px}
+.cos-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;padding:8px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-1)}
+.cos-grid>small{padding:2px 0 4px;text-align:center;font-size:12px;font-weight:650;color:var(--muted)}
+.cos-day{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0;min-height:60px;padding:6px 0 4px;border-radius:12px;background:transparent;color:var(--ink);font-weight:400}
+.cos-day b{font-size:16px;font-weight:650;line-height:1.15}
+.cos-lunar{font-size:10.5px;line-height:1.15;color:var(--muted);white-space:nowrap}
+.cos-lunar.start{font-weight:750;color:var(--accent-text)}
+.cos-day.outside b{font-weight:500;color:var(--muted)}.cos-day.outside .cos-lunar{visibility:hidden}.cos-day.outside .cos-marks{opacity:.45}
+.cos-day.today{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.cos-day.fest{background:color-mix(in srgb,#E0484F 10%,transparent)}
+.cos-day.wheel{background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.cos-day[aria-pressed="true"]{background:var(--accent);color:var(--accent-on);box-shadow:0 6px 18px -8px var(--accent)}
+.cos-day[aria-pressed="true"] .cos-lunar{color:inherit;opacity:.85}
+.cos-marks{display:flex;align-items:center;justify-content:center;gap:3px;min-height:10px;margin-top:auto}
+.cos-marks i,.cos-legend i{display:inline-block;flex:none}
+.cos-m{width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 1.2px var(--muted)}
+.cos-m.new{background:var(--night)}
+.cos-m.full{background:var(--star);box-shadow:0 0 6px rgb(245 230 179/.6)}
+.cos-m.first{background:linear-gradient(90deg,transparent 50%,var(--star) 50%)}
+.cos-m.last{background:linear-gradient(90deg,var(--star) 50%,transparent 50%)}
+.cos-term{width:7px;height:7px;background:#2A93DA;transform:rotate(45deg)}
+.cos-fest{width:7px;height:7px;border-radius:50%;background:#E0484F}
+.cos-day.wheel .cos-fest,.cos-legend .cos-fest.wheel{background:var(--ok)}
+.cos-item{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.cos-day[aria-pressed="true"] .cos-item{background:var(--accent-on)}
+.cos-legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin:10px 4px 20px;font-size:12.5px;color:var(--muted)}
+.cos-legend>span{display:inline-flex;align-items:center;gap:6px}
+.cos-detail{scroll-margin-top:72px}
+.cos-detail h2{margin:0 4px 10px;font-size:22px;letter-spacing:-.015em}
+.cos-moon-hero{display:flex;align-items:center;gap:16px;margin-bottom:10px;padding:18px 20px;border-radius:var(--r-lg);background:radial-gradient(120% 140% at 0% 0%,var(--night-2),var(--night) 60%);color:var(--night-ink);box-shadow:var(--shadow-1)}
+.cos-moon-hero .life-kicker{color:var(--night-muted)}
+.cos-moon-hero b{display:block;font-size:23px;font-weight:700;letter-spacing:-.015em}
+.cos-moon-hero small{font-size:14.5px;color:var(--night-muted)}
+.cos-card{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;padding:16px 18px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-1)}
+.cos-card>b{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.cos-card>b small{display:inline;font-size:13px;font-weight:500;color:var(--muted)}
+.cos-card p{margin:2px 0;font-size:15px;color:var(--ink-2)}
+.cos-card>small{color:var(--muted);font-size:13.5px}
+.cos-practice b{color:var(--ink)}
+.cos-actions{display:flex;flex-wrap:wrap;gap:0 18px;margin-top:2px}
+.cos-facts{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;margin:8px 0 4px}
+.cos-facts dt{padding-top:1px;font-size:13px;font-weight:650;color:var(--muted)}
+.cos-facts dd{margin:0;font-size:15px}
+.cos-facts small{margin-top:1px;color:var(--muted)}
+.cos-items{margin:16px 0 8px}
+.cos-items h3{margin:0;font-size:18px}
+.cos-items .life-muted{margin:4px 4px 0;color:var(--muted)}
+.cos-upcoming h2{margin:22px 4px 8px;font-size:20px}
+.cos-row{display:flex;align-items:center;gap:14px;width:100%;margin-bottom:6px;padding:12px 16px;border-radius:var(--r-md);background:var(--surface);box-shadow:var(--shadow-1);color:var(--ink);text-align:left;font-weight:400}
+.cos-row-date{display:flex;flex-direction:column;min-width:66px;font-weight:700;font-variant-numeric:tabular-nums}
+.cos-row>span:last-child{display:flex;flex-direction:column;min-width:0}
+.cos-row small{font-size:12.5px;font-weight:400;color:var(--muted)}
+.cos-practice{margin-top:4px!important}
+.life-moon-panel .life-room-actions{margin-top:8px}
+@media(max-width:360px){.cos-day{min-height:54px}.cos-lunar{font-size:9.5px}.cos-grid{padding:6px;gap:2px}}
+/* YouTube */
+.pulse-video{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:14px 0}
+.pulse-video-play{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;aspect-ratio:16/9;border-radius:var(--r-md);background:radial-gradient(120% 120% at 20% 0%,var(--night-2),var(--night) 65%);color:var(--night-ink);font-weight:650}
+.pulse-video-play svg{width:58px;height:58px;padding:16px 14px 16px 18px;border-radius:50%;background:rgb(255 255 255/.14);fill:currentColor}
+.pulse-video-play small{font-size:12px;font-weight:400;color:var(--night-muted)}
+.pulse-video iframe{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:var(--r-md);background:#000}
+.pulse-video.short .pulse-video-play,.pulse-video.short iframe{width:min(100%,340px);aspect-ratio:9/16;align-self:center}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background:transparent}}
+:root[data-theme="dark"] body{background:transparent}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) body::before{content:"";position:fixed;inset:-25vmax;z-index:-1;pointer-events:none;background:radial-gradient(38vmax 38vmax at 18% 12%,rgb(107 91 255/.22),transparent 70%),radial-gradient(30vmax 30vmax at 88% 38%,rgb(255 94 126/.11),transparent 70%),radial-gradient(42vmax 42vmax at 45% 96%,rgb(56 189 248/.08),transparent 70%);animation:drift 46s ease-in-out infinite alternate}}
+:root[data-theme="dark"] body::before{content:"";position:fixed;inset:-25vmax;z-index:-1;pointer-events:none;background:radial-gradient(38vmax 38vmax at 18% 12%,rgb(107 91 255/.22),transparent 70%),radial-gradient(30vmax 30vmax at 88% 38%,rgb(255 94 126/.11),transparent 70%),radial-gradient(42vmax 42vmax at 45% 96%,rgb(56 189 248/.08),transparent 70%);animation:drift 46s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate3d(-5vmax,4vmax,0) rotate(10deg)}}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-tile,:root:not([data-theme="light"]) .life-entry,:root:not([data-theme="light"]) .life-lib-card,:root:not([data-theme="light"]) .life-tarot-panel,:root:not([data-theme="light"]) .life-capture-line,:root:not([data-theme="light"]) .life-body-card,:root:not([data-theme="light"]) .cos-card,:root:not([data-theme="light"]) .cos-grid,:root:not([data-theme="light"]) .cos-row,:root:not([data-theme="light"]) .life-today-row,:root:not([data-theme="light"]) .life-empty,:root:not([data-theme="light"]) .food-today>div,:root:not([data-theme="light"]) .life-settings-row{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}}
+:root[data-theme="dark"] .pulse-tile,:root[data-theme="dark"] .life-entry,:root[data-theme="dark"] .life-lib-card,:root[data-theme="dark"] .life-tarot-panel,:root[data-theme="dark"] .life-capture-line,:root[data-theme="dark"] .life-body-card,:root[data-theme="dark"] .cos-card,:root[data-theme="dark"] .cos-grid,:root[data-theme="dark"] .cos-row,:root[data-theme="dark"] .life-today-row,:root[data-theme="dark"] .life-empty,:root[data-theme="dark"] .food-today>div,:root[data-theme="dark"] .life-settings-row{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .life-check.checked{filter:drop-shadow(0 0 6px color-mix(in srgb,var(--ok) 75%,transparent))}}
+:root[data-theme="dark"] .life-check.checked{filter:drop-shadow(0 0 6px color-mix(in srgb,var(--ok) 75%,transparent))}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-dots i.on{box-shadow:0 0 8px color-mix(in srgb,var(--ok) 70%,transparent)}}
+:root[data-theme="dark"] .pulse-dots i.on{box-shadow:0 0 8px color-mix(in srgb,var(--ok) 70%,transparent)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-ring .bar{filter:drop-shadow(0 0 3px rgb(139 123 255/.55))}}
+:root[data-theme="dark"] .pulse-ring .bar{filter:drop-shadow(0 0 3px rgb(139 123 255/.55))}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .life-topbar{background:color-mix(in srgb,var(--canvas) 72%,transparent)}}
+:root[data-theme="dark"] .life-topbar{background:color-mix(in srgb,var(--canvas) 72%,transparent)}
+.life-calm .pulse-core::before,body.life-calm::before{animation:none}
 /* Calm view: colour recedes, structure stays. */
 .life-calm .life-room-tile,.life-calm .life-room-hero{background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 5px 0 0 var(--room)}
 .life-calm .life-room-tile::after,.life-calm .life-room-hero::after{display:none}
