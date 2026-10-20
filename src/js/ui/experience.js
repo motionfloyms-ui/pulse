@@ -84,7 +84,7 @@ function renderSmartPreview() {
   for(const part of known)for(const nutrient of Object.keys(sum))sum[nutrient]=nums(sum[nutrient]+(part.nut[nutrient]||0));
   draft.known=known;draft.unknown=unknown;draft.sum=sum;
   box.innerHTML='<div class="note"><b>'+(unknown.length?'Eine Angabe fehlt noch.':'So habe ich es verstanden.')+'</b>'+known.map(part=>'<p>'+esc(part.food.name)+' · '+esc(part.label)+'</p>').join('')+
-    unknown.map(part=>'<p><b>'+esc(part.raw)+'</b><br>'+esc(part.reason||'Bitte die Menge oder das Lebensmittel präzisieren.')+'</p>').join('')+
+    unknown.map(part=>'<p><b>'+esc(part.raw)+'</b><br>'+esc(part.reason||'Bitte die Menge oder das Lebensmittel präzisieren.')+(part.food?'':'<br><button type="button" class="life-textbtn" onclick="'+lifeCall('lifeFoodEditor',null,{name:part.raw.replace(/[\d.,]+\s*(g|ml|stück|x)?\b/gi,'').replace(/\s+/g,' ').trim()})+'">Als eigenes Lebensmittel anlegen</button>')+'</p>').join('')+
     (known.length?'<p>'+sum.kcal+' kcal · '+sum.protein+' g Protein'+(known.some(part=>part.confidence==='geschaetzt')?' · geschätzt':'')+'</p>':'')+
     '<div class="actions"><button type="button" class="primary" onclick="saveSmartFood()" '+(unknown.length||!known.length?'disabled':'')+'>Mahlzeit eintragen</button><button type="button" class="text-button" onclick="clearSmartFood()">Verwerfen</button></div></div>';
 }
@@ -95,6 +95,7 @@ function renderNutrition() {
     '<div class="item mealItem"><div class="grow"><small>'+esc(meal.time||'Zeit offen')+'</small><b>'+esc(meal.name)+'</b><div class="muted">'+esc(meal.protein)+' g Protein · '+esc(meal.kcal)+' kcal'+(meal.confidence==='estimated'?' · geschätzt':'')+'</div></div><button type="button" class="icon-button danger" aria-label="'+esc(meal.name)+' löschen" onclick="removeMeal('+db.meals.indexOf(meal)+')">'+uiIcon('close')+'</button></div>'
   ).join('')||'<div class="empty">Hier erscheinen deine Mahlzeiten. Du musst nichts nachtragen, um neu anzufangen.</div>';
   document.getElementById('macroBars').innerHTML='<div class="quiet-note">'+esc(nutritionNextAction())+'</div>';
+  renderFoodToday();renderFoodLibrary();
 }
 function workoutDraftKey(plan,exercise,set){return key()+'|'+plan+'|'+exercise+'|'+set}
 function workoutDraft(plan,exercise,set){return db.uiPrefs.workoutDrafts?.[workoutDraftKey(plan,exercise,set)]||{}}

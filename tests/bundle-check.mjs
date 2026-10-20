@@ -5,5 +5,5 @@ const js=html.slice(html.indexOf('<script>')+8,html.lastIndexOf('</script>'));
 new vm.Script(js,{filename:'index.html'});
 const m=JSON.parse(readFileSync(new URL('../src/manifest.json',import.meta.url),'utf8'));
 for(const f of m.scripts){const n=js.split('// SOURCE: '+f+'\n').length-1;if(n!==1)throw Error(f+' appears '+n+'×')}
-if(/claude-history|Laugenbrötchen|Unterleib/.test(html))throw Error('personal seed data found in bundle');
+if(/claude-history-2026|food-2026-10-02/.test(html))throw Error('personal seed data found in bundle');
 console.log('bundle ok:',m.scripts.length,'modules');

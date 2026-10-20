@@ -209,7 +209,7 @@ function openDialog(wrapper,focusSelector,{fromHistory=false}={}){
 }
 function closeDialog(wrapper,{fromHistory=false,navigating=false}={}){
  if(!wrapper||activeDialog!==wrapper.id)return;
- pulseStopDictation();
+ pulseStopDictation();stopScanner();
  wrapper.classList.remove('open');activeDialog=null;backgroundInert(false);
  const f=lastDialogTrigger;lastDialogTrigger=null;
  if(!navigating&&f&&document.contains(f))requestAnimationFrame(()=>f.focus());

@@ -603,6 +603,38 @@ th{color:var(--muted);font-weight:600}
 .life-review-row{padding-right:6px}
 .life-review-open{display:block;min-height:44px;text-align:left;color:var(--ink);font-weight:400}
 .life-review-x{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;color:var(--muted);font-size:22px}
+.life-tool{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 14px;border-radius:999px;background:var(--fill);color:var(--ink);font-size:14px;font-weight:600}
+.life-tool svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.food-today{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:4px 0 6px}
+.food-today>div{display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:var(--r-lg);background:var(--surface)}
+.food-today small{font-size:12px;font-weight:600}
+.food-today b{font-size:20px;font-weight:750;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.food-today b span{font-size:12px;font-weight:500;color:var(--muted)}
+.food-today .small{margin-top:4px;min-height:36px;padding:6px 8px;font-size:12px}
+.food-bar{display:block;height:6px;border-radius:6px;background:var(--fill);overflow:hidden}
+.food-bar i{display:block;height:100%;border-radius:6px;background:var(--accent)}
+.food-composer label{margin-bottom:6px}
+.food-composer .life-input-tools{margin:8px 0 10px}
+.content-block .row h2{margin:0}
+.content-block .row{margin-bottom:8px}
+.food-lib-item{width:100%;text-align:left;color:var(--ink);font-weight:400}
+.food-lib-item b{display:block;font-size:15px;font-weight:600}
+.food-scan-view{position:relative;overflow:hidden;border-radius:var(--r-lg);background:#000;aspect-ratio:4/3;margin:6px 0 10px}
+.food-scan-view video{width:100%;height:100%;object-fit:cover;display:block}
+.food-scan-frame{position:absolute;left:12%;right:12%;top:32%;bottom:32%;border:2px solid rgb(255 255 255/.85);border-radius:12px;box-shadow:0 0 0 999px rgb(0 0 0/.35)}
+.food-scan-card{margin-top:14px;padding:16px;border-radius:var(--r-lg);background:var(--surface-2)}
+.food-scan-card>b{display:block;font-size:18px;font-weight:700}
+.food-scan-per{font-size:14px;color:var(--muted);margin:6px 0 12px}
+.food-scan-total{font-size:15px;font-weight:600;margin:-4px 0 0}
+.life-body-card{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 12px;padding:12px 14px;border-radius:var(--r-lg);background:var(--surface);text-align:left;color:var(--ink);box-shadow:var(--shadow-1)}
+.life-body-card>span:first-child{display:grid;place-items:center;width:36px;height:36px;border-radius:11px}
+.life-body-card>span:first-child .life-glyph{width:20px;height:20px}
+.life-body-card b{display:block;font-size:16px;font-weight:600}
+.life-body-card small{font-size:13px;margin-top:2px}
+.life-body-card i{font-style:normal;color:var(--line-strong);font-size:20px}
+.life-day-aside.is-busy{display:none}
+.life-day-layout:has(.life-day-aside.is-busy){grid-template-columns:minmax(0,1fr)}
+@media(max-width:360px){.food-today{grid-template-columns:1fr}}
 /* Calm view: colour recedes, structure stays. */
 .life-calm .life-room-tile,.life-calm .life-room-hero{background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 5px 0 0 var(--room)}
 .life-calm .life-room-tile::after,.life-calm .life-room-hero::after{display:none}
