@@ -9,7 +9,8 @@ function handleLaunchParams(){
  const action=q.get('action'),title=(q.get('title')||'').trim(),text=(q.get('text')||'').trim(),url=(q.get('url')||'').trim();
  history.replaceState(history.state,'',location.pathname+location.hash);
  setTimeout(()=>{
-  if(title||text||url){const link=/^https?:\/\//i.test(url)?url:(text.match(/https?:\/\/\S+/)||[''])[0];const video=PulseVideo.parse(link),name=title||(text.replace(link,'').trim().split('\n')[0]||(video?'YouTube-Video':'Geteilt')),room=video?PulseVideo.room(title+' '+text,video):'';lifeReceiveShare({kind:'note',title:name.slice(0,120),body:title?text.replace(link,'').trim():text.replace(link,'').trim().split('\n').slice(1).join('\n').trim(),url:link,...(room?{room}:{})})}
+  if(title||text||url){const link=/^https?:\/\//i.test(url)?url:(text.match(/https?:\/\/\S+/)||[''])[0];const video=PulseVideo.parseAny(link);if(video){const rest=(title+' '+text.replace(link,'')).trim();const x=vaultAdd(link,{title,room:PulseVideo.room(rest,video),note:title?text.replace(link,'').trim():''});if(x){lifeOpenVideos();vaultOpen(x.id)}return}
+  const name=title||(text.replace(link,'').trim().split('\n')[0]||(video?'YouTube-Video':'Geteilt')),room=video?PulseVideo.room(title+' '+text,video):'';lifeReceiveShare({kind:'note',title:name.slice(0,120),body:title?text.replace(link,'').trim():text.replace(link,'').trim().split('\n').slice(1).join('\n').trim(),url:link,...(room?{room}:{})})}
   else if(action==='compose')lifeQuick();
   else if(action==='voice')lifeComposeVoice();
   else if(action==='food')goView('nutrition');

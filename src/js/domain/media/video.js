@@ -19,9 +19,23 @@
   const start=seconds(u.searchParams.get('t')||u.searchParams.get('start')||'');
   return {id,start,short:u.pathname.startsWith('/shorts/'),music:host.startsWith('music.')};
  }
- function find(text){for(const m of String(text||'').matchAll(/https?:\/\/[^\s<>"']+/g)){const v=parse(m[0]);if(v)return {...v,url:m[0]}}return null}
- function embed(v,autoplay=true){return 'https://www.youtube-nocookie.com/embed/'+v.id+'?rel=0&playsinline=1&modestbranding=1'+(autoplay?'&autoplay=1':'')+(v.start?'&start='+v.start:'')}
- function watch(v){return 'https://www.youtube.com/watch?v='+v.id+(v.start?'&t='+v.start+'s':'')}
+ /* Playlist links: youtube.com/playlist?list=… (also music.youtube.com). Private lists (WL, LL) have short ids and are skipped. */
+ function parseList(url){
+  let u;try{u=new URL(String(url||'').trim())}catch(_){return null}
+  if(!/^https?:$/.test(u.protocol)||!HOSTS.test(u.hostname.toLowerCase())||u.pathname!=='/playlist')return null;
+  const list=u.searchParams.get('list')||'';if(!/^[A-Za-z0-9_-]{10,64}$/.test(list))return null;
+  return {list,music:u.hostname.toLowerCase().startsWith('music.')};
+ }
+ /* A video or a playlist. A video opened from inside a playlist counts as the video. */
+ function parseAny(url){const v=parse(url);if(v)return {type:'video',...v};const p=parseList(url);return p?{type:'playlist',...p}:null}
+ const LINKS=/https?:\/\/[^\s<>"']+/g;
+ function find(text){for(const m of String(text||'').matchAll(LINKS)){const v=parse(m[0]);if(v)return {...v,url:m[0]}}return null}
+ function findAny(text){for(const m of String(text||'').matchAll(LINKS)){const url=m[0].replace(/[).,;!?]+$/,''),v=parseAny(url);if(v)return {...v,url}}return null}
+ function embed(v,autoplay=true){
+  if(v.list&&!v.id)return 'https://www.youtube-nocookie.com/embed/videoseries?list='+encodeURIComponent(v.list)+'&rel=0&playsinline=1'+(autoplay?'&autoplay=1':'');
+  return 'https://www.youtube-nocookie.com/embed/'+v.id+'?rel=0&playsinline=1&modestbranding=1'+(autoplay?'&autoplay=1':'')+(v.start?'&start='+v.start:'');
+ }
+ function watch(v){if(v.list&&!v.id)return 'https://www.youtube.com/playlist?list='+encodeURIComponent(v.list);return 'https://www.youtube.com/watch?v='+v.id+(v.start?'&t='+v.start+'s':'')}
  /* Room suggestion from the title or shared text. Empty when nothing fits; the user decides. */
  const ROOMS=[
   ['koerper',/training|workout|übung|uebung|exercise|gym|fitx|kraft|squat|kniebeuge|bankdr|latzug|rudern|kreuzheben|deadlift|hip ?thrust|glute|dehn|stretch|mobility|yoga|pilates|rezept|recipe|kochen|cooking|protein|ernährung|meal ?prep/],
@@ -36,5 +50,5 @@
   for(const [id,re] of ROOMS){const c=(t.match(new RegExp(re.source,'g'))||[]).length;if(c>n){best=id;n=c}}
   return best||(video&&video.music?'ideen':'');
  }
- return {parse,find,embed,watch,seconds,room};
+ return {parse,parseList,parseAny,find,findAny,embed,watch,seconds,room};
 });

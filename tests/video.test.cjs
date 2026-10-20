@@ -23,3 +23,12 @@ test('suggests a room from the video title',()=>{
  assert.equal(V.room('Irgendwas Lustiges'),'');
  assert.equal(V.room('Irgendwas',{music:true}),'ideen');
 });
+test('playlist links',()=>{
+ const p=V.parseAny('https://www.youtube.com/playlist?list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG&si=1');assert.equal(p.type,'playlist');assert.equal(p.list,'PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG');
+ assert.equal(V.parseAny('https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG').type,'video','a video inside a playlist is the video');
+ assert.equal(V.parseAny('https://music.youtube.com/playlist?list=OLAK5uy_kXYZabcdefghij').music,true);
+ assert.equal(V.parseAny('https://www.youtube.com/playlist?list=WL'),null,'private watch-later list');
+ assert.equal(V.embed({list:'PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG'}),'https://www.youtube-nocookie.com/embed/videoseries?list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG&rel=0&playsinline=1&autoplay=1');
+ assert.equal(V.watch({list:'PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG'}),'https://www.youtube.com/playlist?list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG');
+ assert.equal(V.findAny('Meine Liste: https://youtube.com/playlist?list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG.').type,'playlist');
+});

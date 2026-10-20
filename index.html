@@ -80,7 +80,7 @@ button .icon{pointer-events:none}
 .life-iconbtn::before{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--fill);z-index:-1}
 .life-iconbtn{isolation:isolate}.life-iconbtn svg{width:20px;height:20px}
 .life-iconbtn:hover::before{background:var(--fill-strong)}
-.life-nav{position:fixed;z-index:60;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));width:min(calc(100% - 24px),480px);display:grid;grid-template-columns:1fr 1fr 64px 1fr 1fr;align-items:center;padding:6px;border-radius:26px;background:var(--bar);-webkit-backdrop-filter:saturate(1.8) blur(20px);backdrop-filter:saturate(1.8) blur(20px);box-shadow:var(--shadow-2)}
+.life-nav{position:fixed;z-index:60;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));width:min(calc(100% - 24px),480px);display:grid;grid-template-columns:2fr 2fr 2fr 60px 3fr 3fr;align-items:center;padding:6px;border-radius:26px;background:var(--bar);-webkit-backdrop-filter:saturate(1.8) blur(20px);backdrop-filter:saturate(1.8) blur(20px);box-shadow:var(--shadow-2)}
 .life-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:54px;border-radius:20px;color:var(--muted);font-size:11px;font-weight:600}
 .life-nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .life-nav button[aria-current="page"]{color:var(--accent-text);background:var(--accent-soft)}
@@ -571,7 +571,7 @@ th{color:var(--muted);font-weight:600}
  .life-tonight{grid-template-columns:1fr}.life-tonight-card{width:auto;flex-direction:row}
  .life-lib-grid{grid-template-columns:1fr}
  .form,.life-form-row{grid-template-columns:1fr}
- .life-nav{grid-template-columns:1fr 1fr 56px 1fr 1fr}.life-nav button{font-size:10px}
+ .life-nav{grid-template-columns:2fr 2fr 2fr 52px 3fr 3fr}.life-nav button{font-size:10px}
 }
 /* v13 · Eingabe-Werkzeuge, Fotos, Tarot-Praxis */
 .life-input-tools{display:flex;flex-wrap:wrap;gap:8px;margin:-6px 0 14px}
@@ -711,7 +711,7 @@ th{color:var(--muted);font-weight:600}
 .cos-day:active{transform:scale(.92)}
 .pulse-tile-value,.pulse-ring b,.cos-day b,#lifeMiniClock,.life-tarot-stats b{font-variant-numeric:tabular-nums}
 .life-seg{display:inline-flex;flex:none;gap:2px;padding:3px;border-radius:999px;background:var(--fill)}
-.life-seg button{min-height:38px;padding:4px 12px;border-radius:999px;background:transparent;color:var(--ink-2);font-size:14px;font-weight:600}
+.life-seg button{min-height:44px;padding:4px 12px;border-radius:999px;background:transparent;color:var(--ink-2);font-size:14px;font-weight:600}
 .life-seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-on)}
 .life-settings-row{flex-wrap:wrap}.life-settings-row>div:first-child{flex:1 1 180px}
 /* Calendar */
@@ -782,8 +782,8 @@ th{color:var(--muted);font-weight:600}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) body::before{content:"";position:fixed;inset:-25vmax;z-index:-1;pointer-events:none;background:radial-gradient(38vmax 38vmax at 18% 12%,rgb(107 91 255/.22),transparent 70%),radial-gradient(30vmax 30vmax at 88% 38%,rgb(255 94 126/.11),transparent 70%),radial-gradient(42vmax 42vmax at 45% 96%,rgb(56 189 248/.08),transparent 70%);animation:drift 46s ease-in-out infinite alternate}}
 :root[data-theme="dark"] body::before{content:"";position:fixed;inset:-25vmax;z-index:-1;pointer-events:none;background:radial-gradient(38vmax 38vmax at 18% 12%,rgb(107 91 255/.22),transparent 70%),radial-gradient(30vmax 30vmax at 88% 38%,rgb(255 94 126/.11),transparent 70%),radial-gradient(42vmax 42vmax at 45% 96%,rgb(56 189 248/.08),transparent 70%);animation:drift 46s ease-in-out infinite alternate}
 @keyframes drift{to{transform:translate3d(-5vmax,4vmax,0) rotate(10deg)}}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-tile,:root:not([data-theme="light"]) .life-entry,:root:not([data-theme="light"]) .life-lib-card,:root:not([data-theme="light"]) .life-tarot-panel,:root:not([data-theme="light"]) .life-capture-line,:root:not([data-theme="light"]) .life-body-card,:root:not([data-theme="light"]) .cos-card,:root:not([data-theme="light"]) .cos-grid,:root:not([data-theme="light"]) .cos-row,:root:not([data-theme="light"]) .life-today-row,:root:not([data-theme="light"]) .life-empty,:root:not([data-theme="light"]) .food-today>div,:root:not([data-theme="light"]) .life-settings-row{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}}
-:root[data-theme="dark"] .pulse-tile,:root[data-theme="dark"] .life-entry,:root[data-theme="dark"] .life-lib-card,:root[data-theme="dark"] .life-tarot-panel,:root[data-theme="dark"] .life-capture-line,:root[data-theme="dark"] .life-body-card,:root[data-theme="dark"] .cos-card,:root[data-theme="dark"] .cos-grid,:root[data-theme="dark"] .cos-row,:root[data-theme="dark"] .life-today-row,:root[data-theme="dark"] .life-empty,:root[data-theme="dark"] .food-today>div,:root[data-theme="dark"] .life-settings-row{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-tile,:root:not([data-theme="light"]) .life-entry,:root:not([data-theme="light"]) .life-lib-card,:root:not([data-theme="light"]) .life-tarot-panel,:root:not([data-theme="light"]) .life-capture-line,:root:not([data-theme="light"]) .life-body-card,:root:not([data-theme="light"]) .cos-card,:root:not([data-theme="light"]) .cos-grid,:root:not([data-theme="light"]) .cos-row,:root:not([data-theme="light"]) .life-today-row,:root:not([data-theme="light"]) .life-empty,:root:not([data-theme="light"]) .food-today>div,:root:not([data-theme="light"]) .life-settings-row,:root:not([data-theme="light"]) .vault-stat:not(.hero),:root:not([data-theme="light"]) .vault-shelf{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}}
+:root[data-theme="dark"] .pulse-tile,:root[data-theme="dark"] .life-entry,:root[data-theme="dark"] .life-lib-card,:root[data-theme="dark"] .life-tarot-panel,:root[data-theme="dark"] .life-capture-line,:root[data-theme="dark"] .life-body-card,:root[data-theme="dark"] .cos-card,:root[data-theme="dark"] .cos-grid,:root[data-theme="dark"] .cos-row,:root[data-theme="dark"] .life-today-row,:root[data-theme="dark"] .life-empty,:root[data-theme="dark"] .food-today>div,:root[data-theme="dark"] .life-settings-row,:root[data-theme="dark"] .vault-stat:not(.hero),:root[data-theme="dark"] .vault-shelf{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .life-check.checked{filter:drop-shadow(0 0 6px color-mix(in srgb,var(--ok) 75%,transparent))}}
 :root[data-theme="dark"] .life-check.checked{filter:drop-shadow(0 0 6px color-mix(in srgb,var(--ok) 75%,transparent))}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-dots i.on{box-shadow:0 0 8px color-mix(in srgb,var(--ok) 70%,transparent)}}
@@ -793,6 +793,84 @@ th{color:var(--muted);font-weight:600}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .life-topbar{background:color-mix(in srgb,var(--canvas) 72%,transparent)}}
 :root[data-theme="dark"] .life-topbar{background:color-mix(in srgb,var(--canvas) 72%,transparent)}
 .life-calm .pulse-core::before,body.life-calm::before{animation:none}
+/* Videos: the collection */
+.vault-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.vault-stat{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0;padding:14px 16px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-1)}
+.vault-stat.hero{grid-column:1/-1;background:radial-gradient(120% 160% at 0% 0%,var(--night-2),var(--night) 65%);color:var(--night-ink)}
+.vault-stat.hero .life-kicker,.vault-stat.hero small{color:var(--night-muted)}
+.vault-big{font-size:56px;line-height:1;font-weight:750;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.vault-mid{font-size:24px;line-height:1.1;font-weight:750;font-variant-numeric:tabular-nums}
+.vault-stat small{font-size:12.5px;margin:0}
+.vault-star{color:#F1B92B}
+.vault-of{font-size:15px;font-weight:600;color:var(--muted)}
+.vault-bar.seen i{background:var(--ok)}
+.pulse-ring.small{width:44px;height:44px}.pulse-ring.small b{font-size:14px}
+.vault-bar{display:block;width:100%;height:5px;margin-top:auto;border-radius:9px;background:var(--fill);overflow:hidden}
+.vault-bar i{display:block;height:100%;border-radius:inherit;background:var(--accent)}
+.vault-add{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+.vault-add input{flex:1 1 100%;min-width:0;min-height:48px}.vault-add .life-btn{flex:1}
+.vault-tools{display:flex;gap:8px;align-items:center;margin:0 0 12px}
+.vault-tools .life-search{flex:1;margin:0}
+.vault-tabs{display:flex;width:100%;margin:0 0 10px}.vault-tabs button{flex:1}
+.vault-filters{margin-bottom:12px}
+.vault-filters button span{opacity:.7;font-variant-numeric:tabular-nums}
+.vault-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(min-width:620px){.vault-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.vault-card{display:flex;flex-direction:column;gap:8px;min-width:0;padding:0;background:none;color:var(--ink);text-align:left;font-weight:400;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.vault-card:active{transform:scale(.96)}
+.vault-thumb{position:relative;display:block;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:var(--r-md);background:radial-gradient(120% 120% at 20% 0%,var(--night-2),var(--night) 70%);box-shadow:var(--shadow-1)}
+.vault-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vault-thumb .vault-play{position:absolute;left:50%;top:50%;width:34px;height:34px;padding:9px 8px 9px 10px;margin:-17px 0 0 -17px;border-radius:50%;background:rgb(0 0 0/.45);fill:#fff}
+.vault-thumb img+.vault-play{opacity:.85}
+.vault-no{position:absolute;left:6px;top:6px;padding:2px 7px;border-radius:999px;background:rgb(0 0 0/.62);color:#fff;font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.vault-short{position:absolute;right:6px;top:6px;display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:999px;background:rgb(0 0 0/.62);color:#fff;font-size:11px;font-weight:650}
+.vault-listicon{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}.vault-listicon path:last-child{fill:currentColor;stroke:none}
+.vault-seen{position:absolute;right:6px;bottom:6px;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ok);color:#fff;box-shadow:0 0 10px color-mix(in srgb,var(--ok) 70%,transparent)}
+.vault-seen svg{width:14px;height:14px}
+.vault-info{display:flex;flex-direction:column;gap:2px;min-width:0;padding:0 2px}
+.vault-info b{font-size:14.5px;line-height:1.3;font-weight:650;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere}
+.vault-info small{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vault-listhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 2px 10px;font-size:14px;color:var(--muted)}
+.vault-sort{display:flex;align-items:center;gap:6px;font-size:13px}
+.vault-sort select{min-height:44px;padding:4px 8px;font-size:14px}
+.vault-scope{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin:0 2px 10px;font-size:15px}
+.vault-shelves{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.vault-shelf{display:flex;flex-direction:column;gap:0;min-width:0;padding:0;overflow:hidden;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-1);color:var(--ink);text-align:left;font-weight:400;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.vault-shelf:active{transform:scale(.97)}
+.vault-mosaic{display:grid;grid-template-columns:1fr 1fr;aspect-ratio:16/9;background:radial-gradient(120% 120% at 20% 0%,var(--night-2),var(--night) 70%);place-items:stretch}
+.vault-mosaic img,.vault-mosaic i{width:100%;height:100%;object-fit:cover;display:block}
+.vault-mosaic i{background:rgb(255 255 255/.04)}
+.vault-shelf.new .vault-mosaic{display:grid;place-items:center;grid-template-columns:1fr;background:var(--fill);color:var(--accent-text)}
+.vault-shelf.new .vault-mosaic svg{width:34px;height:34px}
+.vault-shelf.room .vault-mosaic{background:var(--room-soft)}
+.vault-shelf-info{display:flex;flex-direction:column;gap:3px;padding:10px 12px 12px}
+.vault-shelf-info b{font-size:15.5px;font-weight:700;overflow-wrap:anywhere}
+.vault-shelf-info small{font-size:12.5px}
+.vault-shelf-info .vault-bar{margin-top:6px}
+.vault-emoji{font-size:17px}
+.vault-channels .cos-row-date{min-width:58px}
+.pulse-video .vault-player{position:relative;overflow:hidden}
+.vault-player img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.vault-player svg,.vault-player span,.vault-player small{position:relative}
+.vault-meta-line{margin:2px 0 6px;font-size:14px;color:var(--muted)}.vault-meta-line b{color:var(--ink);font-variant-numeric:tabular-nums}
+.vault-title{width:100%;min-height:0;padding:4px 0;border:0;border-radius:0;background:transparent;box-shadow:none;font-size:24px;line-height:1.25;font-weight:750;letter-spacing:-.015em;color:var(--ink);resize:none;field-sizing:content}
+.vault-title:focus{box-shadow:inset 0 -2px 0 var(--accent);outline:none}
+.vault-channel{margin:0 0 10px;font-size:15px;color:var(--muted)}
+.vault-actions{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+.vault-actions .life-btn[aria-pressed="true"]:first-child{background:#F1B92B;color:#2B2100}
+.vault-block{margin:18px 0 0}.vault-block h3{margin:0 0 8px;font-size:16px}
+.vault-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.vault-chips button{min-height:40px;padding:6px 14px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);font-size:14px;font-weight:600;box-shadow:inset 0 0 0 1px var(--line)}
+.vault-chips button[aria-pressed="true"]{background:var(--accent);color:var(--accent-on);box-shadow:none}
+.vault-inline{display:flex;gap:8px;align-items:center}.vault-inline input{flex:1;min-width:0}
+.vault-inline .vault-time{flex:0 0 76px;text-align:center;font-variant-numeric:tabular-nums}
+.vault-room{width:100%}
+.vault-marks{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-direction:column;gap:6px}
+.vault-marks li{display:flex;align-items:center;gap:6px}
+.vault-mark{flex:1;display:flex;align-items:center;gap:12px;min-height:44px;padding:8px 12px;border-radius:var(--r-md);background:var(--surface-2);color:var(--ink);text-align:left;font-weight:400}
+.vault-mark b{min-width:52px;color:var(--accent-text);font-variant-numeric:tabular-nums}
+.life-textbtn.danger{color:var(--danger)}
+@media(max-width:360px){.vault-stats{grid-template-columns:1fr 1fr}.vault-stat.hero{grid-column:1/-1}.vault-grid,.vault-shelves{gap:9px}}
 /* Calm view: colour recedes, structure stays. */
 .life-calm .life-room-tile,.life-calm .life-room-hero{background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 5px 0 0 var(--room)}
 .life-calm .life-room-tile::after,.life-calm .life-room-hero::after{display:none}
@@ -802,7 +880,7 @@ th{color:var(--muted);font-weight:600}
 @media print{.life-nav,.life-topbar,.toast{display:none}.app{padding:0}}
 
 </style></head><body class="life-modern">
-<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v19</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view " id="bodyhub"><header class="pagehead"><h1>Körper</h1></header><div class="body-feature"><div class="eyebrow">Training</div><h2 id="bodyPlan">Training</h2><p id="bodyPlanDetail"></p><button type="button" class="primary" onclick="openTodaysTraining()">Training öffnen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><div class="body-foot"><span id="homeTraining"></span><span>Deine bestätigten Gewichte</span></div></div>
+<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v19</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view life-screen" id="videos"><div id="vaultContent"></div></section><section class="view " id="bodyhub"><header class="pagehead"><h1>Körper</h1></header><div class="body-feature"><div class="eyebrow">Training</div><h2 id="bodyPlan">Training</h2><p id="bodyPlanDetail"></p><button type="button" class="primary" onclick="openTodaysTraining()">Training öffnen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><div class="body-foot"><span id="homeTraining"></span><span>Deine bestätigten Gewichte</span></div></div>
 <div class="routes"><button type="button" class="route" onclick="goView('nutrition')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-food"></use></svg></span><span class="grow"><b>Essen</b><small><span id="homeProtein">—</span> Protein erfasst · regelmäßig versorgt</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('recovery')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg></span><span class="grow"><b>Befinden & Zyklus</b><small>Tagesform, Schlaf, Zyklus</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('trends')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Fortschritt</b><small>Taille, Maße & dein Trainingsverlauf</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div><div class="quiet-callout"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-water"></use></svg><div><b>Wasser</b><p><span id="homeWater">—</span> heute</p></div><button type="button" class="small" onclick="addWater(.25)">+ 250 ml</button></div><div id="bodyLibrary" class="life-body-library"></div></section>
 <section class="view " id="mehub"><header class="pagehead"><h1>Ich</h1></header><div class="identity"><span class="avatar" data-me-initial>·</span><div><b data-me-name>Du</b><small>Muskelaufbau · Alltag · mehr Raum im Kopf</small></div></div><div class="routes"><button type="button" class="route" onclick="goView('goals')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Deine Richtung</b><small>Ziele, die zu deinem Leben passen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('plan')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg></span><span class="grow"><b>Dein Plan</b><small>Routinen, Training & Ausnahmen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('history')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg></span><span class="grow"><b>Verlauf</b><small>Was tatsächlich passiert ist</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('coach')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-spark"></use></svg></span><span class="grow"><b>Muster</b><small>Beobachtungen aus deinen Einträgen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div>
 <details class="disclosure"><summary>Was PULSE über dich weiß</summary><p class="tiny" id="eventCount"></p><div id="semanticMemory" class="memory-list"></div></details>
@@ -817,7 +895,7 @@ th{color:var(--muted);font-weight:600}
 <section class="view " id="coach"><button type="button" class="backbtn" onclick="navigateUp('mehub')"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-back"></use></svg>Ich</button><header class="pagehead"><h1>Muster</h1></header><div id="coachMain" class="memory-list"></div><section class="content-block "><h2>Deine Muster</h2><div id="patternList"></div></section><section class="content-block "><h2>Wochenrückblick</h2><button type="button" class="secondary" onclick="buildReport()">Erfasste Woche ansehen</button><div id="weeklyReport" class="report">Noch keinen Rückblick erstellt.</div></section><details class="disclosure"><summary>Supplements protokollieren</summary><div class="form"><label>Supplement<input id="sName" type="text" /></label><label>Eigene Mengenangabe<input id="sDose" type="text" /></label><label>Zeit<input id="sTime" type="text" /></label><label>Notiz<input id="sNote" type="text" /></label></div><button type="button" class="secondary" onclick="addSupplement()">Eintrag speichern</button><div id="supplements"></div><p class="tiny">Hier dokumentierst du eigene Angaben. Medikamenten- und Supplementfragen entscheidet deine Ärztin.</p></details><details class="disclosure"><summary>Zyklusverlauf</summary><div class="form"><label>Zyklustag<input id="cyDay" type="number" min="1"/></label><label>Phase<select id="cyPhase"><option value="Unbekannt">Unbekannt</option><option value="Periode">Periode</option><option value="Follikelphase">Follikelphase</option><option value="Ovulation">Ovulation</option><option value="Lutealphase">Lutealphase</option></select></label><label>Symptome<input id="cySymptoms" type="text" /></label><label>Notiz<input id="cyNote" type="text" /></label></div><button type="button" class="secondary" onclick="saveCycle()">Eintrag speichern</button><div id="cycleLog"></div></details><div id="recompSummary" class="quiet-note"></div></section></main><div aria-atomic="true" aria-live="polite" class="toast" id="toast" role="status"></div>
 <nav aria-label="Hauptnavigation" class="bottomnav" id="bottomNav"><button type="button" data-go="now" onclick="goView('now')" class="active" aria-current="page"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-home"></use></svg><span>Heute</span></button><button type="button" data-go="bodyhub" onclick="goView('bodyhub')" ><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-body"></use></svg><span>Körper</span></button><button type="button" data-go="brain" onclick="goView('brain')" ><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-brain"></use></svg><span>Brain</span></button><button type="button" data-go="mehub" onclick="goView('mehub')" ><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-user"></use></svg><span>Ich</span></button></nav><button type="button" id="captureAccessory" class="captureAccessory" onclick="openCapture()" aria-label="Etwas erfassen"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-plus"></use></svg><span>Erfassen</span></button>
 
-<div class="captureSheet" id="captureSheet" onclick="if(event.target===this)closeCapture()"><div class="capturePanel" role="dialog" aria-modal="true" aria-labelledby="captureTitle"><div class="sheet-handle" aria-hidden="true"></div><div class="row"><span class="eyebrow">PULSE nimmt es auf</span><button type="button" class="icon-button" aria-label="Erfassen schließen" onclick="closeCapture()"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"></use></svg></button></div><h2 id="captureTitle">Was ist gerade los?</h2><p>Du schreibst. PULSE sortiert mit.</p><label class="srOnly" for="captureText">Freitext erfassen</label><textarea id="captureText" rows="4" placeholder="Gegessen, gedacht, geschafft …" oninput="previewCapture()"></textarea><div class="life-input-tools"><button type="button" class="life-mic" data-target="captureText" aria-pressed="false" hidden onclick="pulseDictate('captureText',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>Sprechen</span></button></div><div id="captureHint" class="capture-understanding" aria-live="polite"></div><div id="captureFollowup" hidden><label><span id="captureAmountLabel">Fehlende Menge oder Portion</span><input id="captureAmount" type="text" placeholder="z. B. 150 g"/></label><p class="tiny">Du kannst auch den ursprünglichen Text oben ergänzen.</p><button type="button" class="primary" onclick="confirmCaptureFood()">Prüfen & eintragen</button></div><div id="captureSubmit" class="actions"><button type="button" class="primary" onclick="smartCapture()">Übernehmen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div><div class="captureHints"><button type="button" class="chip" onclick="captureHint('Ich habe gegessen: ')">Essen</button><button type="button" class="chip" onclick="captureHint('Morgen ')">Aufgabe</button><button type="button" class="chip" onclick="captureHint('Heute fühle ich mich ')">Befinden</button></div><p class="tiny">Unklare Angaben bleiben zur Prüfung erhalten.</p></div></div><nav id="lifeNav" class="life-nav" aria-label="Hauptnavigation"><button type="button" data-life-view="life" onclick="goView('life')" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="4"/><path d="M8 3v4M16 3v4M4 11h16M8 15h2M14 15h2"/></svg><span>Tag</span></button><button type="button" data-life-view="bodyhub" onclick="goView('bodyhub')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6M6.5 6v12M6.5 12h11M17.5 6v12M21 9v6"/></svg><span>Körper</span></button><button type="button" class="life-nav-capture" onclick="lifeQuick()" aria-label="Erfassen: Notiz, Aufgabe, Termin oder Essen"><span aria-hidden="true">＋</span></button><button type="button" data-life-view="spaces" onclick="lifeOpenSpaces()"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><circle cx="17.5" cy="6.5" r="3.5"/><path d="m6.5 14 4 7h-8Z"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Räume</span></button><button type="button" data-life-view="library" onclick="lifeOpenLibrary()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5C8 2 4 3 2 4v16c4-2 8-1 10 1 2-2 6-3 10-1V4c-2-1-6-2-10 1v16M5 8h4M15 8h4"/></svg><span>Sammlung</span></button></nav><div id="lifeSheet" class="modal life-sheet" onclick="if(event.target===this)lifeCloseSheet()"><div class="modalbox life-sheet-panel" role="dialog" aria-modal="true" aria-label="Dein Eintrag"><div class="life-sheet-top"><span class="life-kicker"></span><button type="button" class="life-iconbtn" aria-label="Schließen, Entwurf bleibt erhalten" onclick="lifeCloseSheet()">×</button></div><div id="lifeDetail" hidden></div><form id="lifeForm" onsubmit="lifeSaveEntry(event)" oninput="lifeRememberDraft();lifeUnderstand()"><h2 id="lifeEditorTitle">Neuer Eintrag</h2><p id="lifeEditorHint" class="life-detail-intro"></p><div class="life-form-row"><label>Was ist es?<select id="lifeKindInput" onchange="lifeKindChanged()"><option value="note">Notiz</option><option value="task">Aufgabe</option><option value="event">Termin</option><option value="project">Projekt</option><option value="ritual">Ritual</option><option value="recipe">Rezept</option></select></label><label>Welcher Raum?<select id="lifeRoomInput"></select></label></div><label class="life-title-label">Titel<input id="lifeTitle" maxlength="180" autocomplete="off" placeholder="Titel"/></label><label>Text<textarea id="lifeBody" rows="6" maxlength="60000"></textarea></label><div class="life-input-tools"><button type="button" class="life-mic" data-target="lifeBody" aria-pressed="false" hidden onclick="pulseDictate('lifeBody',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>Sprechen</span></button><label class="life-attach"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Foto</span><input type="file" accept="image/*" multiple class="srOnly" onchange="lifeAddPhotos(this.files);this.value=''"/></label></div><div id="lifePhotoRow" class="life-photo-row" hidden></div><div id="lifeUnderstand" class="life-understand" aria-live="polite"></div><details id="lifePlanning" class="life-editor-details"><summary>Zeit &amp; Planung</summary><div class="life-form-row"><label>Geplant für<input id="lifeDateInput" type="date"/></label><label>Uhrzeit · optional<input id="lifeTimeInput" type="time"/></label><label>Dauer in Minuten<input id="lifeDuration" type="number" min="1" max="1440" value="25"/></label><label>Verbindliche Frist<input id="lifeDeadline" type="date"/></label><label id="lifeRepeatLabel">Nach Erledigung wiederholen<select id="lifeRepeat"><option value="0">Einmalig</option><option value="1">Nach 1 Tag</option><option value="7">Nach 7 Tagen</option><option value="14">Nach 14 Tagen</option><option value="30">Nach 30 Tagen</option></select></label></div><p class="life-footnote">Plandatum ist flexibel, Frist ist verbindlich.</p></details><details class="life-editor-details"><summary>Schritte &amp; Verbindungen</summary><label><span id="lifeStepsLabel">Schritte · einer pro Zeile</span><textarea id="lifeStepsInput" rows="4" placeholder="Ein Schritt pro Zeile"></textarea></label><label>Gehört zu einem Projekt<select id="lifeParent"></select></label><label>Link · optional<input id="lifeUrl" type="url" placeholder="https://"/></label></details><input id="lifeSource" type="hidden"/><div class="life-editor-footer"><span id="lifeDraftState" role="status" aria-live="polite">Noch nicht gespeichert</span><button class="life-btn dark" type="submit">Speichern</button></div><button type="button" class="life-textbtn life-discard" onclick="lifeDiscardDraft()">Entwurf verwerfen</button></form></div></div><script>
+<div class="captureSheet" id="captureSheet" onclick="if(event.target===this)closeCapture()"><div class="capturePanel" role="dialog" aria-modal="true" aria-labelledby="captureTitle"><div class="sheet-handle" aria-hidden="true"></div><div class="row"><span class="eyebrow">PULSE nimmt es auf</span><button type="button" class="icon-button" aria-label="Erfassen schließen" onclick="closeCapture()"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"></use></svg></button></div><h2 id="captureTitle">Was ist gerade los?</h2><p>Du schreibst. PULSE sortiert mit.</p><label class="srOnly" for="captureText">Freitext erfassen</label><textarea id="captureText" rows="4" placeholder="Gegessen, gedacht, geschafft …" oninput="previewCapture()"></textarea><div class="life-input-tools"><button type="button" class="life-mic" data-target="captureText" aria-pressed="false" hidden onclick="pulseDictate('captureText',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>Sprechen</span></button></div><div id="captureHint" class="capture-understanding" aria-live="polite"></div><div id="captureFollowup" hidden><label><span id="captureAmountLabel">Fehlende Menge oder Portion</span><input id="captureAmount" type="text" placeholder="z. B. 150 g"/></label><p class="tiny">Du kannst auch den ursprünglichen Text oben ergänzen.</p><button type="button" class="primary" onclick="confirmCaptureFood()">Prüfen & eintragen</button></div><div id="captureSubmit" class="actions"><button type="button" class="primary" onclick="smartCapture()">Übernehmen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div><div class="captureHints"><button type="button" class="chip" onclick="captureHint('Ich habe gegessen: ')">Essen</button><button type="button" class="chip" onclick="captureHint('Morgen ')">Aufgabe</button><button type="button" class="chip" onclick="captureHint('Heute fühle ich mich ')">Befinden</button></div><p class="tiny">Unklare Angaben bleiben zur Prüfung erhalten.</p></div></div><nav id="lifeNav" class="life-nav" aria-label="Hauptnavigation"><button type="button" data-life-view="life" onclick="goView('life')" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="4"/><path d="M8 3v4M16 3v4M4 11h16M8 15h2M14 15h2"/></svg><span>Tag</span></button><button type="button" data-life-view="bodyhub" onclick="goView('bodyhub')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6M6.5 6v12M6.5 12h11M17.5 6v12M21 9v6"/></svg><span>Körper</span></button><button type="button" data-life-view="spaces" onclick="lifeOpenSpaces()"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><circle cx="17.5" cy="6.5" r="3.5"/><path d="m6.5 14 4 7h-8Z"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Räume</span></button><button type="button" class="life-nav-capture" onclick="lifeQuick()" aria-label="Erfassen: Notiz, Aufgabe, Termin oder Essen"><span aria-hidden="true">＋</span></button><button type="button" data-life-view="videos" onclick="lifeOpenVideos()"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="4"/><path d="m10.5 9.5 4 2.5-4 2.5Z"/></svg><span>Videos</span></button><button type="button" data-life-view="library" onclick="lifeOpenLibrary()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5C8 2 4 3 2 4v16c4-2 8-1 10 1 2-2 6-3 10-1V4c-2-1-6-2-10 1v16M5 8h4M15 8h4"/></svg><span>Sammlung</span></button></nav><div id="lifeSheet" class="modal life-sheet" onclick="if(event.target===this)lifeCloseSheet()"><div class="modalbox life-sheet-panel" role="dialog" aria-modal="true" aria-label="Dein Eintrag"><div class="life-sheet-top"><span class="life-kicker"></span><button type="button" class="life-iconbtn" aria-label="Schließen, Entwurf bleibt erhalten" onclick="lifeCloseSheet()">×</button></div><div id="lifeDetail" hidden></div><form id="lifeForm" onsubmit="lifeSaveEntry(event)" oninput="lifeRememberDraft();lifeUnderstand()"><h2 id="lifeEditorTitle">Neuer Eintrag</h2><p id="lifeEditorHint" class="life-detail-intro"></p><div class="life-form-row"><label>Was ist es?<select id="lifeKindInput" onchange="lifeKindChanged()"><option value="note">Notiz</option><option value="task">Aufgabe</option><option value="event">Termin</option><option value="project">Projekt</option><option value="ritual">Ritual</option><option value="recipe">Rezept</option></select></label><label>Welcher Raum?<select id="lifeRoomInput"></select></label></div><label class="life-title-label">Titel<input id="lifeTitle" maxlength="180" autocomplete="off" placeholder="Titel"/></label><label>Text<textarea id="lifeBody" rows="6" maxlength="60000"></textarea></label><div class="life-input-tools"><button type="button" class="life-mic" data-target="lifeBody" aria-pressed="false" hidden onclick="pulseDictate('lifeBody',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>Sprechen</span></button><label class="life-attach"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Foto</span><input type="file" accept="image/*" multiple class="srOnly" onchange="lifeAddPhotos(this.files);this.value=''"/></label></div><div id="lifePhotoRow" class="life-photo-row" hidden></div><div id="lifeUnderstand" class="life-understand" aria-live="polite"></div><details id="lifePlanning" class="life-editor-details"><summary>Zeit &amp; Planung</summary><div class="life-form-row"><label>Geplant für<input id="lifeDateInput" type="date"/></label><label>Uhrzeit · optional<input id="lifeTimeInput" type="time"/></label><label>Dauer in Minuten<input id="lifeDuration" type="number" min="1" max="1440" value="25"/></label><label>Verbindliche Frist<input id="lifeDeadline" type="date"/></label><label id="lifeRepeatLabel">Nach Erledigung wiederholen<select id="lifeRepeat"><option value="0">Einmalig</option><option value="1">Nach 1 Tag</option><option value="7">Nach 7 Tagen</option><option value="14">Nach 14 Tagen</option><option value="30">Nach 30 Tagen</option></select></label></div><p class="life-footnote">Plandatum ist flexibel, Frist ist verbindlich.</p></details><details class="life-editor-details"><summary>Schritte &amp; Verbindungen</summary><label><span id="lifeStepsLabel">Schritte · einer pro Zeile</span><textarea id="lifeStepsInput" rows="4" placeholder="Ein Schritt pro Zeile"></textarea></label><label>Gehört zu einem Projekt<select id="lifeParent"></select></label><label>Link · optional<input id="lifeUrl" type="url" placeholder="https://"/></label></details><input id="lifeSource" type="hidden"/><div class="life-editor-footer"><span id="lifeDraftState" role="status" aria-live="polite">Noch nicht gespeichert</span><button class="life-btn dark" type="submit">Speichern</button></div><button type="button" class="life-textbtn life-discard" onclick="lifeDiscardDraft()">Entwurf verwerfen</button></form></div></div><script>
 // SOURCE: domain/life/model.js
 /* PULSE Lebensräume: shared records and local projections. No automatic completions. */
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseLife=api})(globalThis,function(){
@@ -1989,7 +2067,7 @@ function renderLifeLibraryResults(){
 }
 function renderLifeLibrary(){
  const el=document.getElementById('lifeLibraryContent');if(!el)return;
- el.innerHTML=lifeHeader('','Sammlung','')+'<label class="life-search">'+lifeGlyph('search')+'<input id="lifeSearch" type="search" aria-label="Sammlung durchsuchen" placeholder="Suchen: Einträge, Rezepte, Tarot …" oninput="lifeSearchChanged(this.value)" value="'+esc(lifeQuery)+'"/></label><div class="life-filterbar">'+[['','Alles'],['lib','Bibliothek'],...Object.entries(PulseLife.KINDS),['video','Videos'],['archive','Archiv']].map(([k,label])=>'<button type="button" aria-pressed="'+(lifeKindFilter===k)+'" onclick="'+lifeCall('lifeFilter',k)+'">'+label+'</button>').join('')+'</div><div id="lifeLibraryResults"></div>';
+ el.innerHTML=lifeHeader('','Sammlung','')+'<label class="life-search">'+lifeGlyph('search')+'<input id="lifeSearch" type="search" aria-label="Sammlung durchsuchen" placeholder="Suchen: Einträge, Rezepte, Tarot …" oninput="lifeSearchChanged(this.value)" value="'+esc(lifeQuery)+'"/></label><div class="life-filterbar">'+[['','Alles'],['lib','Bibliothek'],...Object.entries(PulseLife.KINDS),['archive','Archiv']].map(([k,label])=>'<button type="button" aria-pressed="'+(lifeKindFilter===k)+'" onclick="'+lifeCall('lifeFilter',k)+'">'+label+'</button>').join('')+'</div><div id="lifeLibraryResults"></div>';
  renderLifeLibraryResults();
 }
 function lifeClock(sec){return Math.floor(sec/60).toString().padStart(2,'0')+':'+Math.floor(sec%60).toString().padStart(2,'0')}
@@ -2133,7 +2211,7 @@ function lifeCloseSheet(){closeDialog(document.getElementById('lifeSheet'))}
 function lifeLegacy(v){goView(v);if(v==='workout')showWorkout(activePlan()||'A')}
 function lifeSettings(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
- el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 19</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p><div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 19</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p><div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
  (navigator.storage?.persisted?navigator.storage.persisted():Promise.resolve(false)).then(p=>{const e=document.getElementById('lifeStorageState');if(e)e.textContent=p?'Speicher: dauerhaft geschützt':'Speicher: nicht dauerhaft geschützt'}).catch(()=>{});
 }
@@ -2146,7 +2224,7 @@ function renderLife(){
  document.body.classList.toggle('life-calm',!!lifeState().preferences.calm);applyTheme();
  document.querySelectorAll('#lifeNav [data-life-view]').forEach(b=>{const active=b.dataset.lifeView===libTab(view);b.setAttribute('aria-current',active?'page':'false')});
  if(document.activeElement?.id!=='lifeSearch')renderLifeLibrary();
- renderLifeToday();renderLifeSpaces();renderLifeFocus();renderCosmos();renderBodyLibrary();
+ renderLifeToday();renderLifeSpaces();renderLifeFocus();renderCosmos();renderVault();renderBodyLibrary();
  const nm=(db.settings.name||'').trim();document.querySelectorAll('[data-me-name]').forEach(e=>e.textContent=nm||'Du');document.querySelectorAll('[data-me-initial]').forEach(e=>e.textContent=nm?nm[0].toUpperCase():'·');
 }
 function renderBodyLibrary(){
@@ -2156,7 +2234,7 @@ function renderBodyLibrary(){
  el.innerHTML='<div class="life-sectionhead"><h2>Deine Trainingspläne</h2><span class="life-subtle">Mo · Mi · Fr</span></div>'+plan('A')+plan('B')+lifeLibSection('koerper');
 }
 function lifeNavigation(v){
- const modern=['life','spaces','library','focus','calendar'].includes(v);
+ const modern=['life','spaces','library','focus','calendar','videos'].includes(v);
  document.body.classList.toggle('life-modern',modern);
  document.body.classList.toggle('life-legacy',!modern);
  renderLife();
@@ -2636,9 +2714,23 @@ return {TYPES,TAROT,SUITS,MAJORS,MOON_PHASES,tarotCard,moon,ENTRIES:E,forRoom,ge
   const start=seconds(u.searchParams.get('t')||u.searchParams.get('start')||'');
   return {id,start,short:u.pathname.startsWith('/shorts/'),music:host.startsWith('music.')};
  }
- function find(text){for(const m of String(text||'').matchAll(/https?:\/\/[^\s<>"']+/g)){const v=parse(m[0]);if(v)return {...v,url:m[0]}}return null}
- function embed(v,autoplay=true){return 'https://www.youtube-nocookie.com/embed/'+v.id+'?rel=0&playsinline=1&modestbranding=1'+(autoplay?'&autoplay=1':'')+(v.start?'&start='+v.start:'')}
- function watch(v){return 'https://www.youtube.com/watch?v='+v.id+(v.start?'&t='+v.start+'s':'')}
+ /* Playlist links: youtube.com/playlist?list=… (also music.youtube.com). Private lists (WL, LL) have short ids and are skipped. */
+ function parseList(url){
+  let u;try{u=new URL(String(url||'').trim())}catch(_){return null}
+  if(!/^https?:$/.test(u.protocol)||!HOSTS.test(u.hostname.toLowerCase())||u.pathname!=='/playlist')return null;
+  const list=u.searchParams.get('list')||'';if(!/^[A-Za-z0-9_-]{10,64}$/.test(list))return null;
+  return {list,music:u.hostname.toLowerCase().startsWith('music.')};
+ }
+ /* A video or a playlist. A video opened from inside a playlist counts as the video. */
+ function parseAny(url){const v=parse(url);if(v)return {type:'video',...v};const p=parseList(url);return p?{type:'playlist',...p}:null}
+ const LINKS=/https?:\/\/[^\s<>"']+/g;
+ function find(text){for(const m of String(text||'').matchAll(LINKS)){const v=parse(m[0]);if(v)return {...v,url:m[0]}}return null}
+ function findAny(text){for(const m of String(text||'').matchAll(LINKS)){const url=m[0].replace(/[).,;!?]+$/,''),v=parseAny(url);if(v)return {...v,url}}return null}
+ function embed(v,autoplay=true){
+  if(v.list&&!v.id)return 'https://www.youtube-nocookie.com/embed/videoseries?list='+encodeURIComponent(v.list)+'&rel=0&playsinline=1'+(autoplay?'&autoplay=1':'');
+  return 'https://www.youtube-nocookie.com/embed/'+v.id+'?rel=0&playsinline=1&modestbranding=1'+(autoplay?'&autoplay=1':'')+(v.start?'&start='+v.start:'');
+ }
+ function watch(v){if(v.list&&!v.id)return 'https://www.youtube.com/playlist?list='+encodeURIComponent(v.list);return 'https://www.youtube.com/watch?v='+v.id+(v.start?'&t='+v.start+'s':'')}
  /* Room suggestion from the title or shared text. Empty when nothing fits; the user decides. */
  const ROOMS=[
   ['koerper',/training|workout|übung|uebung|exercise|gym|fitx|kraft|squat|kniebeuge|bankdr|latzug|rudern|kreuzheben|deadlift|hip ?thrust|glute|dehn|stretch|mobility|yoga|pilates|rezept|recipe|kochen|cooking|protein|ernährung|meal ?prep/],
@@ -2653,12 +2745,121 @@ return {TYPES,TAROT,SUITS,MAJORS,MOON_PHASES,tarotCard,moon,ENTRIES:E,forRoom,ge
   for(const [id,re] of ROOMS){const c=(t.match(new RegExp(re.source,'g'))||[]).length;if(c>n){best=id;n=c}}
   return best||(video&&video.music?'ideen':'');
  }
- return {parse,find,embed,watch,seconds,room};
+ return {parse,parseList,parseAny,find,findAny,embed,watch,seconds,room};
+});
+// SOURCE: domain/media/vault.js
+/* The video collection: every YouTube video once, with a collector number, shelves, status,
+   favourites, notes and marked moments. Stored in db.videos; no DOM. */
+(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./video.js'):root.PulseVideo);if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseVault=api})(globalThis,function(Video){
+ 'use strict';
+ const MILESTONES=[1,10,25,50,100,150,200,250,300,400,500,750,1000,1500,2000];
+ const ROOMS=['alltag','innen','sinn','koerper','menschen','ideen','draussen','zuhause'];
+ const str=(v,n)=>String(v==null?'':v).replace(/\s+/g,' ').trim().slice(0,n);
+ function ensure(db){
+  if(!db.videos||typeof db.videos!=='object'||Array.isArray(db.videos))db.videos={version:1,items:[],shelves:[],next:1};
+  const s=db.videos;if(!Array.isArray(s.items))s.items=[];if(!Array.isArray(s.shelves))s.shelves=[];
+  if(!Number.isInteger(s.next)||s.next<1)s.next=s.items.reduce((m,x)=>Math.max(m,Number(x&&x.no)||0),0)+1;
+  return s;
+ }
+ /* Repairs whatever an old backup or a hand-edited file might contain. */
+ function normalize(db){
+  const s=ensure(db),seen=new Set(),shelfIds=new Set();
+  s.shelves=s.shelves.filter(h=>h&&typeof h.id==='string'&&!shelfIds.has(h.id)&&shelfIds.add(h.id)).map(h=>({id:h.id,name:str(h.name,40)||'Regal',emoji:str(h.emoji,4),createdAt:String(h.createdAt||'')}));
+  const keyOf=x=>x&&(x.kind==='playlist'?(typeof x.list==='string'&&/^[A-Za-z0-9_-]{10,64}$/.test(x.list)?'pl-'+x.list:''):(typeof x.vid==='string'&&/^[A-Za-z0-9_-]{11}$/.test(x.vid)?'yt-'+x.vid:''));
+  s.items=s.items.filter(x=>{const k=keyOf(x);return k&&!seen.has(k)&&seen.add(k)}).map(x=>({
+   id:keyOf(x),kind:x.kind==='playlist'?'playlist':'video',vid:x.kind==='playlist'?'':x.vid,list:x.kind==='playlist'?x.list:'',thumb:/^https:\/\/i\d?\.ytimg\.com\/\S+$/.test(x.thumb||'')?x.thumb:'',no:Number.isInteger(x.no)&&x.no>0?x.no:0,start:Math.max(0,Number(x.start)||0),short:!!x.short,
+   title:str(x.title,200),channel:str(x.channel,100),room:ROOMS.includes(x.room)?x.room:'',
+   shelves:Array.isArray(x.shelves)?[...new Set(x.shelves.filter(id=>shelfIds.has(id)))]:[],
+   status:x.status==='gesehen'?'gesehen':'neu',fav:!!x.fav,seen:Math.max(0,Math.floor(Number(x.seen)||0)),seenAt:String(x.seenAt||''),
+   note:String(x.note||'').slice(0,20000),marks:Array.isArray(x.marks)?x.marks.filter(m=>m&&Number.isFinite(m.t)).map(m=>({t:Math.max(0,Math.floor(m.t)),text:str(m.text,200)})).sort((a,b)=>a.t-b.t).slice(0,200):[],
+   addedAt:String(x.addedAt||''),updatedAt:String(x.updatedAt||x.addedAt||'')}));
+  let next=s.items.reduce((m,x)=>Math.max(m,x.no),0)+1;for(const x of [...s.items].sort((a,b)=>a.addedAt.localeCompare(b.addedAt)))if(!x.no)x.no=next++;
+  s.next=Math.max(s.next||1,next);return s;
+ }
+ const get=(db,id)=>ensure(db).items.find(x=>x.id===id||(x.vid&&x.vid===id))||null;
+ /* Adds a video. Returns {item, duplicate}. A duplicate is never added twice. */
+ function add(db,{url,title='',channel='',room='',shelves=[],note=''},now){
+  const v=Video.parseAny(url);if(!v)throw Error('Das ist kein YouTube-Link zu einem Video oder einer Playlist.');
+  const key=v.type==='playlist'?'pl-'+v.list:'yt-'+v.id;
+  const s=ensure(db),old=s.items.find(x=>x.id===key);if(old)return {item:old,duplicate:true};
+  const ids=new Set(s.shelves.map(h=>h.id));
+  const item={id:key,kind:v.type,vid:v.type==='video'?v.id:'',list:v.type==='playlist'?v.list:'',thumb:'',no:s.next++,start:v.start||0,short:!!v.short,title:str(title,200),channel:str(channel,100),room:ROOMS.includes(room)?room:'',
+   shelves:[...new Set(shelves.filter(id=>ids.has(id)))],status:'neu',fav:false,seen:0,seenAt:'',note:String(note||'').slice(0,20000),marks:[],addedAt:now,updatedAt:now};
+  s.items.push(item);return {item,duplicate:false};
+ }
+ function need(db,id){const x=get(db,id);if(!x)throw Error('Dieses Video ist nicht mehr in der Sammlung.');return x}
+ function update(db,id,fields,now){
+  const x=need(db,id);
+  if('title' in fields)x.title=str(fields.title,200);
+  if('channel' in fields)x.channel=str(fields.channel,100);
+  if('thumb' in fields)x.thumb=/^https:\/\/i\d?\.ytimg\.com\/\S+$/.test(fields.thumb||'')?fields.thumb:'';
+  if('room' in fields)x.room=ROOMS.includes(fields.room)?fields.room:'';
+  if('note' in fields)x.note=String(fields.note||'').slice(0,20000);
+  if('fav' in fields)x.fav=!!fields.fav;
+  if('status' in fields)x.status=fields.status==='gesehen'?'gesehen':'neu';
+  x.updatedAt=now;return x;
+ }
+ function watched(db,id,now){const x=need(db,id);x.status='gesehen';x.seen=(x.seen||0)+1;x.seenAt=now;x.updatedAt=now;return x}
+ function remove(db,id){const s=ensure(db),i=s.items.findIndex(x=>x.id===id||x.vid===id);if(i<0)throw Error('Dieses Video ist nicht mehr in der Sammlung.');return s.items.splice(i,1)[0]}
+ function addShelf(db,name,emoji,now,id){
+  const s=ensure(db),n=str(name,40);if(!n)throw Error('Wie soll das Regal heißen?');
+  if(s.shelves.some(h=>h.name.toLocaleLowerCase('de')===n.toLocaleLowerCase('de')))throw Error('Ein Regal mit diesem Namen gibt es schon.');
+  const h={id:id||'sh-'+Date.now().toString(36),name:n,emoji:str(emoji,4),createdAt:now};s.shelves.push(h);return h;
+ }
+ function renameShelf(db,id,name,emoji){const h=ensure(db).shelves.find(x=>x.id===id);if(!h)throw Error('Regal nicht gefunden.');const n=str(name,40);if(!n)throw Error('Wie soll das Regal heißen?');h.name=n;if(emoji!=null)h.emoji=str(emoji,4);return h}
+ function removeShelf(db,id){const s=ensure(db);s.shelves=s.shelves.filter(h=>h.id!==id);for(const x of s.items)x.shelves=x.shelves.filter(i=>i!==id)}
+ function setShelf(db,id,shelf,on,now){const x=need(db,id);if(!ensure(db).shelves.some(h=>h.id===shelf))throw Error('Regal nicht gefunden.');x.shelves=on?[...new Set([...x.shelves,shelf])]:x.shelves.filter(i=>i!==shelf);x.updatedAt=now;return x}
+ /* "1:23", "1:02:03", "83", "1m30s" → seconds, or null */
+ function parseTime(t){t=String(t||'').trim().replace(',',':').replace('.',':');if(!t)return null;if(/^\d+(:\d{1,2}){0,2}$/.test(t)){const p=t.split(':').map(Number);if(p.slice(1).some(n=>n>59))return null;return p.reduce((a,b)=>a*60+b,0)}const s=Video.seconds(t.toLowerCase());return s||null}
+ function fmtTime(sec){sec=Math.max(0,Math.floor(sec));const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=String(sec%60).padStart(2,'0');return h?h+':'+String(m).padStart(2,'0')+':'+s:m+':'+s}
+ function addMark(db,id,time,text,now){const x=need(db,id),t=parseTime(time);if(t==null)throw Error('Zeit bitte als 1:23 angeben.');x.marks=[...x.marks.filter(m=>m.t!==t),{t,text:str(text,200)}].sort((a,b)=>a.t-b.t);x.updatedAt=now;return x}
+ function removeMark(db,id,t,now){const x=need(db,id);x.marks=x.marks.filter(m=>m.t!==t);x.updatedAt=now;return x}
+ const norm=s=>String(s||'').toLocaleLowerCase('de');
+ /* filter: all | neu | gesehen | fav;  sort: neu | alt | titel | kanal | nummer */
+ function query(db,{filter='all',shelf='',room='',channel='',q='',sort='neu'}={}){
+  let list=ensure(db).items.slice();
+  if(filter==='neu'||filter==='gesehen')list=list.filter(x=>x.status===filter);else if(filter==='fav')list=list.filter(x=>x.fav);else if(filter==='playlist')list=list.filter(x=>x.kind==='playlist');
+  if(shelf==='none')list=list.filter(x=>!x.shelves.length);else if(shelf)list=list.filter(x=>x.shelves.includes(shelf));
+  if(room==='none')list=list.filter(x=>!x.room);else if(room)list=list.filter(x=>x.room===room);
+  if(channel)list=list.filter(x=>x.channel===channel);
+  const t=norm(q).trim();if(t){const names=Object.fromEntries(ensure(db).shelves.map(h=>[h.id,h.name]));list=list.filter(x=>norm([x.title,x.channel,x.note,'#'+x.no,...x.marks.map(m=>m.text),...x.shelves.map(i=>names[i])].join(' ')).includes(t))}
+  const by={neu:(a,b)=>b.addedAt.localeCompare(a.addedAt)||b.no-a.no,alt:(a,b)=>a.addedAt.localeCompare(b.addedAt)||a.no-b.no,nummer:(a,b)=>a.no-b.no,titel:(a,b)=>norm(a.title||'~').localeCompare(norm(b.title||'~'),'de'),kanal:(a,b)=>norm(a.channel||'~').localeCompare(norm(b.channel||'~'),'de')||b.no-a.no}[sort]||((a,b)=>b.no-a.no);
+  return list.sort(by);
+ }
+ function count(list){return {total:list.length,playlists:list.filter(x=>x.kind==='playlist').length,seen:list.filter(x=>x.status==='gesehen').length,fav:list.filter(x=>x.fav).length}}
+ function milestone(total){const prev=[...MILESTONES].reverse().find(m=>m<=total)||0,next=MILESTONES.find(m=>m>total)||null;return {prev,next,left:next?next-total:0}}
+ function stats(db){
+  const s=ensure(db),c=count(s.items),channels=new Set(s.items.map(x=>x.channel).filter(Boolean));
+  const first=s.items.reduce((m,x)=>!m||x.addedAt<m?x.addedAt:m,'');
+  return {...c,shelves:s.shelves.length,channels:channels.size,marks:s.items.reduce((a,x)=>a+x.marks.length,0),first,...milestone(c.total)};
+ }
+ const reached=(before,after)=>MILESTONES.find(m=>before<m&&after>=m)||null;
+ function groups(db,by){
+  const s=ensure(db);
+  if(by==='shelf')return [...s.shelves.map(h=>({key:h.id,name:h.name,emoji:h.emoji,items:s.items.filter(x=>x.shelves.includes(h.id))})),{key:'none',name:'Ohne Regal',emoji:'',items:s.items.filter(x=>!x.shelves.length)}].filter(g=>g.key!=='none'||g.items.length);
+  if(by==='room')return [...ROOMS.map(r=>({key:r,items:s.items.filter(x=>x.room===r)})),{key:'none',items:s.items.filter(x=>!x.room)}].filter(g=>g.items.length);
+  if(by==='channel'){const m=new Map();for(const x of s.items){const k=x.channel||'';if(!m.has(k))m.set(k,[]);m.get(k).push(x)}return [...m].map(([key,items])=>({key,name:key||'Kanal unbekannt',items})).sort((a,b)=>(!a.key)-(!b.key)||b.items.length-a.items.length||a.name.localeCompare(b.name,'de'))}
+  return [];
+ }
+ function random(db,filter='neu',pick=Math.random){const list=query(db,{filter});return list.length?list[Math.floor(pick()*list.length)]:null}
+ /* One-time move of YouTube notes from the rooms into the collection. Returns the number moved. */
+ function adoptFromLife(db,now){
+  const life=db.life?.items;if(!Array.isArray(life))return 0;
+  const take=life.filter(x=>x&&x.kind==='note'&&x.url&&Video.parseAny(x.url));
+  for(const x of take){
+   const generic=/^(youtube-video|link|geteilt)$/i.test(x.title||'');
+   const r=add(db,{url:x.url,title:generic?'':x.title,room:x.room,note:x.body},x.createdAt||now);
+   if(r.duplicate&&x.body&&!r.item.note.includes(x.body))r.item.note=(r.item.note?r.item.note+'\n\n':'')+x.body;
+  }
+  if(take.length)db.life.items=life.filter(x=>!take.includes(x));
+  return take.length;
+ }
+ return {MILESTONES,ensure,normalize,get,add,update,watched,remove,addShelf,renameShelf,removeShelf,setShelf,parseTime,fmtTime,addMark,removeMark,query,count,stats,milestone,reached,groups,random,adoptFromLife};
 });
 // SOURCE: ui/library.js
 /* Content surfaces: room library, today strip, tarot. Reading never writes; adopting does. */
 const LIB_GROUP_LIMIT=4;
-function libTab(view){if(view==='calendar')return 'life';return ['bodyhub','workout','nutrition','recovery','trends'].includes(view)?'bodyhub':['life','spaces','library','focus'].includes(view)?view:'spaces'}
+function libTab(view){if(view==='calendar')return 'life';if(view==='videos')return 'videos';return ['bodyhub','workout','nutrition','recovery','trends'].includes(view)?'bodyhub':['life','spaces','library','focus'].includes(view)?view:'spaces'}
 function libAdopted(id){return PulseLife.list(db).find(x=>x.source==='lib:'+id)||null}
 function libCard(e){
  const r=PulseLife.room(e.room),mine=libAdopted(e.id);
@@ -2924,6 +3125,178 @@ function videoPlay(id,start,short){
  host.querySelector('.pulse-video-play')?.replaceWith(f);
 }
 function itemVideo(x){return x?(PulseVideo.parse(x.url)||PulseVideo.find(x.body)):null}
+// SOURCE: ui/vault.js
+/* Videos tab: the collection with shelves, status, favourites, marked moments and milestones. */
+let vaultFilter='all',vaultTab='list',vaultSort='neu',vaultShelf='',vaultRoom='',vaultChannel='',vaultQuery='',vaultReady=false,vaultOpenId=null;
+const vaultMetaTried=new Set();
+const vaultNow=()=>new Date().toISOString();
+const vaultThumbs=()=>db.uiPrefs.videoMeta!==false;
+const vaultNo=n=>'#'+String(n).padStart(3,'0');
+const vaultIsList=x=>x.kind==='playlist';
+const vaultRef=(x,start)=>vaultIsList(x)?{list:x.list}:{id:x.vid,start:start==null?x.start:start};
+function vaultImg(x,size){if(!vaultThumbs())return '';if(vaultIsList(x))return x.thumb||'';return 'https://i.ytimg.com/vi/'+x.vid+'/'+size+'default.jpg'}
+const LIST_ICON='<svg class="vault-listicon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h11M4 12h11M4 17h7M17 14v6l4-3z"/></svg>';
+function vaultPrepare(){
+ if(vaultReady||!db)return;vaultReady=true;
+ PulseVault.normalize(db);const moved=PulseVault.adoptFromLife(db,vaultNow());
+ if(moved){save();setTimeout(()=>toast(moved===1?'Ein Video ist in den neuen Videos-Tab umgezogen.':moved+' Videos sind in den neuen Videos-Tab umgezogen.'),900)}
+}
+function lifeOpenVideos(){goView('videos');renderVault()}
+function vaultSave(){if(!save())return false;renderVault();return true}
+function vaultTry(fn){try{fn();return true}catch(e){toast(e.message);return false}}
+/* Adds a link; duplicates open the existing video. Returns the item or null. */
+function vaultAdd(url,extra={}){
+ vaultPrepare();
+ const before=PulseVault.ensure(db).items.length;let r;
+ try{r=PulseVault.add(db,{url,...extra},vaultNow())}catch(e){toast(e.message);return null}
+ if(r.duplicate){toast('Schon in deiner Sammlung: '+vaultNo(r.item.no)+', seit '+lifeDate(r.item.addedAt.slice(0,10),{day:'numeric',month:'long'})+'.');pulseTap([10,40,10]);return r.item}
+ if(!save())return null;
+ const m=PulseVault.reached(before,before+1);
+ if(m&&m>1){pulseSound('chime');pulseTap([12,60,18,60,24]);toast('Meilenstein: '+m+' Videos in deiner Sammlung.')}
+ else{pulseSound('pop');pulseTap();toast(vaultNo(r.item.no)+' in deiner Sammlung')}
+ vaultFetchMeta(r.item.id);renderVault();return r.item;
+}
+/* Title and channel via YouTube's oEmbed. Only when previews are switched on. */
+async function vaultFetchMeta(id){
+ const x=PulseVault.get(db,id);if(!x||!vaultThumbs()||vaultMetaTried.has(x.id)||!navigator.onLine)return;vaultMetaTried.add(x.id);
+ try{
+  const res=await fetch('https://www.youtube.com/oembed?format=json&url='+encodeURIComponent(PulseVideo.watch(vaultRef(x,0))),{credentials:'omit',referrerPolicy:'no-referrer'});
+  if(!res.ok)return;const j=await res.json();const y=PulseVault.get(db,id);if(!y)return;
+  const fields={};if(!y.title&&j.title)fields.title=j.title;if(!y.channel&&j.author_name)fields.channel=j.author_name;if(vaultIsList(y)&&!y.thumb&&j.thumbnail_url)fields.thumb=String(j.thumbnail_url).replace(/^http:/,'https:');
+  if(!y.room&&fields.title){const room=PulseVideo.room(fields.title,y);if(room)fields.room=room}
+  if(Object.keys(fields).length){PulseVault.update(db,id,fields,vaultNow());save();renderVault();if(vaultOpenId===id)vaultRefresh(id)}
+ }catch(_){}
+}
+function vaultFillMissing(){if(!vaultThumbs())return;PulseVault.ensure(db).items.filter(x=>(!x.title||!x.channel||(vaultIsList(x)&&!x.thumb))&&!vaultMetaTried.has(x.id)).slice(0,4).forEach(x=>vaultFetchMeta(x.id))}
+function vaultThumb(x,size='mq'){
+ const inner='<span class="vault-no">'+vaultNo(x.no)+'</span>'+(vaultIsList(x)?'<span class="vault-short">'+LIST_ICON+'Playlist</span>':x.short?'<span class="vault-short">Short</span>':'')+(x.status==='gesehen'?'<span class="vault-seen" title="Gesehen">'+lifeGlyph('check')+'</span>':'');
+ return '<span class="vault-thumb'+(x.short?' short':'')+(vaultIsList(x)?' list':'')+'">'+(vaultImg(x,size)?'<img src="'+esc(vaultImg(x,size))+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'<svg class="vault-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>'+inner+'</span>';
+}
+function vaultShelfName(id){const h=PulseVault.ensure(db).shelves.find(s=>s.id===id);return h?(h.emoji?h.emoji+' ':'')+h.name:''}
+function vaultCard(x){
+ const label=(vaultIsList(x)?'Playlist ':'')+(x.title||'Ohne Titel')+(x.channel?', '+x.channel:'')+(x.status==='gesehen'?', gesehen':', auf der Merkliste')+(x.fav?', Favorit':'');
+ return '<button type="button" class="vault-card" aria-label="'+esc(vaultNo(x.no)+' '+label)+'" onclick="'+lifeCall('vaultOpen',x.id)+'">'+vaultThumb(x)+'<span class="vault-info"><b>'+(x.fav?'<span class="vault-star" aria-hidden="true">★</span> ':'')+esc(x.title||'Ohne Titel')+'</b><small>'+esc([x.channel,x.shelves.map(vaultShelfName).join(' · ')].filter(Boolean).join(' · ')||(x.room?PulseLife.room(x.room).name:'Noch nicht einsortiert'))+'</small></span></button>';
+}
+function vaultSet(k,v){
+ if(k==='filter')vaultFilter=v;else if(k==='tab'){vaultTab=v;if(v!=='list'){vaultShelf='';vaultRoom='';vaultChannel=''}}else if(k==='sort')vaultSort=v;
+ else if(k==='shelf'){vaultShelf=v;vaultRoom='';vaultChannel='';vaultTab='list'}else if(k==='room'){vaultRoom=v;vaultShelf='';vaultChannel='';vaultTab='list'}else if(k==='channel'){vaultChannel=v;vaultShelf='';vaultRoom='';vaultTab='list'}
+ renderVault();
+}
+function vaultSearch(v){vaultQuery=v;renderVaultResults()}
+function vaultPaste(){const f=document.getElementById('vaultLink'),v=f?.value.trim();if(!v)return f?.focus();const link=(v.match(/https?:\/\/\S+/)||[v])[0];const rest=v.replace(link,'').trim(),x=vaultAdd(link,{title:rest,room:PulseVideo.room(rest,PulseVideo.parseAny(link)||{})});if(x){f.value='';if(!x.title||!x.shelves.length)vaultOpen(x.id)}}
+async function vaultClipboard(){try{const t=await navigator.clipboard.readText();const f=document.getElementById('vaultLink');if(f){f.value=t;vaultPaste()}}catch(_){toast('Einfügen ist hier nicht erlaubt. Lang auf das Feld tippen und „Einfügen“ wählen.')}}
+function vaultRandom(){const x=PulseVault.random(db,'neu')||PulseVault.random(db,'all');if(!x)return toast('Noch keine Videos.');vaultOpen(x.id)}
+function vaultStats(){
+ const s=PulseVault.stats(db),pct=s.total?Math.round(s.seen/s.total*100):0;
+ const prog=s.next?Math.round((s.total-s.prev)/(s.next-s.prev)*100):100;
+ return '<div class="vault-stats"><div class="vault-stat hero"><span class="life-kicker">In deiner Sammlung</span><b class="vault-big">'+s.total+'</b><small>'+(s.first?'seit '+esc(lifeDate(s.first.slice(0,10),{day:'numeric',month:'long',year:'numeric'})):'Noch leer')+(s.playlists?' · davon '+s.playlists+(s.playlists===1?' Playlist':' Playlists'):'')+' · '+s.shelves+(s.shelves===1?' Regal':' Regale')+(s.channels?' · '+s.channels+(s.channels===1?' Kanal':' Kanäle'):'')+'</small></div>'+
+  '<div class="vault-stat"><b class="vault-mid">'+s.seen+'<span class="vault-of">/'+s.total+'</span></b><small>gesehen</small><span class="vault-bar seen" aria-hidden="true"><i style="width:'+pct+'%"></i></span></div>'+
+  '<div class="vault-stat"><b class="vault-mid"><span class="vault-star" aria-hidden="true">★</span> '+s.fav+'</b><small>Favoriten</small></div>'+
+  '<div class="vault-stat"><b class="vault-mid">'+(s.next||'✓')+'</b><small>'+(s.next?'Meilenstein · noch '+s.left:'Alle Meilensteine')+'</small><span class="vault-bar" aria-hidden="true"><i style="width:'+prog+'%"></i></span></div></div>';
+}
+function vaultTabs(){
+ const all=PulseVault.ensure(db).items,c=PulseVault.count(all),neu=c.total-c.seen;
+ return '<div class="life-seg vault-tabs" role="group" aria-label="Ansicht">'+[['list','Liste'],['shelf','Regale'],['room','Räume'],['channel','Kanäle']].map(([k,l])=>'<button type="button" aria-pressed="'+(vaultTab===k)+'" onclick="'+lifeCall('vaultSet','tab',k)+'">'+l+'</button>').join('')+'</div>'+
+  '<div class="life-filterbar vault-filters">'+[['all','Alle',c.total],['neu','Merkliste',neu],['gesehen','Gesehen',c.seen],['fav','Favoriten',c.fav],...(c.playlists?[['playlist','Playlists',c.playlists]]:[])].map(([k,l,n])=>'<button type="button" aria-pressed="'+(vaultFilter===k)+'" onclick="'+lifeCall('vaultSet','filter',k)+'">'+l+' <span>'+n+'</span></button>').join('')+'</div>';
+}
+function vaultMosaic(items){const top=items.slice(0,4);return '<span class="vault-mosaic">'+top.map(x=>vaultImg(x,'')?'<img src="'+esc(vaultImg(x,''))+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">':'<i></i>').join('')+'</span>'}
+function vaultFiltered(items){return vaultFilter==='neu'||vaultFilter==='gesehen'?items.filter(x=>x.status===vaultFilter):vaultFilter==='fav'?items.filter(x=>x.fav):vaultFilter==='playlist'?items.filter(vaultIsList):items}
+function vaultGroupTile(name,emoji,items,call,cls=''){
+ const all=items,shown=vaultFiltered(items),c=PulseVault.count(all),pct=c.total?Math.round(c.seen/c.total*100):0;
+ return '<button type="button" class="vault-shelf '+cls+'" onclick="'+call+'">'+vaultMosaic(shown.length?shown:all)+'<span class="vault-shelf-info"><b>'+(emoji?'<span class="vault-emoji" aria-hidden="true">'+esc(emoji)+'</span> ':'')+esc(name)+'</b><small>'+c.total+(c.total===1?' Video':' Videos')+' · '+c.seen+' gesehen'+(c.fav?' · ★ '+c.fav:'')+'</small><span class="vault-bar" aria-hidden="true"><i style="width:'+pct+'%"></i></span></span></button>';
+}
+function renderVaultResults(){
+ const el=document.getElementById('vaultResults');if(!el)return;
+ const items=PulseVault.ensure(db).items;
+ if(!items.length){el.innerHTML=lifeEmpty('Deine Sammlung ist noch leer.','In der YouTube-App auf „Teilen“ tippen und Pulse wählen, oder oben einen Link einfügen. Jedes Video bekommt eine Nummer, Duplikate werden erkannt.');return}
+ if(vaultTab==='shelf'&&!vaultQuery.trim()){
+  const groups=PulseVault.groups(db,'shelf');
+  el.innerHTML='<div class="vault-shelves">'+groups.map(g=>vaultGroupTile(g.name,g.emoji,g.items,lifeCall('vaultSet','shelf',g.key),g.key==='none'?'loose':'')).join('')+'<button type="button" class="vault-shelf new" onclick="vaultNewShelf()"><span class="vault-mosaic">'+lifeGlyph('plus')+'</span><span class="vault-shelf-info"><b>Neues Regal</b><small>z. B. Growls, Hip Thrust, Sigillen</small></span></button></div>';return}
+ if(vaultTab==='room'&&!vaultQuery.trim()){
+  el.innerHTML='<div class="vault-shelves">'+PulseVault.groups(db,'room').map(g=>{const r=g.key==='none'?null:PulseLife.room(g.key);return vaultGroupTile(r?r.name:'Ohne Raum','',g.items,lifeCall('vaultSet','room',g.key),r?r.color+' room':'loose')}).join('')+'</div>';return}
+ if(vaultTab==='channel'&&!vaultQuery.trim()){
+  const groups=PulseVault.groups(db,'channel');
+  el.innerHTML='<div class="vault-channels">'+groups.map(g=>{const c=PulseVault.count(g.items);return '<button type="button" class="cos-row" onclick="'+lifeCall('vaultSet','channel',g.key)+'"><span class="cos-row-date">'+c.total+'<small>'+(c.total===1?'Video':'Videos')+'</small></span><span><b>'+esc(g.name)+'</b><small>'+c.seen+' gesehen'+(c.fav?' · ★ '+c.fav:'')+'</small></span></button>'}).join('')+(vaultThumbs()?'':'<p class="life-footnote">Kanäle werden nur erkannt, wenn Vorschaubilder und Titel in den Einstellungen an sind.</p>')+'</div>';return}
+ const list=PulseVault.query(db,{filter:vaultFilter,shelf:vaultShelf,room:vaultRoom,channel:vaultChannel,q:vaultQuery,sort:vaultSort});
+ const scope=vaultShelf?(vaultShelf==='none'?'Ohne Regal':vaultShelfName(vaultShelf)):vaultRoom?(vaultRoom==='none'?'Ohne Raum':PulseLife.room(vaultRoom).name):vaultChannel?vaultChannel:'';
+ el.innerHTML=(scope?'<div class="vault-scope"><span>'+(vaultShelf?'Regal':vaultRoom?'Raum':'Kanal')+': <b>'+esc(scope)+'</b></span>'+(vaultShelf&&vaultShelf!=='none'?lifeButton('Bearbeiten',lifeCall('vaultEditShelf',vaultShelf),'life-textbtn'):'')+lifeButton('Alle zeigen',lifeCall('vaultSet','tab','list'),'life-textbtn')+'</div>':'')+
+  '<div class="vault-listhead"><span>'+list.length+(list.length&&list.every(vaultIsList)?(list.length===1?' Playlist':' Playlists'):(list.length===1?' Eintrag':' Einträge'))+'</span><label class="vault-sort">Sortieren <select onchange="vaultSet(\'sort\',this.value)">'+[['neu','Neueste zuerst'],['alt','Älteste zuerst'],['nummer','Nach Nummer'],['titel','Titel A–Z'],['kanal','Kanal A–Z']].map(([v,l])=>'<option value="'+v+'"'+(vaultSort===v?' selected':'')+'>'+l+'</option>').join('')+'</select></label></div>'+
+  (list.length?'<div class="vault-grid">'+list.map(vaultCard).join('')+'</div>':'<p class="life-none">Keine Videos in dieser Auswahl.</p>');
+}
+function renderVault(){
+ const host=document.getElementById('vaultContent');if(!host||document.getElementById('appMain').dataset.view!=='videos')return;
+ vaultPrepare();
+ const active=document.activeElement?.id;if(active==='vaultSearch'){renderVaultResults();return}
+ host.innerHTML='<header class="life-pagehead"><span class="life-kicker">Deine Sammlung</span><h1>Videos</h1></header>'+vaultStats()+
+  '<div class="vault-add"><label class="srOnly" for="vaultLink">YouTube-Link</label><input id="vaultLink" type="url" inputmode="url" placeholder="YouTube-Link einfügen" onkeydown="if(event.key===\'Enter\'){event.preventDefault();vaultPaste()}"/>'+(navigator.clipboard?.readText?'<button type="button" class="life-btn" onclick="vaultClipboard()">Einfügen</button>':'')+'<button type="button" class="life-btn dark" onclick="vaultPaste()">Hinzufügen</button></div>'+
+  '<div class="vault-tools"><label class="life-search">'+lifeGlyph('search')+'<input id="vaultSearch" type="search" aria-label="Videos durchsuchen" placeholder="Titel, Kanal, Notiz, #Nummer …" value="'+esc(vaultQuery)+'" oninput="vaultSearch(this.value)"/></label>'+lifeButton('Zufall','vaultRandom()','life-btn')+'</div>'+
+  vaultTabs()+'<div id="vaultResults"></div>';
+ renderVaultResults();vaultFillMissing();
+}
+/* ---------- Detail ---------- */
+function vaultOpen(id){
+ const x=PulseVault.get(db,id);if(!x)return;vaultOpenId=x.id;
+ document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
+ el.innerHTML='<div class="pulse-video'+(x.short?' short':'')+'" id="vaultPlayer"><button type="button" class="pulse-video-play vault-player" onclick="'+lifeCall('vaultPlay',x.id,x.start||0)+'" aria-label="'+(vaultIsList(x)?'Playlist':'Video')+' abspielen">'+(vaultImg(x,'hq')?'<img src="'+esc(vaultImg(x,'hq'))+'" alt="" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg><span>Abspielen</span><small>lädt von youtube-nocookie.com</small></button></div><div id="vaultMeta"></div>';
+ vaultRefresh(x.id);
+ if(activeDialog!=='lifeSheet')openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
+ vaultFetchMeta(x.id);
+}
+function vaultPlay(id,t){
+ const x=PulseVault.get(db,id),host=document.getElementById('vaultPlayer');if(!x||!host)return;
+ const f=document.createElement('iframe');f.src=PulseVideo.embed(vaultRef(x,t));f.title=x.title||(vaultIsList(x)?'YouTube-Playlist':'YouTube-Video');f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.referrerPolicy='strict-origin-when-cross-origin';
+ host.replaceChildren(f);host.scrollIntoView({block:'nearest'});
+ if(!host.dataset.counted){host.dataset.counted='1';PulseVault.watched(db,x.id,vaultNow());save();vaultRefresh(x.id);renderVault()}
+}
+function vaultRefresh(id){
+ const x=PulseVault.get(db,id),el=document.getElementById('vaultMeta');if(!x||!el)return;
+ const shelves=PulseVault.ensure(db).shelves;
+ el.innerHTML='<p class="vault-meta-line"><b>'+vaultNo(x.no)+'</b>'+(vaultIsList(x)?' · Playlist':'')+' · gespeichert am '+esc(lifeDate(x.addedAt.slice(0,10),{day:'numeric',month:'long',year:'numeric'}))+(x.seen?' · '+x.seen+'× gesehen':'')+'</p>'+
+  '<label class="srOnly" for="vaultTitle">Titel</label><textarea id="vaultTitle" class="vault-title" rows="1" placeholder="Titel" onchange="'+lifeCall('vaultField',x.id,'title')+'">'+esc(x.title)+'</textarea><h2 id="lifeDetailHeading" class="srOnly" tabindex="-1">'+esc(x.title||(vaultIsList(x)?'Playlist ':'Video ')+vaultNo(x.no))+'</h2>'+
+  (x.channel?'<p class="vault-channel">'+esc(x.channel)+'</p>':'')+
+  '<div class="vault-actions"><button type="button" class="life-btn'+(x.fav?' dark':'')+'" aria-pressed="'+x.fav+'" onclick="'+lifeCall('vaultToggle',x.id,'fav')+'">★ Favorit</button><button type="button" class="life-btn'+(x.status==='gesehen'?' dark':'')+'" aria-pressed="'+(x.status==='gesehen')+'" onclick="'+lifeCall('vaultToggle',x.id,'seen')+'">'+(x.status==='gesehen'?'Gesehen':'Als gesehen markieren')+'</button></div>'+
+  '<div class="vault-block"><h3>Regale</h3><div class="vault-chips">'+shelves.map(h=>'<button type="button" aria-pressed="'+x.shelves.includes(h.id)+'" onclick="'+lifeCall('vaultShelfToggle',x.id,h.id)+'">'+esc((h.emoji?h.emoji+' ':'')+h.name)+'</button>').join('')+'</div><div class="vault-inline"><label class="srOnly" for="vaultNewShelf">Neues Regal</label><input id="vaultNewShelf" placeholder="Neues Regal, z. B. Growls" maxlength="40" onkeydown="if(event.key===\'Enter\'){event.preventDefault();vaultQuickShelf(\''+x.id+'\')}"/>'+lifeButton('Anlegen',lifeCall('vaultQuickShelf',x.id),'life-btn')+'</div></div>'+
+  '<div class="vault-block"><h3>Raum</h3><select class="vault-room" aria-label="Raum" onchange="vaultRoomSet(\''+x.id+'\',this.value)"><option value="">Kein Raum</option>'+PulseLife.ROOMS.map(r=>'<option value="'+r.id+'"'+(x.room===r.id?' selected':'')+'>'+esc(r.name)+'</option>').join('')+'</select></div>'+
+  (vaultIsList(x)?'':'<div class="vault-block"><h3>Stellen</h3>'+(x.marks.length?'<ul class="vault-marks">'+x.marks.map(m=>'<li><button type="button" class="vault-mark" onclick="'+lifeCall('vaultPlay',x.id,m.t)+'"><b>'+PulseVault.fmtTime(m.t)+'</b><span>'+esc(m.text||'Stelle')+'</span></button><button type="button" class="life-iconbtn" aria-label="Stelle '+PulseVault.fmtTime(m.t)+' löschen" onclick="'+lifeCall('vaultMarkRemove',x.id,m.t)+'">'+lifeGlyph('close')+'</button></li>').join('')+'</ul>':'<p class="life-footnote">Merk dir Stellen wie „1:23 Atemtechnik“. Ein Tipp spielt genau dort ab.</p>')+
+  '<div class="vault-inline"><label class="srOnly" for="vaultMarkTime">Zeit</label><input id="vaultMarkTime" class="vault-time" inputmode="numeric" placeholder="1:23"/><label class="srOnly" for="vaultMarkText">Was passiert dort?</label><input id="vaultMarkText" placeholder="Was passiert dort?" maxlength="200" onkeydown="if(event.key===\'Enter\'){event.preventDefault();vaultMarkAdd(\''+x.id+'\')}"/>'+lifeButton('Merken',lifeCall('vaultMarkAdd',x.id),'life-btn')+'</div></div>')+
+  '<div class="vault-block"><h3>Notiz</h3><label class="srOnly" for="vaultNote">Notiz</label><textarea id="vaultNote" rows="3" placeholder="Warum gesammelt, was ausprobieren …" onchange="'+lifeCall('vaultField',x.id,'note')+'">'+esc(x.note)+'</textarea></div>'+
+  '<div class="life-detail-actions"><a class="life-btn" href="'+esc(PulseVideo.watch(vaultRef(x)))+'" target="_blank" rel="noopener noreferrer">In YouTube öffnen ↗</a>'+lifeButton('Entfernen',lifeCall('vaultRemove',x.id),'life-textbtn danger')+'</div>';
+}
+function vaultChange(id,fn){if(!vaultTry(fn))return;save();vaultRefresh(id);renderVault()}
+function vaultField(id,field){const v=document.getElementById(field==='title'?'vaultTitle':'vaultNote')?.value||'';vaultChange(id,()=>PulseVault.update(db,id,{[field]:v},vaultNow()))}
+function vaultToggle(id,what){const x=PulseVault.get(db,id);if(!x)return;vaultChange(id,()=>PulseVault.update(db,id,what==='fav'?{fav:!x.fav}:{status:x.status==='gesehen'?'neu':'gesehen'},vaultNow()));if(what==='fav'&&!x.fav)pulseTap();else if(what==='seen'&&x.status==='gesehen'){pulseSound('pop');pulseTap()}}
+function vaultShelfToggle(id,shelf){const x=PulseVault.get(db,id);if(!x)return;vaultChange(id,()=>PulseVault.setShelf(db,id,shelf,!x.shelves.includes(shelf),vaultNow()))}
+function vaultQuickShelf(id){const f=document.getElementById('vaultNewShelf'),name=f?.value.trim();if(!name)return f?.focus();vaultChange(id,()=>{const h=PulseVault.addShelf(db,name,'',vaultNow());PulseVault.setShelf(db,id,h.id,true,vaultNow())})}
+function vaultRoomSet(id,room){vaultChange(id,()=>PulseVault.update(db,id,{room},vaultNow()))}
+function vaultMarkAdd(id){const t=document.getElementById('vaultMarkTime')?.value,text=document.getElementById('vaultMarkText')?.value;vaultChange(id,()=>PulseVault.addMark(db,id,t,text,vaultNow()))}
+function vaultMarkRemove(id,t){vaultChange(id,()=>PulseVault.removeMark(db,id,t,vaultNow()))}
+function vaultRemove(id){
+ const x=PulseVault.get(db,id);if(!x)return;
+ pushUndo({type:'videos',before:PulseLife.clone(db.videos)});
+ if(!vaultTry(()=>PulseVault.remove(db,id)))return;save();lifeCloseSheet();renderVault();toast(vaultNo(x.no)+' entfernt','Rückgängig');
+}
+function undoVideos(u){db.videos=u.before;PulseVault.normalize(db);save();renderVault();toast('Wiederhergestellt')}
+/* ---------- Shelves ---------- */
+function vaultNewShelf(){
+ document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;vaultOpenId=null;
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Neues Regal</h2><p class="life-detail-intro">Ein Regal ist deine eigene Kategorie. Ein Video kann in mehreren Regalen stehen.</p>'+vaultShelfFields('','')+'<div class="life-detail-actions">'+lifeButton('Anlegen','vaultSaveShelf()','life-btn dark')+'</div>';
+ openDialog(document.getElementById('lifeSheet'),'#vaultShelfName');
+}
+function vaultShelfFields(name,emoji){return '<label class="life-name-field">Name<input id="vaultShelfName" maxlength="40" value="'+esc(name)+'" placeholder="z. B. Growls"/></label><label class="life-name-field">Zeichen (optional)<input id="vaultShelfEmoji" maxlength="4" value="'+esc(emoji)+'" placeholder="🎤"/></label>'}
+function vaultSaveShelf(id=''){
+ const name=document.getElementById('vaultShelfName')?.value||'',emoji=document.getElementById('vaultShelfEmoji')?.value||'';
+ if(!vaultTry(()=>id?PulseVault.renameShelf(db,id,name,emoji):PulseVault.addShelf(db,name,emoji,vaultNow())))return;
+ save();lifeCloseSheet();if(!id)vaultTab='shelf';renderVault();toast(id?'Regal gespeichert':'Regal angelegt');
+}
+function vaultEditShelf(id){
+ const h=PulseVault.ensure(db).shelves.find(s=>s.id===id);if(!h)return;
+ document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;vaultOpenId=null;
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Regal bearbeiten</h2>'+vaultShelfFields(h.name,h.emoji)+'<div class="life-detail-actions">'+lifeButton('Speichern',lifeCall('vaultSaveShelf',id),'life-btn dark')+lifeButton('Regal löschen',lifeCall('vaultDeleteShelf',id),'life-textbtn danger')+'</div><p class="life-footnote">Beim Löschen bleiben die Videos in deiner Sammlung, nur das Regal verschwindet.</p>';
+ openDialog(document.getElementById('lifeSheet'),'#vaultShelfName');
+}
+function vaultDeleteShelf(id){pushUndo({type:'videos',before:PulseLife.clone(db.videos)});PulseVault.removeShelf(db,id);vaultShelf='';vaultTab='shelf';save();lifeCloseSheet();renderVault();toast('Regal gelöscht','Rückgängig')}
+function lifeSetVideoMeta(){db.uiPrefs.videoMeta=db.uiPrefs.videoMeta===false;if(save()){lifeSettings();renderVault()}}
+function videoSettingsHTML(){return '<div class="life-settings-row"><div><b>Vorschaubilder und Titel von YouTube</b><p>Lädt Bild, Titel und Kanal direkt von YouTube. Wenn aus, geht nichts an YouTube, bis du ein Video abspielst.</p></div>'+lifeButton(db.uiPrefs.videoMeta===false?'Aus':'An','lifeSetVideoMeta()','life-btn')+'</div>'}
 // SOURCE: storage/photos.js
 /* Photos live in IndexedDB (localStorage is far too small). Records reference them by id. */
 const PulsePhotos=(()=>{
@@ -3259,12 +3632,13 @@ function quickAnalyze(raw){
  else if(i.type==='task')kind='task';
  else if(foodOk&&amount)kind='meal';
  if(link&&(kind==='meal'||kind==='capture'))kind='note';
- const video=link&&PulseVideo.parse(link.replace(/[).,;!?]+$/,''));if(video&&!room)room=PulseVideo.room(text.replace(link,''),video);
- if(quickOverride&&!(quickOverride==='meal'&&!(foodOk||i.type==='drink'))&&!(quickOverride==='event'&&!when.date))kind=quickOverride;
- return {text,link,room:room||(kind==='meal'?'koerper':'alltag'),kind,when,type:i.type,foodOk,kcal:Math.round(parts.reduce((a,p)=>a+(p.nut?.kcal||0),0))};
+ const video=link&&PulseVideo.parseAny(link.replace(/[).,;!?]+$/,''));if(video&&!room)room=PulseVideo.room(text.replace(link,''),video);if(video&&!when.date)kind='video';
+ if(quickOverride&&!(quickOverride==='video'&&!video)&&!(quickOverride==='meal'&&!(foodOk||i.type==='drink'))&&!(quickOverride==='event'&&!when.date))kind=quickOverride;
+ return {text,link,video:video?video.type:'',room:room||(kind==='meal'?'koerper':'alltag'),kind,when,type:i.type,foodOk,kcal:Math.round(parts.reduce((a,p)=>a+(p.nut?.kcal||0),0))};
 }
 function quickDescribe(q){
  const names={note:'Notiz',task:'Aufgabe',event:'Termin',meal:'Mahlzeit'};
+ if(q.kind==='video')return (q.video==='playlist'?'Playlist':'Video')+' in deiner Sammlung'+(q.room&&q.room!=='alltag'?' · '+PulseLife.room(q.room).name:'');
  if(q.kind==='capture')return {workout:'Trainingssatz zum Prüfen',recovery:'Erholungstag für heute',context:'Befinden für heute','context-clear':'Befinden: wieder normal','historical-review':'Notiz mit vergangenem Datum',food:'Essen · Menge wird abgefragt',drink:'Getränk'}[q.type]||'Eintrag';
  const when=q.when.date&&(q.kind==='task'||q.kind==='event')?' · '+lifeDate(q.when.date,{weekday:'short',day:'numeric',month:'short'})+(q.when.time&&q.kind==='event'?' '+q.when.time:''):'';
  return names[q.kind]+(q.kind==='meal'&&q.kcal?' · '+q.kcal+' kcal':'')+when+(q.kind==='meal'?'':' · '+PulseLife.room(q.room).name);
@@ -3272,7 +3646,7 @@ function quickDescribe(q){
 function quickPreview(){
  const box=document.getElementById('quickRoute'),field=document.getElementById('quickText');if(!box||!field)return;
  if(!field.value.trim()){box.innerHTML='<span class="quick-hint">Datum, Uhrzeit, Mengen und #raum werden erkannt.</span>';return}
- const q=quickAnalyze(field.value),alts=[['note','Notiz'],['task','Aufgabe']];if(q.when.date)alts.push(['event','Termin']);if(q.foodOk)alts.push(['meal','Mahlzeit']);
+ const q=quickAnalyze(field.value),alts=[['note','Notiz'],['task','Aufgabe']];if(q.video)alts.unshift(['video',q.video==='playlist'?'Playlist':'Video']);if(q.when.date)alts.push(['event','Termin']);if(q.foodOk)alts.push(['meal','Mahlzeit']);
  box.innerHTML='<span class="quick-target">Wird: <b>'+esc(quickDescribe(q))+'</b></span>'+(q.kind==='capture'?'':'<span class="quick-alts" role="group" aria-label="Stattdessen speichern als">'+alts.map(([k,l])=>'<button type="button" aria-pressed="'+(q.kind===k)+'" onclick="'+lifeCall('quickSet',k)+'">'+l+'</button>').join('')+'</span>');
 }
 function quickSet(kind){quickOverride=kind;quickPreview();document.getElementById('quickText')?.focus()}
@@ -3288,7 +3662,8 @@ function quickSave(){
  pulseStopDictation();
  if(q.kind==='meal'){const m=directIntakeCapture(q.text);if(!m){quickOverride='capture';return quickSave()}save();lifeCloseSheet();render();pulseTap();return toast(intakeMessage(m),'Rückgängig')}
  if(q.kind==='capture'){lifeCloseSheet();const r=universalCapture(q.text);if(r.type==='food-review'){const token=pendingFoodCapture;setTimeout(()=>{openCapture();pendingFoodCapture=token;showFoodFollowup(q.text)},320);return}render();pulseTap();return toast(r.message,['food','drink'].includes(r.type)?'Rückgängig':'')}
- const rest=q.link?q.text.replace(q.link,'').trim():q.text,lines=rest.split('\n'),fields={kind:q.kind,room:q.room,title:(lines[0]||(PulseVideo.parse(q.link)?'YouTube-Video':'Link')).slice(0,180),body:lines.slice(1).join('\n').trim()};
+ if(q.kind==='video'){const t=q.text.replace(q.link,'').trim(),x=vaultAdd(q.link.replace(/[).,;!?]+$/,''),{title:t,room:q.room==='alltag'&&!/#alltag/i.test(field.value)?'':q.room});if(x)lifeCloseSheet();return}
+ const rest=q.link?q.text.replace(q.link,'').trim():q.text,lines=rest.split('\n'),fields={kind:q.kind,room:q.room,title:(lines[0]||(PulseVideo.parseAny(q.link)?'YouTube-Video':'Link')).slice(0,180),body:lines.slice(1).join('\n').trim()};
  if(q.link)fields.url=q.link.replace(/[).,;!?]+$/,'');
  if(q.kind!=='note'&&q.when.date){fields.date=q.when.date;if(q.kind==='event')fields.time=q.when.time||''}
  if(q.kind==='event'&&!fields.date)fields.date=key();
@@ -3346,7 +3721,8 @@ function handleLaunchParams(){
  const action=q.get('action'),title=(q.get('title')||'').trim(),text=(q.get('text')||'').trim(),url=(q.get('url')||'').trim();
  history.replaceState(history.state,'',location.pathname+location.hash);
  setTimeout(()=>{
-  if(title||text||url){const link=/^https?:\/\//i.test(url)?url:(text.match(/https?:\/\/\S+/)||[''])[0];const video=PulseVideo.parse(link),name=title||(text.replace(link,'').trim().split('\n')[0]||(video?'YouTube-Video':'Geteilt')),room=video?PulseVideo.room(title+' '+text,video):'';lifeReceiveShare({kind:'note',title:name.slice(0,120),body:title?text.replace(link,'').trim():text.replace(link,'').trim().split('\n').slice(1).join('\n').trim(),url:link,...(room?{room}:{})})}
+  if(title||text||url){const link=/^https?:\/\//i.test(url)?url:(text.match(/https?:\/\/\S+/)||[''])[0];const video=PulseVideo.parseAny(link);if(video){const rest=(title+' '+text.replace(link,'')).trim();const x=vaultAdd(link,{title,room:PulseVideo.room(rest,video),note:title?text.replace(link,'').trim():''});if(x){lifeOpenVideos();vaultOpen(x.id)}return}
+  const name=title||(text.replace(link,'').trim().split('\n')[0]||(video?'YouTube-Video':'Geteilt')),room=video?PulseVideo.room(title+' '+text,video):'';lifeReceiveShare({kind:'note',title:name.slice(0,120),body:title?text.replace(link,'').trim():text.replace(link,'').trim().split('\n').slice(1).join('\n').trim(),url:link,...(room?{room}:{})})}
   else if(action==='compose')lifeQuick();
   else if(action==='voice')lifeComposeVoice();
   else if(action==='food')goView('nutrition');
@@ -3517,6 +3893,7 @@ function pushUndo(x){db.undoStack.push(x);if(db.undoStack.length>20)db.undoStack
 function undoLast(){
  const u=db.undoStack.pop();if(!u)return toast('Nichts zum Rückgängigmachen');
  if(u.type==='life')return undoLife(u);
+ if(u.type==='videos')return undoVideos(u);
  if(u.type==='drink'||u.type==='drink-delete')return undoDrink(u);
  if(u.type==='meal'){
    const i=db.meals.findIndex(x=>x.id===u.id);if(i>=0){
@@ -3569,7 +3946,7 @@ function openCaptureWith(v=''){
 }
 
 let pendingValueSave=null, deferredInstallPrompt=null;
-const VIEW_TITLES={life:'Dein Tag',spaces:'Lebensräume',library:'Sammlung',focus:'Fokus',calendar:'Kalender',bodyhub:'Körper',workout:'Training',nutrition:'Essen',recovery:'Recovery',trends:'Fortschritt',goals:'Ziele',history:'Verlauf',plan:'Plan',coach:'Muster',mehub:'Ich'};
+const VIEW_TITLES={life:'Dein Tag',spaces:'Lebensräume',library:'Sammlung',focus:'Fokus',calendar:'Kalender',videos:'Videos',bodyhub:'Körper',workout:'Training',nutrition:'Essen',recovery:'Recovery',trends:'Fortschritt',goals:'Ziele',history:'Verlauf',plan:'Plan',coach:'Muster',mehub:'Ich'};
 let lastDialogTrigger=null,activeDialog=null,dialogBackPending=false,queuedDialogNavigation=null;
 function reducedMotion(){return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches}
 
