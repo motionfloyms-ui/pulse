@@ -1,0 +1,29 @@
+{
+  "id": "./",
+  "name": "Pulse",
+  "short_name": "Pulse",
+  "description": "Dein Tag, deine Lebensräume, dein Körper.",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2F1F6",
+  "theme_color": "#F2F1F6",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Gedanke festhalten", "short_name": "Festhalten", "url": "./?action=compose", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Per Sprache festhalten", "short_name": "Sprechen", "url": "./?action=voice", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Training", "short_name": "Training", "url": "./?action=training", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Tageskarte", "short_name": "Tarot", "url": "./?action=tarot", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
+  ],
+  "share_target": {
+    "action": "./",
+    "method": "GET",
+    "params": {"title": "title", "text": "text", "url": "url"}
+  }
+}
