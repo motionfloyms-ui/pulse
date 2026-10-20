@@ -944,6 +944,94 @@ th{color:var(--muted);font-weight:600}
 .cal-file{display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
 .cal-facts dd a{color:var(--accent-text)}
 @media(max-width:360px){.cos-day{min-height:70px}.cos-ev{font-size:9.5px}.cal-when{min-width:74px}}
+/* v21: sigils, sound, sky, cut-up */
+.sound-chips{display:flex;flex-direction:column;gap:6px;margin:14px 0 0;width:100%}
+.sound-chips .vault-chips{margin:0}
+.sound-vol{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}.sound-vol input{flex:1;min-height:44px;padding:0;border:0;background:none;box-shadow:none;accent-color:var(--accent)}
+.sigil-moon{display:flex;align-items:center;gap:12px;margin:0 0 14px;padding:12px 14px;border-radius:var(--r-lg);background:radial-gradient(120% 160% at 0% 0%,var(--night-2),var(--night) 65%);color:var(--night-ink)}
+.sigil-moon p{margin:0;font-size:14.5px;color:var(--night-muted)}.sigil-moon b{color:var(--night-ink)}
+.sigil-workshop{padding:16px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-1)}
+.sigil-workshop textarea{font-size:18px}
+.sigil-stage{display:flex;flex-direction:column;align-items:center;gap:6px;margin:6px 0 12px;padding:16px;border-radius:var(--r-lg);background:radial-gradient(circle at 50% 45%,var(--night-2),var(--night) 70%);color:var(--star)}
+.sigil-preview{width:min(70vw,260px);aspect-ratio:1;display:grid;place-items:center}
+.sigil-svg{display:block;width:100%;height:100%}
+.sigil-stage .sigil-svg{filter:drop-shadow(0 0 8px rgb(245 230 179/.45))}
+.sigil-empty{margin:0;color:var(--night-muted);font-size:14px;text-align:center}
+.sigil-letters{margin:0;min-height:20px;font-size:13px;letter-spacing:.2em;color:var(--night-muted);font-variant-numeric:tabular-nums}
+.sigil-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}.sigil-opts .life-seg{display:flex}.sigil-opts .life-seg button{flex:1}
+.sigil-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.sigil-card{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;padding:10px 8px;border-radius:var(--r-lg);background:var(--night);color:var(--star);box-shadow:var(--shadow-1);font-weight:400;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.sigil-card:active{transform:scale(.95)}
+.sigil-card .sigil-svg{width:100%;aspect-ratio:1;height:auto}
+.sigil-card.vergessen .sigil-svg{opacity:.75}
+.sigil-meta{display:flex;align-items:baseline;gap:6px}.sigil-meta b{font-size:13px;font-variant-numeric:tabular-nums;color:var(--night-ink)}.sigil-meta small{font-size:11px;color:var(--night-muted)}
+.sigil-intent{font-size:11.5px;line-height:1.3;color:var(--night-muted);text-align:center;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.sigil-detail-glyph{width:min(60vw,240px);aspect-ratio:1;margin:0 auto 10px;padding:14px;border-radius:var(--r-xl);background:radial-gradient(circle,var(--night-2),var(--night) 70%);color:var(--star)}
+.sigil-intent-big{font-size:18px;font-weight:600;margin:6px 0 12px}
+.sigil-secret summary{min-height:44px;display:flex;align-items:center;color:var(--accent-text);font-weight:650;cursor:pointer}
+.sigil-score{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0;font-size:14px}.sigil-score input{flex:1 1 100%;accent-color:var(--accent)}
+body.sigil-open{overflow:hidden}
+.sigil-overlay{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:max(24px,env(safe-area-inset-top)) 20px max(24px,env(safe-area-inset-bottom));background:radial-gradient(circle at 50% 40%,#16123a,#050409 70%);color:#F5E6B3;overflow:auto}
+.sigil-breath{position:absolute;left:50%;top:50%;width:122%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(.7);border:1px solid rgb(245 230 179/.18);box-shadow:0 0 80px rgb(139 123 255/.25) inset;animation:sigilBreath 10s ease-in-out infinite;pointer-events:none}
+.sigil-overlay.ekstatisch .sigil-breath{animation-duration:1.6s;border-color:rgb(255 94 126/.3);box-shadow:0 0 90px rgb(255 94 126/.3) inset}
+@keyframes sigilBreath{0%,100%{transform:translate(-50%,-50%) scale(.62);opacity:.5}50%{transform:translate(-50%,-50%) scale(1);opacity:1}}
+.sigil-charge-glyph{position:relative;width:min(64vw,340px);aspect-ratio:1;animation:sigilGlow 5s ease-in-out infinite}
+.sigil-overlay.ekstatisch .sigil-charge-glyph{animation:sigilFlicker .8s steps(2) infinite}
+.sigil-svg.charge{position:relative;filter:drop-shadow(0 0 14px rgb(245 230 179/.7))}
+@keyframes sigilGlow{0%,100%{opacity:.82;transform:scale(.98)}50%{opacity:1;transform:scale(1.02)}}
+@keyframes sigilFlicker{0%{opacity:1}50%{opacity:.7}}
+.sigil-charge-ui{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;width:min(100%,420px);text-align:center}
+.sigil-clock{font-size:44px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sigil-charge-ui p,.sigil-after p{margin:0;color:#C9C0EE;font-size:15px}
+.sigil-row{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.sigil-overlay button,.sigil-overlay .life-btn{min-height:44px;padding:8px 16px;border-radius:999px;background:rgb(255 255 255/.08);color:#F3F4F6;font-weight:650;box-shadow:inset 0 0 0 1px rgb(255 255 255/.14)}
+.sigil-overlay button[aria-pressed="true"]{background:#F5E6B3;color:#1B1642}
+.sigil-overlay .sound-chips{align-items:center}.sigil-overlay .life-kicker{color:#C9C0EE}.sigil-overlay .sound-vol{color:#C9C0EE;width:100%}
+.sigil-after{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:420px;text-align:center}.sigil-after h2{margin:0;font-size:32px}
+.sky-frame{margin:0 0 14px;border-radius:var(--r-xl);overflow:hidden;background:radial-gradient(130% 120% at 50% 0%,#211b5c,#07061a 70%);box-shadow:var(--shadow-2)}
+.sky-svg{display:block;width:100%;height:auto}
+.sky-bg circle{fill:#fff;opacity:.35}
+.sky-lines line{stroke:rgb(255 255 255/.12);stroke-width:.8;stroke-dasharray:2 3}.sky-lines line.on{stroke:rgb(245 230 179/.65);stroke-dasharray:none;stroke-width:1.1}
+.sky-svg .star circle{fill:rgb(255 255 255/.28)}
+.sky-svg .star.on circle{fill:#F5E6B3}
+.sky-svg .star.on .halo{fill:rgb(245 230 179/.14);animation:twinkle 4s ease-in-out infinite}
+@keyframes twinkle{50%{opacity:.35}}
+.sky-labels text{fill:#B9B2E6;font-size:9px;font-family:var(--font);text-anchor:middle;letter-spacing:.02em}
+.sky-group{margin:0 0 14px;padding:14px 16px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-1)}
+.sky-group h3{margin:0 0 8px;font-size:17px}.sky-group h3 small{font-size:13px;font-weight:500;color:var(--muted)}
+.sky-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.sky-group li{display:flex;gap:12px;align-items:flex-start}
+.sky-group li>span:last-child{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.sky-group li b{font-size:15px}.sky-group li small{font-size:12.5px}
+.sky-group li:not(.on) b{color:var(--ink-2)}
+.sky-dot{flex:none;width:14px;height:14px;margin-top:3px;border-radius:50%;background:var(--fill);box-shadow:inset 0 0 0 1px var(--line-strong)}
+.sky-group li.on .sky-dot{background:#F1B92B;box-shadow:0 0 10px rgb(241 185 43/.7)}
+.sky-group .vault-bar{margin-top:4px;max-width:220px}
+.sky-card{margin:0 0 14px;padding:14px 16px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-1)}
+.sky-card h2{margin:0;font-size:18px}
+.sky-glow{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:4px;margin:12px 0 8px;overflow-x:auto;padding-bottom:4px}
+.sky-glow i{width:13px;height:13px;border-radius:4px;background:var(--fill)}
+.sky-glow i.pad{background:transparent}
+.sky-glow i.g1{background:color-mix(in srgb,var(--accent) 30%,var(--fill))}
+.sky-glow i.g2{background:color-mix(in srgb,var(--accent) 55%,var(--fill))}
+.sky-glow i.g3{background:color-mix(in srgb,var(--accent) 80%,var(--fill))}
+.sky-glow i.g4{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.sky-glow i.today{outline:2px solid var(--ink);outline-offset:1px}
+.sky-deck-row{margin:10px 0 0}
+.sky-deck{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.sky-deck button{width:24px;height:36px;min-height:0;padding:0;border-radius:4px;background:var(--fill);box-shadow:inset 0 0 0 1px var(--line-strong)}
+.sky-deck button.have{background:linear-gradient(160deg,#F5E6B3,#C9A24A);box-shadow:0 0 8px rgb(241 185 43/.5)}
+.tile-sky{background:radial-gradient(130% 140% at 0% 0%,var(--night-2),var(--night) 65%);color:var(--night-ink)}
+.tile-sky .pulse-tile-head,.tile-sky small{color:var(--night-muted)}
+.tile-sky-mini{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;width:100%;margin:6px 0 2px}
+.tile-sky-mini i{width:6px;height:6px;border-radius:50%;background:rgb(255 255 255/.18)}
+.tile-sky-mini i.on{background:#F5E6B3;box-shadow:0 0 6px rgb(245 230 179/.8)}
+.life-yesterday{margin:-8px 4px 14px;font-size:14.5px;color:var(--ink-2)}
+.life-tools-row{margin:0 0 14px}
+.cutup-lines{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+.cutup-line{min-height:48px;padding:10px 14px;border-radius:var(--r-md);background:var(--surface-2);color:var(--ink);text-align:left;font-size:16px;font-weight:500;font-style:italic;box-shadow:inset 0 0 0 1px var(--line)}
+.cutup-line.kept{background:var(--accent-soft);color:var(--accent-text);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.cutup-keep{margin:0 0 8px;padding-left:22px;font-style:italic}
 /* Calm view: colour recedes, structure stays. */
 .life-calm .life-room-tile,.life-calm .life-room-hero{background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 5px 0 0 var(--room)}
 .life-calm .life-room-tile::after,.life-calm .life-room-hero::after{display:none}
@@ -953,7 +1041,7 @@ th{color:var(--muted);font-weight:600}
 @media print{.life-nav,.life-topbar,.toast{display:none}.app{padding:0}}
 
 </style></head><body class="life-modern">
-<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v20</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view life-screen" id="videos"><div id="vaultContent"></div></section><section class="view " id="bodyhub"><header class="pagehead"><h1>Körper</h1></header><div class="body-feature"><div class="eyebrow">Training</div><h2 id="bodyPlan">Training</h2><p id="bodyPlanDetail"></p><button type="button" class="primary" onclick="openTodaysTraining()">Training öffnen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><div class="body-foot"><span id="homeTraining"></span><span>Deine bestätigten Gewichte</span></div></div>
+<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v21</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view life-screen" id="videos"><div id="vaultContent"></div></section><section class="view life-screen" id="sigils"><div id="sigilContent"></div></section><section class="view life-screen" id="sky"><div id="skyContent"></div></section><section class="view " id="bodyhub"><header class="pagehead"><h1>Körper</h1></header><div class="body-feature"><div class="eyebrow">Training</div><h2 id="bodyPlan">Training</h2><p id="bodyPlanDetail"></p><button type="button" class="primary" onclick="openTodaysTraining()">Training öffnen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><div class="body-foot"><span id="homeTraining"></span><span>Deine bestätigten Gewichte</span></div></div>
 <div class="routes"><button type="button" class="route" onclick="goView('nutrition')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-food"></use></svg></span><span class="grow"><b>Essen</b><small><span id="homeProtein">—</span> Protein erfasst · regelmäßig versorgt</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('recovery')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg></span><span class="grow"><b>Befinden & Zyklus</b><small>Tagesform, Schlaf, Zyklus</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('trends')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Fortschritt</b><small>Taille, Maße & dein Trainingsverlauf</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div><div class="quiet-callout"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-water"></use></svg><div><b>Wasser</b><p><span id="homeWater">—</span> heute</p></div><button type="button" class="small" onclick="addWater(.25)">+ 250 ml</button></div><div id="bodyLibrary" class="life-body-library"></div></section>
 <section class="view " id="mehub"><header class="pagehead"><h1>Ich</h1></header><div class="identity"><span class="avatar" data-me-initial>·</span><div><b data-me-name>Du</b><small>Muskelaufbau · Alltag · mehr Raum im Kopf</small></div></div><div class="routes"><button type="button" class="route" onclick="goView('goals')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Deine Richtung</b><small>Ziele, die zu deinem Leben passen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('plan')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg></span><span class="grow"><b>Dein Plan</b><small>Routinen, Training & Ausnahmen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('history')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg></span><span class="grow"><b>Verlauf</b><small>Was tatsächlich passiert ist</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('coach')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-spark"></use></svg></span><span class="grow"><b>Muster</b><small>Beobachtungen aus deinen Einträgen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div>
 <details class="disclosure"><summary>Was PULSE über dich weiß</summary><p class="tiny" id="eventCount"></p><div id="semanticMemory" class="memory-list"></div></details>
@@ -1927,7 +2015,7 @@ Smoothie|smoothie|55|0.6|12|0.2|1.5|250||1`;
    if(currentState!==undefined){const pending=JSON.stringify(state.normalize(currentState));if(expected===null||pending!==JSON.stringify(JSON.parse(expected))){assertUnchanged();write('pulseOS_pre_import_memory_backup',pending)}}
    return transact(prepared,'pulseOS_pre_import_backup');
   })}
-  function exportText(value,{wrapped=true,version='20.0.0',now=new Date()}={}){
+  function exportText(value,{wrapped=true,version='21.0.0',now=new Date()}={}){
    // Emergency export deliberately does not reject uncommitted in-memory data.
    return JSON.stringify(wrapped?{app:'PULSE',version,schemaVersion:value.schemaVersion||state.SCHEMA_VERSION,exportedAt:now.toISOString(),data:value}:value,null,2);
   }
@@ -2347,11 +2435,11 @@ function renderLifeFocus(){
  const f=lifeState().focus;
  if(!f){
  const candidates=PulseLife.list(db).filter(x=>['task','ritual'].includes(x.kind)&&x.status==='open').slice(0,8);
- el.innerHTML=lifeHeader('','Fokus-Timer','')+'<div class="life-focus-idle"><div class="life-idle-orbit">'+lifeGlyph('focus')+'</div><h2>Timer starten</h2><p>Frei oder für eine Aufgabe unten.</p><div class="life-duration-choices">'+[5,10,25].map(n=>lifeButton(n+' Minuten',lifeCall('lifeBeginFocus',null,n),'life-btn '+(n===10?'dark':''))).join('')+'</div></div><div class="life-sectionhead"><h2>Für eine Aufgabe</h2></div>'+(candidates.length?candidates.map(x=>'<div class="life-focus-choice">'+lifeCard(x,{compact:true})+lifeButton('Starten',lifeCall('lifeBeginFocus',x.id,x.duration||10),'life-textbtn')+'</div>').join(''):lifeEmpty('Keine offenen Aufgaben oder Rituale.',''));return}
+ el.innerHTML=lifeHeader('','Fokus-Timer','')+'<div class="life-focus-idle"><div class="life-idle-orbit">'+lifeGlyph('focus')+'</div><h2>Timer starten</h2><p>Frei oder für eine Aufgabe unten.</p><div class="life-duration-choices">'+[5,10,25].map(n=>lifeButton(n+' Minuten',lifeCall('lifeBeginFocus',null,n),'life-btn '+(n===10?'dark':''))).join('')+'</div>'+soundChips('Klang')+'</div><div class="life-sectionhead"><h2>Für eine Aufgabe</h2></div>'+(candidates.length?candidates.map(x=>'<div class="life-focus-choice">'+lifeCard(x,{compact:true})+lifeButton('Starten',lifeCall('lifeBeginFocus',x.id,x.duration||10),'life-textbtn')+'</div>').join(''):lifeEmpty('Keine offenen Aufgaben oder Rituale.',''));return}
  const left=PulseLife.remaining(f,Date.now()),item=PulseLife.get(db,f.id);
  el.innerHTML=lifeHeader(f.state==='paused'?'Pausiert':'Läuft',esc(f.title))+
  '<div class="life-focus-stage"><div id="lifeFocusRing" class="life-focus-ring" style="--progress:'+(Math.max(0,Math.min(100,left/f.total*100)))+'%"><div><span id="lifeFocusClock" role="timer" aria-live="off">'+lifeClock(left)+'</span><span id="lifeFocusStatus">'+(f.state==='paused'?'Pausiert':left?'verbleibend':'Zeit abgelaufen')+'</span></div></div>'+
- '<div class="life-duration-choices">'+lifeButton(f.state==='paused'?'Weiter':'Pause',lifeCall('lifePauseToggle'),'life-btn dark')+lifeButton('＋ 5 Min.',lifeCall('lifeAddFocus',5),'life-btn')+'</div></div>'+
+ '<div class="life-duration-choices">'+lifeButton(f.state==='paused'?'Weiter':'Pause',lifeCall('lifePauseToggle'),'life-btn dark')+lifeButton('＋ 5 Min.',lifeCall('lifeAddFocus',5),'life-btn')+'</div>'+soundChips('Klang')+'</div>'+
  '<label class="life-resume-label">Notiz zum Weitermachen<textarea id="lifeResumeNote" rows="2" placeholder="Wo machst du weiter?" oninput="lifeRememberResume(this.value)">'+esc(f.resume||'')+'</textarea></label>'+
  (item?'<div class="life-focus-context"><b>'+esc(item.title)+'</b><p>'+esc(item.body.slice(0,400))+'</p>'+lifeButton('Eintrag öffnen ↗',lifeCall('lifeOpenItem',item.id),'life-textbtn')+'</div>':'')+
  '<div class="life-focus-finish">'+(item?.kind==='task'?lifeButton('Aufgabe erledigt',lifeCall('lifeFinishFocus',true),'life-btn dark'):'')+lifeButton('Beenden',lifeCall('lifeFinishFocus',false),'life-btn')+'</div><p class="life-footnote">Ein abgelaufener Timer hakt nichts ab.</p>';
@@ -2483,7 +2571,7 @@ function lifeCloseSheet(){closeDialog(document.getElementById('lifeSheet'))}
 function lifeLegacy(v){goView(v);if(v==='workout')showWorkout(activePlan()||'A')}
 function lifeSettings(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
- el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 20</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p><div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 21</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p><div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Dein Himmel ↗','lifeCloseSheet();lifeOpenSky()','life-textbtn')+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
  (navigator.storage?.persisted?navigator.storage.persisted():Promise.resolve(false)).then(p=>{const e=document.getElementById('lifeStorageState');if(e)e.textContent=p?'Speicher: dauerhaft geschützt':'Speicher: nicht dauerhaft geschützt'}).catch(()=>{});
 }
@@ -2496,7 +2584,7 @@ function renderLife(){
  document.body.classList.toggle('life-calm',!!lifeState().preferences.calm);applyTheme();
  document.querySelectorAll('#lifeNav [data-life-view]').forEach(b=>{const active=b.dataset.lifeView===libTab(view);b.setAttribute('aria-current',active?'page':'false')});
  if(document.activeElement?.id!=='lifeSearch')renderLifeLibrary();
- renderLifeToday();renderLifeSpaces();renderLifeFocus();renderCosmos();renderVault();renderBodyLibrary();
+ renderLifeToday();renderLifeSpaces();renderLifeFocus();renderCosmos();renderVault();renderSigils();renderSky();renderBodyLibrary();clearTimeout(window.skyTimer);window.skyTimer=setTimeout(skyCheck,600);
  const nm=(db.settings.name||'').trim();document.querySelectorAll('[data-me-name]').forEach(e=>e.textContent=nm||'Du');document.querySelectorAll('[data-me-initial]').forEach(e=>e.textContent=nm?nm[0].toUpperCase():'·');
 }
 function renderBodyLibrary(){
@@ -2506,7 +2594,7 @@ function renderBodyLibrary(){
  el.innerHTML='<div class="life-sectionhead"><h2>Deine Trainingspläne</h2><span class="life-subtle">Mo · Mi · Fr</span></div>'+plan('A')+plan('B')+lifeLibSection('koerper');
 }
 function lifeNavigation(v){
- const modern=['life','spaces','library','focus','calendar','videos'].includes(v);
+ const modern=['life','spaces','library','focus','calendar','videos','sigils','sky'].includes(v);
  document.body.classList.toggle('life-modern',modern);
  document.body.classList.toggle('life-legacy',!modern);
  renderLife();
@@ -3258,10 +3346,195 @@ return {TYPES,TAROT,SUITS,MAJORS,MOON_PHASES,tarotCard,moon,ENTRIES:E,forRoom,ge
  }
  return {MILESTONES,ensure,normalize,get,add,update,watched,remove,addShelf,renameShelf,removeShelf,setShelf,parseTime,fmtTime,addMark,removeMark,query,count,stats,milestone,reached,groups,random,adoptFromLife};
 });
+// SOURCE: domain/magic/sigil.js
+/* Sigils after Austin Osman Spare: reduce a statement of intent to its letters and draw them as a
+   single glyph, on a letter wheel or on the magic square of Saturn. Plus the sigil journal
+   (created, charged, forgotten, result). Pure functions, no DOM. */
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseSigil=api})(globalThis,function(){
+ 'use strict';
+ const ALPHA='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+ /* Letters of an intent: umlauts folded, vowels removed (unless nothing else is left), duplicates removed. */
+ function reduce(text,{vowels=false}={}){
+  const up=String(text||'').toUpperCase().replace(/Ä/g,'A').replace(/Ö/g,'O').replace(/Ü/g,'U').replace(/ß/g,'S').normalize('NFKD').replace(/[^A-Z]/g,'');
+  const pick=s=>[...new Set(s)].join('');
+  const no=up.replace(/[AEIOU]/g,'');
+  return pick(vowels||!no?up:no);
+ }
+ function rng(seed){let a=seed>>>0;return ()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+ function hash(s){let h=2166136261;for(const c of String(s))h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0}
+ const SATURN=[[4,9,2],[3,5,7],[8,1,6]];
+ const cell=n=>{for(let r=0;r<3;r++)for(let c=0;c<3;c++)if(SATURN[r][c]===n)return {x:40+c*60,y:40+r*60};return {x:100,y:100}};
+ /* Pythagorean value 1–9 of a letter (A=1 … I=9, J=1 …). */
+ const value=ch=>ALPHA.indexOf(ch)%9+1;
+ function points(letters,method,seed){
+  const R=rng(seed);
+  if(method==='quadrat'){
+   const out=[];let last=0;for(const ch of letters){const v=value(ch);if(v!==last)out.push({...cell(v),ch});last=v}
+   return out.map(p=>({x:p.x+(R()-.5)*14,y:p.y+(R()-.5)*14,ch:p.ch}));
+  }
+  const rot=R()*Math.PI*2,rad=74;
+  return [...letters].map(ch=>{const a=rot+ALPHA.indexOf(ch)/26*Math.PI*2;const r=rad*(0.78+R()*0.3);return {x:100+Math.cos(a)*r,y:100+Math.sin(a)*r,ch}});
+ }
+ const f=n=>Math.round(n*10)/10;
+ /* SVG geometry (viewBox 0 0 200 200): path, start ring and the closing bar. */
+ function draw(letters,{method='rad',style='geschwungen',seed=1}={}){
+  let pts=points(letters,method,seed);
+  if(!pts.length)return {d:'',start:null,end:null,points:[]};
+  if(pts.length===1)pts=[pts[0],{x:200-pts[0].x,y:200-pts[0].y,ch:''}];
+  let d='M'+f(pts[0].x)+' '+f(pts[0].y);
+  if(style==='gerade')for(const p of pts.slice(1))d+='L'+f(p.x)+' '+f(p.y);
+  else{const R=rng(seed^0x9E3779B9);for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i],mx=(a.x+b.x)/2,my=(a.y+b.y)/2,dx=b.x-a.x,dy=b.y-a.y,k=(R()-.5)*.9;d+='Q'+f(mx-dy*k)+' '+f(my+dx*k)+' '+f(b.x)+' '+f(b.y)}}
+  const a=pts[pts.length-2],b=pts[pts.length-1],ang=Math.atan2(b.y-a.y,b.x-a.x)+Math.PI/2,L=11;
+  return {d,start:{x:f(pts[0].x),y:f(pts[0].y)},end:{x1:f(b.x+Math.cos(ang)*L),y1:f(b.y+Math.sin(ang)*L),x2:f(b.x-Math.cos(ang)*L),y2:f(b.y-Math.sin(ang)*L)},points:pts};
+ }
+ function svg(letters,opts={},{stroke='currentColor',width=5,cls=''}={}){
+  const g=draw(letters,opts);if(!g.d)return '';
+  return '<svg class="'+cls+'" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="'+stroke+'" stroke-width="'+width+'" stroke-linecap="round" stroke-linejoin="round"><path d="'+g.d+'"/><circle cx="'+g.start.x+'" cy="'+g.start.y+'" r="'+(width*1.5)+'"/><line x1="'+g.end.x1+'" y1="'+g.end.y1+'" x2="'+g.end.x2+'" y2="'+g.end.y2+'"/></g></svg>';
+ }
+ /* ---------- Journal (db.magic) ---------- */
+ const STATUS=['neu','geladen','vergessen','erfuellt','offen'];
+ function ensure(db){if(!db.magic||typeof db.magic!=='object'||Array.isArray(db.magic))db.magic={version:1,sigils:[],next:1};const m=db.magic;if(!Array.isArray(m.sigils))m.sigils=[];if(!Number.isInteger(m.next)||m.next<1)m.next=m.sigils.reduce((a,s)=>Math.max(a,Number(s&&s.no)||0),0)+1;return m}
+ function normalize(db){
+  const m=ensure(db),ids=new Set();
+  m.sigils=m.sigils.filter(s=>s&&typeof s.id==='string'&&!ids.has(s.id)&&ids.add(s.id)).map(s=>({id:s.id,no:Number(s.no)||0,intent:String(s.intent||'').slice(0,300),letters:String(s.letters||reduce(s.intent)).replace(/[^A-Z]/g,'').slice(0,40),method:s.method==='quadrat'?'quadrat':'rad',style:s.style==='gerade'?'gerade':'geschwungen',seed:Number(s.seed)>>>0,createdAt:String(s.createdAt||''),phase:Number.isInteger(s.phase)?s.phase:null,status:STATUS.includes(s.status)?s.status:'neu',charges:Array.isArray(s.charges)?s.charges.filter(c=>c&&c.at).map(c=>({at:String(c.at),minutes:Math.max(0,Number(c.minutes)||0),mode:c.mode==='ekstatisch'?'ekstatisch':'still'})):[],forgottenAt:String(s.forgottenAt||''),result:s.result&&typeof s.result==='object'?{note:String(s.result.note||'').slice(0,4000),score:Math.max(0,Math.min(10,Number(s.result.score)||0)),at:String(s.result.at||'')}:null})).filter(s=>s.letters);
+  let next=m.sigils.reduce((a,s)=>Math.max(a,s.no),0)+1;for(const s of m.sigils)if(!s.no)s.no=next++;m.next=Math.max(m.next,next);return m;
+ }
+ function create(db,{intent,method='rad',style='geschwungen',seed,phase=null,vowels=false},now,id){
+  const text=String(intent||'').trim();if(text.length<3)throw Error('Schreib deine Absicht als kurzen Satz.');
+  const letters=reduce(text,{vowels});if(!letters)throw Error('Der Satz braucht Buchstaben.');
+  const m=ensure(db);const s={id:id||'sg-'+Date.now().toString(36),no:m.next++,intent:text.slice(0,300),letters,method:method==='quadrat'?'quadrat':'rad',style:style==='gerade'?'gerade':'geschwungen',seed:(seed??hash(text))>>>0,createdAt:now,phase,status:'neu',charges:[],forgottenAt:'',result:null};
+  m.sigils.push(s);return s;
+ }
+ const need=(db,id)=>{const s=ensure(db).sigils.find(x=>x.id===id);if(!s)throw Error('Diese Sigille gibt es nicht mehr.');return s};
+ function charge(db,id,minutes,mode,now){const s=need(db,id);s.charges.push({at:now,minutes:Math.max(0,Math.round(minutes*10)/10),mode:mode==='ekstatisch'?'ekstatisch':'still'});if(s.status==='neu')s.status='geladen';return s}
+ function forget(db,id,now){const s=need(db,id);s.status='vergessen';s.forgottenAt=now;return s}
+ function result(db,id,note,score,now){const s=need(db,id);s.result={note:String(note||'').slice(0,4000),score:Math.max(0,Math.min(10,Math.round(Number(score)||0))),at:now};s.status=s.result.score>=5?'erfuellt':'offen';return s}
+ function remove(db,id){const m=ensure(db);m.sigils=m.sigils.filter(s=>s.id!==id)}
+ const LABEL={neu:'Neu',geladen:'Geladen',vergessen:'Vergessen',erfuellt:'Eingetreten',offen:'Ausgewertet'};
+ return {reduce,draw,svg,value,hash,ensure,normalize,create,charge,forget,result,remove,LABEL};
+});
+// SOURCE: domain/content/cutup.js
+/* Cut-up (Brion Gysin, William S. Burroughs): cut a text into fragments and recombine them. */
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseCutup=api})(globalThis,function(){
+ 'use strict';
+ function rng(seed){let a=seed>>>0;return ()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+ /* size: 'klein' (1–2 words), 'mittel' (2–4), 'zeilen' (half lines) */
+ function fragments(text,size='mittel',seed=1){
+  const R=rng(seed),lines=String(text||'').split(/\n+/).map(l=>l.replace(/[„“"»«]/g,'').trim()).filter(Boolean),out=[];
+  for(const line of lines){
+   const words=line.split(/\s+/).filter(Boolean);if(!words.length)continue;
+   if(size==='zeilen'){if(words.length<=4){out.push(words.join(' '));continue}const cut=Math.max(2,Math.min(words.length-2,Math.round(words.length/2+(R()-.5)*3)));out.push(words.slice(0,cut).join(' '),words.slice(cut).join(' '));continue}
+   const [lo,hi]=size==='klein'?[1,2]:[2,4];let i=0;while(i<words.length){const n=lo+Math.floor(R()*(hi-lo+1));out.push(words.slice(i,i+n).join(' '));i+=n}
+  }
+  return out.map(s=>s.replace(/^[,.;:!?–-]+|[,;:–-]+$/g,'').trim()).filter(s=>s.length>1);
+ }
+ /* New lines from shuffled fragments: `count` lines of 2–3 fragments, never the original neighbour twice in a row. */
+ function lines(text,{size='mittel',seed=1,count=12}={}){
+  const R=rng(seed^0x5bd1e995),frags=fragments(text,size,seed);if(frags.length<2)return frags.slice();
+  const bag=()=>{const a=frags.map((f,i)=>({f,i}));for(let i=a.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+  const out=[];let pool=bag();
+  for(let n=0;n<count;n++){
+   const k=size==='zeilen'?2:2+Math.floor(R()*2),parts=[];
+   let tries=0;while(parts.length<k){if(!pool.length)pool=bag();const p=pool.pop();if(parts.length&&Math.abs(parts[parts.length-1].i-p.i)===1&&pool.length&&tries++<6){pool.unshift(p);continue}parts.push(p)}
+   let s=parts.map(p=>p.f).join(' ');s=s.charAt(0).toLocaleUpperCase('de')+s.slice(1);out.push(s);
+  }
+  return [...new Set(out)];
+ }
+ return {fragments,lines};
+});
+// SOURCE: domain/game/sky.js
+/* "Dein Himmel": achievements derived from what is already recorded. Nothing can be lost:
+   no streaks, a star once lit stays lit. Plus a 90-day glow map of how much happened each day. */
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseSky=api})(globalThis,function(){
+ 'use strict';
+ const day=s=>String(s||'').slice(0,10);
+ const addDay=(d,n)=>new Date(Date.parse(d+'T12:00:00Z')+n*864e5).toISOString().slice(0,10);
+ /* Points per day from all sources. */
+ function activity(db,{proteinGoal=null}={}){
+  const pts={},cap={};const add=(d,n,key,max)=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return;if(key){const k=key+d;cap[k]=(cap[k]||0)+1;if(cap[k]>max)return}pts[d]=(pts[d]||0)+n};
+  const trained=new Set();for(const w of db.workouts||[])if(w&&w.date)trained.add(w.date);for(const [d,x] of Object.entries(db.days||{}))if(x&&(x.workout||x.homeWorkoutCompleted))trained.add(d);
+  for(const d of trained)add(d,3);
+  for(const m of db.meals||[])add(m&&m.date,1,'meal',3);
+  const water=Number(db.waterGoal)||2;let protDays=0,waterDays=0;
+  for(const [d,x] of Object.entries(db.days||{})){if(!x)continue;if(proteinGoal&&x.protein>=proteinGoal){add(d,2);protDays++}if(x.water>=water){add(d,2);waterDays++}}
+  for(const x of db.life?.items||[]){add(day(x.createdAt),1,'new',3);if(x.kind==='task'&&x.status==='done')add(day(x.updatedAt),1,'done',3)}
+  const tarot=db.life?.preferences?.tarotHistory||[];for(const t of tarot)add(t&&t.date,2,'tarot',1);
+  for(const v of db.videos?.items||[]){add(day(v.addedAt),1,'vid',2);if(v.seenAt)add(day(v.seenAt),1,'seen',2)}
+  for(const s of db.magic?.sigils||[]){add(day(s.createdAt),2,'sg',1);for(const c of s.charges||[])add(day(c.at),2,'ch',1)}
+  return {pts,trained,protDays,waterDays};
+ }
+ const level=p=>p<=0?0:p<3?1:p<6?2:p<10?3:4;
+ function glow(db,today,opts){const {pts}=activity(db,opts);return Array.from({length:91},(_,i)=>{const d=addDay(today,i-90);return {date:d,points:pts[d]||0,level:level(pts[d]||0)}})}
+ /* Constellations: each group's stars in a 360×240 sky, in unlock order. */
+ const GROUPS=[
+  {id:'seherin',name:'Die Seherin',hint:'Tarot',at:[[40,40],[70,28],[98,46],[86,76],[56,70]]},
+  {id:'kriegerin',name:'Die Kriegerin',hint:'Training',at:[[150,30],[176,52],[204,34],[190,82],[160,96]]},
+  {id:'sammlerin',name:'Die Sammlerin',hint:'Videos',at:[[262,36],[292,26],[322,44],[312,76],[278,70]]},
+  {id:'magierin',name:'Die Magierin',hint:'Sigillen',at:[[44,150],[72,130],[100,152],[80,184],[50,196]]},
+  {id:'hueterin',name:'Die Hüterin',hint:'Essen & Wasser',at:[[156,140],[184,124],[212,146],[196,178]]},
+  {id:'chronistin',name:'Die Chronistin',hint:'Einträge & Termine',at:[[262,138],[292,126],[322,148],[306,182],[274,186]]},
+  {id:'mond',name:'Der Mond',hint:'Ein ganzer Zyklus',at:[[180,214]]}
+ ];
+ function badges(db,{today,proteinGoal=null,phaseOf=null}={}){
+  const A=activity(db,{proteinGoal}),tarot=db.life?.preferences?.tarotHistory||[],cards=new Set(tarot.map(t=>t&&t.index).filter(Number.isInteger));
+  const majors=[...cards].filter(i=>i<22).length,vids=db.videos?.items||[],shelves=db.videos?.shelves||[],marks=vids.reduce((a,v)=>a+(v.marks?.length||0),0);
+  const sg=db.magic?.sigils||[],life=db.life?.items||[],events=life.filter(x=>x.kind==='event').length+(db.events||[]).filter(e=>e&&e.type==='calendar-plan').length;
+  const phases=new Set();if(phaseOf)for(const [d,p] of Object.entries(A.pts))if(p>0)phases.add(phaseOf(d));
+  const B=(group,id,title,desc,value,need)=>({group,id,title,desc,value:Math.min(value,need),need,done:value>=need});
+  const list=[
+   B('seherin','t1','Erste Karte','Eine Tageskarte gezogen oder eingetragen',cards.size,1),
+   B('seherin','t22','Alle Großen Arkana','Jede der 22 großen Karten mindestens einmal',majors,22),
+   B('seherin','t40','Halbes Deck','40 verschiedene Karten',cards.size,40),
+   B('seherin','t78','Das ganze Deck','Alle 78 Karten gezogen',cards.size,78),
+   B('seherin','tdays','Kartenjahr','An 100 Tagen eine Tageskarte',new Set(tarot.map(t=>t&&t.date)).size,100),
+   B('kriegerin','w1','Erstes Training','Ein Trainingstag',A.trained.size,1),
+   B('kriegerin','w10','Zehn Tage Eisen','10 Trainingstage',A.trained.size,10),
+   B('kriegerin','w25','Fünfundzwanzig','25 Trainingstage',A.trained.size,25),
+   B('kriegerin','w50','Fünfzig','50 Trainingstage',A.trained.size,50),
+   B('kriegerin','w100','Hundert','100 Trainingstage',A.trained.size,100),
+   B('sammlerin','v1','Erstes Fundstück','Ein Video gesammelt',vids.length,1),
+   B('sammlerin','v10','Kleine Sammlung','10 Videos',vids.length,10),
+   B('sammlerin','v50','Archiv','50 Videos',vids.length,50),
+   B('sammlerin','v100','Hundert Fundstücke','100 Videos',vids.length,100),
+   B('sammlerin','shelf5','Regalbauerin','5 Regale angelegt',shelves.length,5),
+   B('magierin','s1','Erste Sigille','Eine Sigille erschaffen',sg.length,1),
+   B('magierin','sc','Geladen','Eine Sigille in Gnosis geladen',sg.filter(s=>s.charges?.length).length,1),
+   B('magierin','sf','Vergessen gelernt','5 Sigillen bewusst vergessen',sg.filter(s=>s.forgottenAt).length,5),
+   B('magierin','sr','Tagebuch','Ein Ergebnis eingetragen',sg.filter(s=>s.result).length,1),
+   B('magierin','s13','Dreizehn','13 Sigillen',sg.length,13),
+   B('hueterin','p7','Eiweißwoche','An 7 Tagen das Proteinziel',A.protDays,7),
+   B('hueterin','p30','Eiweißmonat','An 30 Tagen das Proteinziel',A.protDays,30),
+   B('hueterin','h7','Gut gewässert','An 7 Tagen das Wasserziel',A.waterDays,7),
+   B('hueterin','h30','Quelle','An 30 Tagen das Wasserziel',A.waterDays,30),
+   B('chronistin','n10','Erste Seiten','10 eigene Einträge',life.length,10),
+   B('chronistin','n100','Hundert Seiten','100 eigene Einträge',life.length,100),
+   B('chronistin','e10','Terminkalender','10 Termine',events,10),
+   B('chronistin','ics','Umgezogen','Termine aus einer .ics-Datei übernommen',life.some(x=>x.ics)?1:0,1),
+   B('chronistin','m25','Stellenjägerin','25 Stellen in Videos gemerkt',marks,25),
+   B('mond','moon','Voller Zyklus','An Tagen in allen 8 Mondphasen etwas getan',phases.size,8)
+  ];
+  for(const g of GROUPS){const mine=list.filter(b=>b.group===g.id);mine.forEach((b,i)=>{const p=g.at[i%g.at.length];b.x=p[0];b.y=p[1]})}
+  return list;
+ }
+ const RANKS=[[0,'Dämmerung'],[1,'Erster Stern'],[4,'Sternbild'],[9,'Sternhaufen'],[15,'Milchstraße'],[22,'Galaxie'],[30,'Kosmos']];
+ function rank(n){let r=RANKS[0];for(const x of RANKS)if(n>=x[0])r=x;const next=RANKS.find(x=>x[0]>n);return {name:r[1],next:next?{name:next[1],need:next[0]-n}:null}}
+ /* Yesterday in one line. */
+ function yesterday(db,today,{proteinGoal=null}={}){
+  const d=addDay(today,-1),x=(db.days||{})[d]||{},parts=[];
+  const done=(db.life?.items||[]).filter(i=>i.kind==='task'&&i.status==='done'&&day(i.updatedAt)===d).length;if(done)parts.push(done+(done===1?' Aufgabe erledigt':' Aufgaben erledigt'));
+  const A=activity(db,{proteinGoal});if(A.trained.has(d))parts.push('Training');
+  if(x.protein)parts.push(Math.round(x.protein)+' g Protein');if(x.water)parts.push(String(Math.round(x.water*10)/10).replace('.',',')+' L Wasser');
+  const v=(db.videos?.items||[]).filter(i=>day(i.addedAt)===d).length;if(v)parts.push(v+(v===1?' Video gesammelt':' Videos gesammelt'));
+  const t=(db.life?.preferences?.tarotHistory||[]).find(i=>i&&i.date===d);if(t)parts.push('Tageskarte');
+  const s=(db.magic?.sigils||[]).filter(i=>day(i.createdAt)===d).length;if(s)parts.push(s===1?'eine Sigille':s+' Sigillen');
+  return parts;
+ }
+ return {activity,glow,badges,GROUPS,rank,yesterday,level};
+});
 // SOURCE: ui/library.js
 /* Content surfaces: room library, today strip, tarot. Reading never writes; adopting does. */
 const LIB_GROUP_LIMIT=4;
-function libTab(view){if(view==='calendar')return 'life';if(view==='videos')return 'videos';return ['bodyhub','workout','nutrition','recovery','trends'].includes(view)?'bodyhub':['life','spaces','library','focus'].includes(view)?view:'spaces'}
+function libTab(view){if(view==='calendar'||view==='sky')return 'life';if(view==='sigils')return 'spaces';if(view==='videos')return 'videos';return ['bodyhub','workout','nutrition','recovery','trends'].includes(view)?'bodyhub':['life','spaces','library','focus'].includes(view)?view:'spaces'}
 function libAdopted(id){return PulseLife.list(db).find(x=>x.source==='lib:'+id)||null}
 function libCard(e){
  const r=PulseLife.room(e.room),mine=libAdopted(e.id);
@@ -3287,12 +3560,13 @@ function lifeLibSection(roomId){
  const entries=PulseLibrary.forRoom(roomId);let widgets='';
  if(roomId==='sinn'){
   const m=cosmosMoon(key()),card=libTodayCard();
-  widgets='<div class="life-lib-widgets"><div class="life-moon-panel">'+moonSvg(m,64)+'<div><span class="life-kicker">Mond heute · '+m.illumination+' % beleuchtet</span><b>'+esc(m.name)+'</b><p>'+esc(m.impulse)+'</p><p class="cos-practice"><b>Praxis:</b> '+esc(PulseLore.PHASES[m.index].title)+'</p><small>'+esc(moonLine(m))+'</small><div class="life-room-actions">'+lifeButton('Kalender',lifeCall('lifeOpenCalendar',key()),'life-btn')+lifeButton('Anleitung',lifeCall('lifeOpenLib',PulseLore.PHASES[m.index].lib),'life-textbtn')+'</div></div></div>'+
+  widgets='<div class="life-lib-widgets"><div class="life-moon-panel">'+moonSvg(m,64)+'<div><span class="life-kicker">Mond heute · '+m.illumination+' % beleuchtet</span><b>'+esc(m.name)+'</b><p>'+esc(m.impulse)+'</p><p class="cos-practice"><b>Praxis:</b> '+esc(PulseLore.PHASES[m.index].title)+'</p><small>'+esc(moonLine(m))+'</small><div class="life-room-actions">'+lifeButton('Kalender',lifeCall('lifeOpenCalendar',key()),'life-btn')+lifeButton('Sigillen',lifeCall('lifeOpenSigils'),'life-btn dark')+lifeButton('Anleitung',lifeCall('lifeOpenLib',PulseLore.PHASES[m.index].lib),'life-textbtn')+'</div></div></div>'+
   '<div class="life-tarot-panel"><span class="life-kicker">Tarot</span>'+(card?'<b>Heute: '+esc(card.card.name)+'</b><p>'+esc(card.card.question)+'</p>'+lifeButton('Karte ansehen',lifeCall('lifeTarotOpen',card.index),'life-btn'):'<b>Deine Tageskarte</b><p>Digital ziehen oder die Karte aus deinem Deck eintragen.</p><div class="life-room-actions">'+lifeButton('Digital ziehen',lifeCall('lifeDrawCard'),'life-btn dark')+lifeButton('Aus meinem Deck',lifeCall('lifeTarotBrowse','major',true),'life-btn')+'</div>')+
   (()=>{const st=tarotStats();return '<div class="life-tarot-stats"><b>'+st.days+'</b><span>'+(st.days===1?'Tageskarte':'Tageskarten')+(st.top?' · am häufigsten '+esc(st.top.card.name)+' ('+st.top.n+'×)':'')+'</span>'+(st.days?lifeButton('Verlauf',lifeCall('lifeTarotHistory'),'life-textbtn'):'')+'</div>'})()+
   '<div class="life-room-actions">'+lifeButton('Drei Karten legen',lifeCall('lifeSpread','drei'),'life-btn')+lifeButton('Entscheidung legen',lifeCall('lifeSpread','kreuz'),'life-btn')+'</div>'+
   '<div class="life-tarot-links">'+[['major','Große Arkana'],['staebe','Stäbe'],['kelche','Kelche'],['schwerter','Schwerter'],['pentakel','Pentakel']].map(([f,l])=>lifeButton(l,lifeCall('lifeTarotBrowse',f,false),'life-tool-link')).join('')+'</div></div></div>';
  }
+ if(roomId==='ideen')widgets='<div class="life-room-actions life-tools-row">'+lifeButton('Cut-up-Maschine',lifeCall('lifeCutup',''),'life-btn dark')+lifeButton('Videos',lifeCall('lifeOpenVideos'),'life-btn')+'</div>';
  if(roomId==='draussen'){const s=PulseLibrary.seasonal(key());widgets='<div class="life-season"><span class="life-kicker">Jetzt im '+s.name+'</span><ul>'+s.ideas.map(i=>'<li>'+esc(i)+'</li>').join('')+'</ul></div>'}
  return '<div class="life-sectionhead"><h2>Schon da</h2><span class="life-subtle">'+entries.length+' Inhalte</span></div>'+widgets+libGroups(entries);
 }
@@ -3460,7 +3734,7 @@ function cosmosAlmanac(date){
  out+='<article class="cos-card cos-yiji"><div><span class="life-kicker">Gut für</span><ul>'+almanac.good.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul></div><div><span class="life-kicker">Eher meiden</span><ul class="avoid">'+almanac.avoid.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul></div><p class="cos-foot">Traditionelle Zuordnungen aus Mondphase, Mondzeichen ('+esc(sign.element)+') und Planetentag.</p></article>';
  for(const f of cosmosFests(date)){const lib=COSMOS_LIB[f.name];out+=cosmosCard(FEST_KIND[f.kind]||'Fest',esc(f.name),'<p>'+esc(f.info)+'</p>',lib?lifeButton('Ideen und Rituale',lifeCall('lifeOpenLib',lib),'life-textbtn'):'','fest')}
  const rn=PulseAstro.rauhnacht(date);if(rn){const R=PulseLore.RAUH[rn-1];out+=cosmosCard('Rauhnacht '+rn+' von 12','Steht für den '+esc(R.month),'<p>'+esc(R.text)+'</p><p class="cos-practice">Träume dieser Nacht notieren. Beim Ritual der 13 Wünsche heute einen Zettel verbrennen.</p>',lifeButton('Rauhnächte',lifeCall('lifeOpenLib','sinn-rauhna-chte'),'life-textbtn')+lifeButton('Die 13 Wünsche',lifeCall('lifeOpenLib','sinn-die-13-wu-nsche'),'life-textbtn'),'fest')}
- out+=cosmosCard('Praxis zur Mondphase',esc(P.title),'<p>'+esc(P.text)+'</p>',lifeButton('Anleitung',lifeCall('lifeOpenLib',P.lib),'life-textbtn'));
+ out+=cosmosCard('Praxis zur Mondphase',esc(P.title),'<p>'+esc(P.text)+'</p>',lifeButton('Anleitung',lifeCall('lifeOpenLib',P.lib),'life-textbtn')+lifeButton('Sigillen-Werkstatt',lifeCall('lifeOpenSigils'),'life-textbtn'));
  const hours=PulseAstro.planetaryHours(date),sunT=PulseAstro.sunTimes(date),now=Date.now(),cur=hours.find(h=>now>=h.start&&now<h.end);
  out+=cosmosCard('Planetentag · '+esc(PL.day),'<span class="cos-glyph">'+PulseAstro.PLANET_GLYPH[planet]+'</span> '+esc(planet),'<p>'+esc(PL.themes)+'</p><dl class="cos-facts"><dt>Farbe</dt><dd>'+esc(PL.color)+'</dd><dt>Metall</dt><dd>'+esc(PL.metal)+'</dd>'+(sunT?'<dt>Sonne</dt><dd>Aufgang '+cosmosTime(sunT.rise)+' · Untergang '+cosmosTime(sunT.set)+'</dd>':'')+(cur?'<dt>Jetzt</dt><dd><b>'+PulseAstro.PLANET_GLYPH[cur.planet]+' '+esc(cur.planet)+'stunde</b> bis '+cosmosTime(cur.end)+'</dd>':'')+'</dl>'+
   (hours.length?'<details class="cos-hours"><summary>Alle Planetenstunden</summary><ol>'+hours.map(h=>'<li class="'+(h===cur?'now':'')+(h.day?'':' night')+'"><span>'+cosmosTime(h.start)+'</span><span>'+PulseAstro.PLANET_GLYPH[h.planet]+' '+esc(h.planet)+'</span></li>').join('')+'</ol><small>Für Wuppertal berechnet. Tagstunden von Sonnenaufgang bis -untergang, Nachtstunden bis zum nächsten Aufgang.</small></details>':''),
@@ -3874,6 +4148,212 @@ function vaultEditShelf(id){
 function vaultDeleteShelf(id){pushUndo({type:'videos',before:PulseLife.clone(db.videos)});PulseVault.removeShelf(db,id);vaultShelf='';vaultTab='shelf';save();lifeCloseSheet();renderVault();toast('Regal gelöscht','Rückgängig')}
 function lifeSetVideoMeta(){db.uiPrefs.videoMeta=db.uiPrefs.videoMeta===false;if(save()){lifeSettings();renderVault()}}
 function videoSettingsHTML(){return '<div class="life-settings-row"><div><b>Vorschaubilder und Titel von YouTube</b><p>Lädt Bild, Titel und Kanal direkt von YouTube. Wenn aus, geht nichts an YouTube, bis du ein Video abspielst.</p></div>'+lifeButton(db.uiPrefs.videoMeta===false?'Aus':'An','lifeSetVideoMeta()','life-btn')+'</div>'}
+// SOURCE: ui/sound.js
+/* Klangraum: brown noise, rain, sea and a drone, synthesised with Web Audio (no files). */
+const PulseSoundscape=(()=>{
+ let ctx=null,master=null,nodes=[],current='',volume=.6;
+ const KINDS=[['','Aus'],['brown','Rauschen'],['rain','Regen'],['sea','Meer'],['drone','Drone']];
+ function audio(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;if(!ctx){ctx=new AC();master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination)}if(ctx.state==='suspended')ctx.resume();return ctx}
+ function noise(kind){const len=ctx.sampleRate*4,buf=ctx.createBuffer(2,len,ctx.sampleRate);for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);let last=0,b0=0,b1=0,b2=0;for(let i=0;i<len;i++){const w=Math.random()*2-1;if(kind==='brown'){last=(last+0.02*w)/1.02;d[i]=last*3.2}else if(kind==='pink'){b0=0.99765*b0+w*0.099046;b1=0.963*b1+w*0.2965164;b2=0.57*b2+w*1.0526913;d[i]=(b0+b1+b2+w*0.1848)*0.18}else d[i]=w*0.5}}const s=ctx.createBufferSource();s.buffer=buf;s.loop=true;return s}
+ function lfo(freq,depth,target){const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=freq;g.gain.value=depth;o.connect(g);g.connect(target);o.start();nodes.push(o)}
+ function build(kind){
+  const out=ctx.createGain();out.connect(master);nodes.push(out);
+  if(kind==='brown'){const n=noise('brown'),f=ctx.createBiquadFilter();f.type='lowpass';f.frequency.value=900;n.connect(f);f.connect(out);n.start();nodes.push(n);out.gain.value=.9}
+  if(kind==='rain'){const n=noise('pink'),hp=ctx.createBiquadFilter(),lp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=400;lp.type='lowpass';lp.frequency.value=7000;n.connect(hp);hp.connect(lp);lp.connect(out);n.start();nodes.push(n);out.gain.value=.55;
+   const drops=noise('white'),bp=ctx.createBiquadFilter(),dg=ctx.createGain();bp.type='bandpass';bp.frequency.value=3200;bp.Q.value=2;dg.gain.value=0;drops.connect(bp);bp.connect(dg);dg.connect(out);drops.start();nodes.push(drops);
+   const tick=()=>{if(current!=='rain')return;const t=ctx.currentTime;dg.gain.cancelScheduledValues(t);dg.gain.setValueAtTime(.0001,t);dg.gain.exponentialRampToValueAtTime(.25+Math.random()*.3,t+.005);dg.gain.exponentialRampToValueAtTime(.0001,t+.05);setTimeout(tick,40+Math.random()*180)};tick()}
+  if(kind==='sea'){const n=noise('brown'),f=ctx.createBiquadFilter(),g=ctx.createGain();f.type='lowpass';f.frequency.value=600;g.gain.value=.55;n.connect(f);f.connect(g);g.connect(out);n.start();nodes.push(n);lfo(0.085,.42,g.gain);lfo(0.085,380,f.frequency);out.gain.value=1}
+  if(kind==='drone'){const f=ctx.createBiquadFilter();f.type='lowpass';f.frequency.value=420;f.Q.value=4;f.connect(out);lfo(0.05,180,f.frequency);
+   for(const [type,freq,gain,det] of [['sawtooth',55,.12,0],['sawtooth',55,.1,7],['sine',82.41,.22,0],['sine',110,.16,-4],['triangle',164.81,.05,3]]){const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.value=freq;o.detune.value=det;g.gain.value=gain;o.connect(g);g.connect(f);o.start();nodes.push(o)}
+   out.gain.value=.9}
+ }
+ function stopNodes(){const old=nodes;nodes=[];setTimeout(()=>old.forEach(n=>{try{n.stop?.()}catch(_){}try{n.disconnect()}catch(_){}}),700)}
+ function play(kind){
+  if(kind===current)return;if(!audio())return toast('Dieser Browser kann keine Klänge erzeugen.');
+  const t=ctx.currentTime;master.gain.cancelScheduledValues(t);master.gain.setValueAtTime(master.gain.value,t);master.gain.linearRampToValueAtTime(0,t+.6);stopNodes();current=kind;
+  if(!kind)return;build(kind);master.gain.linearRampToValueAtTime(volume*.8,t+1.6);
+ }
+ function setVolume(v){volume=Math.max(0,Math.min(1,Number(v)));if(ctx&&current){const t=ctx.currentTime;master.gain.cancelScheduledValues(t);master.gain.linearRampToValueAtTime(volume*.8,t+.2)}}
+ const playing=()=>current;
+ return {KINDS,play,setVolume,playing,volume:()=>volume};
+})();
+function soundPick(kind){PulseSoundscape.play(kind);document.querySelectorAll('.sound-chips').forEach(el=>el.outerHTML=soundChips(el.dataset.label||''))}
+function soundChips(label='Klang'){
+ const cur=PulseSoundscape.playing();
+ return '<div class="sound-chips" data-label="'+esc(label)+'"><span class="life-kicker">'+esc(label)+'</span><div class="vault-chips" role="group" aria-label="'+esc(label)+'">'+PulseSoundscape.KINDS.map(([k,l])=>'<button type="button" aria-pressed="'+(cur===k)+'" onclick="'+lifeCall('soundPick',k)+'">'+l+'</button>').join('')+'</div>'+(cur?'<label class="sound-vol">Lautstärke<input type="range" min="0" max="1" step="0.05" value="'+PulseSoundscape.volume()+'" oninput="PulseSoundscape.setVolume(this.value)"/></label>':'')+'</div>';
+}
+// SOURCE: ui/sigil.js
+/* Sigillen-Werkstatt: build, charge (full-screen gnosis with sound and timer), forget, record results. */
+let sigilDraft={intent:'',method:'rad',style:'geschwungen',seed:null,vowels:false},sigilReady=false,sigilCharge=null;
+const sigilNow=()=>new Date().toISOString();
+function lifeOpenSigils(){goView('sigils');renderSigils()}
+function sigilPrepare(){if(sigilReady||!db)return;sigilReady=true;PulseSigil.normalize(db)}
+function sigilSeed(){return sigilDraft.seed??PulseSigil.hash(sigilDraft.intent)}
+function sigilPreview(){
+ const box=document.getElementById('sigilPreview');if(!box)return;
+ const letters=PulseSigil.reduce(sigilDraft.intent,{vowels:sigilDraft.vowels});
+ box.innerHTML=letters?PulseSigil.svg(letters,{method:sigilDraft.method,style:sigilDraft.style,seed:sigilSeed()},{cls:'sigil-svg'}):'<p class="sigil-empty">Hier erscheint deine Sigille.</p>';
+ const l=document.getElementById('sigilLetters');if(l)l.textContent=letters?letters.split('').join(' '):'';
+}
+function sigilInput(v){sigilDraft.intent=v;sigilDraft.seed=null;sigilPreview()}
+function sigilOpt(k,v){sigilDraft[k]=v;if(k!=='seed')renderSigils();else sigilPreview()}
+function sigilReroll(){sigilDraft.seed=Math.floor(Math.random()*4294967295);sigilPreview();pulseTap(8)}
+function sigilKeep(){
+ const m=cosmosMoon(key());let s;
+ try{s=PulseSigil.create(db,{intent:sigilDraft.intent,method:sigilDraft.method,style:sigilDraft.style,seed:sigilSeed(),phase:m.index,vowels:sigilDraft.vowels},sigilNow())}catch(e){return toast(e.message)}
+ if(!save())return;sigilDraft={intent:'',method:sigilDraft.method,style:sigilDraft.style,seed:null,vowels:false};pulseSound('chime');pulseTap([12,50,12]);renderSigils();toast('Sigille '+sigilNo(s.no)+' erschaffen');skyCheck();sigilOpen(s.id);
+}
+const sigilNo=n=>'#'+String(n).padStart(2,'0');
+const sigilGlyph=(s,cls='sigil-svg')=>PulseSigil.svg(s.letters,{method:s.method,style:s.style,seed:s.seed},{cls});
+function sigilCard(s){
+ const hidden=!!s.forgottenAt;
+ return '<button type="button" class="sigil-card '+s.status+'" onclick="'+lifeCall('sigilOpen',s.id)+'" aria-label="'+esc('Sigille '+sigilNo(s.no)+', '+PulseSigil.LABEL[s.status]+(hidden?'':', '+s.intent))+'">'+sigilGlyph(s)+'<span class="sigil-meta"><b>'+sigilNo(s.no)+'</b><small>'+esc(PulseSigil.LABEL[s.status])+'</small></span>'+(hidden?'':'<span class="sigil-intent">'+esc(s.intent)+'</span>')+'</button>';
+}
+function renderSigils(){
+ const host=document.getElementById('sigilContent');if(!host||document.getElementById('appMain').dataset.view!=='sigils')return;
+ if(document.activeElement?.id==='sigilIntent')return sigilPreview();
+ sigilPrepare();const m=cosmosMoon(key()),P=PulseLore.PHASES[m.index],list=[...PulseSigil.ensure(db).sigils].reverse();
+ const seg=(k,opts)=>'<div class="life-seg" role="group">'+opts.map(([v,l])=>'<button type="button" aria-pressed="'+(sigilDraft[k]===v)+'" onclick="'+lifeCall('sigilOpt',k,v)+'">'+l+'</button>').join('')+'</div>';
+ host.innerHTML='<header class="life-pagehead"><span class="life-kicker">Chaos-Magie</span><h1>Sigillen</h1></header>'+
+  '<div class="sigil-moon">'+moonSvg(m,40)+'<p><b>'+esc(m.name)+':</b> '+esc(P.title)+'. '+(m.index<=1?'Eine gute Zeit für neue Sigillen.':m.index>=5?'Eher auswerten und vergessen als neu beginnen.':'')+'</p></div>'+
+  '<section class="sigil-workshop"><label class="life-name-field">Absicht<textarea id="sigilIntent" rows="2" maxlength="300" placeholder="Ich schlafe tief und ruhig." oninput="sigilInput(this.value)">'+esc(sigilDraft.intent)+'</textarea></label>'+
+  '<p class="life-footnote">Kurz, positiv, in der Gegenwart. Pulse streicht Vokale und doppelte Buchstaben.</p>'+
+  '<div class="sigil-stage"><div id="sigilPreview" class="sigil-preview"></div><p id="sigilLetters" class="sigil-letters" aria-live="polite"></p></div>'+
+  '<div class="sigil-opts">'+seg('method',[['rad','Buchstabenrad'],['quadrat','Saturnquadrat']])+seg('style',[['geschwungen','Geschwungen'],['gerade','Gerade']])+'</div>'+
+  '<div class="life-detail-actions">'+lifeButton('Neu würfeln','sigilReroll()','life-btn')+lifeButton('Sigille behalten','sigilKeep()','life-btn dark')+'</div></section>'+
+  '<div class="life-sectionhead"><h2>Deine Sigillen</h2><span class="life-muted">'+list.length+'</span></div>'+
+  (list.length?'<div class="sigil-grid">'+list.map(sigilCard).join('')+'</div>':'<p class="life-none">Noch keine. Die erste entsteht oben.</p>')+
+  '<div class="cos-actions">'+lifeButton('Sigille nach Spare',lifeCall('lifeOpenLib','sinn-sigille-nach-spare'),'life-textbtn')+lifeButton('Gnosis',lifeCall('lifeOpenLib','sinn-gnosis'),'life-textbtn')+lifeButton('Magisches Tagebuch',lifeCall('lifeOpenLib','sinn-magisches-tagebuch'),'life-textbtn')+'</div>';
+ sigilPreview();
+}
+function sigilOpen(id){
+ const s=PulseSigil.ensure(db).sigils.find(x=>x.id===id);if(!s)return;
+ const hidden=!!s.forgottenAt,moon=s.phase!=null?PulseLibrary.MOON_PHASES[s.phase][0]:'';
+ document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
+ el.innerHTML='<div class="sigil-detail-glyph">'+sigilGlyph(s,'sigil-svg big')+'</div><h2 id="lifeDetailHeading" tabindex="-1">Sigille '+sigilNo(s.no)+'</h2>'+
+  '<p class="vault-meta-line">'+esc(PulseSigil.LABEL[s.status])+' · erschaffen am '+esc(lifeDate(s.createdAt.slice(0,10),{day:'numeric',month:'long',year:'numeric'}))+(moon?' bei '+esc(moon):'')+(s.charges.length?' · '+s.charges.length+'× geladen':'')+'</p>'+
+  (hidden?'<details class="sigil-secret"><summary>Absicht anzeigen</summary><p>'+esc(s.intent)+'</p></details>':'<p class="sigil-intent-big">„'+esc(s.intent)+'“</p>')+
+  '<div class="life-detail-actions">'+lifeButton('Laden',lifeCall('sigilStart',s.id),'life-btn dark')+(hidden?'':lifeButton('Vergessen',lifeCall('sigilForget',s.id),'life-btn'))+lifeButton('Als Bild speichern',lifeCall('sigilDownload',s.id),'life-textbtn')+'</div>'+
+  '<div class="vault-block"><h3>Ergebnis</h3>'+(s.result?'<p class="life-prose">'+esc(s.result.note||'Ohne Notiz')+'</p><p class="life-footnote">Zusammenhang '+s.result.score+' von 10 · '+esc(lifeDate(s.result.at.slice(0,10),{day:'numeric',month:'short'}))+'</p>':'<p class="life-footnote">Was ist passiert, und wann? Wie hoch schätzt du den Zusammenhang ein?</p>')+
+  '<label class="srOnly" for="sigilResult">Was ist passiert?</label><textarea id="sigilResult" rows="3" placeholder="Was ist passiert?">'+esc(s.result?.note||'')+'</textarea><label class="sigil-score">Zusammenhang <output id="sigilScoreOut">'+(s.result?.score??5)+'</output> / 10<input id="sigilScore" type="range" min="0" max="10" step="1" value="'+(s.result?.score??5)+'" oninput="document.getElementById(\'sigilScoreOut\').textContent=this.value"/></label>'+lifeButton('Ergebnis speichern',lifeCall('sigilSaveResult',s.id),'life-btn')+'</div>'+
+  '<div class="life-detail-actions">'+lifeButton('Sigille löschen',lifeCall('sigilDelete',s.id),'life-textbtn danger')+'</div>';
+ if(activeDialog!=='lifeSheet')openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
+}
+function sigilMutate(fn,msg){try{fn()}catch(e){return toast(e.message)}if(!save())return;renderSigils();if(msg)toast(msg);skyCheck()}
+function sigilForget(id){sigilMutate(()=>PulseSigil.forget(db,id,sigilNow()),'Vergessen. Die Absicht ist jetzt verborgen.');sigilOpen(id)}
+function sigilSaveResult(id){sigilMutate(()=>PulseSigil.result(db,id,document.getElementById('sigilResult').value,document.getElementById('sigilScore').value,sigilNow()),'Ergebnis gespeichert');sigilOpen(id)}
+function sigilDelete(id){pushUndo({type:'magic',before:PulseLife.clone(db.magic)});sigilMutate(()=>PulseSigil.remove(db,id));lifeCloseSheet();toast('Sigille gelöscht','Rückgängig')}
+function undoMagic(u){db.magic=u.before;PulseSigil.normalize(db);save();renderSigils();toast('Wiederhergestellt')}
+function sigilDownload(id){
+ const s=PulseSigil.ensure(db).sigils.find(x=>x.id===id);if(!s)return;
+ const svg=PulseSigil.svg(s.letters,{method:s.method,style:s.style,seed:s.seed},{stroke:'#111',width:5}).replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" style="background:#fff" ');
+ const img=new Image(),c=document.createElement('canvas');c.width=c.height=1200;
+ img.onload=()=>{const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,1200,1200);g.drawImage(img,0,0,1200,1200);c.toBlob(b=>{const a=document.createElement('a'),u=URL.createObjectURL(b);a.href=u;a.download='Sigille_'+s.no+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)},'image/png')};
+ img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
+/* ---------- Charging: full screen ---------- */
+async function sigilStart(id,minutes=3,mode='still'){
+ const s=PulseSigil.ensure(db).sigils.find(x=>x.id===id);if(!s)return;
+ let lock=null;if(sigilCharge&&!sigilCharge.done){clearInterval(sigilCharge.timer);lock=sigilCharge.lock}else{lifeCloseSheet();try{lock=await navigator.wakeLock?.request('screen')}catch(_){}}
+ sigilCharge={id,mode,minutes,start:Date.now(),end:Date.now()+minutes*60000,lock,timer:null,done:false};
+ let el=document.getElementById('sigilOverlay');if(!el){el=document.createElement('div');el.id='sigilOverlay';document.body.appendChild(el)}
+ el.className='sigil-overlay '+mode;el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-label','Sigille laden');
+ el.innerHTML='<div class="sigil-charge-glyph"><div class="sigil-breath" aria-hidden="true"></div>'+sigilGlyph(s,'sigil-svg charge')+'</div>'+
+  '<div class="sigil-charge-ui"><span id="sigilClock" class="sigil-clock">'+lifeClock(minutes*60)+'</span><p id="sigilHint">'+(mode==='still'?'Atme mit dem Kreis. Schau auf die Sigille, bis der Kopf leer ist.':'Bewege dich, summe, werde laut. Im Höhepunkt: auf die Sigille schauen.')+'</p>'+
+  '<div class="sigil-row">'+[1,3,5,9].map(n=>'<button type="button" aria-pressed="'+(n===minutes)+'" onclick="'+lifeCall('sigilStart',id,n,mode)+'">'+n+' Min.</button>').join('')+'</div>'+
+  '<div class="sigil-row">'+[['still','Still'],['ekstatisch','Ekstatisch']].map(([k,l])=>'<button type="button" aria-pressed="'+(k===mode)+'" onclick="'+lifeCall('sigilStart',id,minutes,k)+'">'+l+'</button>').join('')+'</div>'+
+  soundChips('Klang')+'<div class="sigil-row">'+lifeButton('Jetzt beenden','sigilEnd(true)','life-btn')+'</div></div>';
+ if(!PulseSoundscape.playing())PulseSoundscape.play('drone');
+ document.querySelectorAll('#sigilOverlay .sound-chips').forEach(x=>x.outerHTML=soundChips('Klang'));
+ el.hidden=false;document.body.classList.add('sigil-open');el.querySelector('button')?.focus();
+ sigilCharge.timer=setInterval(sigilTick,250);
+}
+function sigilTick(){if(!sigilCharge)return;const left=Math.max(0,Math.ceil((sigilCharge.end-Date.now())/1000));const c=document.getElementById('sigilClock');if(c)c.textContent=lifeClock(left);if(!left)sigilEnd(false)}
+function sigilEnd(early){
+ const c=sigilCharge;if(!c||c.done)return;c.done=true;clearInterval(c.timer);try{c.lock?.release()}catch(_){}
+ const minutes=(Date.now()-c.start)/60000;
+ if(minutes>=0.25){try{PulseSigil.charge(db,c.id,minutes,c.mode,sigilNow());save()}catch(_){}}
+ PulseSoundscape.play('');pulseSound('chime');pulseTap([20,80,20,80,40]);
+ const el=document.getElementById('sigilOverlay');if(!el)return;el.className='sigil-overlay after';
+ el.innerHTML='<div class="sigil-after"><h2>'+(minutes>=0.25?'Geladen.':'Abgebrochen.')+'</h2><p>Jetzt bannen: Lach laut, auch wenn es sich albern anfühlt, bis es echt wird. Dann etwas ganz anderes tun.</p><div class="sigil-row">'+(minutes>=0.25?'<button type="button" onclick="'+lifeCall('sigilFinish',c.id,true)+'">Vergessen</button>':'')+'<button type="button" onclick="'+lifeCall('sigilFinish',c.id,false)+'">'+(minutes>=0.25?'Noch nicht vergessen':'Schließen')+'</button></div></div>';
+ el.querySelector('button')?.focus();
+}
+function sigilFinish(id,forget){
+ if(forget){try{PulseSigil.forget(db,id,sigilNow());save()}catch(_){}}
+ const el=document.getElementById('sigilOverlay');if(el){el.hidden=true;el.innerHTML=''}document.body.classList.remove('sigil-open');sigilCharge=null;renderSigils();skyCheck();
+ if(forget)toast('Vergessen. Lass sie arbeiten.');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sigilCharge){if(!sigilCharge.done)sigilEnd(true);else sigilFinish(sigilCharge.id,false)}});
+// SOURCE: ui/sky.js
+/* "Dein Himmel": stars for achievements (they stay lit), a 90-day glow map and the tarot collection.
+   Plus the "Gestern" line on the Tag screen and the cut-up machine. */
+const skyPhase=d=>cosmosMoon(d).index;
+function skyData(){return PulseSky.badges(db,{today:key(),proteinGoal:goalValue('protein'),phaseOf:skyPhase})}
+function lifeOpenSky(){goView('sky');renderSky()}
+/* Announces stars that lit up since the last check. The first run only records. */
+function skyCheck(){
+ if(!db||(typeof sigilCharge!=='undefined'&&sigilCharge&&!sigilCharge.done))return;const known=db.uiPrefs.stars;const lit=skyData().filter(b=>b.done).map(b=>b.id);
+ if(!Array.isArray(known)){db.uiPrefs.stars=lit;save();return}
+ const fresh=lit.filter(id=>!known.includes(id));if(!fresh.length)return;
+ db.uiPrefs.stars=[...new Set([...known,...lit])];save();
+ const b=skyData().find(x=>x.id===fresh[0]);setTimeout(()=>{pulseSound('chime');pulseTap([15,60,15,60,30]);toast('Neuer Stern: '+b.title+(fresh.length>1?' (und '+(fresh.length-1)+' weitere)':''),'')},400);
+}
+function skySvg(list){
+ const G=PulseSky.GROUPS;let lines='',stars='',labels='';
+ for(const g of G){const mine=list.filter(b=>b.group===g.id);
+  for(let i=1;i<mine.length;i++){const a=mine[i-1],b=mine[i];lines+='<line x1="'+a.x+'" y1="'+a.y+'" x2="'+b.x+'" y2="'+b.y+'" class="'+(a.done&&b.done?'on':'')+'"/>'}
+  const cx=g.at.reduce((s,p)=>s+p[0],0)/g.at.length,maxY=Math.max(...g.at.map(p=>p[1]));labels+='<text x="'+cx.toFixed(0)+'" y="'+(maxY+22)+'">'+esc(g.name)+'</text>';
+  for(const b of mine)stars+='<g class="star'+(b.done?' on':'')+'"><circle cx="'+b.x+'" cy="'+b.y+'" r="'+(b.done?4.2:2.4)+'"/>'+(b.done?'<circle class="halo" cx="'+b.x+'" cy="'+b.y+'" r="11"/>':'')+'</g>';
+ }
+ const bg=Array.from({length:70},(_,i)=>{const h=PulseSigil.hash('bg'+i);return '<circle cx="'+(h%360)+'" cy="'+((h>>>9)%250)+'" r="'+(((h>>>18)%3)*.3+.3).toFixed(1)+'"/>'}).join('');
+ return '<svg class="sky-svg" viewBox="0 0 360 250" role="img" aria-label="Sternenhimmel mit '+list.filter(b=>b.done).length+' leuchtenden Sternen"><g class="sky-bg">'+bg+'</g><g class="sky-lines">'+lines+'</g>'+stars+'<g class="sky-labels">'+labels+'</g></svg>';
+}
+function skyGlow(){
+ const days=PulseSky.glow(db,key(),{proteinGoal:goalValue('protein')}),first=days[0].date,offset=(new Date(first+'T12:00:00').getDay()+6)%7;
+ const cells=Array(offset).fill('<i class="pad"></i>').join('')+days.map(d=>'<i class="g'+d.level+(d.date===key()?' today':'')+'" title="'+esc(lifeDate(d.date,{day:'numeric',month:'short'})+': '+d.points+' Punkte')+'"></i>').join('');
+ const active=days.filter(d=>d.level).length;
+ return '<section class="sky-card"><div class="life-row"><h2>90 Tage</h2><span class="life-muted">'+active+' leuchtende Tage</span></div><div class="sky-glow" role="img" aria-label="'+active+' von 91 Tagen mit Aktivität">'+cells+'</div><p class="life-footnote">Jeder Tag leuchtet heller, je mehr los war: Training, Essen, Wasser, Einträge, Tarot, Videos, Sigillen. Ein dunkler Tag zerstört nichts.</p></section>';
+}
+function skyTarot(){
+ const h=lifeState().preferences.tarotHistory||[],have=new Set(h.map(x=>x.index)),T=PulseLibrary.TAROT;
+ const row=(from,to,label)=>'<div class="sky-deck-row"><span class="life-kicker">'+label+'</span><div class="sky-deck">'+T.slice(from,to).map(c=>'<button type="button" class="'+(have.has(c.index)?'have':'')+'" aria-label="'+esc(c.name+(have.has(c.index)?', gezogen':', noch nicht gezogen'))+'" onclick="'+lifeCall('lifeTarotOpen',c.index)+'"></button>').join('')+'</div></div>';
+ return '<section class="sky-card"><div class="life-row"><h2>Tarot-Sammlung</h2><span class="life-muted">'+have.size+' von 78</span></div>'+row(0,22,'Große Arkana')+row(22,36,'Stäbe')+row(36,50,'Kelche')+row(50,64,'Schwerter')+row(64,78,'Pentakel')+'<p class="life-footnote">Jede gezogene Karte leuchtet. Antippen öffnet die Karte.</p></section>';
+}
+function renderSky(){
+ const host=document.getElementById('skyContent');if(!host||document.getElementById('appMain').dataset.view!=='sky')return;
+ const list=skyData(),lit=list.filter(b=>b.done).length,R=PulseSky.rank(lit);
+ host.innerHTML='<header class="life-pagehead"><span class="life-kicker">Dein Himmel</span><h1>'+esc(R.name)+'</h1><p>'+lit+' von '+list.length+' Sternen leuchten'+(R.next?' · noch '+R.next.need+' bis „'+esc(R.next.name)+'“':'')+'</p></header>'+
+  '<div class="sky-frame">'+skySvg(list)+'</div>'+
+  PulseSky.GROUPS.map(g=>{const mine=list.filter(b=>b.group===g.id);return '<section class="sky-group"><h3>'+esc(g.name)+' <small>'+esc(g.hint)+' · '+mine.filter(b=>b.done).length+'/'+mine.length+'</small></h3><ul>'+mine.map(b=>'<li class="'+(b.done?'on':'')+'"><span class="sky-dot" aria-hidden="true"></span><span><b>'+esc(b.title)+'</b><small>'+esc(b.desc)+'</small>'+(b.done?'':'<span class="vault-bar" aria-hidden="true"><i style="width:'+Math.round(b.value/b.need*100)+'%"></i></span><small>'+b.value+' / '+b.need+'</small>')+'</span></li>').join('')+'</ul></section>'}).join('')+
+  skyGlow()+skyTarot();
+}
+/* Tag screen: a small sky tile and yesterday in one line. */
+function tileSky(){const list=skyData(),lit=list.filter(b=>b.done).length;return '<button type="button" class="pulse-tile tile-sky" onclick="lifeOpenSky()"><span class="pulse-tile-head">Dein Himmel</span><b class="pulse-tile-value">'+lit+' Sterne</b><span class="tile-sky-mini" aria-hidden="true">'+list.slice(0,30).map(b=>'<i class="'+(b.done?'on':'')+'"></i>').join('')+'</span><small>'+esc(PulseSky.rank(lit).name)+'</small></button>'}
+function yesterdayLine(){if(dayPeriod()!=='morning')return '';const p=PulseSky.yesterday(db,key(),{proteinGoal:goalValue('protein')});return p.length?'<p class="life-yesterday"><b>Gestern:</b> '+esc(p.join(' · '))+'</p>':''}
+/* ---------- Cut-up machine ---------- */
+let cutupState={text:'',size:'mittel',seed:1,keep:[]};
+function lifeCutup(prefill){
+ if(prefill!=null)cutupState={text:prefill,size:'mittel',seed:Date.now()%100000,keep:[]};
+ document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
+ const notes=PulseLife.list(db).filter(x=>x.room==='ideen'&&x.body.length>40).slice(0,6);
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Cut-up</h2><p class="life-detail-intro">Text zerschneiden, neu mischen, behalten, was überrascht. Die Technik von Brion Gysin und William S. Burroughs, später von David Bowie.</p>'+
+  '<label class="life-name-field">Ausgangstext<textarea id="cutupText" rows="5" placeholder="Songtext, Notiz, Tagebuch, Zeitungsartikel …" oninput="cutupState.text=this.value">'+esc(cutupState.text)+'</textarea></label>'+
+  (notes.length?'<div class="vault-chips"><span class="life-kicker">Aus deinen Ideen</span>'+notes.map(n=>'<button type="button" onclick="'+lifeCall('cutupFrom',n.id)+'">'+esc(n.title.slice(0,24))+'</button>').join('')+'</div>':'')+
+  '<div class="life-seg" role="group" aria-label="Schnipselgröße">'+[['klein','Kleine Schnipsel'],['mittel','Mittel'],['zeilen','Halbe Zeilen']].map(([k,l])=>'<button type="button" aria-pressed="'+(cutupState.size===k)+'" onclick="'+lifeCall('cutupSet','size',k)+'">'+l+'</button>').join('')+'</div>'+
+  '<div class="life-detail-actions">'+lifeButton('Zerschneiden und mischen','cutupRun()','life-btn dark')+'</div><div id="cutupOut"></div>';
+ if(activeDialog!=='lifeSheet')openDialog(document.getElementById('lifeSheet'),'#cutupText');
+ if(cutupState.text.trim())cutupRender();
+}
+function cutupFrom(id){const x=PulseLife.get(db,id);if(!x)return;cutupState.text=x.title+'\n'+x.body;document.getElementById('cutupText').value=cutupState.text;cutupRun()}
+function cutupSet(k,v){cutupState[k]=v;lifeCutup()}
+function cutupRun(){cutupState.text=document.getElementById('cutupText')?.value||cutupState.text;if(cutupState.text.trim().split(/\s+/).length<6)return toast('Bitte etwas mehr Text, mindestens ein paar Zeilen.');cutupState.seed=Math.floor(Math.random()*1e9);cutupRender();pulseTap(8)}
+function cutupRender(){
+ const out=document.getElementById('cutupOut');if(!out)return;const lines=PulseCutup.lines(cutupState.text,{size:cutupState.size,seed:cutupState.seed,count:12});
+ out.innerHTML='<div class="cutup-lines">'+lines.map(l=>'<button type="button" class="cutup-line'+(cutupState.keep.includes(l)?' kept':'')+'" onclick="'+lifeCall('cutupKeep',l)+'">'+esc(l)+'</button>').join('')+'</div><div class="life-detail-actions">'+lifeButton('Neu mischen','cutupRun()','life-btn')+'</div>'+
+  (cutupState.keep.length?'<div class="vault-block"><h3>Gesammelt</h3><ol class="cutup-keep">'+cutupState.keep.map(l=>'<li>'+esc(l)+'</li>').join('')+'</ol><div class="life-detail-actions">'+lifeButton('Als Notiz in Ideen speichern','cutupSave()','life-btn dark')+lifeButton('Leeren','cutupState.keep=[];cutupRender()','life-textbtn')+'</div></div>':'<p class="life-footnote">Tipp auf eine Zeile, um sie zu sammeln.</p>');
+}
+function cutupKeep(l){const i=cutupState.keep.indexOf(l);if(i>=0)cutupState.keep.splice(i,1);else cutupState.keep.push(l);cutupRender();pulseTap(6)}
+function cutupSave(){const id=uid('life');if(lifeMutate(()=>PulseLife.create(db,{kind:'note',room:'ideen',title:'Cut-up · '+lifeDate(key(),{day:'numeric',month:'short'}),body:cutupState.keep.join('\n')},id,new Date().toISOString()),'Cut-up gespeichert')){cutupState.keep=[];lifeCloseSheet();skyCheck()}}
 // SOURCE: storage/photos.js
 /* Photos live in IndexedDB (localStorage is far too small). Records reference them by id. */
 const PulsePhotos=(()=>{
@@ -4163,8 +4643,8 @@ function tileNight(){
 function tileEvening(){return '<button type="button" class="pulse-tile tile-evening" onclick="'+lifeCall('lifeOpenLib','sinn-tagesabschluss')+'"><span class="pulse-tile-head">Abends</span><b class="pulse-tile-value">Tagesabschluss</b><small>Drei Sätze zum Tag</small></button>'}
 function tileRecipe(){const r=PulseLibrary.daily(key(),'recipe','koerper');return r?'<button type="button" class="pulse-tile tile-recipe" onclick="'+lifeCall('lifeOpenLib',r.id)+'"><span class="pulse-tile-head">Rezeptidee</span><b class="pulse-tile-value">'+esc(r.title)+'</b><small>'+esc(r.sub.split(' · ')[0])+'</small></button>':''}
 function lifeTiles(){
- const order={morning:['next','night','body','training','recipe'],day:['body','training','next','recipe','night'],evening:['next','evening','night','body','training']}[dayPeriod()];
- const build={body:tileBody,training:tileTraining,next:tileNext,night:tileNight,evening:tileEvening,recipe:tileRecipe};
+ const order={morning:['next','night','body','training','sky','recipe'],day:['body','training','next','sky','recipe','night'],evening:['next','evening','night','sky','body','training']}[dayPeriod()];
+ const build={body:tileBody,training:tileTraining,next:tileNext,night:tileNight,evening:tileEvening,recipe:tileRecipe,sky:tileSky};
  const tiles=order.map(k=>build[k]()).filter(Boolean);
  /* Asymmetric bento: the first tile is the wide hero; a lone half tile at the end stretches. */
  if(tiles[0]&&!tiles[0].includes('span2'))tiles[0]=tiles[0].replace('class="pulse-tile ','class="pulse-tile span2 ');
@@ -4183,7 +4663,7 @@ function renderLifeToday(){
  const timed=items.filter(x=>x.time),anytime=items.filter(x=>!x.time),focus=lifeState().focus;
  const title=isToday?lifeGreeting():date===PulseLife.offset(key(),1)?'Morgen':lifeDate(date,{weekday:'long'});
  host.innerHTML='<header class="life-pagehead life-greeting"><div><span class="life-kicker">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span><h1>'+esc(title)+'</h1></div>'+(isToday?pulseCore():'')+'</header>'+
-  weekStrip(date)+'<div class="life-calendar-tools">'+lifeButton('Kalender',lifeCall('lifeOpenCalendar',date),'life-textbtn')+(isToday?'':lifeButton('Heute',lifeCall('lifeSelectDay',key()),'life-textbtn'))+'</div>'+
+  (isToday?yesterdayLine():'')+weekStrip(date)+'<div class="life-calendar-tools">'+lifeButton('Kalender',lifeCall('lifeOpenCalendar',date),'life-textbtn')+(isToday?'':lifeButton('Heute',lifeCall('lifeSelectDay',key()),'life-textbtn'))+'</div>'+
   (focus?'<button type="button" class="life-focus-banner" onclick="goView(\'focus\')"><span class="life-live-dot"></span><span><b>'+esc(focus.title)+'</b><small>'+(focus.state==='paused'?'Timer pausiert':'Timer läuft')+'</small></span><span id="lifeMiniClock">'+lifeClock(PulseLife.remaining(focus,Date.now()))+'</span></button>':'')+
   '<div class="life-capture-wrap"><button type="button" class="life-capture-line" onclick="lifeQuick()">'+lifeGlyph('plus')+'<span>'+(lifeState().draft?'Entwurf fortsetzen':'Notiz, Termin, Essen …')+'</span></button>'+(pulseSpeechSupported()?'<button type="button" class="life-capture-mic" aria-label="Per Sprache erfassen" onclick="lifeQuick(true)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>':'')+'</div>'+
   (isToday?lifeTiles()+lifeSystemRows(date)+lifeReviewRows():'')+
@@ -4471,6 +4951,7 @@ function undoLast(){
  const u=db.undoStack.pop();if(!u)return toast('Nichts zum Rückgängigmachen');
  if(u.type==='life')return undoLife(u);
  if(u.type==='videos')return undoVideos(u);
+ if(u.type==='magic')return undoMagic(u);
  if(u.type==='drink'||u.type==='drink-delete')return undoDrink(u);
  if(u.type==='meal'){
    const i=db.meals.findIndex(x=>x.id===u.id);if(i>=0){
@@ -4523,7 +5004,7 @@ function openCaptureWith(v=''){
 }
 
 let pendingValueSave=null, deferredInstallPrompt=null;
-const VIEW_TITLES={life:'Dein Tag',spaces:'Lebensräume',library:'Sammlung',focus:'Fokus',calendar:'Kalender',videos:'Videos',bodyhub:'Körper',workout:'Training',nutrition:'Essen',recovery:'Recovery',trends:'Fortschritt',goals:'Ziele',history:'Verlauf',plan:'Plan',coach:'Muster',mehub:'Ich'};
+const VIEW_TITLES={life:'Dein Tag',spaces:'Lebensräume',library:'Sammlung',focus:'Fokus',calendar:'Kalender',videos:'Videos',sigils:'Sigillen',sky:'Dein Himmel',bodyhub:'Körper',workout:'Training',nutrition:'Essen',recovery:'Recovery',trends:'Fortschritt',goals:'Ziele',history:'Verlauf',plan:'Plan',coach:'Muster',mehub:'Ich'};
 let lastDialogTrigger=null,activeDialog=null,dialogBackPending=false,queuedDialogNavigation=null;
 function reducedMotion(){return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches}
 

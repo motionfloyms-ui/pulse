@@ -1,7 +1,7 @@
 // SOURCE: ui/library.js
 /* Content surfaces: room library, today strip, tarot. Reading never writes; adopting does. */
 const LIB_GROUP_LIMIT=4;
-function libTab(view){if(view==='calendar')return 'life';if(view==='videos')return 'videos';return ['bodyhub','workout','nutrition','recovery','trends'].includes(view)?'bodyhub':['life','spaces','library','focus'].includes(view)?view:'spaces'}
+function libTab(view){if(view==='calendar'||view==='sky')return 'life';if(view==='sigils')return 'spaces';if(view==='videos')return 'videos';return ['bodyhub','workout','nutrition','recovery','trends'].includes(view)?'bodyhub':['life','spaces','library','focus'].includes(view)?view:'spaces'}
 function libAdopted(id){return PulseLife.list(db).find(x=>x.source==='lib:'+id)||null}
 function libCard(e){
  const r=PulseLife.room(e.room),mine=libAdopted(e.id);
@@ -27,12 +27,13 @@ function lifeLibSection(roomId){
  const entries=PulseLibrary.forRoom(roomId);let widgets='';
  if(roomId==='sinn'){
   const m=cosmosMoon(key()),card=libTodayCard();
-  widgets='<div class="life-lib-widgets"><div class="life-moon-panel">'+moonSvg(m,64)+'<div><span class="life-kicker">Mond heute · '+m.illumination+' % beleuchtet</span><b>'+esc(m.name)+'</b><p>'+esc(m.impulse)+'</p><p class="cos-practice"><b>Praxis:</b> '+esc(PulseLore.PHASES[m.index].title)+'</p><small>'+esc(moonLine(m))+'</small><div class="life-room-actions">'+lifeButton('Kalender',lifeCall('lifeOpenCalendar',key()),'life-btn')+lifeButton('Anleitung',lifeCall('lifeOpenLib',PulseLore.PHASES[m.index].lib),'life-textbtn')+'</div></div></div>'+
+  widgets='<div class="life-lib-widgets"><div class="life-moon-panel">'+moonSvg(m,64)+'<div><span class="life-kicker">Mond heute · '+m.illumination+' % beleuchtet</span><b>'+esc(m.name)+'</b><p>'+esc(m.impulse)+'</p><p class="cos-practice"><b>Praxis:</b> '+esc(PulseLore.PHASES[m.index].title)+'</p><small>'+esc(moonLine(m))+'</small><div class="life-room-actions">'+lifeButton('Kalender',lifeCall('lifeOpenCalendar',key()),'life-btn')+lifeButton('Sigillen',lifeCall('lifeOpenSigils'),'life-btn dark')+lifeButton('Anleitung',lifeCall('lifeOpenLib',PulseLore.PHASES[m.index].lib),'life-textbtn')+'</div></div></div>'+
   '<div class="life-tarot-panel"><span class="life-kicker">Tarot</span>'+(card?'<b>Heute: '+esc(card.card.name)+'</b><p>'+esc(card.card.question)+'</p>'+lifeButton('Karte ansehen',lifeCall('lifeTarotOpen',card.index),'life-btn'):'<b>Deine Tageskarte</b><p>Digital ziehen oder die Karte aus deinem Deck eintragen.</p><div class="life-room-actions">'+lifeButton('Digital ziehen',lifeCall('lifeDrawCard'),'life-btn dark')+lifeButton('Aus meinem Deck',lifeCall('lifeTarotBrowse','major',true),'life-btn')+'</div>')+
   (()=>{const st=tarotStats();return '<div class="life-tarot-stats"><b>'+st.days+'</b><span>'+(st.days===1?'Tageskarte':'Tageskarten')+(st.top?' · am häufigsten '+esc(st.top.card.name)+' ('+st.top.n+'×)':'')+'</span>'+(st.days?lifeButton('Verlauf',lifeCall('lifeTarotHistory'),'life-textbtn'):'')+'</div>'})()+
   '<div class="life-room-actions">'+lifeButton('Drei Karten legen',lifeCall('lifeSpread','drei'),'life-btn')+lifeButton('Entscheidung legen',lifeCall('lifeSpread','kreuz'),'life-btn')+'</div>'+
   '<div class="life-tarot-links">'+[['major','Große Arkana'],['staebe','Stäbe'],['kelche','Kelche'],['schwerter','Schwerter'],['pentakel','Pentakel']].map(([f,l])=>lifeButton(l,lifeCall('lifeTarotBrowse',f,false),'life-tool-link')).join('')+'</div></div></div>';
  }
+ if(roomId==='ideen')widgets='<div class="life-room-actions life-tools-row">'+lifeButton('Cut-up-Maschine',lifeCall('lifeCutup',''),'life-btn dark')+lifeButton('Videos',lifeCall('lifeOpenVideos'),'life-btn')+'</div>';
  if(roomId==='draussen'){const s=PulseLibrary.seasonal(key());widgets='<div class="life-season"><span class="life-kicker">Jetzt im '+s.name+'</span><ul>'+s.ideas.map(i=>'<li>'+esc(i)+'</li>').join('')+'</ul></div>'}
  return '<div class="life-sectionhead"><h2>Schon da</h2><span class="life-subtle">'+entries.length+' Inhalte</span></div>'+widgets+libGroups(entries);
 }

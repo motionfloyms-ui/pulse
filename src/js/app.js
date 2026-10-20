@@ -142,6 +142,7 @@ function undoLast(){
  const u=db.undoStack.pop();if(!u)return toast('Nichts zum Rückgängigmachen');
  if(u.type==='life')return undoLife(u);
  if(u.type==='videos')return undoVideos(u);
+ if(u.type==='magic')return undoMagic(u);
  if(u.type==='drink'||u.type==='drink-delete')return undoDrink(u);
  if(u.type==='meal'){
    const i=db.meals.findIndex(x=>x.id===u.id);if(i>=0){
@@ -194,7 +195,7 @@ function openCaptureWith(v=''){
 }
 
 let pendingValueSave=null, deferredInstallPrompt=null;
-const VIEW_TITLES={life:'Dein Tag',spaces:'Lebensräume',library:'Sammlung',focus:'Fokus',calendar:'Kalender',videos:'Videos',bodyhub:'Körper',workout:'Training',nutrition:'Essen',recovery:'Recovery',trends:'Fortschritt',goals:'Ziele',history:'Verlauf',plan:'Plan',coach:'Muster',mehub:'Ich'};
+const VIEW_TITLES={life:'Dein Tag',spaces:'Lebensräume',library:'Sammlung',focus:'Fokus',calendar:'Kalender',videos:'Videos',sigils:'Sigillen',sky:'Dein Himmel',bodyhub:'Körper',workout:'Training',nutrition:'Essen',recovery:'Recovery',trends:'Fortschritt',goals:'Ziele',history:'Verlauf',plan:'Plan',coach:'Muster',mehub:'Ich'};
 let lastDialogTrigger=null,activeDialog=null,dialogBackPending=false,queuedDialogNavigation=null;
 function reducedMotion(){return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches}
 
