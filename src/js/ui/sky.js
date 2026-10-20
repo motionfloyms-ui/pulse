@@ -19,8 +19,8 @@ function skySvg(list){
   const cx=g.at.reduce((s,p)=>s+p[0],0)/g.at.length,maxY=Math.max(...g.at.map(p=>p[1]));labels+='<text x="'+cx.toFixed(0)+'" y="'+(maxY+22)+'">'+esc(g.name)+'</text>';
   for(const b of mine)stars+='<g class="star'+(b.done?' on':'')+'"><circle cx="'+b.x+'" cy="'+b.y+'" r="'+(b.done?4.2:2.4)+'"/>'+(b.done?'<circle class="halo" cx="'+b.x+'" cy="'+b.y+'" r="11"/>':'')+'</g>';
  }
- const bg=Array.from({length:70},(_,i)=>{const h=PulseSigil.hash('bg'+i);return '<circle cx="'+(h%360)+'" cy="'+((h>>>9)%250)+'" r="'+(((h>>>18)%3)*.3+.3).toFixed(1)+'"/>'}).join('');
- return '<svg class="sky-svg" viewBox="0 0 360 250" role="img" aria-label="Sternenhimmel mit '+list.filter(b=>b.done).length+' leuchtenden Sternen"><g class="sky-bg">'+bg+'</g><g class="sky-lines">'+lines+'</g>'+stars+'<g class="sky-labels">'+labels+'</g></svg>';
+ const bg=Array.from({length:70},(_,i)=>{const h=PulseSigil.hash('bg'+i);return '<circle cx="'+(h%360)+'" cy="'+((h>>>9)%300)+'" r="'+(((h>>>18)%3)*.3+.3).toFixed(1)+'"/>'}).join('');
+ return '<svg class="sky-svg" viewBox="0 0 360 300" role="img" aria-label="Sternenhimmel mit '+list.filter(b=>b.done).length+' leuchtenden Sternen"><g class="sky-bg">'+bg+'</g><g class="sky-lines">'+lines+'</g>'+stars+'<g class="sky-labels">'+labels+'</g></svg>';
 }
 function skyGlow(){
  const days=PulseSky.glow(db,key(),{proteinGoal:goalValue('protein')}),first=days[0].date,offset=(new Date(first+'T12:00:00').getDay()+6)%7;

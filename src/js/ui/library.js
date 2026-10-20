@@ -1,7 +1,7 @@
 // SOURCE: ui/library.js
 /* Content surfaces: room library, today strip, tarot. Reading never writes; adopting does. */
 const LIB_GROUP_LIMIT=4;
-function libTab(view){if(view==='calendar'||view==='sky')return 'life';if(view==='sigils')return 'spaces';if(view==='videos')return 'videos';return ['bodyhub','workout','nutrition','recovery','trends'].includes(view)?'bodyhub':['life','spaces','library','focus'].includes(view)?view:'spaces'}
+function libTab(view){if(view==='calendar'||view==='sky')return 'life';if(view==='sigils'||view==='songs')return 'spaces';if(view==='videos')return 'videos';return ['bodyhub','workout','nutrition','recovery','trends'].includes(view)?'bodyhub':['life','spaces','library','focus'].includes(view)?view:'spaces'}
 function libAdopted(id){return PulseLife.list(db).find(x=>x.source==='lib:'+id)||null}
 function libCard(e){
  const r=PulseLife.room(e.room),mine=libAdopted(e.id);
@@ -33,7 +33,7 @@ function lifeLibSection(roomId){
   '<div class="life-room-actions">'+lifeButton('Drei Karten legen',lifeCall('lifeSpread','drei'),'life-btn')+lifeButton('Entscheidung legen',lifeCall('lifeSpread','kreuz'),'life-btn')+'</div>'+
   '<div class="life-tarot-links">'+[['major','Große Arkana'],['staebe','Stäbe'],['kelche','Kelche'],['schwerter','Schwerter'],['pentakel','Pentakel']].map(([f,l])=>lifeButton(l,lifeCall('lifeTarotBrowse',f,false),'life-tool-link')).join('')+'</div></div></div>';
  }
- if(roomId==='ideen')widgets='<div class="life-room-actions life-tools-row">'+lifeButton('Cut-up-Maschine',lifeCall('lifeCutup',''),'life-btn dark')+lifeButton('Videos',lifeCall('lifeOpenVideos'),'life-btn')+'</div>';
+ if(roomId==='ideen')widgets='<div class="life-room-actions life-tools-row">'+lifeButton('Song-Werkstatt',lifeCall('lifeOpenSongs'),'life-btn dark')+lifeButton('Cut-up-Maschine',lifeCall('lifeCutup',''),'life-btn')+lifeButton('Videos',lifeCall('lifeOpenVideos'),'life-btn')+'</div>';
  if(roomId==='draussen'){const s=PulseLibrary.seasonal(key());widgets='<div class="life-season"><span class="life-kicker">Jetzt im '+s.name+'</span><ul>'+s.ideas.map(i=>'<li>'+esc(i)+'</li>').join('')+'</ul></div>'}
  return '<div class="life-sectionhead"><h2>Schon da</h2><span class="life-subtle">'+entries.length+' Inhalte</span></div>'+widgets+libGroups(entries);
 }

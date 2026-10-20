@@ -23,18 +23,20 @@
  function glow(db,today,opts){const {pts}=activity(db,opts);return Array.from({length:91},(_,i)=>{const d=addDay(today,i-90);return {date:d,points:pts[d]||0,level:level(pts[d]||0)}})}
  /* Constellations: each group's stars in a 360×240 sky, in unlock order. */
  const GROUPS=[
-  {id:'seherin',name:'Die Seherin',hint:'Tarot',at:[[40,40],[70,28],[98,46],[86,76],[56,70]]},
-  {id:'kriegerin',name:'Die Kriegerin',hint:'Training',at:[[150,30],[176,52],[204,34],[190,82],[160,96]]},
-  {id:'sammlerin',name:'Die Sammlerin',hint:'Videos',at:[[262,36],[292,26],[322,44],[312,76],[278,70]]},
-  {id:'magierin',name:'Die Magierin',hint:'Sigillen',at:[[44,150],[72,130],[100,152],[80,184],[50,196]]},
-  {id:'hueterin',name:'Die Hüterin',hint:'Essen & Wasser',at:[[156,140],[184,124],[212,146],[196,178]]},
-  {id:'chronistin',name:'Die Chronistin',hint:'Einträge & Termine',at:[[262,138],[292,126],[322,148],[306,182],[274,186]]},
-  {id:'mond',name:'Der Mond',hint:'Ein ganzer Zyklus',at:[[180,214]]}
+  {id:'seherin',name:'Die Seherin',hint:'Tarot',at:[[34,36],[64,24],[92,42],[80,72],[50,66]]},
+  {id:'kriegerin',name:'Die Kriegerin',hint:'Training',at:[[150,28],[176,48],[204,30],[190,76],[160,88]]},
+  {id:'sammlerin',name:'Die Sammlerin',hint:'Videos',at:[[266,34],[296,24],[326,42],[316,72],[282,66]]},
+  {id:'magierin',name:'Die Magierin',hint:'Sigillen',at:[[34,140],[62,122],[90,142],[72,172],[42,180]]},
+  {id:'saengerin',name:'Die Sängerin',hint:'Songs & Stimme',at:[[148,128],[172,144],[198,124],[214,156],[178,180]]},
+  {id:'hueterin',name:'Die Hüterin',hint:'Essen & Wasser',at:[[266,130],[294,118],[322,138],[306,168]]},
+  {id:'chronistin',name:'Die Chronistin',hint:'Einträge & Termine',at:[[56,236],[86,226],[114,244],[98,272],[66,274]]},
+  {id:'mond',name:'Der Mond',hint:'Ein ganzer Zyklus',at:[[280,250]]}
  ];
  function badges(db,{today,proteinGoal=null,phaseOf=null}={}){
   const A=activity(db,{proteinGoal}),tarot=db.life?.preferences?.tarotHistory||[],cards=new Set(tarot.map(t=>t&&t.index).filter(Number.isInteger));
   const majors=[...cards].filter(i=>i<22).length,vids=db.videos?.items||[],shelves=db.videos?.shelves||[],marks=vids.reduce((a,v)=>a+(v.marks?.length||0),0);
   const sg=db.magic?.sigils||[],life=db.life?.items||[],events=life.filter(x=>x.kind==='event').length+(db.events||[]).filter(e=>e&&e.type==='calendar-plan').length;
+  const songs=db.songs?.items||[],songMarks=songs.reduce((a,s)=>a+Object.keys(s.notes||{}).length,0),takes=songs.reduce((a,s)=>a+(s.takes?.length||0),0),warm=(db.songs?.warmups||[]).length;
   const phases=new Set();if(phaseOf)for(const [d,p] of Object.entries(A.pts))if(p>0)phases.add(phaseOf(d));
   const B=(group,id,title,desc,value,need)=>({group,id,title,desc,value:Math.min(value,need),need,done:value>=need});
   const list=[
@@ -67,6 +69,11 @@
    B('chronistin','e10','Terminkalender','10 Termine',events,10),
    B('chronistin','ics','Umgezogen','Termine aus einer .ics-Datei übernommen',life.some(x=>x.ics)?1:0,1),
    B('chronistin','m25','Stellenjägerin','25 Stellen in Videos gemerkt',marks,25),
+   B('saengerin','song1','Erster Song','Einen Song in der Werkstatt angelegt',songs.length,1),
+   B('saengerin','map','Gesangskarte','20 Zeilen mit Entscheidungen markiert',songMarks,20),
+   B('saengerin','take10','Zehn Takes','10 Takes festgehalten',takes,10),
+   B('saengerin','warm7','Eingesungen','7-mal die Einsing-Routine',warm,7),
+   B('saengerin','done','Fertig','Ein Song auf „Fertig“',songs.filter(s=>s.status==='fertig').length,1),
    B('mond','moon','Voller Zyklus','An Tagen in allen 8 Mondphasen etwas getan',phases.size,8)
   ];
   for(const g of GROUPS){const mine=list.filter(b=>b.group===g.id);mine.forEach((b,i)=>{const p=g.at[i%g.at.length];b.x=p[0];b.y=p[1]})}

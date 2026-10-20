@@ -32,3 +32,19 @@ function soundChips(label='Klang'){
  const cur=PulseSoundscape.playing();
  return '<div class="sound-chips" data-label="'+esc(label)+'"><span class="life-kicker">'+esc(label)+'</span><div class="vault-chips" role="group" aria-label="'+esc(label)+'">'+PulseSoundscape.KINDS.map(([k,l])=>'<button type="button" aria-pressed="'+(cur===k)+'" onclick="'+lifeCall('soundPick',k)+'">'+l+'</button>').join('')+'</div>'+(cur?'<label class="sound-vol">Lautstärke<input type="range" min="0" max="1" step="0.05" value="'+PulseSoundscape.volume()+'" oninput="PulseSoundscape.setVolume(this.value)"/></label>':'')+'</div>';
 }
+/* Metronome: Web Audio click, accent on beat one, scheduled ahead for steady timing. */
+const PulseMetronome=(()=>{
+ let ctx=null,timer=null,next=0,beat=0,bpm=90,beats=4,onBeat=null;
+ function tick(){while(next<ctx.currentTime+0.12){const o=ctx.createOscillator(),g=ctx.createGain(),accent=beat%beats===0;o.frequency.value=accent?1560:1040;g.gain.setValueAtTime(0.0001,next);g.gain.exponentialRampToValueAtTime(accent?.5:.3,next+.002);g.gain.exponentialRampToValueAtTime(0.0001,next+.06);o.connect(g);g.connect(ctx.destination);o.start(next);o.stop(next+.08);const b=beat%beats,at=next;setTimeout(()=>onBeat&&onBeat(b),Math.max(0,(at-ctx.currentTime)*1000));next+=60/bpm;beat++}}
+ function start(b,cb,n=4){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;ctx=ctx||new AC();if(ctx.state==='suspended')ctx.resume();bpm=Math.max(30,Math.min(300,Number(b)||90));beats=n;onBeat=cb;stop();beat=0;next=ctx.currentTime+.08;timer=setInterval(tick,25);tick();return true}
+ function stop(){if(timer){clearInterval(timer);timer=null}}
+ function setBpm(b){bpm=Math.max(30,Math.min(300,Number(b)||bpm))}
+ return {start,stop,setBpm,running:()=>!!timer,bpm:()=>bpm};
+})();
+/* A sustained reference tone (warm-up): soft sine with a little octave, fades in and out. */
+const PulseTone=(()=>{
+ let ctx=null,nodes=[],gain=null;
+ function play(freq){stop();const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=ctx||new AC();if(ctx.state==='suspended')ctx.resume();gain=ctx.createGain();gain.gain.value=0;gain.connect(ctx.destination);for(const [m,v] of [[1,.22],[2,.05],[.5,.06]]){const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=freq*m;g.gain.value=v;o.connect(g);g.connect(gain);o.start();nodes.push(o)}gain.gain.linearRampToValueAtTime(.8,ctx.currentTime+.8)}
+ function stop(){if(!ctx||!gain)return;const g=gain,old=nodes;nodes=[];gain=null;g.gain.cancelScheduledValues(ctx.currentTime);g.gain.setValueAtTime(g.gain.value,ctx.currentTime);g.gain.linearRampToValueAtTime(0,ctx.currentTime+.5);setTimeout(()=>old.forEach(o=>{try{o.stop()}catch(_){}}),700)}
+ return {play,stop,playing:()=>!!gain};
+})();
