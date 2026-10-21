@@ -30,7 +30,7 @@ function renderSigils(){
  if(document.activeElement?.id==='sigilIntent')return sigilPreview();
  sigilPrepare();const m=cosmosMoon(key()),P=PulseLore.PHASES[m.index],list=[...PulseSigil.ensure(db).sigils].reverse();
  const seg=(k,opts)=>'<div class="life-seg" role="group">'+opts.map(([v,l])=>'<button type="button" aria-pressed="'+(sigilDraft[k]===v)+'" onclick="'+lifeCall('sigilOpt',k,v)+'">'+l+'</button>').join('')+'</div>';
- host.innerHTML='<header class="life-pagehead"><span class="life-kicker">Chaos-Magie</span><h1>Sigillen</h1></header>'+
+ host.innerHTML=moreBack()+'<header class="life-pagehead"><span class="life-kicker">Chaos-Magie</span><h1>Sigillen</h1></header>'+
   '<div class="sigil-moon">'+moonSvg(m,40)+'<p><b>'+esc(m.name)+':</b> '+esc(P.title)+'. '+(m.index<=1?'Eine gute Zeit für neue Sigillen.':m.index>=5?'Eher auswerten und vergessen als neu beginnen.':'')+'</p></div>'+
   '<section class="sigil-workshop"><label class="life-name-field">Absicht<textarea id="sigilIntent" rows="2" maxlength="300" placeholder="Ich schlafe tief und ruhig." oninput="sigilInput(this.value)">'+esc(sigilDraft.intent)+'</textarea></label>'+
   '<p class="life-footnote">Kurz, positiv, in der Gegenwart. Pulse streicht Vokale und doppelte Buchstaben.</p>'+

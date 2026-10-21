@@ -36,7 +36,7 @@ function skyTarot(){
 function renderSky(){
  const host=document.getElementById('skyContent');if(!host||document.getElementById('appMain').dataset.view!=='sky')return;
  const list=skyData(),lit=list.filter(b=>b.done).length,R=PulseSky.rank(lit);
- host.innerHTML='<header class="life-pagehead"><span class="life-kicker">Dein Himmel</span><h1>'+esc(R.name)+'</h1><p>'+lit+' von '+list.length+' Sternen leuchten'+(R.next?' · noch '+R.next.need+' bis „'+esc(R.next.name)+'“':'')+'</p></header>'+
+ host.innerHTML=moreBack()+'<header class="life-pagehead"><span class="life-kicker">Dein Himmel</span><h1>'+esc(R.name)+'</h1><p>'+lit+' von '+list.length+' Sternen leuchten'+(R.next?' · noch '+R.next.need+' bis „'+esc(R.next.name)+'“':'')+'</p></header>'+
   '<div class="sky-frame">'+skySvg(list)+'</div>'+
   PulseSky.GROUPS.map(g=>{const mine=list.filter(b=>b.group===g.id);return '<section class="sky-group"><h3>'+esc(g.name)+' <small>'+esc(g.hint)+' · '+mine.filter(b=>b.done).length+'/'+mine.length+'</small></h3><ul>'+mine.map(b=>'<li class="'+(b.done?'on':'')+'"><span class="sky-dot" aria-hidden="true"></span><span><b>'+esc(b.title)+'</b><small>'+esc(b.desc)+'</small>'+(b.done?'':'<span class="vault-bar" aria-hidden="true"><i style="width:'+Math.round(b.value/b.need*100)+'%"></i></span><small>'+b.value+' / '+b.need+'</small>')+'</span></li>').join('')+'</ul></section>'}).join('')+
   skyGlow()+skyTarot();

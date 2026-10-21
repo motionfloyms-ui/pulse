@@ -19,7 +19,7 @@ function renderSongs(){
  songPrepare();const all=PulseSong.ensure(db).items;
  const s=songOpenId&&PulseSong.get(db,songOpenId);
  if(!s){songOpenId=null;
-  host.innerHTML='<header class="life-pagehead"><span class="life-kicker">Ideen &amp; Lernen</span><h1>Song-Werkstatt</h1></header>'+
+  host.innerHTML=moreBack()+'<header class="life-pagehead"><span class="life-kicker">Ideen &amp; Lernen</span><h1>Song-Werkstatt</h1></header>'+
    '<div class="life-detail-actions song-top">'+lifeButton(lifeGlyph('plus')+'Neuer Song','songNew()','life-btn dark')+lifeButton('Einsingen','songWarmStart()','life-btn')+'</div>'+
    (all.length?'<div class="song-list">'+[...all].sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt)).map(songCard).join('')+'</div>':lifeEmpty('Noch kein Song.','Leg einen Song an und füge den Text ein. Dann entscheidest du Zeile für Zeile, wie du sie singst: Dynamik, Klangfarbe, Atem, Betonung.'))+
    '<div class="cos-actions">'+lifeButton('Gesangskarte',lifeCall('lifeOpenLib','ideen-gesangskarte-fu-r-einen-song'),'life-textbtn')+lifeButton('Extreme Vocals sicher üben',lifeCall('lifeOpenLib','ideen-extreme-vocals-sicher-u-ben'),'life-textbtn')+'</div>';

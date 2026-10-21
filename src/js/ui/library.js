@@ -1,7 +1,11 @@
 // SOURCE: ui/library.js
 /* Content surfaces: room library, today strip, tarot. Reading never writes; adopting does. */
 const LIB_GROUP_LIMIT=4;
-function libTab(view){if(view==='calendar'||view==='sky')return 'life';if(view==='sigils'||view==='songs')return 'spaces';if(['mehub','goals','history','plan','coach'].includes(view))return '';if(view==='videos')return 'videos';return ['bodyhub','workout','nutrition','recovery','trends'].includes(view)?'bodyhub':['life','spaces','library','focus'].includes(view)?view:'spaces'}
+function libTab(view){
+ if(['life','calendar','videos','more'].includes(view))return view;
+ if(['bodyhub','workout','nutrition','recovery','trends'].includes(view))return 'bodyhub';
+ return 'more';
+}
 function libAdopted(id){return PulseLife.list(db).find(x=>x.source==='lib:'+id)||null}
 function libCard(e){
  const r=PulseLife.room(e.room),mine=libAdopted(e.id);

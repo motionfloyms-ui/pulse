@@ -64,9 +64,15 @@ try{
   await ev(()=>songWarmStart());for(let i=0;i<8;i++){await pg.click('#songWarm >> text=Nächster Schritt');await pg.waitForTimeout(40)}
   assert.equal(await ev(()=>db.songs.warmups.length),1);
  });
+ await check('Mehr: search across everything, tools reachable',async()=>{
+  await pg.click('#lifeNav >> text=Mehr');await pg.waitForTimeout(150);await pg.fill('#moreSearch','growl');await pg.waitForTimeout(150);
+  const groups=await ev(()=>[...document.querySelectorAll('.more-group h3')].map(h=>h.textContent.split(' ')[0]));assert.ok(groups.includes('Videos'),groups.join());
+  await pg.fill('#moreSearch','');for(const t of ['Song-Werkstatt','Sigillen','Dein Himmel','Fokus-Timer','Alle Einträge']){await ev(()=>lifeOpenMore());await pg.click('.more-tool >> text='+t);await pg.waitForTimeout(80);assert.notEqual(await ev(()=>document.getElementById('appMain').dataset.view),'more',t)}
+  assert.deepEqual(await ev(()=>[...document.querySelectorAll('#lifeNav [aria-current=page]')].map(b=>b.textContent)),['Mehr']);
+ });
  await check('theme switch survives reload',async()=>{await ev(()=>lifeSetTheme('light'));await pg.reload();await pg.waitForTimeout(800);assert.equal(await ev(()=>document.documentElement.dataset.theme),'light');await ev(()=>{lifeCloseSheet();lifeSetTheme('auto')})});
  await check('every button on every screen',async()=>{
-  const views=["goView('life')","lifeOpenSpaces()","lifeOpenSpaces('sinn')","lifeOpenSpaces('ideen')","lifeOpenLibrary()","goView('focus')","lifeOpenCalendar()","cosmosSetMode('week')","lifeOpenVideos()","lifeOpenSigils()","lifeOpenSky()","lifeOpenSongs()","goView('bodyhub')","goView('nutrition')","goView('mehub')"];
+  const views=["goView('life')","lifeOpenMore()","lifeOpenSpaces('sinn')","lifeOpenSpaces('ideen')","lifeOpenLibrary()","goView('focus')","lifeOpenCalendar()","cosmosSetMode('week')","lifeOpenVideos()","lifeOpenSigils()","lifeOpenSky()","lifeOpenSongs()","goView('bodyhub')","goView('nutrition')","goView('mehub')"];
   const SKIP=/löschen|entfernen|export|backup|installieren|youtube|import|archiv|laden|bühnenmodus|einsingen/i;
   for(const v of views){step='crawl '+v;await ev(v);await pg.waitForTimeout(80);
    const n=await ev(()=>[...document.querySelectorAll('main .view.active button')].filter(e=>e.offsetParent).length);

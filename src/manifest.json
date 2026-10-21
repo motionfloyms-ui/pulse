@@ -48,6 +48,7 @@
   "ui/sigil.js",
   "ui/song.js",
   "ui/sky.js",
+  "ui/more.js",
   "storage/photos.js",
   "ui/voice.js",
   "ui/understand.js",
