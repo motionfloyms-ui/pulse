@@ -4,9 +4,11 @@
 const CAL_TZ=(()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone||'Europe/Berlin'}catch(_){return 'Europe/Berlin'}})();
 const CAL_REMIND_TIMED=[['','Keine'],['0','Zur Startzeit'],['5','5 Minuten vorher'],['10','10 Minuten vorher'],['15','15 Minuten vorher'],['30','30 Minuten vorher'],['60','1 Stunde vorher'],['120','2 Stunden vorher'],['1440','1 Tag vorher']];
 const CAL_REMIND_ALLDAY=[['','Keine'],['-480','Am Tag um 8 Uhr'],['360','Am Vortag um 18 Uhr'],['1440','1 Tag vorher, 0 Uhr']];
-let calEditRecurDays=null;
+let calEditRecurDays=null,calEditCustom=null;
 function calSheet(html,focus){document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;el.innerHTML=html;if(activeDialog!=='lifeSheet')openDialog(document.getElementById('lifeSheet'),focus||'#lifeDetailHeading');else document.querySelector(focus||'#lifeDetailHeading')?.focus()}
-function calRemindText(x){if(x.remind==null)return '';const list=x.time?CAL_REMIND_TIMED:CAL_REMIND_ALLDAY,hit=list.find(([v])=>v!==''&&Number(v)===x.remind);return hit?hit[1]:x.remind+' Minuten vorher'}
+/* Any reminder in words, also ones that are not in the lists (from quick capture or an .ics import). */
+function calRemindLabel(min){if(min<0){const m=-min;return 'Am Tag um '+String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')+' Uhr'}if(min===0)return 'Zur Startzeit';if(min%1440===0)return min/1440+(min===1440?' Tag':' Tage')+' vorher';if(min%60===0)return min/60+(min===60?' Stunde':' Stunden')+' vorher';return min+' Minuten vorher'}
+function calRemindText(x){if(x.remind==null)return '';const list=x.time?CAL_REMIND_TIMED:CAL_REMIND_ALLDAY,hit=list.find(([v])=>v!==''&&Number(v)===x.remind);return hit?hit[1]:calRemindLabel(x.remind)}
 /* ---------- Detail ---------- */
 function calOpen(id,date){
  const x=PulseLife.get(db,id);if(!x)return;if(x.kind!=='event')return lifeOpenItem(id,true);
@@ -24,48 +26,51 @@ function calOpen(id,date){
 function calSkip(id,date){const x=PulseLife.get(db,id);if(!x)return;if(lifeMutate(()=>PulseLife.update(db,id,{exdates:[...(x.exdates||[]),date]},new Date().toISOString()),'Termin am '+lifeDate(date,{day:'numeric',month:'short'})+' ausgelassen'))lifeCloseSheet()}
 function calDelete(id){if(lifeMutate(()=>PulseLife.update(db,id,{status:'archived'},new Date().toISOString()),'Termin gelöscht · rückgängig möglich'))lifeCloseSheet()}
 /* ---------- Editor ---------- */
-function calRecurOptions(date,current){
+function calRecurOptions(date,current,custom){
  const wd=PulseRecur.weekday(date),WD=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],n=PulseRecur.nthOf(date),M=lifeDate(date,{day:'numeric',month:'long'});
  const opts=[['','Keine'],['daily','Täglich'],['weekdays','Werktags (Mo–Fr)'],['weekly','Wöchentlich'],['weekly2','Alle 2 Wochen'],['monthly','Monatlich am '+Number(date.slice(8))+'.'],['monthlyNth','Monatlich am '+n+'. '+WD[wd]]];
  if(PulseRecur.isLast(date))opts.push(['monthlyLast','Monatlich am letzten '+WD[wd]]);opts.push(['yearly','Jährlich am '+M]);
+ /* A rule the list cannot show (alle 3 Wochen, alle 2 Monate …) stays as it is instead of being lost. */
+ if(custom){let l='Wie erfasst';try{l=PulseRecur.describe({date,recur:{...custom,until:'',count:0,nth:custom.nth===-1?-1:n}})}catch(_){}opts.splice(1,0,['custom',l])}
  return opts.map(([v,l])=>'<option value="'+v+'"'+(v===current?' selected':'')+'>'+esc(l)+'</option>').join('');
 }
-function calRecurKey(r){if(!r)return '';if(r.freq==='weekly'&&r.interval===2)return 'weekly2';if(r.freq==='monthlyNth'&&r.nth===-1)return 'monthlyLast';return r.freq}
-function calEdit(id,date){
- const x=id?PulseLife.get(db,id):null;if(id&&!x)return;
- const d=x?x.date:(PulseLife.validDate(date||'')?date:key()),allDay=x?!x.time:false,time=x?.time||(()=>{const h=new Date().getHours()+1;return String(Math.min(h,22)).padStart(2,'0')+':00'})();
- const end=x&&x.time?calEnd(x):String(Math.min(Number(time.slice(0,2))+1,23)).padStart(2,'0')+':'+time.slice(3);
- const r=x?.recur||null;calEditRecurDays=r?.freq==='weekly'?[...r.byday]:null;
+function calRecurKey(r){if(!r)return '';if(r.interval>1&&!(r.freq==='weekly'&&r.interval===2))return 'custom';if(r.freq==='weekly'&&r.interval===2)return 'weekly2';if(r.freq==='monthlyNth'&&r.nth===-1)return 'monthlyLast';return r.freq}
+/* Editor for a new or existing appointment. `pre` fills a new one (e.g. from the quick capture line). */
+function calEdit(id,date,pre){
+ const x=id?PulseLife.get(db,id):null;if(id&&!x)return;const src=x||pre||null;
+ const d=src&&PulseLife.validDate(src.date||'')?src.date:(PulseLife.validDate(date||'')?date:key()),allDay=src?!src.time:false,time=src?.time||(()=>{const h=new Date().getHours()+1;return String(Math.min(h,22)).padStart(2,'0')+':00'})();
+ const end=src&&src.time?calEnd({duration:60,...src}):String(Math.min(Number(time.slice(0,2))+1,23)).padStart(2,'0')+':'+time.slice(3);
+ const r=src?.recur||null;calEditRecurDays=r?.freq==='weekly'?[...(r.byday||[PulseRecur.weekday(d)])]:null;calEditCustom=calRecurKey(r)==='custom'?r:null;
  calSheet('<h2 id="lifeDetailHeading" tabindex="-1">'+(x?'Termin bearbeiten':'Neuer Termin')+'</h2>'+(x?.recur?'<p class="life-footnote">Änderungen gelten für die ganze Serie.</p>':'')+
   '<form class="cal-form" onsubmit="event.preventDefault();calSave('+(x?"'"+esc(x.id)+"'":"''")+')">'+
-  '<label class="life-name-field">Titel<input id="calTitle" required maxlength="180" value="'+esc(x?.title||'')+'" placeholder="z. B. Bandprobe"/></label>'+
+  '<label class="life-name-field">Titel<input id="calTitle" required maxlength="180" value="'+esc(src?.title||'')+'" placeholder="z. B. Bandprobe"/></label>'+
   '<label class="cal-check"><input type="checkbox" id="calAllDay"'+(allDay?' checked':'')+' onchange="calSync()"/> Ganztägig</label>'+
   '<div class="cal-grid2"><label class="life-name-field cal-full">Datum<input id="calDate" type="date" required value="'+esc(d)+'" onchange="calSync()"/></label>'+
   '<label class="life-name-field cal-timed">Beginn<input id="calStart" type="time" value="'+esc(time)+'" onchange="calSyncEnd()"/></label>'+
   '<label class="life-name-field cal-timed">Ende<input id="calEnd" type="time" value="'+esc(end)+'"/></label>'+
-  '<label class="life-name-field cal-allday">Bis (mehrtägig)<input id="calEndDate" type="date" value="'+esc(x?.endDate||'')+'"/></label></div>'+
-  '<label class="life-name-field">Wiederholung<select id="calRecur" onchange="calSync()">'+calRecurOptions(d,calRecurKey(r))+'</select></label>'+
+  '<label class="life-name-field cal-allday">Bis (mehrtägig)<input id="calEndDate" type="date" value="'+esc(src?.endDate||'')+'"/></label></div>'+
+  '<label class="life-name-field">Wiederholung<select id="calRecur" onchange="calSync()">'+calRecurOptions(d,calRecurKey(r),calEditCustom)+'</select></label>'+
   '<div id="calDays" class="vault-chips cal-days"></div>'+
-  '<div class="cal-grid2" id="calUntilRow"><label class="life-name-field">Endet<select id="calUntilMode" onchange="calSync()"><option value="">Nie</option><option value="date"'+(r?.until?' selected':'')+'>Am Datum</option></select></label><label class="life-name-field" id="calUntilWrap">Letzter Termin<input id="calUntil" type="date" value="'+esc(r?.until||'')+'"/></label></div>'+
-  '<label class="life-name-field">Ort<input id="calLocation" maxlength="200" value="'+esc(x?.location||'')+'" placeholder="optional"/></label>'+
+  '<div class="cal-grid2" id="calUntilRow"><label class="life-name-field">Endet<select id="calUntilMode" onchange="calSync()"><option value="">Nie</option><option value="date"'+(r?.until?' selected':'')+'>Am Datum</option><option value="count"'+(!r?.until&&r?.count?' selected':'')+'>Nach Anzahl</option></select></label><label class="life-name-field" id="calUntilWrap">Letzter Termin<input id="calUntil" type="date" value="'+esc(r?.until||'')+'"/></label><label class="life-name-field" id="calCountWrap">Anzahl Termine<input id="calCount" type="number" inputmode="numeric" min="1" max="999" value="'+(r?.count||10)+'"/></label></div>'+
+  '<label class="life-name-field">Ort<input id="calLocation" maxlength="200" value="'+esc(src?.location||'')+'" placeholder="optional"/></label>'+
   '<label class="life-name-field">Erinnerung<select id="calRemind"></select></label>'+
-  '<label class="life-name-field">Raum<select id="calRoom">'+PulseLife.ROOMS.map(rm=>'<option value="'+rm.id+'"'+((x?.room||'alltag')===rm.id?' selected':'')+'>'+esc(rm.name)+'</option>').join('')+'</select></label>'+
-  '<label class="life-name-field">Notiz<textarea id="calBody" rows="3" placeholder="optional">'+esc(x?.body||'')+'</textarea></label>'+
+  '<label class="life-name-field">Raum<select id="calRoom">'+PulseLife.ROOMS.map(rm=>'<option value="'+rm.id+'"'+((src?.room||'alltag')===rm.id?' selected':'')+'>'+esc(rm.name)+'</option>').join('')+'</select></label>'+
+  '<label class="life-name-field">Notiz<textarea id="calBody" rows="3" placeholder="optional">'+esc(src?.body||'')+'</textarea></label>'+
   '<div class="life-detail-actions"><button type="submit" class="life-btn dark">Speichern</button>'+lifeButton('Abbrechen','lifeCloseSheet()','life-btn')+'</div></form>','#calTitle');
- calSync(x?.remind);
+ calSync(src?.remind);
 }
 function calSyncEnd(){const s=document.getElementById('calStart').value,e=document.getElementById('calEnd');if(!s)return;const h=Math.min(Number(s.slice(0,2))+1,23);e.value=String(h).padStart(2,'0')+':'+s.slice(3)}
 function calSync(remind){
  const allDay=document.getElementById('calAllDay').checked,date=document.getElementById('calDate').value||key(),rec=document.getElementById('calRecur');
  document.querySelectorAll('.cal-timed').forEach(e=>e.hidden=allDay);document.querySelectorAll('.cal-allday').forEach(e=>e.hidden=!allDay);
- const cur=rec.value;rec.innerHTML=calRecurOptions(date,cur);if(rec.value!==cur)rec.value=cur.startsWith('monthly')&&cur!=='monthly'?'monthlyNth':'';
- const weekly=rec.value==='weekly'||rec.value==='weekly2';
+ const cur=rec.value;rec.innerHTML=calRecurOptions(date,cur,calEditCustom);if(rec.value!==cur)rec.value=cur.startsWith('monthly')&&cur!=='monthly'?'monthlyNth':'';
+ const weekly=rec.value==='weekly'||rec.value==='weekly2'||(rec.value==='custom'&&calEditCustom?.freq==='weekly');
  if(weekly&&!calEditRecurDays)calEditRecurDays=[PulseRecur.weekday(date)];
  const days=document.getElementById('calDays');days.hidden=!weekly;
  days.innerHTML=weekly?[1,2,3,4,5,6,0].map(i=>'<button type="button" aria-pressed="'+calEditRecurDays.includes(i)+'" onclick="'+lifeCall('calToggleDay',i)+'">'+['So','Mo','Di','Mi','Do','Fr','Sa'][i]+'</button>').join(''):'';
- document.getElementById('calUntilRow').hidden=!rec.value;document.getElementById('calUntilWrap').hidden=document.getElementById('calUntilMode').value!=='date';
+ const mode=document.getElementById('calUntilMode').value;document.getElementById('calUntilRow').hidden=!rec.value;document.getElementById('calUntilWrap').hidden=mode!=='date';document.getElementById('calCountWrap').hidden=mode!=='count';
  const sel=document.getElementById('calRemind'),prev=remind!==undefined?(remind==null?'':String(remind)):sel.value;
- const list=allDay?CAL_REMIND_ALLDAY:CAL_REMIND_TIMED;sel.innerHTML=list.map(([v,l])=>'<option value="'+v+'">'+esc(l)+'</option>').join('');sel.value=list.some(([v])=>v===prev)?prev:'';
+ let list=allDay?CAL_REMIND_ALLDAY:CAL_REMIND_TIMED;if(prev!==''&&Number.isFinite(Number(prev))&&!list.some(([v])=>v===prev))list=[...list,[prev,calRemindLabel(Number(prev))]];sel.innerHTML=list.map(([v,l])=>'<option value="'+v+'">'+esc(l)+'</option>').join('');sel.value=list.some(([v])=>v===prev)?prev:'';
 }
 function calToggleDay(i){const set=new Set(calEditRecurDays||[]);if(set.has(i)&&set.size>1)set.delete(i);else set.add(i);calEditRecurDays=[...set];calSync()}
 function calSave(id){
@@ -74,7 +79,8 @@ function calSave(id){
  if(allDay){fields.time='';fields.duration=Number(PulseLife.get(db,id)?.duration)||60;fields.endDate=v('calEndDate')}
  else{const s=v('calStart'),e=v('calEnd');if(!s)return toast('Bitte eine Startzeit angeben oder „Ganztägig“ wählen.');let min=(Date.parse('2000-01-01T'+(e||s)+':00Z')-Date.parse('2000-01-01T'+s+':00Z'))/60000;if(min<=0)min+=1440;fields.time=s;fields.duration=Math.min(1440,min||60);fields.endDate=''}
  const k=v('calRecur');
- if(k){const freq={weekly2:'weekly',monthlyLast:'monthlyNth'}[k]||k;fields.recur={freq,interval:k==='weekly2'?2:1,until:v('calUntilMode')==='date'?v('calUntil'):'',...(freq==='weekly'?{byday:calEditRecurDays||[PulseRecur.weekday(date)]}:{}),...(k==='monthlyLast'?{nth:-1}:{})}}else fields.recur=null;
+ if(k){const c=k==='custom'?calEditCustom:null,freq=c?c.freq:{weekly2:'weekly',monthlyLast:'monthlyNth'}[k]||k,mode=v('calUntilMode');
+  fields.recur={freq,interval:c?c.interval:k==='weekly2'?2:1,until:mode==='date'?v('calUntil'):'',count:mode==='count'?Math.max(1,Math.min(999,Math.round(Number(v('calCount'))||1))):0,...(freq==='weekly'?{byday:calEditRecurDays||[PulseRecur.weekday(date)]}:{}),...(k==='monthlyLast'||c?.nth===-1?{nth:-1}:{})}}else fields.recur=null;
  const now=new Date().toISOString(),newId=id||uid('life');
  const ok=lifeMutate(()=>id?PulseLife.update(db,id,fields,now):PulseLife.create(db,fields,newId,now),id?'Termin gespeichert':'Termin angelegt');
  if(!ok)return;lifeCloseSheet();pulseTap();cosmosDay=date;renderCosmos();

@@ -41,6 +41,23 @@ try{
   const n=await ev(()=>db.life.items.filter(x=>x.ics).length);assert.equal(n,8);
   await ev(()=>undoLast());await pg.waitForTimeout(150);assert.equal(await ev(()=>db.life.items.filter(x=>x.ics).length),0);
  });
+ await check('quick capture: series, clean titles, details editor keeps the rule',async()=>{
+  const add=async t=>{await ev(()=>lifeQuick());await pg.fill('#quickText',t);await pg.waitForTimeout(80);const route=await pg.innerText('#quickRoute');await pg.press('#quickText','Enter');await pg.waitForTimeout(150);return {route,x:await ev(()=>db.life.items.at(-1))}};
+  let {route,x}=await add('Probe jeden Dienstag 19 Uhr');
+  assert.match(route,/Terminserie · Jeden Dienstag · 19:00 Uhr/);
+  assert.deepEqual([x.kind,x.title,x.time,x.recur.freq,x.recur.byday],['event','Probe','19:00','weekly',[2]]);
+  assert.equal(await ev(d=>PulseRecur.weekday(d),x.date),2);
+  ({x}=await add('Gesang alle 2 Wochen am Donnerstag 17:30–19:00, Erinnerung 1 Stunde vorher'));
+  assert.deepEqual([x.title,x.recur.interval,x.recur.byday,x.duration,x.remind],['Gesang',2,[4],90,60]);
+  ({x}=await add('Zahnarzt morgen um 15 Uhr'));assert.deepEqual([x.title,x.date,x.recur],['Zahnarzt',await ev(()=>PulseLife.offset(key(),1)),null]);
+  ({x}=await add('Konzert am 3. Mai 20 Uhr'));assert.deepEqual([x.kind,x.title,x.date.slice(5),x.time],['event','Konzert','05-03','20:00']);
+  await ev(()=>lifeQuick());await pg.fill('#quickText','Chor alle 3 Wochen samstags 11 Uhr 5-mal');await pg.click('text=Mehr Details');await pg.waitForTimeout(150);
+  assert.deepEqual(await ev(()=>[calTitle.value,calRecur.value,calUntilMode.value,calCount.value]),['Chor','custom','count','5']);
+  await pg.click('.cal-form button[type=submit]');await pg.waitForTimeout(150);
+  const c=await ev(()=>db.life.items.find(y=>y.title==='Chor'));assert.deepEqual([c.recur.freq,c.recur.interval,c.recur.count,c.recur.byday],['weekly',3,5,[6]]);
+  await ev(id=>calEdit(id),c.id);await pg.click('.cal-form button[type=submit]');await pg.waitForTimeout(150);
+  assert.deepEqual(await ev(id=>{const y=PulseLife.get(db,id);return [y.recur.interval,y.recur.count]},c.id),[3,5]);
+ });
  await check('videos: duplicate detection and shelf',async()=>{
   await ev(()=>lifeOpenVideos());await pg.fill('#vaultLink','https://www.youtube.com/watch?v=AAAAAAAAAAA');await pg.click('.vault-add >> text=Hinzufügen');await pg.waitForTimeout(150);
   assert.equal(await ev(()=>db.videos.items.length),1);

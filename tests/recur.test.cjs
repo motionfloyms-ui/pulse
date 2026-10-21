@@ -40,3 +40,13 @@ test('the day view shows repeating and multi-day events',()=>{
  assert.equal(Life.get(db,'e1').location,'Proberaum');
  Life.update(db,'e1',{exdates:['2026-11-03']},'t');assert.equal(Life.day(db,'2026-11-03').length,0);
 });
+test('place: first start on or after a day, and the end as a date',()=>{
+ const P=require('../src/js/domain/life/recur.js').place;
+ assert.equal(P({freq:'monthly',dom:31,interval:1},'2026-11-01').date,'2026-12-31');
+ assert.equal(P({freq:'weekdays'},'2026-10-24').date,'2026-10-26');
+ assert.deepEqual(P({freq:'weekly',byday:[]},'2026-10-21').recur.byday,[3]);
+ assert.equal(P({freq:'yearly',until:{d:1,m:3,y:0}},'2026-10-21').recur.until,'2027-03-01');
+ assert.equal(P({freq:'weekly',byday:[1],until:{d:31,m:2,y:2027}},'2026-10-21').recur.until,'');
+ assert.equal(P({freq:'monthly',lasting:{n:2,unit:'m'}},'2026-01-31').recur.until,'2026-01-31');assert.equal(P({freq:'monthly',lasting:{n:3,unit:'m'}},'2026-01-15').recur.until,'2026-03-15');
+ assert.equal(P({freq:'nope'},'2026-10-21'),null);assert.equal(P({freq:'daily'},'kein Datum'),null);
+});

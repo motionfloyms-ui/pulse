@@ -216,6 +216,7 @@ textarea{resize:vertical;line-height:1.55;min-height:110px}
 .life-day-layout>div>.life-sectionhead:first-child{margin-top:30px}
 .life-day-aside>.life-sectionhead{margin-top:30px}
 .life-time-row{display:flex;gap:12px;margin-bottom:8px}
+.life-allday{margin:0 0 10px}.life-allday>.life-subtle{display:block;margin:0 0 6px;font-size:13px;font-weight:650}
 .life-time-row>time{min-width:44px;padding-top:16px;font-size:14px;font-weight:650;font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .life-timed-entry{flex:1;min-width:0;border-radius:var(--r-lg);padding:2px 0 10px;background:var(--surface)!important;box-shadow:inset 4px 0 0 var(--room)}
 .life-timed-entry .life-entry{background:transparent;border-radius:0;margin:0}
@@ -1153,7 +1154,7 @@ td{font-variant-numeric:tabular-nums}
 @media print{.life-nav,.life-topbar,.toast{display:none}.app{padding:0}}
 
 </style></head><body class="life-modern">
-<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v25</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view life-screen" id="videos"><div id="vaultContent"></div></section><section class="view life-screen" id="sigils"><div id="sigilContent"></div></section><section class="view life-screen" id="sky"><div id="skyContent"></div></section><section class="view life-screen" id="songs"><div id="songContent"></div></section><section class="view life-screen" id="more"><div id="moreContent"></div></section><section class="view life-screen" id="bodyhub"><div id="bodyHubContent"></div></section>
+<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v26</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view life-screen" id="videos"><div id="vaultContent"></div></section><section class="view life-screen" id="sigils"><div id="sigilContent"></div></section><section class="view life-screen" id="sky"><div id="skyContent"></div></section><section class="view life-screen" id="songs"><div id="songContent"></div></section><section class="view life-screen" id="more"><div id="moreContent"></div></section><section class="view life-screen" id="bodyhub"><div id="bodyHubContent"></div></section>
 <section class="view " id="mehub"><button type="button" class="backbtn" onclick="navigateUp('more')"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-back"></use></svg>Mehr</button><header class="pagehead"><h1>Ich</h1></header><div class="identity"><span class="avatar" data-me-initial>·</span><div><b data-me-name>Du</b><small>Muskelaufbau · Alltag · mehr Raum im Kopf</small></div></div><div class="routes"><button type="button" class="route" onclick="goView('goals')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Deine Richtung</b><small>Ziele, die zu deinem Leben passen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('plan')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg></span><span class="grow"><b>Dein Plan</b><small>Routinen, Training & Ausnahmen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('history')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg></span><span class="grow"><b>Verlauf</b><small>Was tatsächlich passiert ist</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('coach')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-spark"></use></svg></span><span class="grow"><b>Muster</b><small>Beobachtungen aus deinen Einträgen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div>
 <details class="disclosure"><summary>Was PULSE über dich weiß</summary><p class="tiny" id="eventCount"></p><div id="semanticMemory" class="memory-list"></div></details>
 <details class="disclosure"><summary>Daten &amp; Einstellungen</summary><p>Deine Einträge bleiben in diesem Browser. Ein Backup nimmt sie mit.</p><div class="actions"><button type="button" class="secondary" onclick="exportPulse()"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-download"></use></svg> Backup exportieren</button><button type="button" class="secondary" onclick="document.getElementById('pulseImport').click()">Backup importieren</button><button type="button" id="installPulse" hidden onclick="installPulse()">Als App installieren</button></div><input type="file" id="pulseImport" class="fileinput" accept="application/json" aria-label="PULSE-Backup auswählen" onchange="importPulse(this.files[0])"/><p class="tiny">PULSE 9 · App Preview 5</p></details></section>
@@ -1259,7 +1260,31 @@ td{font-variant-numeric:tabular-nums}
   if(r.until)t+=', bis '+fmt(r.until);else if(r.count)t+=', '+r.count+'-mal';
   return t;
  }
- return {FREQS,EXTRA,normalize,ruleMatches,startsOn,occurrence,occursOn,starts,next,remindAt,describe,add,diff,weekday:wd,nthOf,isLast,validDate};
+ /* Puts a rule from everyday language (PulseCapture.repeat) on the calendar: the first start on or after
+    `base`, and the end ("bis 20.12.", "bis Ende Juni", "für 6 Wochen") as a date. Null when no day fits. */
+ function place(rule,base){
+  if(!rule||!FREQS.includes(rule.freq)||!validDate(base))return null;
+  const r={freq:rule.freq,interval:Math.max(1,Math.min(99,Math.floor(rule.interval)||1)),until:'',count:Math.max(0,Math.min(999,Math.floor(rule.count)||0))};
+  let d=base;const seek=ok=>{for(let i=0;i<800;i++,d=add(d,1))if(ok(d))return true;return false};
+  if(r.freq==='weekdays')seek(x=>wd(x)>=1&&wd(x)<=5);
+  if(r.freq==='weekly'){r.byday=[...new Set((rule.byday||[]).filter(n=>n>=0&&n<=6))];if(!r.byday.length)r.byday=[wd(base)];r.byday.sort();seek(x=>r.byday.includes(wd(x)))}
+  if(r.freq==='monthly'&&rule.dom&&!seek(x=>Number(x.slice(8))===rule.dom))return null;
+  if(r.freq==='monthlyNth'){const w=rule.byday?.length?rule.byday[0]:wd(base),n=rule.nth===-1?-1:Math.max(1,Math.min(4,rule.nth||1));if(!seek(x=>wd(x)===w&&(n===-1?isLast(x):nthOf(x)===n)))return null;r.nth=n}
+  const u=rule.until;
+  if(u&&u.m>=1&&u.m<=12){
+   let y=u.y||Number(d.slice(0,4));const at=yy=>{const m=String(u.m).padStart(2,'0'),last=monthLength(yy+'-'+m+'-01');return yy+'-'+m+'-'+String(u.d?u.d:last).padStart(2,'0')};
+   let end=at(y);if(!u.y&&end<d)end=at(++y);
+   if(validDate(end)&&end>=d)r.until=end;
+  }else if(rule.lasting&&rule.lasting.n>0){
+   const n=rule.lasting.n,unit=rule.lasting.unit;let end;
+   if(unit==='t')end=add(d,n-1);else if(unit==='w')end=add(d,7*n-1);
+   else{const months=unit==='m'?n:12*n,y=Number(d.slice(0,4)),m=Number(d.slice(5,7))-1+months,yy=y+Math.floor(m/12),mm=String(m%12+1).padStart(2,'0'),day=Math.min(Number(d.slice(8)),monthLength(yy+'-'+mm+'-01'));end=add(yy+'-'+mm+'-'+String(day).padStart(2,'0'),-1)}
+   // The last start inside the span, so the description names the real last date.
+   const x={date:d,recur:{...r,byday:r.byday,nth:r.nth}},all=starts(x,d,end,1000);r.until=all.length?all[all.length-1]:end;
+  }
+  return {date:d,recur:r};
+ }
+ return {FREQS,EXTRA,normalize,ruleMatches,startsOn,occurrence,occursOn,starts,next,remindAt,describe,place,add,diff,weekday:wd,nthOf,isLast,validDate};
 });
 // SOURCE: domain/life/model.js
 /* PULSE Lebensräume: shared records and local projections. No automatic completions. */
@@ -1733,12 +1758,19 @@ return {run};
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseCapture=api})(globalThis,function(){
  const norm=t=>t.toLowerCase().replace(/ü/g,'ue').replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ß/g,'ss');
  function relative(text,date,offset){const t=norm(text);if(/\buebermorgen\b/.test(t))return offset(date,2);if(/\bmorgen\b/.test(t))return offset(date,1);if(/naechste woche/.test(t))return offset(date,7);if(/\bheute\b/.test(t))return date;return null}
+ /* A dated entry is a look back only when it says so: a past year ("am 3.5.2025") or past tense
+    ("am 3.10. war ich beim Arzt"). "Zahnarzt am 23.10." is a plan. */
+ function pastDate(low,date){
+  const y=low.match(/\b(\d{1,2})\.(\d{1,2})\.(\d{4}|\d{2})(?!\d)/);
+  if(y){const year=y[3].length===2?'20'+y[3]:y[3],d=year+'-'+y[2].padStart(2,'0')+'-'+y[1].padStart(2,'0');if(d<date)return true}
+  return /\b(war|waren|warst|hatte|hatten|gewesen|gehabt|gemacht|erledigt|gegangen|getroffen|besucht|gegessen|getrunken|trainiert|geschafft|gekauft)\b/.test(low);
+ }
  function interpret(text,date,offset){
   const raw=(text||'').trim(),low=norm(raw),due=relative(raw,date,offset);
   const taskVerb=/\b(kaufen|anrufen|erinner\w*|termin|muss|todo|to-do|bestellen|abholen|bezahlen|schreiben|erledigen)\b/.test(low);
   const future=due&&due>date;
   if(taskVerb||future)return {raw,type:'task',domain:'brain',due,confidence:'derived'};
-  if(/gestern|vorgestern|letzte woche|am\s+\d{1,2}[./]/.test(low))return {raw,type:'historical-review',domain:'brain',due:null,confidence:'unclear'};
+  if(/gestern|vorgestern|letzte woche/.test(low)||(/am\s+\d{1,2}[./]/.test(low)&&pastDate(low,date)))return {raw,type:'historical-review',domain:'brain',due:null,confidence:'unclear'};
   if(/wieder fit|nicht mehr krank|mir geht es wieder gut/.test(low))return {raw,type:'context-clear',domain:'body',due:null,confidence:'confirmed'};
   if(/(?:keine?|nicht) (?:schmerzen|beschwerden|uebel|krank|erschoepft)/.test(low))return {raw,type:'context',domain:'body',due:null,confidence:'derived'};
   if(/periode|zyklus|schmerz|uebel|erbrechen|erschoepft|recovery|krank/.test(low))return {raw,type:/stark|schlimm|heftig|erbrechen|erschoepft|recovery|krank/.test(low)?'recovery':'context',domain:'body',due:null,confidence:'derived'};
@@ -1759,17 +1791,149 @@ return {run};
  }
  const WEEKDAYS={sonntag:0,montag:1,dienstag:2,mittwoch:3,donnerstag:4,freitag:5,samstag:6};
  function validDate(d){if(!/^\d{4}-\d{2}-\d{2}$/.test(d))return false;const x=new Date(d+'T12:00:00Z');return !Number.isNaN(x.getTime())&&x.toISOString().slice(0,10)===d}
- /* Date and time in everyday German: "morgen", "Freitag", "am 24.10.", "um 15 Uhr", "18:30". */
- function when(text,date,offset){
-  const t=norm(text||'');let day=relative(text||'',date,offset)||'',time='';
-  const dm=t.match(/\b(?:am\s+)?(\d{1,2})\.(\d{1,2})\.(\d{2,4})?(?!\d)/);
-  if(dm){const y=dm[3]?(dm[3].length===2?'20'+dm[3]:dm[3]):date.slice(0,4);let d=y+'-'+dm[2].padStart(2,'0')+'-'+dm[1].padStart(2,'0');if(!dm[3]&&d<date)d=String(Number(y)+1)+d.slice(4);if(validDate(d))day=d}
-  if(!day)for(const [name,n] of Object.entries(WEEKDAYS))if(new RegExp('\\b'+name+'s?\\b').test(t)){const cur=new Date(date+'T12:00:00').getDay();let diff=(n-cur+7)%7;if(diff===0)diff=7;day=offset(date,diff);break}
-  const tm=t.match(/\b(?:um\s+)?([01]?\d|2[0-3])(?::([0-5]\d)|\s*uhr(?:\s*([0-5]\d))?)(?!\d)/)||t.match(/\bum\s+([01]?\d|2[0-3])\b/);
-  if(tm)time=tm[1].padStart(2,'0')+':'+(tm[2]||tm[3]||'00');
-  return {date:day,time};
+ const pad=n=>String(n).padStart(2,'0');
+ /* Month names in normalized text (umlauts written out): "3. Mai", "24. Dez.", "1. Maerz 2027". */
+ const MONTH_N='(januar|jaenner|jan|februar|feb|maerz|maer|mrz|april|apr|mai|juni|jun|juli|jul|august|aug|september|sept|sep|oktober|okt|november|nov|dezember|dez)';
+ const monthNo=m=>m.startsWith('mai')?5:m.startsWith('jul')?7:m.startsWith('jun')?6:m.startsWith('ma')||m==='mrz'?3:{ja:1,fe:2,ap:4,au:8,se:9,ok:10,no:11,de:12}[m.slice(0,2)];
+ /* Day and month (and maybe year) to a date; without a year a past day means next year. */
+ function dayOf(d,m,y,date){
+  const year=y?(String(y).length===2?'20'+y:String(y)):date.slice(0,4);let out=year+'-'+pad(m)+'-'+pad(d);
+  if(!y&&out<date)out=String(Number(year)+1)+out.slice(4);
+  return validDate(out)?out:'';
  }
- return {interpret,relative,workout,when};
+ /* Date and time in everyday German: "morgen", "Freitag", "am 24.10.", "3. Mai", "um 15 Uhr", "18:30",
+    "19–21 Uhr", "7 Uhr abends". `end` is the end of a time span or ''. */
+ function when(text,date,offset){
+  const t=norm(text||'');let day=relative(text||'',date,offset)||'',time='',end='';
+  const dm=t.match(/\b(?:am\s+)?(\d{1,2})\.(\d{1,2})\.(\d{2,4})?(?!\d)/);
+  if(dm){const d=dayOf(dm[1],dm[2],dm[3],date);if(d)day=d}
+  else{const mn=t.match(new RegExp('(?:^|[^a-z\\d])(\\d{1,2})\\.?\\s*'+MONTH_N+'\\.?(?:\\s+(\\d{4}))?(?![a-z\\d])'));if(mn){const d=dayOf(mn[1],monthNo(mn[2]),mn[3],date);if(d)day=d}}
+  if(!day)for(const [name,n] of Object.entries(WEEKDAYS))if(new RegExp('\\b'+name+'s?\\b').test(t)){const cur=new Date(date+'T12:00:00').getDay();let diff=(n-cur+7)%7;if(diff===0)diff=7;day=offset(date,diff);break}
+  const range=[...t.matchAll(/\b(von\s+)?([01]?\d|2[0-3])(?::([0-5]\d))?\s*(?:uhr\s*)?(?:-|–|—|bis)\s*([01]?\d|2[0-3])(?::([0-5]\d))?\s*(uhr)?(?!\d|\.\d)/g)].find(h=>h[1]||h[3]||h[5]||h[6]);
+  if(range){time=pad(range[2])+':'+(range[3]||'00');end=pad(range[4])+':'+(range[5]||'00')}
+  else{
+   const tm=t.match(/\b(?:um\s+)?([01]?\d|2[0-3])(?::([0-5]\d)|\.([0-5]\d)\s*uhr|\s*uhr(?:\s*([0-5]\d))?)(?!\d)/)||t.match(/\bum\s+([01]?\d|2[0-3])\b/);
+   if(tm)time=pad(tm[1])+':'+(tm[2]||tm[3]||tm[4]||'00');
+  }
+  if(time&&/\b(abends?|nachmittags?)\b/.test(t)){const pm=v=>{const h=Number(v.slice(0,2));return h>=1&&h<12?pad(h+12)+v.slice(2):v};time=pm(time);if(end)end=pm(end)}
+  return {date:day,time,end};
+ }
+ /* ---------- Series and clean titles. These work on the original text (lower-cased with the same
+    length), so recognised phrases can be cut out of what the person typed. ---------- */
+ // Word edges; a word glued to a hyphen ("Freitags-Playlist") is part of a compound, not a time word.
+ const B='(?<![\\p{L}\\d])',E='(?![\\p{L}\\d]|-\\p{L})',R=s=>new RegExp(s,'gu');
+ const lower=s=>Array.from(String(s||''),c=>{const l=c.toLowerCase();return l.length===c.length?l:c}).join('');
+ const DAYS='montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonnabend|sonntag';
+ const DAYNO={montag:1,dienstag:2,mittwoch:3,donnerstag:4,freitag:5,samstag:6,sonnabend:6,sonntag:0,mo:1,di:2,mi:3,do:4,fr:5,sa:6,so:0};
+ const NUMRE='(\\d{1,3}|zwei|drei|vier|f(?:ü|ue)nf|sechs|sieben|acht|neun|zehn|elf|zw(?:ö|oe)lf)';
+ const NUMW={zwei:2,drei:3,vier:4,'fünf':5,fuenf:5,sechs:6,sieben:7,acht:8,neun:9,zehn:10,elf:11,'zwölf':12,zwoelf:12,ein:1,eine:1,einen:1,einer:1};
+ const num=s=>/^\d/.test(s)?Number(s):NUMW[s]||0;
+ const ORDRE='(erste[nrs]?|1\\.|zweite[nrs]?|2\\.|dritte[nrs]?|3\\.|vierte[nrs]?|4\\.|letzte[nrs]?)';
+ const ordNo=s=>s.startsWith('letzt')?-1:/^(erst|1)/.test(s)?1:/^(zweit|2)/.test(s)?2:/^(dritt|3)/.test(s)?3:4;
+ const MONTH_L='(januar|j(?:ä|ae)nner|jan|februar|feb|m(?:ä|ae)rz|m(?:ä|ae)r|mrz|april|apr|mai|juni|jun|juli|jul|august|aug|september|sept|sep|oktober|okt|november|nov|dezember|dez)';
+ const UNIT={t:'daily',w:'weekly',m:'monthly',j:'yearly'};
+ /* Cuts spans out of `src` and tidies what is left (loose commas, dangling "und", "am", "um" …). */
+ function cutOut(src,cuts){
+  let out='',p=0;for(const [a,b] of [...cuts].sort((x,y)=>x[0]-y[0])){if(a<p)continue;out+=src.slice(p,a)+' ';p=b}out+=src.slice(p);
+  let prev;do{prev=out;out=out.replace(/[ \t]+/g,' ').replace(/ ([,.;:!?])/g,'$1').replace(/^[\s,;:–—+&/-]+|[\s,;:–—+&/-]+$/g,'').replace(/(^|\s)(?:und|sowie|am|um|ab|bis|von|immer|jeweils|jeden|jede)$/i,'').replace(/^(?:und|sowie|am|um|ab)(?=\s)/i,'')}while(out!==prev);
+  return out.trim();
+ }
+ function scanner(t){
+  const cuts=[],free=(a,b)=>!cuts.some(([x,y])=>a<y&&x<b);
+  const scan=(re,fn)=>{let hit=false;for(const h of t.matchAll(re)){const a=h.index,b=a+h[0].length;if(!free(a,b))continue;if(fn(h,a)!==false){cuts.push([a,b]);hit=true}}return hit};
+  return {cuts,scan};
+ }
+ /* A repeating rule in everyday German, e.g. "jeden Dienstag", "dienstags und donnerstags",
+    "alle 2 Wochen", "jeden zweiten Tag", "werktags", "am ersten Montag im Monat", "jeden 15.",
+    "jährlich", plus an end: "bis 20.12.", "bis Ende Juni", "10-mal", "für 6 Wochen".
+    Returns null or {rule, rest, phrase}; `rest` is the text without the series words, ready for
+    when() (start date "ab 3.11.", time) and for the title. Only what is clearly a series counts:
+    a plain "Dienstag" stays a single date. */
+ function repeat(text){
+  const src=String(text||''),t=lower(src),{cuts,scan}=scanner(t);
+  const r={freq:'',interval:1,byday:[],nth:0,dom:0,until:null,count:0,lasting:null,pm:false};
+  const setF=(f,n=1)=>{if(!r.freq){r.freq=f;r.interval=n;return true}if(r.freq===f||(f==='monthly'&&r.freq==='monthlyNth')){if(n>1)r.interval=n;return true}return false};
+  // Nth weekday of the month. "jeden zweiten Dienstag" without "im Monat" means every other week.
+  scan(R(B+'(?:(jede[nmrs]?|immer|jeweils)\\s+(?:am\\s+)?|am\\s+)?'+ORDRE+'\\s+('+DAYS+')s?((?:\\s+(?:im|des|jeden|eines|pro)\\s+monats?)?)'+E),h=>{
+   const lead=!!h[1],ord=ordNo(h[2]),w=DAYNO[h[3]],monthly=!!h[4];
+   if(!lead&&!monthly)return false;
+   if(ord===2&&!monthly){if(!setF('weekly',2))return false;r.byday.push(w);return true}
+   if(r.freq&&r.freq!=='monthly'&&r.freq!=='monthlyNth')return false;
+   r.interval=r.freq?r.interval:1;r.freq='monthlyNth';r.nth=ord;r.byday=[w];return true;
+  });
+  scan(R(B+'alle\\s+'+NUMRE+'\\s+(tage|wochen|monate|jahre)'+E),h=>setF(UNIT[h[2][0]],num(h[1])));
+  scan(R(B+'jede[nmrs]?\\s+(zweite[nmrs]?|dritte[nmrs]?|vierte[nmrs]?|[2-9]\\.)\\s+(tag|woche|monat|jahr)'+E),h=>setF(UNIT[h[2][0]],/^\d/.test(h[1])?Number(h[1][0]):ordNo(h[1])));
+  scan(R(B+'(?:(?:14|vierzehn)\\s*-?\\s*t(?:ä|ae)gig|zweiw(?:ö|oe)chentlich|zweiw(?:ö|oe)chig)'+E),()=>setF('weekly',2));
+  scan(R(B+'(?:viertelj(?:ä|ae)hrlich|quartalsweise|jedes\\s+quartal)'+E),()=>setF('monthly',3));
+  scan(R(B+'halbj(?:ä|ae)hrlich'+E),()=>setF('monthly',6));
+  scan(R(B+'zweimonatlich'+E),()=>setF('monthly',2));
+  scan(R(B+'(?:t(?:ä|ae)glich|allt(?:ä|ae)glich|jeden\\s+tag|jeden\\s+(morgen|vormittag|mittag|nachmittag|abend)|jede\\s+nacht)'+E),h=>{if(h[1]&&/nachmittag|abend/.test(h[1]))r.pm=true;return setF('daily')});
+  scan(R(B+'(?:werktags|wochentags|jeden\\s+werktag|an\\s+werktagen|montags\\s*(?:bis|-|–)\\s*freitags|(?:jeden|immer)\\s+(?:montag|mo\\.?)\\s*(?:bis|-|–)\\s*(?:freitag|fr\\.?))'+E),()=>{if(r.freq&&r.freq!=='weekdays')return false;r.freq='weekdays';return true});
+  scan(R(B+'(?:w(?:ö|oe)chentlich|jede\\s+woche|einmal\\s+(?:pro|die|in\\s+der)\\s+woche)'+E),()=>setF('weekly'));
+  scan(R(B+'(?:monatlich|jeden\\s+monat|einmal\\s+(?:im|pro)\\s+monat)'+E),()=>setF('monthly'));
+  scan(R(B+'(?:j(?:ä|ae)hrlich|allj(?:ä|ae)hrlich|jedes\\s+jahr|einmal\\s+(?:im|pro)\\s+jahr)'+E),()=>setF('yearly'));
+  // "jeden 3. Mai", "jeden 24.12.": yearly; the date itself stays for when().
+  scan(R(B+'jede[ns]?(?=\\s+\\d{1,2}\\.\\s*(?:\\d{1,2}\\.|'+MONTH_L+'))'),()=>setF('yearly'));
+  // Day of the month: "jeden 15.", "monatlich am 15.", "am 15. jeden Monats", "zum Monatsanfang".
+  scan(R(B+'(jeden|immer\\s+am|am)\\s+(\\d{1,2})\\.(?!\\s*(?:\\d{1,2}\\.(?!\\d{2}\\s*uhr)|'+MONTH_L+'))((?:\\s+(?:jeden|des|eines)\\s+monats)?)'+E),h=>{const d=Number(h[2]);if(d<1||d>31)return false;if(h[1]==='am'&&!h[3]&&r.freq!=='monthly')return false;if(!setF('monthly'))return false;r.dom=d;return true});
+  scan(R(B+'(?:(?:am|zum|jeden)\\s+)?(?:monatsersten|monatsanfang|ersten\\s+(?:des|jeden|eines)\\s+monats|anfang\\s+(?:des|jeden|eines)\\s+monats)'+E),()=>{if(!setF('monthly'))return false;r.dom=1;return true});
+  // Weekdays: "jeden Dienstag", "dienstags", "jeden Di und Do", "dienstags und freitags". A plain
+  // "Dienstag" only joins a weekly rule that is already there ("alle 2 Wochen am Dienstag").
+  const TOK='(?:(?:'+DAYS+')s?|(?:mo|di|mi|do|fr|sa|so)\\.?)',SEP='\\s*(?:,|und|&|\\+|/|sowie)\\s*(?:am\\s+)?';
+  scan(R(B+'(?:(jede[nmrs]?|immer|jeweils)\\s+)?(am\\s+)?('+TOK+'(?:'+SEP+TOK+')*)'+E),(h,a)=>{
+   const lead=!!h[1],list=h[3],at=a+h[0].length-list.length,days=[];let plural=false,full=false;
+   for(const k of list.matchAll(R(B+'(?:('+DAYS+')(s?)|(mo|di|mi|do|fr|sa|so)\\.?)'+E))){
+    if(k[1]){full=true;if(k[2])plural=true;days.push(DAYNO[k[1]])}
+    else{if(!/[A-ZÄÖÜ]/.test(src[at+k.index]))return false;days.push(DAYNO[k[3]])}
+   }
+   if(!full&&!lead&&days.length<2)return false;
+   if(lead||plural){if(r.freq&&r.freq!=='weekly')return false;if(!r.freq)r.freq='weekly'}
+   else if(r.freq!=='weekly')return false;
+   r.byday.push(...days);return true;
+  });
+  if(!r.freq)return null;
+  // How long: "bis 20.12.", "bis zum 3. März 2027", "bis Ende Juni", "bis Jahresende", "10-mal", "für 6 Wochen".
+  scan(R(B+'bis\\s+(?:zum\\s+|einschlie(?:ß|ss)lich\\s+|inkl\\.?\\s+)?(?:(?:mo|di|mi|do|fr|sa|so)\\.?,?\\s+)?(\\d{1,2})\\.(\\d{1,2})\\.(\\d{2,4})?(?!\\d)'),h=>{if(r.until)return false;r.until={d:+h[1],m:+h[2],y:h[3]?+(h[3].length===2?'20'+h[3]:h[3]):0}});
+  scan(R(B+'bis\\s+(?:zum\\s+)?(\\d{1,2})\\.?\\s*'+MONTH_L+'\\.?(?:\\s+(\\d{4}))?'+E),h=>{if(r.until)return false;r.until={d:+h[1],m:monthNo(norm(h[2])),y:+h[3]||0}});
+  scan(R(B+'bis\\s+ende\\s+'+MONTH_L+'\\.?(?:\\s+(\\d{4}))?'+E),h=>{if(r.until)return false;r.until={d:0,m:monthNo(norm(h[1])),y:+h[2]||0}});
+  scan(R(B+'bis\\s+(?:zum\\s+)?(?:jahresende|ende\\s+des\\s+jahres|silvester)'+E),()=>{if(r.until)return false;r.until={d:31,m:12,y:0}});
+  scan(R(B+NUMRE+'\\s*(?:-\\s*)?(?:mal|x)'+E+'(?!\\s+(?:pro|die|in|im|am|je|t(?:ä|ae)glich|w(?:ö|oe)chentlich|monatlich|j(?:ä|ae)hrlich)'+E+')'),h=>{const n=num(h[1]);if(r.count||n<2)return false;r.count=n});
+  scan(R(B+'(?:insgesamt\\s+)?'+NUMRE+'\\s+termine'+E),h=>{const n=num(h[1]);if(r.count||n<1)return false;r.count=n});
+  scan(R(B+'(?:f(?:ü|ue)r\\s+'+NUMRE+'\\s+(tage|wochen|monate|jahre)|'+NUMRE+'\\s+(tage|wochen|monate|jahre)\\s+lang)'+E),h=>{const n=num(h[1]||h[3]);if(!n||r.lasting)return false;r.lasting={n,unit:(h[2]||h[4])[0]}});
+  r.byday=[...new Set(r.byday)];
+  const phrase=[...cuts].sort((x,y)=>x[0]-y[0]).map(([a,b])=>src.slice(a,b).trim()).join(' ');
+  return {rule:r,rest:cutOut(src,cuts),phrase};
+ }
+ const REMIND_UNITS='(min(?:uten?)?\\.?|std\\.?|stunden?|tage?n?)';
+ const REMIND_NUM='(\\d{1,3}|eine[nr]?|ein|zwei|drei|vier|f(?:ü|ue)nf|sechs|zehn|zw(?:ö|oe)lf|zwanzig|drei(?:ß|ss)ig|f(?:ü|ue)nfzehn|f(?:ü|ue)nfundvierzig)';
+ const REMIND_W={zwanzig:20,'dreißig':30,dreissig:30,'fünfzehn':15,fuenfzehn:15,'fünfundvierzig':45,fuenfundvierzig:45};
+ /* Reminder wishes: "30 min vorher", "Erinnerung 1 Stunde vorher", "am Vortag erinnern", "mit Erinnerung".
+    Returns {minutes} (or minutes:'default' when no amount is said) and the spans to cut, or null. */
+ function remindSpans(t){
+  const {cuts,scan}=scanner(t);let minutes=null;
+  scan(R(B+'(?:(?:mit\\s+)?erinnerung|erinnere?\\s+mich|alarm)?\\s*'+REMIND_NUM+'\\s*'+REMIND_UNITS+'\\s+(?:vorher|davor|fr(?:ü|ue)her)(?:\\s+erinnern)?'+E),h=>{const n=REMIND_W[h[1]]??num(h[1]);if(!n&&n!==0)return false;const u=h[2][0];minutes=u==='m'?n:u==='s'?n*60:n*1440});
+  if(minutes==null)scan(R(B+'(?:(?:mit\\s+)?erinnerung|erinnere?\\s+mich|erinnern)\\s+(?:mich\\s+)?(?:am\\s+vortag|einen\\s+tag\\s+vorher)|am\\s+vortag\\s+erinnern'+E),()=>{minutes=1440});
+  if(minutes==null)scan(R(B+'(?:mit\\s+erinnerung|erinnere\\s+mich(?:\\s+daran)?|bitte\\s+erinnern)'+E),()=>{minutes='default'});
+  return minutes==null?null:{minutes,cuts};
+ }
+ function remind(text){const x=remindSpans(lower(text));return x?x.minutes:null}
+ /* The title without the date, time and reminder words: "Zahnarzt morgen um 15 Uhr" → "Zahnarzt".
+    Falls back to the text itself when nothing would be left. */
+ function strip(text){
+  const src=String(text||''),t=lower(src),{cuts,scan}=scanner(t);
+  const rem=remindSpans(t);if(rem)cuts.push(...rem.cuts);
+  scan(R(B+'(?:ab\\s+)?(?:(?:ü|ue)bermorgen|morgen|heute)(?:\\s+(?:abend|nachmittag|vormittag|mittag|fr(?:ü|ue)h|nacht))?'+E),()=>true);
+  scan(R(B+'(?:ab\\s+)?n(?:ä|ae)chste\\s+woche'+E),()=>true);
+  scan(R(B+'(?:ab\\s+|am\\s+)?(?:(?:mo|di|mi|do|fr|sa|so)\\.?,?\\s+)?\\d{1,2}\\.\\d{1,2}\\.(?:\\d{2,4})?(?!\\d)'),()=>true);
+  scan(R(B+'(?:ab\\s+|am\\s+)?\\d{1,2}\\.?\\s*'+MONTH_L+'\\.?(?:\\s+\\d{4})?'+E),()=>true);
+  scan(R(B+'(?:ab\\s+|am\\s+|n(?:ä|ae)chsten\\s+|diesen\\s+|kommenden\\s+)?(?:'+DAYS+')s?'+E),()=>true);
+  let timed=scan(R(B+'(von\\s+|ab\\s+|um\\s+)?\\d{1,2}(:\\d{2})?\\s*(uhr\\s*)?(?:-|–|—|bis)\\s*\\d{1,2}(:\\d{2})?\\s*(uhr)?(?!\\d|\\.\\d)'),h=>!!(h[1]&&/von/.test(h[1])||h[2]||h[3]||h[4]||h[5]));
+  timed=scan(R(B+'(?:um\\s+|ab\\s+|gegen\\s+)?\\d{1,2}(?::\\d{2}(?:\\s*uhr)?|\\.\\d{2}\\s*uhr|\\s*uhr(?:\\s*\\d{2})?)'+E),()=>true)||timed;
+  timed=scan(R(B+'um\\s+\\d{1,2}'+E),()=>true)||timed;
+  if(timed)scan(R(B+'(?:abends|nachmittags|vormittags|morgens|am\\s+abend|am\\s+nachmittag|am\\s+vormittag)'+E),()=>true);
+  return cutOut(src,cuts)||src.trim();
+ }
+ return {interpret,relative,workout,when,repeat,remind,strip,monthNo,MONTH_N};
 });
 
 
@@ -2218,7 +2382,7 @@ const PulseIDB=(()=>{
    if(currentState!==undefined){const pending=JSON.stringify(state.normalize(currentState));if(expected===null||pending!==JSON.stringify(JSON.parse(expected))){assertUnchanged();writeBackup('pulseOS_pre_import_memory_backup',pending)}}
    return transact(prepared,'pulseOS_pre_import_backup');
   })}
-  function exportText(value,{wrapped=true,version='25.0.0',now=new Date()}={}){
+  function exportText(value,{wrapped=true,version='26.0.0',now=new Date()}={}){
    // Emergency export deliberately does not reject uncommitted in-memory data.
    return JSON.stringify(wrapped?{app:'PULSE',version,schemaVersion:value.schemaVersion||state.SCHEMA_VERSION,exportedAt:now.toISOString(),data:value}:value,null,2);
   }
@@ -2591,7 +2755,8 @@ function lifeSelectDay(day){if(!PulseLife.validDate(day))return;lifeSelectedDay=
 function lifeMoveDay(n){lifeSelectDay(PulseLife.offset(lifeSelectedDay||key(),n))}
 function lifeCard(x,{compact=false}={}){
  const r=PulseLife.room(x.room),status={done:'Erledigt',waiting:'Wartet',parked:'Geparkt'}[x.status];
- const tags=[PulseLife.KINDS[x.kind],status,x.deadline?'Frist '+lifeDate(x.deadline,{day:'numeric',month:'short'}):'',x.photos?.length?x.photos.length+(x.photos.length===1?' Foto':' Fotos'):'',itemVideo(x)?'Video':''].filter(Boolean).join(' · ');
+ const series=x.kind==='event'&&x.recur?'↻ '+PulseRecur.describe({...x,recur:{...x.recur,until:'',count:0}}):'';
+ const tags=[PulseLife.KINDS[x.kind],series,status,x.deadline?'Frist '+lifeDate(x.deadline,{day:'numeric',month:'short'}):'',x.photos?.length?x.photos.length+(x.photos.length===1?' Foto':' Fotos'):'',itemVideo(x)?'Video':''].filter(Boolean).join(' · ');
  const check=x.kind==='task'?'<button type="button" class="life-check '+(x.status==='done'?'checked':'')+'" aria-label="'+esc((x.status==='done'?'Wieder öffnen: ':'Erledigen: ')+x.title)+'" onclick="'+lifeCall('lifeToggle',x.id)+'">'+(x.status==='done'?lifeGlyph('check'):'<span></span>')+'</button>':'<span class="life-entry-symbol '+r.color+'">'+lifeGlyph(r.symbol)+'</span>';
  return '<article class="life-entry '+(compact?'compact ':'')+(x.status==='done'?'is-done':'')+(x.id===lifeJustDone&&Date.now()-lifeJustDoneAt<1500?' just-done':'')+'">'+check+'<button type="button" class="life-entry-open" onclick="'+lifeCall('lifeOpenItem',x.id)+'"><span class="life-entry-title">'+esc(x.title)+'</span><span class="life-entry-meta">'+esc(tags)+'</span>'+(!compact&&x.body?'<span class="life-entry-excerpt">'+esc(x.body.slice(0,130))+'</span>':'')+'</button><span class="life-entry-arrow" aria-hidden="true">↗</span></article>';
 }
@@ -2774,7 +2939,7 @@ function lifeCloseSheet(){closeDialog(document.getElementById('lifeSheet'))}
 function lifeLegacy(v){goView(v);if(v==='workout')showWorkout(activePlan()||'A')}
 function lifeSettings(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
- el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 25</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div>'+backupSettingsHTML()+'<div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Dein Himmel ↗','lifeCloseSheet();lifeOpenSky()','life-textbtn')+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 26</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div>'+backupSettingsHTML()+'<div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Dein Himmel ↗','lifeCloseSheet();lifeOpenSky()','life-textbtn')+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
  (navigator.storage?.persisted?navigator.storage.persisted():Promise.resolve(false)).then(p=>{const e=document.getElementById('lifeStorageState');if(e)e.textContent=p?'Speicher: dauerhaft geschützt':'Speicher: nicht dauerhaft geschützt'}).catch(()=>{});
 }
@@ -4059,9 +4224,11 @@ function renderCosmos(){
 const CAL_TZ=(()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone||'Europe/Berlin'}catch(_){return 'Europe/Berlin'}})();
 const CAL_REMIND_TIMED=[['','Keine'],['0','Zur Startzeit'],['5','5 Minuten vorher'],['10','10 Minuten vorher'],['15','15 Minuten vorher'],['30','30 Minuten vorher'],['60','1 Stunde vorher'],['120','2 Stunden vorher'],['1440','1 Tag vorher']];
 const CAL_REMIND_ALLDAY=[['','Keine'],['-480','Am Tag um 8 Uhr'],['360','Am Vortag um 18 Uhr'],['1440','1 Tag vorher, 0 Uhr']];
-let calEditRecurDays=null;
+let calEditRecurDays=null,calEditCustom=null;
 function calSheet(html,focus){document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;el.innerHTML=html;if(activeDialog!=='lifeSheet')openDialog(document.getElementById('lifeSheet'),focus||'#lifeDetailHeading');else document.querySelector(focus||'#lifeDetailHeading')?.focus()}
-function calRemindText(x){if(x.remind==null)return '';const list=x.time?CAL_REMIND_TIMED:CAL_REMIND_ALLDAY,hit=list.find(([v])=>v!==''&&Number(v)===x.remind);return hit?hit[1]:x.remind+' Minuten vorher'}
+/* Any reminder in words, also ones that are not in the lists (from quick capture or an .ics import). */
+function calRemindLabel(min){if(min<0){const m=-min;return 'Am Tag um '+String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')+' Uhr'}if(min===0)return 'Zur Startzeit';if(min%1440===0)return min/1440+(min===1440?' Tag':' Tage')+' vorher';if(min%60===0)return min/60+(min===60?' Stunde':' Stunden')+' vorher';return min+' Minuten vorher'}
+function calRemindText(x){if(x.remind==null)return '';const list=x.time?CAL_REMIND_TIMED:CAL_REMIND_ALLDAY,hit=list.find(([v])=>v!==''&&Number(v)===x.remind);return hit?hit[1]:calRemindLabel(x.remind)}
 /* ---------- Detail ---------- */
 function calOpen(id,date){
  const x=PulseLife.get(db,id);if(!x)return;if(x.kind!=='event')return lifeOpenItem(id,true);
@@ -4079,48 +4246,51 @@ function calOpen(id,date){
 function calSkip(id,date){const x=PulseLife.get(db,id);if(!x)return;if(lifeMutate(()=>PulseLife.update(db,id,{exdates:[...(x.exdates||[]),date]},new Date().toISOString()),'Termin am '+lifeDate(date,{day:'numeric',month:'short'})+' ausgelassen'))lifeCloseSheet()}
 function calDelete(id){if(lifeMutate(()=>PulseLife.update(db,id,{status:'archived'},new Date().toISOString()),'Termin gelöscht · rückgängig möglich'))lifeCloseSheet()}
 /* ---------- Editor ---------- */
-function calRecurOptions(date,current){
+function calRecurOptions(date,current,custom){
  const wd=PulseRecur.weekday(date),WD=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'],n=PulseRecur.nthOf(date),M=lifeDate(date,{day:'numeric',month:'long'});
  const opts=[['','Keine'],['daily','Täglich'],['weekdays','Werktags (Mo–Fr)'],['weekly','Wöchentlich'],['weekly2','Alle 2 Wochen'],['monthly','Monatlich am '+Number(date.slice(8))+'.'],['monthlyNth','Monatlich am '+n+'. '+WD[wd]]];
  if(PulseRecur.isLast(date))opts.push(['monthlyLast','Monatlich am letzten '+WD[wd]]);opts.push(['yearly','Jährlich am '+M]);
+ /* A rule the list cannot show (alle 3 Wochen, alle 2 Monate …) stays as it is instead of being lost. */
+ if(custom){let l='Wie erfasst';try{l=PulseRecur.describe({date,recur:{...custom,until:'',count:0,nth:custom.nth===-1?-1:n}})}catch(_){}opts.splice(1,0,['custom',l])}
  return opts.map(([v,l])=>'<option value="'+v+'"'+(v===current?' selected':'')+'>'+esc(l)+'</option>').join('');
 }
-function calRecurKey(r){if(!r)return '';if(r.freq==='weekly'&&r.interval===2)return 'weekly2';if(r.freq==='monthlyNth'&&r.nth===-1)return 'monthlyLast';return r.freq}
-function calEdit(id,date){
- const x=id?PulseLife.get(db,id):null;if(id&&!x)return;
- const d=x?x.date:(PulseLife.validDate(date||'')?date:key()),allDay=x?!x.time:false,time=x?.time||(()=>{const h=new Date().getHours()+1;return String(Math.min(h,22)).padStart(2,'0')+':00'})();
- const end=x&&x.time?calEnd(x):String(Math.min(Number(time.slice(0,2))+1,23)).padStart(2,'0')+':'+time.slice(3);
- const r=x?.recur||null;calEditRecurDays=r?.freq==='weekly'?[...r.byday]:null;
+function calRecurKey(r){if(!r)return '';if(r.interval>1&&!(r.freq==='weekly'&&r.interval===2))return 'custom';if(r.freq==='weekly'&&r.interval===2)return 'weekly2';if(r.freq==='monthlyNth'&&r.nth===-1)return 'monthlyLast';return r.freq}
+/* Editor for a new or existing appointment. `pre` fills a new one (e.g. from the quick capture line). */
+function calEdit(id,date,pre){
+ const x=id?PulseLife.get(db,id):null;if(id&&!x)return;const src=x||pre||null;
+ const d=src&&PulseLife.validDate(src.date||'')?src.date:(PulseLife.validDate(date||'')?date:key()),allDay=src?!src.time:false,time=src?.time||(()=>{const h=new Date().getHours()+1;return String(Math.min(h,22)).padStart(2,'0')+':00'})();
+ const end=src&&src.time?calEnd({duration:60,...src}):String(Math.min(Number(time.slice(0,2))+1,23)).padStart(2,'0')+':'+time.slice(3);
+ const r=src?.recur||null;calEditRecurDays=r?.freq==='weekly'?[...(r.byday||[PulseRecur.weekday(d)])]:null;calEditCustom=calRecurKey(r)==='custom'?r:null;
  calSheet('<h2 id="lifeDetailHeading" tabindex="-1">'+(x?'Termin bearbeiten':'Neuer Termin')+'</h2>'+(x?.recur?'<p class="life-footnote">Änderungen gelten für die ganze Serie.</p>':'')+
   '<form class="cal-form" onsubmit="event.preventDefault();calSave('+(x?"'"+esc(x.id)+"'":"''")+')">'+
-  '<label class="life-name-field">Titel<input id="calTitle" required maxlength="180" value="'+esc(x?.title||'')+'" placeholder="z. B. Bandprobe"/></label>'+
+  '<label class="life-name-field">Titel<input id="calTitle" required maxlength="180" value="'+esc(src?.title||'')+'" placeholder="z. B. Bandprobe"/></label>'+
   '<label class="cal-check"><input type="checkbox" id="calAllDay"'+(allDay?' checked':'')+' onchange="calSync()"/> Ganztägig</label>'+
   '<div class="cal-grid2"><label class="life-name-field cal-full">Datum<input id="calDate" type="date" required value="'+esc(d)+'" onchange="calSync()"/></label>'+
   '<label class="life-name-field cal-timed">Beginn<input id="calStart" type="time" value="'+esc(time)+'" onchange="calSyncEnd()"/></label>'+
   '<label class="life-name-field cal-timed">Ende<input id="calEnd" type="time" value="'+esc(end)+'"/></label>'+
-  '<label class="life-name-field cal-allday">Bis (mehrtägig)<input id="calEndDate" type="date" value="'+esc(x?.endDate||'')+'"/></label></div>'+
-  '<label class="life-name-field">Wiederholung<select id="calRecur" onchange="calSync()">'+calRecurOptions(d,calRecurKey(r))+'</select></label>'+
+  '<label class="life-name-field cal-allday">Bis (mehrtägig)<input id="calEndDate" type="date" value="'+esc(src?.endDate||'')+'"/></label></div>'+
+  '<label class="life-name-field">Wiederholung<select id="calRecur" onchange="calSync()">'+calRecurOptions(d,calRecurKey(r),calEditCustom)+'</select></label>'+
   '<div id="calDays" class="vault-chips cal-days"></div>'+
-  '<div class="cal-grid2" id="calUntilRow"><label class="life-name-field">Endet<select id="calUntilMode" onchange="calSync()"><option value="">Nie</option><option value="date"'+(r?.until?' selected':'')+'>Am Datum</option></select></label><label class="life-name-field" id="calUntilWrap">Letzter Termin<input id="calUntil" type="date" value="'+esc(r?.until||'')+'"/></label></div>'+
-  '<label class="life-name-field">Ort<input id="calLocation" maxlength="200" value="'+esc(x?.location||'')+'" placeholder="optional"/></label>'+
+  '<div class="cal-grid2" id="calUntilRow"><label class="life-name-field">Endet<select id="calUntilMode" onchange="calSync()"><option value="">Nie</option><option value="date"'+(r?.until?' selected':'')+'>Am Datum</option><option value="count"'+(!r?.until&&r?.count?' selected':'')+'>Nach Anzahl</option></select></label><label class="life-name-field" id="calUntilWrap">Letzter Termin<input id="calUntil" type="date" value="'+esc(r?.until||'')+'"/></label><label class="life-name-field" id="calCountWrap">Anzahl Termine<input id="calCount" type="number" inputmode="numeric" min="1" max="999" value="'+(r?.count||10)+'"/></label></div>'+
+  '<label class="life-name-field">Ort<input id="calLocation" maxlength="200" value="'+esc(src?.location||'')+'" placeholder="optional"/></label>'+
   '<label class="life-name-field">Erinnerung<select id="calRemind"></select></label>'+
-  '<label class="life-name-field">Raum<select id="calRoom">'+PulseLife.ROOMS.map(rm=>'<option value="'+rm.id+'"'+((x?.room||'alltag')===rm.id?' selected':'')+'>'+esc(rm.name)+'</option>').join('')+'</select></label>'+
-  '<label class="life-name-field">Notiz<textarea id="calBody" rows="3" placeholder="optional">'+esc(x?.body||'')+'</textarea></label>'+
+  '<label class="life-name-field">Raum<select id="calRoom">'+PulseLife.ROOMS.map(rm=>'<option value="'+rm.id+'"'+((src?.room||'alltag')===rm.id?' selected':'')+'>'+esc(rm.name)+'</option>').join('')+'</select></label>'+
+  '<label class="life-name-field">Notiz<textarea id="calBody" rows="3" placeholder="optional">'+esc(src?.body||'')+'</textarea></label>'+
   '<div class="life-detail-actions"><button type="submit" class="life-btn dark">Speichern</button>'+lifeButton('Abbrechen','lifeCloseSheet()','life-btn')+'</div></form>','#calTitle');
- calSync(x?.remind);
+ calSync(src?.remind);
 }
 function calSyncEnd(){const s=document.getElementById('calStart').value,e=document.getElementById('calEnd');if(!s)return;const h=Math.min(Number(s.slice(0,2))+1,23);e.value=String(h).padStart(2,'0')+':'+s.slice(3)}
 function calSync(remind){
  const allDay=document.getElementById('calAllDay').checked,date=document.getElementById('calDate').value||key(),rec=document.getElementById('calRecur');
  document.querySelectorAll('.cal-timed').forEach(e=>e.hidden=allDay);document.querySelectorAll('.cal-allday').forEach(e=>e.hidden=!allDay);
- const cur=rec.value;rec.innerHTML=calRecurOptions(date,cur);if(rec.value!==cur)rec.value=cur.startsWith('monthly')&&cur!=='monthly'?'monthlyNth':'';
- const weekly=rec.value==='weekly'||rec.value==='weekly2';
+ const cur=rec.value;rec.innerHTML=calRecurOptions(date,cur,calEditCustom);if(rec.value!==cur)rec.value=cur.startsWith('monthly')&&cur!=='monthly'?'monthlyNth':'';
+ const weekly=rec.value==='weekly'||rec.value==='weekly2'||(rec.value==='custom'&&calEditCustom?.freq==='weekly');
  if(weekly&&!calEditRecurDays)calEditRecurDays=[PulseRecur.weekday(date)];
  const days=document.getElementById('calDays');days.hidden=!weekly;
  days.innerHTML=weekly?[1,2,3,4,5,6,0].map(i=>'<button type="button" aria-pressed="'+calEditRecurDays.includes(i)+'" onclick="'+lifeCall('calToggleDay',i)+'">'+['So','Mo','Di','Mi','Do','Fr','Sa'][i]+'</button>').join(''):'';
- document.getElementById('calUntilRow').hidden=!rec.value;document.getElementById('calUntilWrap').hidden=document.getElementById('calUntilMode').value!=='date';
+ const mode=document.getElementById('calUntilMode').value;document.getElementById('calUntilRow').hidden=!rec.value;document.getElementById('calUntilWrap').hidden=mode!=='date';document.getElementById('calCountWrap').hidden=mode!=='count';
  const sel=document.getElementById('calRemind'),prev=remind!==undefined?(remind==null?'':String(remind)):sel.value;
- const list=allDay?CAL_REMIND_ALLDAY:CAL_REMIND_TIMED;sel.innerHTML=list.map(([v,l])=>'<option value="'+v+'">'+esc(l)+'</option>').join('');sel.value=list.some(([v])=>v===prev)?prev:'';
+ let list=allDay?CAL_REMIND_ALLDAY:CAL_REMIND_TIMED;if(prev!==''&&Number.isFinite(Number(prev))&&!list.some(([v])=>v===prev))list=[...list,[prev,calRemindLabel(Number(prev))]];sel.innerHTML=list.map(([v,l])=>'<option value="'+v+'">'+esc(l)+'</option>').join('');sel.value=list.some(([v])=>v===prev)?prev:'';
 }
 function calToggleDay(i){const set=new Set(calEditRecurDays||[]);if(set.has(i)&&set.size>1)set.delete(i);else set.add(i);calEditRecurDays=[...set];calSync()}
 function calSave(id){
@@ -4129,7 +4299,8 @@ function calSave(id){
  if(allDay){fields.time='';fields.duration=Number(PulseLife.get(db,id)?.duration)||60;fields.endDate=v('calEndDate')}
  else{const s=v('calStart'),e=v('calEnd');if(!s)return toast('Bitte eine Startzeit angeben oder „Ganztägig“ wählen.');let min=(Date.parse('2000-01-01T'+(e||s)+':00Z')-Date.parse('2000-01-01T'+s+':00Z'))/60000;if(min<=0)min+=1440;fields.time=s;fields.duration=Math.min(1440,min||60);fields.endDate=''}
  const k=v('calRecur');
- if(k){const freq={weekly2:'weekly',monthlyLast:'monthlyNth'}[k]||k;fields.recur={freq,interval:k==='weekly2'?2:1,until:v('calUntilMode')==='date'?v('calUntil'):'',...(freq==='weekly'?{byday:calEditRecurDays||[PulseRecur.weekday(date)]}:{}),...(k==='monthlyLast'?{nth:-1}:{})}}else fields.recur=null;
+ if(k){const c=k==='custom'?calEditCustom:null,freq=c?c.freq:{weekly2:'weekly',monthlyLast:'monthlyNth'}[k]||k,mode=v('calUntilMode');
+  fields.recur={freq,interval:c?c.interval:k==='weekly2'?2:1,until:mode==='date'?v('calUntil'):'',count:mode==='count'?Math.max(1,Math.min(999,Math.round(Number(v('calCount'))||1))):0,...(freq==='weekly'?{byday:calEditRecurDays||[PulseRecur.weekday(date)]}:{}),...(k==='monthlyLast'||c?.nth===-1?{nth:-1}:{})}}else fields.recur=null;
  const now=new Date().toISOString(),newId=id||uid('life');
  const ok=lifeMutate(()=>id?PulseLife.update(db,id,fields,now):PulseLife.create(db,fields,newId,now),id?'Termin gespeichert':'Termin angelegt');
  if(!ok)return;lifeCloseSheet();pulseTap();cosmosDay=date;renderCosmos();
@@ -5275,7 +5446,7 @@ function renderLifeToday(){
  const host=document.getElementById('lifeTodayContent');if(!host)return;const date=lifeSelectedDay||key();lifeSelectedDay=date;const isToday=date===key();
  const items=PulseLife.day(db,date),all=PulseLife.list(db);
  const loose=all.filter(x=>x.kind==='task'&&x.status==='open'&&!x.date).slice(0,3),overdue=all.filter(x=>x.kind==='task'&&!['done','parked','archived'].includes(x.status)&&((x.deadline&&x.deadline<key())||(x.date&&x.date<key())));
- const timed=items.filter(x=>x.time),anytime=items.filter(x=>!x.time),focus=lifeState().focus;
+ const timed=items.filter(x=>x.time),allDay=items.filter(x=>!x.time&&x.kind==='event'),anytime=items.filter(x=>!x.time&&x.kind!=='event'),focus=lifeState().focus;
  const title=isToday?lifeGreeting():date===PulseLife.offset(key(),1)?'Morgen':lifeDate(date,{weekday:'long'});
  host.innerHTML='<header class="life-pagehead life-greeting"><div><span class="life-kicker">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span><h1>'+esc(title)+'</h1></div>'+(isToday?pulseCore():'')+'</header>'+
   (isToday?yesterdayLine():'')+weekStrip(date)+'<div class="life-calendar-tools">'+lifeButton('Kalender',lifeCall('lifeOpenCalendar',date),'life-textbtn')+(isToday?'':lifeButton('Heute',lifeCall('lifeSelectDay',key()),'life-textbtn'))+'</div>'+
@@ -5283,7 +5454,8 @@ function renderLifeToday(){
   '<div class="life-capture-wrap"><button type="button" class="life-capture-line" onclick="lifeQuick()">'+lifeGlyph('plus')+'<span>'+(lifeState().draft?'Entwurf fortsetzen':'Notiz, Termin, Essen …')+'</span></button>'+(pulseSpeechSupported()?'<button type="button" class="life-capture-mic" aria-label="Per Sprache erfassen" onclick="lifeQuick(true)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>':'')+'</div>'+
   (isToday?lifeTiles()+lifeSystemRows(date)+lifeReviewRows():'')+
   '<div class="life-sectionhead"><h2>Termine</h2>'+lifeButton('＋ Termin',lifeCall('lifeCompose',{kind:'event',date}),'life-textbtn')+'</div>'+
-  (timed.length?timed.map(x=>'<div class="life-time-row"><time>'+esc(x.time)+'</time><div class="life-timed-entry '+PulseLife.room(x.room).color+'">'+lifeCard(x,{compact:true})+'<small>'+x.duration+' Min.</small></div></div>').join(''):'<p class="life-none">Keine Termine.</p>')+
+  (allDay.length?'<div class="life-allday"><span class="life-subtle">Ganztägig</span>'+allDay.map(x=>lifeCard(x,{compact:true})).join('')+'</div>':'')+
+  (timed.length?timed.map(x=>'<div class="life-time-row"><time>'+esc(x.time)+'</time><div class="life-timed-entry '+PulseLife.room(x.room).color+'">'+lifeCard(x,{compact:true})+'<small>'+x.duration+' Min.</small></div></div>').join(''):allDay.length?'':'<p class="life-none">Keine Termine.</p>')+
   '<div class="life-sectionhead"><h2>Aufgaben</h2>'+lifeButton('＋ Aufgabe',lifeCall('lifeCompose',{kind:'task',date}),'life-textbtn')+'</div>'+
   (anytime.length?anytime.map(x=>lifeCard(x,{compact:true})).join(''):'<p class="life-none">Keine Aufgaben für '+(isToday?'heute':'diesen Tag')+'.</p>')+
   (overdue.length&&isToday?'<button class="life-return-row" type="button" onclick="lifeReview()"><span>!</span><div><b>'+overdue.length+' überfällig</b><small>Neu planen oder parken</small></div><span>›</span></button>':'')+
@@ -5295,39 +5467,69 @@ let quickOverride=null;
 function quickAnalyze(raw){
  let room='',text=String(raw||'');
  text=text.replace(/(^|\s)#([\p{L}-]+)/gu,(m,sp,tag)=>{const r=ROOM_TAGS[tag.toLocaleLowerCase('de')];if(r&&!room){room=r;return sp}return m}).replace(/\s+/g,' ').trim();
- const i=interpretCapture(text),when=parseWhen(text),parts=text?parseFoodText(text):[],foodOk=parts.length>0&&parts.every(p=>!p.unknown);
+ /* A series ("jeden Dienstag", "alle 2 Wochen" …) is read first; date and time then come from the rest. */
+ const rep=PulseCapture.repeat(text),i=interpretCapture(text),when=parseWhen(rep?rep.rest:text),parts=text?parseFoodText(text):[],foodOk=parts.length>0&&parts.every(p=>!p.unknown);
+ if(rep&&rep.rule.pm&&when.time){const pm=v=>{const h=Number(v.slice(0,2));return h>=1&&h<12?String(h+12)+v.slice(2):v};when.time=pm(when.time);if(when.end)when.end=pm(when.end)}
+ const series=rep?PulseRecur.place(rep.rule,when.date||key()):null;
  const amount=/\d|\b(ein|eine|einen|zwei|drei|vier|fünf|halbe?)\b/i.test(text);
  let kind='note';const link=(text.match(/https?:\/\/\S+/)||[''])[0];
- if(i.type==='food'||i.type==='drink')kind=foodOk||i.type==='drink'?'meal':'capture';
- else if(['workout','recovery','context','context-clear','historical-review'].includes(i.type))kind='capture';
+ // How someone feels ("jeden Tag Kopfschmerzen") stays a body note; plans with a rhythm become appointments.
+ if(['recovery','context','context-clear','historical-review'].includes(i.type))kind='capture';
+ else if(series)kind='event';
+ else if(i.type==='food'||i.type==='drink')kind=foodOk||i.type==='drink'?'meal':'capture';
+ else if(i.type==='workout')kind='capture';
  else if(when.date)kind=when.time?'event':'task';
  else if(i.type==='task')kind='task';
  else if(foodOk&&amount)kind='meal';
  if(link&&(kind==='meal'||kind==='capture'))kind='note';
- const video=link&&PulseVideo.parseAny(link.replace(/[).,;!?]+$/,''));if(video&&!room)room=PulseVideo.room(text.replace(link,''),video);if(video&&!when.date)kind='video';
- if(quickOverride&&!(quickOverride==='video'&&!video)&&!(quickOverride==='meal'&&!(foodOk||i.type==='drink'))&&!(quickOverride==='event'&&!when.date))kind=quickOverride;
- return {text,link,video:video?video.type:'',room:room||(kind==='meal'?'koerper':'alltag'),kind,when,type:i.type,foodOk,kcal:Math.round(parts.reduce((a,p)=>a+(p.nut?.kcal||0),0))};
+ const video=link&&PulseVideo.parseAny(link.replace(/[).,;!?]+$/,''));if(video&&!room)room=PulseVideo.room(text.replace(link,''),video);if(video&&!when.date&&!series)kind='video';
+ if(quickOverride&&!(quickOverride==='video'&&!video)&&!(quickOverride==='meal'&&!(foodOk||i.type==='drink'))&&!(quickOverride==='event'&&!when.date&&!series))kind=quickOverride;
+ return {text,link,video:video?video.type:'',room:room||(kind==='meal'?'koerper':'alltag'),kind,when,rep,series:series&&(kind==='event'||kind==='task')?series:null,remind:PulseCapture.remind(text),type:i.type,foodOk,kcal:Math.round(parts.reduce((a,p)=>a+(p.nut?.kcal||0),0))};
 }
+/* A series as a task: the task comes back after it is done (1, 7, 14 or 30 days), when the rule allows it. */
+function quickTaskRepeat(r){if(!r)return 0;if(r.freq==='daily'&&r.interval===1)return 1;if(r.freq==='weekly'&&(r.byday||[]).length===1&&r.interval<=2)return 7*r.interval;if(r.freq==='monthly'&&r.interval===1)return 30;return 0}
+function quickSpan(q){return q.when.time?q.when.time+(q.when.end?'–'+q.when.end:'')+' Uhr':'ganztägig'}
 function quickDescribe(q){
- const names={note:'Notiz',task:'Aufgabe',event:'Termin',meal:'Mahlzeit'};
+ const names={note:'Notiz',task:'Aufgabe',event:'Termin',meal:'Mahlzeit'},roomName=' · '+PulseLife.room(q.room).name,timed=!!q.when.time,remind=q.kind==='event'&&q.remind!=null?' · Erinnerung '+calRemindLabel(q.remind==='default'?(timed?15:-480):q.remind).replace(/^Am Tag/,'am Tag'):'';
  if(q.kind==='video')return (q.video==='playlist'?'Playlist':'Video')+' für den Videos-Tab'+(q.room&&q.room!=='alltag'?' · '+PulseLife.room(q.room).name:'');
  if(q.kind==='capture')return {workout:'Trainingssatz zum Prüfen',recovery:'Erholungstag für heute',context:'Befinden für heute','context-clear':'Befinden: wieder normal','historical-review':'Notiz mit vergangenem Datum',food:'Essen · Menge wird abgefragt',drink:'Getränk'}[q.type]||'Eintrag';
- const when=q.when.date&&(q.kind==='task'||q.kind==='event')?' · '+lifeDate(q.when.date,{weekday:'short',day:'numeric',month:'short'})+(q.when.time&&q.kind==='event'?' '+q.when.time:''):'';
- return names[q.kind]+(q.kind==='meal'&&q.kcal?' · '+q.kcal+' kcal':'')+when+(q.kind==='meal'?'':' · '+PulseLife.room(q.room).name);
+ const from=d=>lifeDate(d,{weekday:'short',day:'numeric',month:'short',...(d.slice(0,4)!==key().slice(0,4)?{year:'numeric'}:{})});
+ if(q.series&&q.kind==='event'){let rule='';try{const x={date:q.series.date,recur:q.series.recur};rule=PulseRecur.describe({date:x.date,recur:PulseRecur.normalize(x).recur})}catch(_){rule='Wiederholung'}return 'Terminserie · '+rule+' · '+quickSpan(q)+' · ab '+from(q.series.date)+remind+roomName}
+ if(q.series&&q.kind==='task'){const n=quickTaskRepeat(q.series.recur);return 'Aufgabe · '+from(q.series.date)+' · '+(n?'nach Erledigung alle '+n+(n===1?' Tag':' Tage'):'ohne Wiederholung')+roomName}
+ const when=q.when.date&&(q.kind==='task'||q.kind==='event')?' · '+from(q.when.date)+(q.when.time&&q.kind==='event'?' '+q.when.time+(q.when.end?'–'+q.when.end:''):''):'';
+ return names[q.kind]+(q.kind==='meal'&&q.kcal?' · '+q.kcal+' kcal':'')+when+remind+(q.kind==='meal'?'':roomName);
 }
 function quickPreview(){
  const box=document.getElementById('quickRoute'),field=document.getElementById('quickText');if(!box||!field)return;
- if(!field.value.trim()){box.innerHTML='<span class="quick-hint">Datum, Uhrzeit, Mengen und #raum werden erkannt.</span>';return}
- const q=quickAnalyze(field.value),alts=[['note','Notiz'],['task','Aufgabe']];if(q.video)alts.unshift(['video',q.video==='playlist'?'Playlist':'Video']);if(q.when.date)alts.push(['event','Termin']);if(q.foodOk)alts.push(['meal','Mahlzeit']);
+ if(!field.value.trim()){box.innerHTML='<span class="quick-hint">Erkennt Datum, Uhrzeit, Wiederholungen wie „jeden Dienstag“, Mengen und #raum.</span>';return}
+ const q=quickAnalyze(field.value),alts=[['note','Notiz'],['task','Aufgabe']];if(q.video)alts.unshift(['video',q.video==='playlist'?'Playlist':'Video']);if(q.when.date||q.rep)alts.push(['event','Termin']);if(q.foodOk)alts.push(['meal','Mahlzeit']);
  box.innerHTML='<span class="quick-target">Wird: <b>'+esc(quickDescribe(q))+'</b></span>'+(q.kind==='capture'?'':'<span class="quick-alts" role="group" aria-label="Stattdessen speichern als">'+alts.map(([k,l])=>'<button type="button" aria-pressed="'+(q.kind===k)+'" onclick="'+lifeCall('quickSet',k)+'">'+l+'</button>').join('')+'</span>');
 }
 function quickSet(kind){quickOverride=kind;quickPreview();document.getElementById('quickText')?.focus()}
 function lifeQuick(voice=false){
  if(lifeState().draft){lifeCompose();return}
  quickOverride=null;
- libDetailShell('<h2 id="lifeDetailHeading" class="srOnly">Erfassen</h2><label class="srOnly" for="quickText">Eintrag</label><textarea id="quickText" class="quick-input" rows="2" enterkeyhint="done" placeholder="z. B. Zahnarzt Freitag 15 Uhr · 2 Bananen · Idee #ideen" oninput="quickOverride=null;quickPreview()" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();quickSave()}"></textarea>'+
+ libDetailShell('<h2 id="lifeDetailHeading" class="srOnly">Erfassen</h2><label class="srOnly" for="quickText">Eintrag</label><textarea id="quickText" class="quick-input" rows="2" enterkeyhint="done" placeholder="z. B. Probe jeden Dienstag 19 Uhr · 2 Bananen · Idee #ideen" oninput="quickOverride=null;quickPreview()" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();quickSave()}"></textarea>'+
   '<div id="quickRoute" class="quick-route" aria-live="polite"></div><div class="quick-actions">'+(pulseSpeechSupported()?'<button type="button" class="life-mic" data-target="quickText" aria-pressed="false" onclick="pulseDictate(\'quickText\',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>Sprechen</span></button>':'')+lifeButton('Mehr Details','quickMore()','life-textbtn')+'<button type="button" class="life-btn dark" onclick="quickSave()">Speichern</button></div>');
  const f=document.getElementById('quickText');setTimeout(()=>{f?.focus();quickPreview();if(voice)pulseDictate('quickText')},60);
+}
+/* Fields for a note, task or appointment: the title loses the date and time words, a series becomes a
+   repeating appointment (or a task that comes back after it is done). */
+function quickFields(q){
+ const base=q.rep&&q.kind!=='note'?q.rep.rest:q.text,rest=q.link?base.replace(q.link,'').trim():base,lines=rest.split('\n');
+ let title=(lines[0]||(PulseVideo.parseAny(q.link)?'YouTube-Video':'Link')).slice(0,180);
+ if((q.kind==='event'||q.kind==='task')&&(q.when.date||q.series))title=PulseCapture.strip(title)||title;
+ const fields={kind:q.kind,room:q.room,title,body:lines.slice(1).join('\n').trim()};
+ if(q.link)fields.url=q.link.replace(/[).,;!?]+$/,'');
+ if(q.series&&q.kind==='event'){fields.date=q.series.date;fields.time=q.when.time||'';fields.recur=q.series.recur}
+ else if(q.series&&q.kind==='task'){fields.date=q.series.date;fields.repeat=quickTaskRepeat(q.series.recur)}
+ else if(q.kind!=='note'&&q.when.date){fields.date=q.when.date;if(q.kind==='event')fields.time=q.when.time||''}
+ if(q.kind==='event'){
+  if(!fields.date)fields.date=key();
+  if(fields.time&&q.when.end){let min=(Date.parse('2000-01-01T'+q.when.end+':00Z')-Date.parse('2000-01-01T'+fields.time+':00Z'))/60000;if(min<=0)min+=1440;fields.duration=min}
+  if(q.remind!=null)fields.remind=q.remind==='default'?(fields.time?15:-480):q.remind;
+ }
+ return fields;
 }
 function quickSave(){
  const field=document.getElementById('quickText');if(!field)return;const q=quickAnalyze(field.value);if(!q.text)return toast('Bitte etwas eingeben.');
@@ -5335,15 +5537,15 @@ function quickSave(){
  if(q.kind==='meal'){const m=directIntakeCapture(q.text);if(!m){quickOverride='capture';return quickSave()}save();lifeCloseSheet();render();pulseTap();return toast(intakeMessage(m),'Rückgängig')}
  if(q.kind==='capture'){lifeCloseSheet();const r=universalCapture(q.text);if(r.type==='food-review'){const token=pendingFoodCapture;setTimeout(()=>{openCapture();pendingFoodCapture=token;showFoodFollowup(q.text)},320);return}render();pulseTap();return toast(r.message,['food','drink'].includes(r.type)?'Rückgängig':'')}
  if(q.kind==='video'){const t=q.text.replace(q.link,'').trim(),x=vaultAdd(q.link.replace(/[).,;!?]+$/,''),{title:t,room:q.room==='alltag'&&!/#alltag/i.test(field.value)?'':q.room});if(x)lifeCloseSheet();return}
- const rest=q.link?q.text.replace(q.link,'').trim():q.text,lines=rest.split('\n'),fields={kind:q.kind,room:q.room,title:(lines[0]||(PulseVideo.parseAny(q.link)?'YouTube-Video':'Link')).slice(0,180),body:lines.slice(1).join('\n').trim()};
- if(q.link)fields.url=q.link.replace(/[).,;!?]+$/,'');
- if(q.kind!=='note'&&q.when.date){fields.date=q.when.date;if(q.kind==='event')fields.time=q.when.time||''}
- if(q.kind==='event'&&!fields.date)fields.date=key();
- const id=uid('life');if(lifeMutate(()=>PulseLife.create(db,fields,id,new Date().toISOString()),quickDescribe(q).split(' · ')[0]+' gespeichert')){lifeCloseSheet();pulseTap()}
+ const fields=quickFields(q),id=uid('life');
+ if(lifeMutate(()=>PulseLife.create(db,fields,id,new Date().toISOString()),quickDescribe(q).split(' · ')[0]+' gespeichert')){lifeCloseSheet();pulseTap()}
 }
+/* "Mehr Details": appointments open the calendar editor with everything filled in, the rest the entry editor. */
 function quickMore(){
  const field=document.getElementById('quickText');const q=quickAnalyze(field?.value||'');pulseStopDictation();
- const lines=q.text.split('\n');lifeCompose({kind:['note','task','event'].includes(q.kind)?q.kind:'note',room:q.room,title:lines[0]||'',body:lines.slice(1).join('\n'),date:q.when.date||'',time:q.kind==='event'?q.when.time||'':''});
+ if(q.kind==='event'){const f=quickFields(q);return calEdit('',f.date,f)}
+ if(q.kind==='note'||q.kind==='task'){const f=quickFields(q);return lifeCompose({kind:q.kind,room:f.room,title:f.title,body:f.body,date:f.date||(q.kind==='note'?q.when.date:'')||'',time:'',url:f.url||'',repeat:f.repeat||0})}
+ const lines=q.text.split('\n');lifeCompose({kind:'note',room:q.room,title:lines[0]||'',body:lines.slice(1).join('\n'),date:'',time:''});
 }
 // SOURCE: ui/tarot.js
 /* Tarot practice: daily card history, personal meanings, drawn spreads. */

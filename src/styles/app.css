@@ -213,6 +213,7 @@ textarea{resize:vertical;line-height:1.55;min-height:110px}
 .life-day-layout>div>.life-sectionhead:first-child{margin-top:30px}
 .life-day-aside>.life-sectionhead{margin-top:30px}
 .life-time-row{display:flex;gap:12px;margin-bottom:8px}
+.life-allday{margin:0 0 10px}.life-allday>.life-subtle{display:block;margin:0 0 6px;font-size:13px;font-weight:650}
 .life-time-row>time{min-width:44px;padding-top:16px;font-size:14px;font-weight:650;font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .life-timed-entry{flex:1;min-width:0;border-radius:var(--r-lg);padding:2px 0 10px;background:var(--surface)!important;box-shadow:inset 4px 0 0 var(--room)}
 .life-timed-entry .life-entry{background:transparent;border-radius:0;margin:0}

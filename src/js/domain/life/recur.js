@@ -89,5 +89,29 @@
   if(r.until)t+=', bis '+fmt(r.until);else if(r.count)t+=', '+r.count+'-mal';
   return t;
  }
- return {FREQS,EXTRA,normalize,ruleMatches,startsOn,occurrence,occursOn,starts,next,remindAt,describe,add,diff,weekday:wd,nthOf,isLast,validDate};
+ /* Puts a rule from everyday language (PulseCapture.repeat) on the calendar: the first start on or after
+    `base`, and the end ("bis 20.12.", "bis Ende Juni", "für 6 Wochen") as a date. Null when no day fits. */
+ function place(rule,base){
+  if(!rule||!FREQS.includes(rule.freq)||!validDate(base))return null;
+  const r={freq:rule.freq,interval:Math.max(1,Math.min(99,Math.floor(rule.interval)||1)),until:'',count:Math.max(0,Math.min(999,Math.floor(rule.count)||0))};
+  let d=base;const seek=ok=>{for(let i=0;i<800;i++,d=add(d,1))if(ok(d))return true;return false};
+  if(r.freq==='weekdays')seek(x=>wd(x)>=1&&wd(x)<=5);
+  if(r.freq==='weekly'){r.byday=[...new Set((rule.byday||[]).filter(n=>n>=0&&n<=6))];if(!r.byday.length)r.byday=[wd(base)];r.byday.sort();seek(x=>r.byday.includes(wd(x)))}
+  if(r.freq==='monthly'&&rule.dom&&!seek(x=>Number(x.slice(8))===rule.dom))return null;
+  if(r.freq==='monthlyNth'){const w=rule.byday?.length?rule.byday[0]:wd(base),n=rule.nth===-1?-1:Math.max(1,Math.min(4,rule.nth||1));if(!seek(x=>wd(x)===w&&(n===-1?isLast(x):nthOf(x)===n)))return null;r.nth=n}
+  const u=rule.until;
+  if(u&&u.m>=1&&u.m<=12){
+   let y=u.y||Number(d.slice(0,4));const at=yy=>{const m=String(u.m).padStart(2,'0'),last=monthLength(yy+'-'+m+'-01');return yy+'-'+m+'-'+String(u.d?u.d:last).padStart(2,'0')};
+   let end=at(y);if(!u.y&&end<d)end=at(++y);
+   if(validDate(end)&&end>=d)r.until=end;
+  }else if(rule.lasting&&rule.lasting.n>0){
+   const n=rule.lasting.n,unit=rule.lasting.unit;let end;
+   if(unit==='t')end=add(d,n-1);else if(unit==='w')end=add(d,7*n-1);
+   else{const months=unit==='m'?n:12*n,y=Number(d.slice(0,4)),m=Number(d.slice(5,7))-1+months,yy=y+Math.floor(m/12),mm=String(m%12+1).padStart(2,'0'),day=Math.min(Number(d.slice(8)),monthLength(yy+'-'+mm+'-01'));end=add(yy+'-'+mm+'-'+String(day).padStart(2,'0'),-1)}
+   // The last start inside the span, so the description names the real last date.
+   const x={date:d,recur:{...r,byday:r.byday,nth:r.nth}},all=starts(x,d,end,1000);r.until=all.length?all[all.length-1]:end;
+  }
+  return {date:d,recur:r};
+ }
+ return {FREQS,EXTRA,normalize,ruleMatches,startsOn,occurrence,occursOn,starts,next,remindAt,describe,place,add,diff,weekday:wd,nthOf,isLast,validDate};
 });

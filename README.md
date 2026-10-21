@@ -6,6 +6,8 @@ Online: https://motionfloyms-ui.github.io/pulse/
 
 Der Kalender ist ein Terminkalender (Wiederholungen, ganztägig und mehrtägig, Erinnerungen solange die App offen ist, .ics-Import aus Google Kalender und Export) mit einem Almanach pro Tag: Mondphase und Mondzeichen (Meeus), Planetentag und Planetenstunden, 28 Mondstationen, Tarot-Zuordnungen des Golden Dawn, Feste mehrerer Traditionen, Rauhnächte, Baumkalender, chinesischer Mondkalender und 24 Jahresabschnitte. Alles wird lokal berechnet, ohne Netz.
 
+Die Eingabezeile versteht Alltagsdeutsch: „Zahnarzt Freitag 15–16 Uhr“, „Mama Geburtstag jährlich am 3. Mai“, „Probe jeden Dienstag 19 Uhr bis Ende Juni“, „Gesang alle 2 Wochen am Donnerstag, Erinnerung 1 Stunde vorher“, „Stammtisch jeden dritten Donnerstag im Monat“. Datum, Uhrzeit und Wiederholung landen in den Feldern, der Titel bleibt kurz („Probe“).
+
 Dazu: Sigillen-Werkstatt (Buchstabenrad oder Saturnquadrat, Laden im Vollbild, Vergessen, Ergebnis), Song-Werkstatt (Gesangskarte pro Zeile, Bühnenmodus, Takes, Referenzvideos, Metronom, Einsing-Routine), Cut-up-Maschine, Klangraum (Rauschen, Regen, Meer, Drone per Web Audio) und „Dein Himmel“ mit Abzeichen ohne Streaks, 90-Tage-Leuchten und Tarot-Sammlung. Der Videos-Tab sammelt YouTube-Videos und Playlists mit Sammlernummer, Regalen, Merkliste, Favoriten und gemerkten Stellen. Abgespielt wird erst nach einem Tipp, über youtube-nocookie.com; Vorschaubilder und Titel lassen sich in den Einstellungen abschalten.
 
 ## Aufbau
