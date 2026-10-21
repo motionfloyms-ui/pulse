@@ -1106,6 +1106,8 @@ body.sigil-open{overflow:hidden}
 .more-arrow{color:var(--muted)}
 .more-group{margin:0 0 18px}.more-group h3{margin:0 4px 8px;font-size:16px}.more-group h3 span{font-weight:500;color:var(--muted)}
 .more-group .song-card{margin-bottom:8px}
+.backup-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 12px;margin:0 0 8px;padding:12px 14px;border-radius:var(--r-md);background:var(--surface-2)}
+.backup-row>span{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 160px}.backup-row small{font-size:12.5px}
 /* Calm view: colour recedes, structure stays. */
 .life-calm .life-room-tile,.life-calm .life-room-hero{background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 5px 0 0 var(--room)}
 .life-calm .life-room-tile::after,.life-calm .life-room-hero::after{display:none}

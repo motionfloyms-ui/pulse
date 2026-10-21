@@ -21,6 +21,7 @@ function themeSettingsHTML(){
 let pulseAudio=null;
 function pulseSound(kind='pop'){
  if(!db?.uiPrefs?.sound)return;
+ if(navigator.userActivation&&!navigator.userActivation.hasBeenActive)return;
  try{
   const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
   pulseAudio=pulseAudio||new AC();const a=pulseAudio;if(a.state==='suspended')a.resume();
@@ -72,7 +73,8 @@ function itemVideo(x){return x?(PulseVideo.parse(x.url)||PulseVideo.find(x.body)
 function storageUsageHTML(){
  let u;try{u=storage.usage()}catch(_){return ''}
  const pct=Math.min(100,Math.round(u.used/u.quota*100)),mb=n=>(n/1e6).toLocaleString('de-DE',{maximumFractionDigits:1});
- return '<div class="life-settings-row storage-row"><div><b>Speicher im Browser</b><p>'+mb(u.used)+' von etwa '+mb(u.quota)+' Mio. Zeichen belegt ('+pct+' %)'+(u.backups?', davon '+mb(u.backups)+' Mio. für ältere Sicherungskopien':'')+'.'+(pct>=70?' Es wird eng: Backup exportieren und Sicherungskopien löschen.':'')+'</p><span class="vault-bar'+(pct>=70?' warn':'')+'" aria-hidden="true"><i style="width:'+pct+'%"></i></span></div>'+(u.backups?lifeButton('Kopien löschen','storageDropBackups()','life-btn'):'')+'</div>';
+ if(u.mode==='idb')return '<div class="life-settings-row storage-row"><div><b>Speicher im Browser</b><p>Deine Daten liegen in der Browser-Datenbank (IndexedDB), dort gibt es praktisch keine Grenze. Größe: '+mb(u.size)+' Mio. Zeichen.</p></div></div>';
+ return '<div class="life-settings-row storage-row"><div><b>Speicher im Browser</b><p>'+mb(u.used)+' von etwa '+mb(u.quota)+' Mio. Zeichen belegt ('+pct+' %)'+(u.backups?', davon '+mb(u.backups)+' Mio. für ältere Sicherungskopien':'')+'.'+(pct>=70?' Wird es voll, zieht Pulse automatisch in die größere Browser-Datenbank um.':'')+'</p><span class="vault-bar'+(pct>=70?' warn':'')+'" aria-hidden="true"><i style="width:'+pct+'%"></i></span></div>'+(u.backups?lifeButton('Kopien löschen','storageDropBackups()','life-btn'):'')+'</div>';
 }
 function storageDropBackups(){try{storage.dropBackups();toast('Ältere Sicherungskopien gelöscht')}catch(e){toast(e.message)}lifeSettings()}
 /* Full-screen overlays (sigil charging, stage mode, warm-up): background inert, Android back closes them. */

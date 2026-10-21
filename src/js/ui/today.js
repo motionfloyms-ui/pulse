@@ -1,6 +1,7 @@
 // SOURCE: ui/today.js
 /* Tag: an adaptive overview (tiles ordered by time of day), the day's agenda, and the one-line capture. */
-function pulseTap(ms=12){try{navigator.vibrate?.(ms)}catch(_){}}
+/* Haptics only after the person has touched the page (Chrome blocks it otherwise). */
+function pulseTap(ms=12){try{if(navigator.userActivation&&!navigator.userActivation.hasBeenActive)return;navigator.vibrate?.(ms)}catch(_){}}
 let lifeJustDone=null,lifeJustDoneAt=0;
 function dayPeriod(h=new Date().getHours()){return h>=5&&h<11?'morning':h>=11&&h<18?'day':'evening'}
 function ring(value,goal,label,unit){

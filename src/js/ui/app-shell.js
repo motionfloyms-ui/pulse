@@ -33,7 +33,7 @@ function lifeReviewRows(){
 function lifeSystemRows(date){
  if(date!==key())return '';const rows=[],age=backupAgeDays(),hasData=PulseLife.list(db).length>0||db.workouts.length>0;
  if(deferredInstallPrompt&&!isStandalone())rows.push('<button type="button" class="life-today-row" onclick="installPulse()"><span class="plum-soft">'+lifeGlyph('plus')+'</span><span class="grow"><b>PULSE als App installieren</b><small>Offline nutzbar, Daten dauerhaft geschützt</small></span><i aria-hidden="true">›</i></button>');
- if(hasData&&(age===null||age>=7))rows.push('<button type="button" class="life-today-row" onclick="exportPulse()"><span class="peach">'+lifeGlyph('arch')+'</span><span class="grow"><b>Backup sichern</b><small>'+(age===null?'Noch keine Sicherung':'Letzte Sicherung vor '+age+' Tagen')+'</small></span><i aria-hidden="true">›</i></button>');
+ const every=backupEvery();if(hasData&&every&&(age===null||age>=every))rows.push('<button type="button" class="life-today-row" onclick="backupShare()"><span class="peach">'+lifeGlyph('arch')+'</span><span class="grow"><b>Backup teilen</b><small>'+(age===null?'Noch nie außerhalb des Handys gesichert':'Letztes Backup vor '+age+' Tagen')+' · Google Drive, Mail …</small></span><i aria-hidden="true">›</i></button>');
  return rows.length?'<div class="life-today-list">'+rows.join('')+'</div>':'';
 }
 

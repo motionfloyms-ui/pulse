@@ -71,6 +71,13 @@ try{
   assert.deepEqual(await ev(()=>[...document.querySelectorAll('#lifeNav [aria-current=page]')].map(b=>b.textContent)),['Mehr']);
  });
  await check('theme switch survives reload',async()=>{await ev(()=>lifeSetTheme('light'));await pg.reload();await pg.waitForTimeout(800);assert.equal(await ev(()=>document.documentElement.dataset.theme),'light');await ev(()=>{lifeCloseSheet();lifeSetTheme('auto')})});
+ await check('daily snapshot and restore (Zeitreise)',async()=>{
+  await ev(()=>backupSnapshot('day'));const before=await ev(()=>db.life.items.length);
+  await ev(()=>{PulseLife.create(db,{kind:'note',title:'Wird zurückgenommen'},'zr1',new Date().toISOString());save()});
+  const id=await ev(async()=>(await PulseIDB.listSnapshots()).find(s=>s.kind==='day').id);
+  await Promise.all([pg.waitForNavigation(),ev(i=>backupRestore(i),id)]);await pg.waitForTimeout(1200);
+  assert.equal(await ev(()=>db.life.items.length),before);assert.equal(await ev(()=>db.life.items.some(x=>x.id==='zr1')),false);
+ });
  await check('every button on every screen',async()=>{
   const views=["goView('life')","lifeOpenMore()","lifeOpenSpaces('sinn')","lifeOpenSpaces('ideen')","lifeOpenLibrary()","goView('focus')","lifeOpenCalendar()","cosmosSetMode('week')","lifeOpenVideos()","lifeOpenSigils()","lifeOpenSky()","lifeOpenSongs()","goView('bodyhub')","goView('nutrition')","goView('mehub')"];
   const SKIP=/löschen|entfernen|export|backup|installieren|youtube|import|archiv|laden|bühnenmodus|einsingen/i;
@@ -80,6 +87,13 @@ try{
     const t=await ev(i=>{const e=[...document.querySelectorAll('main .view.active button')].filter(e=>e.offsetParent)[i];return e?(e.innerText+' '+(e.getAttribute('onclick')||'')):null},i);
     if(!t||SKIP.test(t))continue;step='crawl '+v+' #'+i+' '+t.slice(0,50);
     await ev(i=>{const e=[...document.querySelectorAll('main .view.active button')].filter(e=>e.offsetParent)[i];e&&e.click()},i);await pg.waitForTimeout(40)}}
+ });
+ await check('full localStorage: data moves to IndexedDB and survives a reload',async()=>{
+  await ev(()=>{const chunk='z'.repeat(200000);try{for(let n=0;n<40;n++)localStorage.setItem('filler'+n,chunk)}catch(_){}});
+  await ev(()=>{const now=new Date().toISOString();for(let i=0;i<1200;i++)db.life.items.push({id:'big'+i,kind:'note',title:'Notiz '+i,body:'Lorem ipsum '.repeat(30),room:'alltag',date:'',time:'',deadline:'',duration:25,status:'open',parent:'',source:'',steps:[],url:'',repeat:0,resume:'',photos:[],createdAt:now,updatedAt:now});save()});
+  await ev(()=>storage.flush());assert.equal(await ev(()=>storage.mode),'idb');
+  const n=await ev(()=>db.life.items.length);await pg.reload();await pg.waitForTimeout(1500);
+  assert.equal(await ev(()=>storage.mode),'idb');assert.equal(await ev(()=>db.life.items.length),n);
  });
 }catch(e){errs.push(step+': '+e.message)}
 await browser.close();server.close();

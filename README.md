@@ -1,6 +1,6 @@
 # Pulse
 
-Persönliche App für Tag, Lebensräume und Körper. Läuft komplett im Browser; alle Daten bleiben auf dem Gerät (localStorage, Fotos in IndexedDB).
+Persönliche App für Tag, Lebensräume und Körper. Läuft komplett im Browser; alle Daten bleiben auf dem Gerät: im localStorage, und wenn der voll wird automatisch in IndexedDB. Fotos und die täglichen Sicherungen (Zeitreise, 14 Tage) liegen in IndexedDB. Ein Backup außerhalb des Handys entsteht über „Backup teilen“.
 
 Online: https://motionfloyms-ui.github.io/pulse/
 

@@ -4,9 +4,12 @@ const A=[
 ['Beinpresse (07)','3×8–15','40','2:00','10/12/12'],['Glute Drive (Lady Gym)','3×8–12','40','2:00','12/12/12 @40 gesamt'],['Latzug (05)','3×8–12','32.5','2:00','9 @32.5'],['Brustpresse (01)','3×8–12','22.5','1:30','12/8 @22.5'],['Beinbeuger sitzend (HS)','3×10–15','27.5','1:30','10/12/12'],['Seitheben Kurzhanteln','3×12–15','3','1:00','15/14/12'],['Trizepsmaschine','3×12–15','neu','1:00','neu'],['Bauchmaschine I (24)','2×10–15','27.5','1:30','13/13/10']];
 const B=[['Glute Drive (Lady Gym)','3×8–12','40','2:00','12/12/12 @40 gesamt'],['Rudern sitzend (03)','3×8–12','32.5','2:00','15@27.5; 12/12@30'],['Schulterpresse','3×8–12','5','1:30','8@7.5; 10/8@5'],['Abduktoren','3×12–20','45','1:30','16/20/20@40'],['Rückenstreckung (13)','3×10–15','32.5','1:30','15@27.5;15/15@30'],['Seitheben Kurzhanteln','3×12–15','3','1:00','15/14/12'],['Bauchmaschine I (24)','3×10–15','27.5','1:30','13/13/10']];
 const key=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`}; const dayNames=['So','Mo','Di','Mi','Do','Fr','Sa'];
-const storage=PulseStorage.create({getStorage:()=>localStorage,state:PulseState,migrate:value=>PulseUnify.run(value,key)});
+const storage=PulseStorage.create({getStorage:()=>localStorage,state:PulseState,migrate:value=>PulseUnify.run(value,key),idb:PulseIDB.supported?PulseIDB:null,
+ onAsyncError:error=>{try{PulseStorageUI.unsaved(error,{exportCurrent:()=>PulseStorageUI.download(storage.exportText(db),'PULSE_offene_Aenderungen_'+key()+'.json'),retry:()=>save()});toast(error.message)}catch(_){}}});
 let db;
-try{db=storage.load()}catch(error){PulseStorageUI.blocked(error,storage);throw error}
+/* Normally the data is read synchronously from localStorage. If it has moved to IndexedDB, the start waits for it. */
+const pulseAsyncBoot=storage.needsAsyncLoad();
+if(!pulseAsyncBoot){try{db=storage.load()}catch(error){PulseStorageUI.blocked(error,storage);throw error}}
 const {upsertFact,currentFact,supersedeFact,addDecision,addEvent,flagIssue}=PulseMemory.create(()=>db,key);
 function today(){if(!db.days[key()])db.days[key()]={water:0,steps:0,kcal:0,protein:0,carbs:0,fat:0,fiber:0,meals:0,recovery:null,waist:null,energyDrinks:0,cycleContext:null};return db.days[key()]}
 
@@ -106,7 +109,7 @@ function importPulse(file){
   storage.prepareImport(text);
   if(!confirm('Dieses Backup in PULSE laden? Der aktuelle Stand wird vorher gesichert und danach ersetzt.'))return;
   if(photos)await PulsePhotos.importAll(photos);
-  const restored=storage.restore(text,db);db=restored;location.reload();
+  await backupSnapshot('vor-import').catch(()=>{});const restored=storage.restore(text,db);db=restored;await storage.flush();location.reload();
  }catch(error){PulseStorageUI.unsaved(error,{exportCurrent:()=>PulseStorageUI.download(storage.exportText(db),'PULSE_offene_Aenderungen_'+key()+'.json'),retry:()=>save()});toast(error.message)}};
  reader.readAsText(file);
 }
@@ -257,7 +260,14 @@ window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;requestDu
 async function installPulse(){if(!deferredInstallPrompt)return toast('Installation ist über HTTPS oder localhost verfügbar.');deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;renderLife();let b=document.getElementById('installPulse');if(b)b.hidden=true}
 
 
-render();showWorkout((db.activeWorkout&&db.activeWorkout.date===key()?db.activeWorkout.plan:null)||activePlan()||'A');goView(lifeStartView(location.hash),{historyMode:'replace',focus:false});
+function pulseStart(){
+ render();showWorkout((db.activeWorkout&&db.activeWorkout.date===key()?db.activeWorkout.plan:null)||activePlan()||'A');goView(lifeStartView(location.hash),{historyMode:'replace',focus:false});
+ document.querySelectorAll('.life-mic').forEach(b=>b.hidden=!pulseSpeechSupported());
+ handleLaunchParams();requestDurableStorage();
+ setTimeout(()=>PulsePhotos.collect(photoReferences()).catch(()=>{}),4000);
+ setTimeout(()=>backupSnapshot('day').catch(()=>{}),5000);
+}
+if(pulseAsyncBoot)storage.loadAsync().then(value=>{db=value;pulseStart()}).catch(error=>PulseStorageUI.blocked(error,storage));else pulseStart();
 if('scrollRestoration' in history)history.scrollRestoration='manual';
 for(const ev of ['load','pageshow'])addEventListener(ev,()=>{scrollTo(0,0);setTimeout(()=>scrollTo(0,0),60)});
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
@@ -266,14 +276,11 @@ if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
  // A new version took over: reload once, but never while something is being typed or a sheet is open.
  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!hadController||reloading)return;const busy=activeDialog||document.activeElement?.matches?.('input,textarea,select');if(busy){toast('PULSE wurde aktualisiert. Beim nächsten Öffnen siehst du die neue Version.');return}reloading=true;location.reload()});
 }
-document.querySelectorAll('.life-mic').forEach(b=>b.hidden=!pulseSpeechSupported());
-handleLaunchParams();requestDurableStorage();
-setTimeout(()=>PulsePhotos.collect(photoReferences()).catch(()=>{}),4000);
 
 
 document.addEventListener('input',event=>{if(event.target?.id)dirtyInputs.add(event.target.id);rememberWorkoutInput(event.target)});
 let renderedDay=key();
-function refreshLocalDay(){if(key()!==renderedDay){renderedDay=key();dirtyInputs.clear();pendingWorkoutCapture=null;pendingFoodCapture=null;render();showWorkout(activePlan()||'A')}}
+function refreshLocalDay(){if(!db)return;if(key()!==renderedDay){renderedDay=key();dirtyInputs.clear();pendingWorkoutCapture=null;pendingFoodCapture=null;render();showWorkout(activePlan()||'A')}}
 window.addEventListener('focus',refreshLocalDay);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshLocalDay()});
 setInterval(refreshLocalDay,60000);

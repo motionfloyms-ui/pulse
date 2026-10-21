@@ -38,3 +38,27 @@ test('a full quota makes old safety copies give way to the current data',()=>{
  const u=s.usage();assert.ok(u.used>25000&&u.freedBackups);
  db.settings.note='z'.repeat(70000);assert.throws(()=>s.save(db),e=>e.code==='WRITE_FAILED');
 });
+function fakeIdb(){let main=null;return {get main(){return main},getMain:async()=>main&&{...main},putMain:async(rec,expected)=>{if(expected!=null&&main&&main.rev!==expected){const e=Error('conflict');e.code='CONFLICT';throw e}main={...rec}},deleteMain:async()=>{main=null}}}
+function quotaStorage(limit){const mem=new Map();const used=()=>[...mem].reduce((a,[k,v])=>a+k.length+v.length,0);return {mem,getItem:k=>mem.has(k)?mem.get(k):null,setItem:(k,v)=>{const old=mem.has(k)?k.length+mem.get(k).length:0;if(used()-old+k.length+String(v).length>limit){const e=new Error('quota');e.name='QuotaExceededError';throw e}mem.set(k,String(v))},removeItem:k=>mem.delete(k),get length(){return mem.size},key:i=>[...mem.keys()][i]}}
+test('when localStorage is full, the state moves to IndexedDB and loads from there next time',async()=>{
+ const ls=quotaStorage(40000),idb=fakeIdb(),errors=[];
+ const s=Store.create({getStorage:()=>ls,state:State,migrate:v=>Unify.run(v,key),idb,onAsyncError:e=>errors.push(e)});const db=s.load();
+ db.settings.note='x'.repeat(60000);assert.doesNotThrow(()=>s.save(db));assert.equal(s.mode,'idb');await s.flush();
+ assert.equal(errors.length,0);assert.ok(idb.main.text.includes('xxxx'));assert.equal(ls.mem.has('pulseOS'),false,'localStorage copy removed');assert.match(ls.getItem('pulseOS_meta'),/"where":"idb"/);
+ db.waterGoal=3.5;s.save(db);db.waterGoal=4;s.save(db);await s.flush();assert.equal(idb.main.rev,3);
+ const s2=Store.create({getStorage:()=>ls,state:State,migrate:v=>Unify.run(v,key),idb});assert.equal(s2.needsAsyncLoad(),true);
+ const again=await s2.loadAsync();assert.equal(again.waterGoal,4);assert.equal(again.settings.note.length,60000);
+ const noIdb=Store.create({getStorage:()=>ls,state:State,migrate:v=>Unify.run(v,key)});assert.throws(()=>noIdb.load(),e=>e.code==='READ_FAILED','never starts empty over moved data');
+});
+test('two windows in IndexedDB mode cannot overwrite each other',async()=>{
+ const ls=quotaStorage(40000),idb=fakeIdb();
+ const a=Store.create({getStorage:()=>ls,state:State,migrate:v=>Unify.run(v,key),idb});const db=a.load();db.settings.note='y'.repeat(60000);a.save(db);await a.flush();
+ const errs=[];const b=Store.create({getStorage:()=>ls,state:State,migrate:v=>Unify.run(v,key),idb,onAsyncError:e=>errs.push(e)});const dbB=await b.loadAsync();
+ db.waterGoal=5;a.save(db);await a.flush();
+ dbB.waterGoal=6;b.save(dbB);await b.flush();assert.equal(errs[0]?.code,'CONFLICT');assert.equal(JSON.parse(idb.main.text).waterGoal,5);
+});
+test('a marker without data in IndexedDB falls back to localStorage',async()=>{
+ const ls=quotaStorage(1e9),idb=fakeIdb();const s=Store.create({getStorage:()=>ls,state:State,migrate:v=>Unify.run(v,key),idb});const db=s.load();db.waterGoal=2.5;s.save(db);
+ ls.setItem('pulseOS_meta',JSON.stringify({where:'idb',rev:1}));
+ const s2=Store.create({getStorage:()=>ls,state:State,migrate:v=>Unify.run(v,key),idb});const back=await s2.loadAsync();assert.equal(back.waterGoal,2.5);assert.equal(ls.getItem('pulseOS_meta'),null);
+});

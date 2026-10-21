@@ -102,8 +102,8 @@ async function calImportFile(file){
   '<label class="life-name-field">In Raum<select id="calImportRoom">'+PulseLife.ROOMS.map(rm=>'<option value="'+rm.id+'">'+esc(rm.name)+'</option>').join('')+'</select></label>'+
   '<div class="life-detail-actions">'+lifeButton('Ab einem Jahr zurück importieren','calImportRun(true)','life-btn dark')+lifeButton('Alles importieren','calImportRun(false)','life-btn')+'</div><p class="life-footnote">Der Import lässt sich mit ↶ oben in einem Schritt rückgängig machen.</p>');
 }
-function calImportRun(recentOnly){
- const p=calPendingImport;if(!p)return;calPendingImport=null;const room=document.getElementById('calImportRoom')?.value||'alltag',now=new Date().toISOString();
+async function calImportRun(recentOnly){
+ const p=calPendingImport;if(!p)return;calPendingImport=null;await backupSnapshot('vor-kalenderimport').catch(()=>{});const room=document.getElementById('calImportRoom')?.value||'alltag',now=new Date().toISOString();
  const list=recentOnly?p.events.filter(e=>e.recur?(!e.recur.until||e.recur.until>=p.cutoff):(e.endDate||e.date)>=p.cutoff):p.events;let n=0,bad=0;
  const ok=lifeMutate(()=>{for(const e of list){try{PulseLife.create(db,{...e,room},uid('life'),now);n++}catch(_){bad++}}},'Import');
  if(ok){lifeCloseSheet();renderCosmos();toast(n+(n===1?' Termin':' Termine')+' importiert'+(bad?', '+bad+' fehlerhaft übersprungen':''),'Rückgängig')}

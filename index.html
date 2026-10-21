@@ -1109,6 +1109,8 @@ body.sigil-open{overflow:hidden}
 .more-arrow{color:var(--muted)}
 .more-group{margin:0 0 18px}.more-group h3{margin:0 4px 8px;font-size:16px}.more-group h3 span{font-weight:500;color:var(--muted)}
 .more-group .song-card{margin-bottom:8px}
+.backup-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 12px;margin:0 0 8px;padding:12px 14px;border-radius:var(--r-md);background:var(--surface-2)}
+.backup-row>span{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 160px}.backup-row small{font-size:12.5px}
 /* Calm view: colour recedes, structure stays. */
 .life-calm .life-room-tile,.life-calm .life-room-hero{background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 5px 0 0 var(--room)}
 .life-calm .life-room-tile::after,.life-calm .life-room-hero::after{display:none}
@@ -1118,7 +1120,7 @@ body.sigil-open{overflow:hidden}
 @media print{.life-nav,.life-topbar,.toast{display:none}.app{padding:0}}
 
 </style></head><body class="life-modern">
-<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v23</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view life-screen" id="videos"><div id="vaultContent"></div></section><section class="view life-screen" id="sigils"><div id="sigilContent"></div></section><section class="view life-screen" id="sky"><div id="skyContent"></div></section><section class="view life-screen" id="songs"><div id="songContent"></div></section><section class="view life-screen" id="more"><div id="moreContent"></div></section><section class="view " id="bodyhub"><header class="pagehead"><h1>Körper</h1></header><div class="body-feature"><div class="eyebrow">Training</div><h2 id="bodyPlan">Training</h2><p id="bodyPlanDetail"></p><button type="button" class="primary" onclick="openTodaysTraining()">Training öffnen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><div class="body-foot"><span id="homeTraining"></span><span>Deine bestätigten Gewichte</span></div></div>
+<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v24</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view life-screen" id="videos"><div id="vaultContent"></div></section><section class="view life-screen" id="sigils"><div id="sigilContent"></div></section><section class="view life-screen" id="sky"><div id="skyContent"></div></section><section class="view life-screen" id="songs"><div id="songContent"></div></section><section class="view life-screen" id="more"><div id="moreContent"></div></section><section class="view " id="bodyhub"><header class="pagehead"><h1>Körper</h1></header><div class="body-feature"><div class="eyebrow">Training</div><h2 id="bodyPlan">Training</h2><p id="bodyPlanDetail"></p><button type="button" class="primary" onclick="openTodaysTraining()">Training öffnen <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><div class="body-foot"><span id="homeTraining"></span><span>Deine bestätigten Gewichte</span></div></div>
 <div class="routes"><button type="button" class="route" onclick="goView('nutrition')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-food"></use></svg></span><span class="grow"><b>Essen</b><small><span id="homeProtein">—</span> Protein erfasst · regelmäßig versorgt</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('recovery')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-moon"></use></svg></span><span class="grow"><b>Befinden & Zyklus</b><small>Tagesform, Schlaf, Zyklus</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('trends')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Fortschritt</b><small>Taille, Maße & dein Trainingsverlauf</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div><div class="quiet-callout"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-water"></use></svg><div><b>Wasser</b><p><span id="homeWater">—</span> heute</p></div><button type="button" class="small" onclick="addWater(.25)">+ 250 ml</button></div><div id="bodyLibrary" class="life-body-library"></div></section>
 <section class="view " id="mehub"><button type="button" class="backbtn" onclick="navigateUp('more')"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-back"></use></svg>Mehr</button><header class="pagehead"><h1>Ich</h1></header><div class="identity"><span class="avatar" data-me-initial>·</span><div><b data-me-name>Du</b><small>Muskelaufbau · Alltag · mehr Raum im Kopf</small></div></div><div class="routes"><button type="button" class="route" onclick="goView('goals')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Deine Richtung</b><small>Ziele, die zu deinem Leben passen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('plan')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg></span><span class="grow"><b>Dein Plan</b><small>Routinen, Training & Ausnahmen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('history')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg></span><span class="grow"><b>Verlauf</b><small>Was tatsächlich passiert ist</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('coach')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-spark"></use></svg></span><span class="grow"><b>Muster</b><small>Beobachtungen aus deinen Einträgen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div>
 <details class="disclosure"><summary>Was PULSE über dich weiß</summary><p class="tiny" id="eventCount"></p><div id="semanticMemory" class="memory-list"></div></details>
@@ -2058,13 +2060,66 @@ Smoothie|smoothie|55|0.6|12|0.2|1.5|250||1`;
 });
 
 
+// SOURCE: storage/idb-store.js
+/* IndexedDB for the state: (1) the main state once localStorage is too small, with a revision
+   number so two windows cannot overwrite each other, (2) automatic daily snapshots ("Zeitreise").
+   Pure promise API; no knowledge of the app. */
+const PulseIDB=(()=>{
+ 'use strict';
+ const supported=typeof indexedDB!=='undefined';
+ let opening=null;
+ const req=r=>new Promise((res,rej)=>{r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+ function open(){
+  if(!supported)return Promise.reject(Error('IndexedDB fehlt in diesem Browser.'));
+  if(!opening)opening=new Promise((res,rej)=>{const r=indexedDB.open('pulse-state',1);r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains('main'))d.createObjectStore('main');if(!d.objectStoreNames.contains('snapshots'))d.createObjectStore('snapshots',{keyPath:'id'})};r.onsuccess=()=>{const d=r.result;d.onversionchange=()=>d.close();res(d)};r.onerror=()=>{opening=null;rej(r.error)};r.onblocked=()=>{opening=null;rej(Error('Die Browser-Datenbank ist blockiert. Bitte andere PULSE-Fenster schließen.'))}});
+  return opening;
+ }
+ const done=t=>new Promise((res,rej)=>{t.oncomplete=()=>res();t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error||Error('Abgebrochen'))});
+ async function getMain(){const d=await open();return (await req(d.transaction('main','readonly').objectStore('main').get('state')))||null}
+ /* Writes the main state only if the stored revision is the one this window last saw (or `expected` is null). */
+ async function putMain(rec,expected){
+  const d=await open(),t=d.transaction('main','readwrite'),s=t.objectStore('main');let conflict=false;
+  const cur=await req(s.get('state'));
+  if(expected!=null&&cur&&cur.rev!==expected){conflict=true;t.abort()}else s.put(rec,'state');
+  try{await done(t)}catch(e){if(!conflict)throw e}
+  if(conflict){const e=Error('Der gespeicherte Stand wurde in einem anderen Fenster geändert. Exportiere deine offenen Änderungen und lade PULSE neu.');e.code='CONFLICT';throw e}
+ }
+ async function deleteMain(){const d=await open(),t=d.transaction('main','readwrite');t.objectStore('main').delete('state');await done(t)}
+ async function putSnapshot(rec){const d=await open(),t=d.transaction('snapshots','readwrite');t.objectStore('snapshots').put(rec);await done(t)}
+ async function listSnapshots(){const d=await open(),all=await req(d.transaction('snapshots','readonly').objectStore('snapshots').getAll());return all.map(({text,...meta})=>meta).sort((a,b)=>b.savedAt.localeCompare(a.savedAt))}
+ async function getSnapshot(id){const d=await open();return (await req(d.transaction('snapshots','readonly').objectStore('snapshots').get(id)))||null}
+ async function deleteSnapshot(id){const d=await open(),t=d.transaction('snapshots','readwrite');t.objectStore('snapshots').delete(id);await done(t)}
+ return {supported,getMain,putMain,deleteMain,putSnapshot,listSnapshots,getSnapshot,deleteSnapshot};
+})();
 // SOURCE: storage/local-store.js
-/* Synchronous compatibility adapter. The only module accessing browser storage. */
+/* Storage adapter: synchronous localStorage as long as the data fits; when the browser's quota is
+   reached, the state moves to IndexedDB (no practical size limit) and saves become asynchronous.
+   A small marker in localStorage tells the next start where the data lives. */
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseStorage=api})(globalThis,function(){
  'use strict';
  function fault(code,message,cause){const e=new Error(message);e.code=code;e.cause=cause;return e}
- function create({getStorage,state,migrate,key='pulseOS'}){
+ function create({getStorage,state,migrate,key='pulseOS',idb=null,onAsyncError=null}){
   let storage=null,expected=null,original=null,loaded=false,lastError=null;
+  let mode='ls',rev=0,chain=Promise.resolve();
+  const META=key+'_meta';
+  function init(){if(!storage){try{storage=getStorage()}catch(e){throw fault('READ_FAILED','Der Browser gibt den PULSE-Speicher nicht frei.',e)}}}
+  function readMeta(){try{const m=JSON.parse(storage.getItem(META)||'null');return m&&m.where==='idb'?m:null}catch(_){return null}}
+  /* True when the data lives in IndexedDB: the app must then start with loadAsync(). */
+  function needsAsyncLoad(){try{init()}catch(_){return false}return !!readMeta()&&!!idb}
+  /* Queues an IndexedDB write. Order is kept; a failure is reported through onAsyncError. */
+  function queueIdb(bytes,first=false){
+   const mine=++rev,prev=first?null:mine-1;
+   chain=chain.then(async()=>{
+    await idb.putMain({text:bytes,rev:mine,savedAt:new Date().toISOString()},prev);
+    try{storage.setItem(META,JSON.stringify({where:'idb',rev:mine}))}catch(_){}
+    if(first){try{storage.removeItem(key)}catch(_){}dropBackups('')}
+   }).catch(e=>{lastError=e&&e.code==='CONFLICT'?e:fault('WRITE_FAILED','PULSE konnte nicht in die Browser-Datenbank speichern. Bitte exportiere deine Daten.',e);if(onAsyncError)try{onAsyncError(lastError)}catch(_){}});
+   return chain;
+  }
+  function switchToIdb(value){
+   const prepared=state.normalize(value),bytes=JSON.stringify(prepared);
+   mode='idb';rev=0;expected=bytes;lastError=null;queueIdb(bytes,true);return prepared;
+  }
   function read(){try{return storage.getItem(key)}catch(e){throw fault('READ_FAILED','PULSE kann die gespeicherten Daten gerade nicht lesen.',e)}}
   function assertUnchanged(){if(read()!==expected)throw fault('CONFLICT','Der gespeicherte Stand wurde in einem anderen Fenster geändert. Exportiere deine offenen Änderungen und lade PULSE neu.')}
   /* Safety copies of earlier states. When the browser's quota is full they give way to the current data. */
@@ -2087,11 +2142,13 @@ Smoothie|smoothie|55|0.6|12|0.2|1.5|250||1`;
    write(key,bytes);expected=bytes;lastError=null;return prepared;
   }
   /* Characters used in this origin's localStorage (all keys) and Chrome's limit of about 5.2 million. */
-  function usage(){let used=0,backups=0;try{for(let i=0;i<storage.length;i++){const k=storage.key(i),v=storage.getItem(k)||'';used+=k.length+v.length;if(BACKUPS.includes(k))backups+=v.length}}catch(_){}return {used,backups,quota:5200000,freedBackups}}
+  function usage(){let used=0,backups=0;try{for(let i=0;i<storage.length;i++){const k=storage.key(i),v=storage.getItem(k)||'';used+=k.length+v.length;if(BACKUPS.includes(k))backups+=v.length}}catch(_){}return {used,backups,quota:5200000,freedBackups,mode,size:expected?expected.length:0}}
   function attempt(fn){try{return fn()}catch(e){lastError=e;throw e}}
   function load(){return attempt(()=>{
    if(loaded)throw fault('ALREADY_LOADED','PULSE wurde bereits geladen.');
-   try{storage=getStorage()}catch(e){throw fault('READ_FAILED','Der Browser gibt den PULSE-Speicher nicht frei.',e)}
+   init();
+   // Data that moved to IndexedDB is never replaced by an empty start.
+   if(readMeta())throw fault('READ_FAILED','Deine Daten liegen in der Browser-Datenbank (IndexedDB), die gerade nicht erreichbar ist. Es wurde nichts verändert.');
    expected=read();original=expected;
    // An unreadable/corrupt/future state never falls back to seeded data.
    let input;if(expected===null)input=state.create();else{try{input=JSON.parse(expected)}catch(e){throw fault('INVALID_JSON','Die gespeicherten Daten konnten nicht gelesen werden. Das Original bleibt erhalten.',e)}}
@@ -2099,21 +2156,41 @@ Smoothie|smoothie|55|0.6|12|0.2|1.5|250||1`;
    if(expected===null||JSON.stringify(input)!==JSON.stringify(prepared))transact(prepared,'pulseOS_pre_migration_backup');
    loaded=true;return prepared;
   })}
-  function save(value){return attempt(()=>{if(!loaded)throw fault('NOT_LOADED','Daten sind noch nicht geladen.');return transact(value)})}
+  async function loadAsync(){
+   try{
+    if(loaded)throw fault('ALREADY_LOADED','PULSE wurde bereits geladen.');
+    init();if(!idb)throw fault('READ_FAILED','Die Daten liegen in der Browser-Datenbank, die hier nicht erreichbar ist.');
+    let rec;try{rec=await idb.getMain()}catch(e){throw fault('READ_FAILED','PULSE kann die Browser-Datenbank gerade nicht lesen.',e)}
+    if(!rec){if(read()!==null){storage.removeItem(META);return load()}throw fault('INVALID_JSON','Die Daten in der Browser-Datenbank fehlen. Bitte ein Backup importieren.')}
+    let input;try{input=JSON.parse(rec.text)}catch(e){throw fault('INVALID_JSON','Die gespeicherten Daten konnten nicht gelesen werden. Das Original bleibt erhalten.',e)}
+    const prepared=state.normalize(migrate(state.normalize(input)));
+    mode='idb';rev=Number(rec.rev)||0;expected=rec.text;original=rec.text;loaded=true;
+    if(JSON.stringify(input)!==JSON.stringify(prepared)){expected=JSON.stringify(prepared);queueIdb(expected)}
+    return prepared;
+   }catch(e){lastError=e;throw e}
+  }
+  function save(value){return attempt(()=>{
+   if(!loaded)throw fault('NOT_LOADED','Daten sind noch nicht geladen.');
+   if(mode==='idb'){const prepared=state.normalize(value),bytes=JSON.stringify(prepared);expected=bytes;lastError=null;queueIdb(bytes);return prepared}
+   try{return transact(value)}catch(e){if(e.code==='WRITE_FAILED'&&isQuota(e.cause)&&idb)return switchToIdb(value);throw e}
+  })}
+  /* Resolves when every queued IndexedDB write is done (e.g. before a reload). */
+  function flush(){return chain}
   function prepareImport(text){return state.normalize(migrate(state.parseBackup(text)))}
   function restore(text,currentState){return attempt(()=>{
    if(!loaded)throw fault('NOT_LOADED','Daten sind noch nicht geladen.');
    if(lastError)throw fault('UNSAVED_DATA','Bitte offene Änderungen zuerst exportieren und das Speicherproblem beheben.');
    const prepared=prepareImport(text);
+   if(mode==='idb'){const bytes=JSON.stringify(prepared);expected=bytes;queueIdb(bytes);return prepared}
    // Capture metadata can be pending without a failed save; preserve it too.
    if(currentState!==undefined){const pending=JSON.stringify(state.normalize(currentState));if(expected===null||pending!==JSON.stringify(JSON.parse(expected))){assertUnchanged();writeBackup('pulseOS_pre_import_memory_backup',pending)}}
    return transact(prepared,'pulseOS_pre_import_backup');
   })}
-  function exportText(value,{wrapped=true,version='23.0.0',now=new Date()}={}){
+  function exportText(value,{wrapped=true,version='24.0.0',now=new Date()}={}){
    // Emergency export deliberately does not reject uncommitted in-memory data.
    return JSON.stringify(wrapped?{app:'PULSE',version,schemaVersion:value.schemaVersion||state.SCHEMA_VERSION,exportedAt:now.toISOString(),data:value}:value,null,2);
   }
-  return {load,save,prepareImport,restore,exportText,usage,dropBackups:()=>dropBackups(''),get lastError(){return lastError},get originalBytes(){return original},get storedBytes(){return expected}};
+  return {load,loadAsync,needsAsyncLoad,flush,save,prepareImport,restore,exportText,usage,dropBackups:()=>dropBackups(''),get mode(){return mode},get lastError(){return lastError},get originalBytes(){return original},get storedBytes(){return expected}};
  }
  return {create};
 });
@@ -2671,7 +2748,7 @@ function lifeCloseSheet(){closeDialog(document.getElementById('lifeSheet'))}
 function lifeLegacy(v){goView(v);if(v==='workout')showWorkout(activePlan()||'A')}
 function lifeSettings(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
- el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 23</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div><div class="life-sectionhead"><h3>Deine Daten</h3></div><p class="life-footnote">Einträge werden in diesem Browser gespeichert. Ein Backup hilft beim Umzug auf ein anderes Gerät oder eine andere Adresse.</p>'+storageUsageHTML()+'<div class="life-detail-actions">'+lifeButton('Backup exportieren',lifeCall('exportPulse'),'life-btn dark')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,application/json" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div><div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Dein Himmel ↗','lifeCloseSheet();lifeOpenSky()','life-textbtn')+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 24</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div>'+backupSettingsHTML()+'<div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Dein Himmel ↗','lifeCloseSheet();lifeOpenSky()','life-textbtn')+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
  (navigator.storage?.persisted?navigator.storage.persisted():Promise.resolve(false)).then(p=>{const e=document.getElementById('lifeStorageState');if(e)e.textContent=p?'Speicher: dauerhaft geschützt':'Speicher: nicht dauerhaft geschützt'}).catch(()=>{});
 }
@@ -4060,8 +4137,8 @@ async function calImportFile(file){
   '<label class="life-name-field">In Raum<select id="calImportRoom">'+PulseLife.ROOMS.map(rm=>'<option value="'+rm.id+'">'+esc(rm.name)+'</option>').join('')+'</select></label>'+
   '<div class="life-detail-actions">'+lifeButton('Ab einem Jahr zurück importieren','calImportRun(true)','life-btn dark')+lifeButton('Alles importieren','calImportRun(false)','life-btn')+'</div><p class="life-footnote">Der Import lässt sich mit ↶ oben in einem Schritt rückgängig machen.</p>');
 }
-function calImportRun(recentOnly){
- const p=calPendingImport;if(!p)return;calPendingImport=null;const room=document.getElementById('calImportRoom')?.value||'alltag',now=new Date().toISOString();
+async function calImportRun(recentOnly){
+ const p=calPendingImport;if(!p)return;calPendingImport=null;await backupSnapshot('vor-kalenderimport').catch(()=>{});const room=document.getElementById('calImportRoom')?.value||'alltag',now=new Date().toISOString();
  const list=recentOnly?p.events.filter(e=>e.recur?(!e.recur.until||e.recur.until>=p.cutoff):(e.endDate||e.date)>=p.cutoff):p.events;let n=0,bad=0;
  const ok=lifeMutate(()=>{for(const e of list){try{PulseLife.create(db,{...e,room},uid('life'),now);n++}catch(_){bad++}}},'Import');
  if(ok){lifeCloseSheet();renderCosmos();toast(n+(n===1?' Termin':' Termine')+' importiert'+(bad?', '+bad+' fehlerhaft übersprungen':''),'Rückgängig')}
@@ -4113,6 +4190,7 @@ function themeSettingsHTML(){
 let pulseAudio=null;
 function pulseSound(kind='pop'){
  if(!db?.uiPrefs?.sound)return;
+ if(navigator.userActivation&&!navigator.userActivation.hasBeenActive)return;
  try{
   const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
   pulseAudio=pulseAudio||new AC();const a=pulseAudio;if(a.state==='suspended')a.resume();
@@ -4164,7 +4242,8 @@ function itemVideo(x){return x?(PulseVideo.parse(x.url)||PulseVideo.find(x.body)
 function storageUsageHTML(){
  let u;try{u=storage.usage()}catch(_){return ''}
  const pct=Math.min(100,Math.round(u.used/u.quota*100)),mb=n=>(n/1e6).toLocaleString('de-DE',{maximumFractionDigits:1});
- return '<div class="life-settings-row storage-row"><div><b>Speicher im Browser</b><p>'+mb(u.used)+' von etwa '+mb(u.quota)+' Mio. Zeichen belegt ('+pct+' %)'+(u.backups?', davon '+mb(u.backups)+' Mio. für ältere Sicherungskopien':'')+'.'+(pct>=70?' Es wird eng: Backup exportieren und Sicherungskopien löschen.':'')+'</p><span class="vault-bar'+(pct>=70?' warn':'')+'" aria-hidden="true"><i style="width:'+pct+'%"></i></span></div>'+(u.backups?lifeButton('Kopien löschen','storageDropBackups()','life-btn'):'')+'</div>';
+ if(u.mode==='idb')return '<div class="life-settings-row storage-row"><div><b>Speicher im Browser</b><p>Deine Daten liegen in der Browser-Datenbank (IndexedDB), dort gibt es praktisch keine Grenze. Größe: '+mb(u.size)+' Mio. Zeichen.</p></div></div>';
+ return '<div class="life-settings-row storage-row"><div><b>Speicher im Browser</b><p>'+mb(u.used)+' von etwa '+mb(u.quota)+' Mio. Zeichen belegt ('+pct+' %)'+(u.backups?', davon '+mb(u.backups)+' Mio. für ältere Sicherungskopien':'')+'.'+(pct>=70?' Wird es voll, zieht Pulse automatisch in die größere Browser-Datenbank um.':'')+'</p><span class="vault-bar'+(pct>=70?' warn':'')+'" aria-hidden="true"><i style="width:'+pct+'%"></i></span></div>'+(u.backups?lifeButton('Kopien löschen','storageDropBackups()','life-btn'):'')+'</div>';
 }
 function storageDropBackups(){try{storage.dropBackups();toast('Ältere Sicherungskopien gelöscht')}catch(e){toast(e.message)}lifeSettings()}
 /* Full-screen overlays (sigil charging, stage mode, warm-up): background inert, Android back closes them. */
@@ -4771,6 +4850,65 @@ function renderMoreResults(){
   group('Tarot',tarot.length,tarot.map(c=>'<button type="button" class="cos-row" onclick="'+lifeCall('lifeTarotOpen',c.index)+'"><span><b>'+esc(c.name)+'</b><small>'+esc(c.keywords)+'</small></span></button>').join(''))
   :'<p class="life-none">Nichts gefunden für „'+esc(q)+'“.</p>';
 }
+// SOURCE: ui/backup.js
+/* Data safety: automatic daily snapshots inside the browser ("Zeitreise", last 14 days) and a backup
+   that leaves the phone with one tap (share sheet: Google Drive, Mail, Signal …). */
+const BACKUP_DAYS=14,BACKUP_OTHER=5;
+let backupLastSnap=0,backupConfirm=null;
+async function backupSnapshot(kind='day'){
+ if(!PulseIDB.supported||!db)return;
+ const now=new Date(),id=kind==='day'?'day-'+key():kind+'-'+now.toISOString(),text=JSON.stringify(db);
+ const sum={items:(db.life?.items||[]).length,videos:(db.videos?.items||[]).length,songs:(db.songs?.items||[]).length,workouts:(db.workouts||[]).length,meals:(db.meals||[]).length};
+ await PulseIDB.putSnapshot({id,kind,date:key(),savedAt:now.toISOString(),size:text.length,sum,text});
+ const list=await PulseIDB.listSnapshots(),days=list.filter(s=>s.kind==='day'),other=list.filter(s=>s.kind!=='day');
+ for(const s of [...days.slice(BACKUP_DAYS),...other.slice(BACKUP_OTHER)])await PulseIDB.deleteSnapshot(s.id);
+ backupLastSnap=Date.now();
+}
+/* The day's snapshot follows the day: refreshed when Pulse goes to the background (at most every 10 min). */
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&db&&Date.now()-backupLastSnap>600000)backupSnapshot('day').catch(()=>{})});
+const BACKUP_KIND={day:'Tagesstand','vor-import':'Vor einem Import','vor-wiederherstellung':'Vor einer Wiederherstellung','vor-kalenderimport':'Vor einem Kalender-Import'};
+function backupWhen(iso){const d=iso.slice(0,10),t=new Date(iso).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});return (d===key()?'Heute':d===PulseLife.offset(key(),-1)?'Gestern':lifeDate(d,{weekday:'short',day:'numeric',month:'short'}))+', '+t}
+async function backupTimeline(){
+ document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Zeitreise</h2><p class="life-detail-intro">Pulse legt jeden Tag automatisch eine Sicherung im Browser ab und behält die letzten '+BACKUP_DAYS+' Tage, dazu Stände vor Importen. Damit holst du einen früheren Stand zurück, z. B. nach einem versehentlichen Löschen.</p><div id="backupList"><p class="life-none">Wird geladen …</p></div><p class="life-footnote">Diese Sicherungen liegen auf diesem Handy. Gegen Verlust oder Defekt des Handys hilft nur ein Backup außerhalb, über „Backup teilen“.</p>';
+ if(activeDialog!=='lifeSheet')openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
+ let list=[];try{list=PulseIDB.supported?await PulseIDB.listSnapshots():[]}catch(_){}
+ const box=document.getElementById('backupList');if(!box)return;
+ box.innerHTML=list.length?list.map(s=>{const n=s.sum||{};return '<div class="backup-row"><span><b>'+esc(backupWhen(s.savedAt))+'</b><small>'+esc(BACKUP_KIND[s.kind]||'Sicherung')+' · '+[n.items+' Einträge',n.videos?n.videos+' Videos':'',n.songs?n.songs+' Songs':'',n.workouts?n.workouts+' Sätze':''].filter(Boolean).join(' · ')+'</small></span>'+(backupConfirm===s.id?lifeButton('Ja, zurückholen',lifeCall('backupRestore',s.id),'life-btn dark')+lifeButton('Nein','backupConfirm=null;backupTimeline()','life-textbtn'):lifeButton('Zurückholen',lifeCall('backupAsk',s.id),'life-btn'))+'</div>'}).join('')+(backupConfirm?'<p class="life-footnote">Dein jetziger Stand wird vorher selbst gesichert, du kannst also zurück.</p>':''):'<p class="life-none">Noch keine Sicherung. Die erste entsteht ein paar Sekunden nach dem Start.</p>';
+}
+function backupAsk(id){backupConfirm=id;backupTimeline()}
+async function backupRestore(id){
+ backupConfirm=null;const rec=await PulseIDB.getSnapshot(id).catch(()=>null);if(!rec)return toast('Diese Sicherung gibt es nicht mehr.');
+ try{await backupSnapshot('vor-wiederherstellung');const restored=storage.restore(rec.text,db);db=restored;await storage.flush();location.reload()}catch(e){toast(e.message)}
+}
+/* ---------- Backup off the phone ---------- */
+async function backupText(){
+ let text=storage.exportText(db),n=0;
+ try{const photos=await PulsePhotos.exportAll();n=Object.keys(photos).length;if(n){const o=JSON.parse(text);o.photos=photos;text=JSON.stringify(o)}}catch(_){toast('Fotos konnten nicht mitgesichert werden. Die Einträge sind im Backup.')}
+ return {text,photos:n};
+}
+function backupMarkDone(){db.settings.lastExportAt=new Date().toISOString();save();renderLife()}
+/* One tap: the share sheet offers Google Drive, Mail, Signal and so on. Chrome only shares some file
+   types, so the backup travels as .txt (it is the same JSON; import accepts both). */
+async function backupShare(){
+ const {text,photos}=await backupText(),name='PULSE_backup_'+key();
+ const file=typeof File==='function'?new File([text],name+'.txt',{type:'text/plain'}):null;
+ if(file&&navigator.canShare?.({files:[file]})){
+  try{await navigator.share({files:[file],title:'PULSE Backup',text:'PULSE Backup vom '+lifeDate(key(),{day:'numeric',month:'long',year:'numeric'})});backupMarkDone();toast(photos?'Backup geteilt · mit '+photos+(photos===1?' Foto':' Fotos'):'Backup geteilt');return}
+  catch(e){if(e&&e.name==='AbortError')return}
+ }
+ PulseStorageUI.download(text,name+'.json');backupMarkDone();toast('Backup als Datei gespeichert. Am besten in Google Drive oder auf den Computer kopieren.');
+}
+function backupEvery(){const v=Number(db.uiPrefs.backupEvery);return Number.isFinite(v)&&v>=0?v:7}
+function backupSetEvery(v){db.uiPrefs.backupEvery=Number(v);save();lifeSettings()}
+function backupSettingsHTML(){
+ const age=backupAgeDays(),every=backupEvery();
+ return '<div class="life-sectionhead"><h3>Deine Daten</h3></div>'+storageUsageHTML()+
+  '<div class="life-settings-row"><div><b>Zeitreise</b><p>Automatisch jeden Tag eine Sicherung im Browser, die letzten '+BACKUP_DAYS+' Tage.</p></div>'+lifeButton('Ansehen','backupTimeline()','life-btn')+'</div>'+
+  '<div class="life-settings-row"><div><b>Backup außerhalb des Handys</b><p>'+(age===null?'Noch nie gesichert.':'Zuletzt vor '+age+(age===1?' Tag':' Tagen')+'.')+' Schützt vor Verlust oder Defekt des Handys: teilen in Google Drive, per Mail oder in einen Chat an dich selbst.</p></div>'+lifeButton('Backup teilen','backupShare()','life-btn dark')+'</div>'+
+  '<div class="life-settings-row"><div><b>Erinnerung</b><p>Wann der Tag dich an ein neues Backup erinnert.</p></div><div class="life-seg" role="group" aria-label="Erinnerung an Backup">'+[[3,'3 Tage'],[7,'Woche'],[14,'2 Wochen'],[0,'Aus']].map(([v,l])=>'<button type="button" aria-pressed="'+(every===v)+'" onclick="backupSetEvery('+v+')">'+l+'</button>').join('')+'</div></div>'+
+  '<div class="life-detail-actions">'+lifeButton('Als Datei herunterladen',lifeCall('exportPulse'),'life-btn')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,.txt,application/json,text/plain" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div>';
+}
 // SOURCE: storage/photos.js
 /* Photos live in IndexedDB (localStorage is far too small). Records reference them by id. */
 const PulsePhotos=(()=>{
@@ -5024,7 +5162,8 @@ function lifeFoodPick(i){
 }
 // SOURCE: ui/today.js
 /* Tag: an adaptive overview (tiles ordered by time of day), the day's agenda, and the one-line capture. */
-function pulseTap(ms=12){try{navigator.vibrate?.(ms)}catch(_){}}
+/* Haptics only after the person has touched the page (Chrome blocks it otherwise). */
+function pulseTap(ms=12){try{if(navigator.userActivation&&!navigator.userActivation.hasBeenActive)return;navigator.vibrate?.(ms)}catch(_){}}
 let lifeJustDone=null,lifeJustDoneAt=0;
 function dayPeriod(h=new Date().getHours()){return h>=5&&h<11?'morning':h>=11&&h<18?'day':'evening'}
 function ring(value,goal,label,unit){
@@ -5219,7 +5358,7 @@ function lifeReviewRows(){
 function lifeSystemRows(date){
  if(date!==key())return '';const rows=[],age=backupAgeDays(),hasData=PulseLife.list(db).length>0||db.workouts.length>0;
  if(deferredInstallPrompt&&!isStandalone())rows.push('<button type="button" class="life-today-row" onclick="installPulse()"><span class="plum-soft">'+lifeGlyph('plus')+'</span><span class="grow"><b>PULSE als App installieren</b><small>Offline nutzbar, Daten dauerhaft geschützt</small></span><i aria-hidden="true">›</i></button>');
- if(hasData&&(age===null||age>=7))rows.push('<button type="button" class="life-today-row" onclick="exportPulse()"><span class="peach">'+lifeGlyph('arch')+'</span><span class="grow"><b>Backup sichern</b><small>'+(age===null?'Noch keine Sicherung':'Letzte Sicherung vor '+age+' Tagen')+'</small></span><i aria-hidden="true">›</i></button>');
+ const every=backupEvery();if(hasData&&every&&(age===null||age>=every))rows.push('<button type="button" class="life-today-row" onclick="backupShare()"><span class="peach">'+lifeGlyph('arch')+'</span><span class="grow"><b>Backup teilen</b><small>'+(age===null?'Noch nie außerhalb des Handys gesichert':'Letztes Backup vor '+age+' Tagen')+' · Google Drive, Mail …</small></span><i aria-hidden="true">›</i></button>');
  return rows.length?'<div class="life-today-list">'+rows.join('')+'</div>':'';
 }
 
@@ -5230,9 +5369,12 @@ const A=[
 ['Beinpresse (07)','3×8–15','40','2:00','10/12/12'],['Glute Drive (Lady Gym)','3×8–12','40','2:00','12/12/12 @40 gesamt'],['Latzug (05)','3×8–12','32.5','2:00','9 @32.5'],['Brustpresse (01)','3×8–12','22.5','1:30','12/8 @22.5'],['Beinbeuger sitzend (HS)','3×10–15','27.5','1:30','10/12/12'],['Seitheben Kurzhanteln','3×12–15','3','1:00','15/14/12'],['Trizepsmaschine','3×12–15','neu','1:00','neu'],['Bauchmaschine I (24)','2×10–15','27.5','1:30','13/13/10']];
 const B=[['Glute Drive (Lady Gym)','3×8–12','40','2:00','12/12/12 @40 gesamt'],['Rudern sitzend (03)','3×8–12','32.5','2:00','15@27.5; 12/12@30'],['Schulterpresse','3×8–12','5','1:30','8@7.5; 10/8@5'],['Abduktoren','3×12–20','45','1:30','16/20/20@40'],['Rückenstreckung (13)','3×10–15','32.5','1:30','15@27.5;15/15@30'],['Seitheben Kurzhanteln','3×12–15','3','1:00','15/14/12'],['Bauchmaschine I (24)','3×10–15','27.5','1:30','13/13/10']];
 const key=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`}; const dayNames=['So','Mo','Di','Mi','Do','Fr','Sa'];
-const storage=PulseStorage.create({getStorage:()=>localStorage,state:PulseState,migrate:value=>PulseUnify.run(value,key)});
+const storage=PulseStorage.create({getStorage:()=>localStorage,state:PulseState,migrate:value=>PulseUnify.run(value,key),idb:PulseIDB.supported?PulseIDB:null,
+ onAsyncError:error=>{try{PulseStorageUI.unsaved(error,{exportCurrent:()=>PulseStorageUI.download(storage.exportText(db),'PULSE_offene_Aenderungen_'+key()+'.json'),retry:()=>save()});toast(error.message)}catch(_){}}});
 let db;
-try{db=storage.load()}catch(error){PulseStorageUI.blocked(error,storage);throw error}
+/* Normally the data is read synchronously from localStorage. If it has moved to IndexedDB, the start waits for it. */
+const pulseAsyncBoot=storage.needsAsyncLoad();
+if(!pulseAsyncBoot){try{db=storage.load()}catch(error){PulseStorageUI.blocked(error,storage);throw error}}
 const {upsertFact,currentFact,supersedeFact,addDecision,addEvent,flagIssue}=PulseMemory.create(()=>db,key);
 function today(){if(!db.days[key()])db.days[key()]={water:0,steps:0,kcal:0,protein:0,carbs:0,fat:0,fiber:0,meals:0,recovery:null,waist:null,energyDrinks:0,cycleContext:null};return db.days[key()]}
 
@@ -5332,7 +5474,7 @@ function importPulse(file){
   storage.prepareImport(text);
   if(!confirm('Dieses Backup in PULSE laden? Der aktuelle Stand wird vorher gesichert und danach ersetzt.'))return;
   if(photos)await PulsePhotos.importAll(photos);
-  const restored=storage.restore(text,db);db=restored;location.reload();
+  await backupSnapshot('vor-import').catch(()=>{});const restored=storage.restore(text,db);db=restored;await storage.flush();location.reload();
  }catch(error){PulseStorageUI.unsaved(error,{exportCurrent:()=>PulseStorageUI.download(storage.exportText(db),'PULSE_offene_Aenderungen_'+key()+'.json'),retry:()=>save()});toast(error.message)}};
  reader.readAsText(file);
 }
@@ -5483,7 +5625,14 @@ window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;requestDu
 async function installPulse(){if(!deferredInstallPrompt)return toast('Installation ist über HTTPS oder localhost verfügbar.');deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;renderLife();let b=document.getElementById('installPulse');if(b)b.hidden=true}
 
 
-render();showWorkout((db.activeWorkout&&db.activeWorkout.date===key()?db.activeWorkout.plan:null)||activePlan()||'A');goView(lifeStartView(location.hash),{historyMode:'replace',focus:false});
+function pulseStart(){
+ render();showWorkout((db.activeWorkout&&db.activeWorkout.date===key()?db.activeWorkout.plan:null)||activePlan()||'A');goView(lifeStartView(location.hash),{historyMode:'replace',focus:false});
+ document.querySelectorAll('.life-mic').forEach(b=>b.hidden=!pulseSpeechSupported());
+ handleLaunchParams();requestDurableStorage();
+ setTimeout(()=>PulsePhotos.collect(photoReferences()).catch(()=>{}),4000);
+ setTimeout(()=>backupSnapshot('day').catch(()=>{}),5000);
+}
+if(pulseAsyncBoot)storage.loadAsync().then(value=>{db=value;pulseStart()}).catch(error=>PulseStorageUI.blocked(error,storage));else pulseStart();
 if('scrollRestoration' in history)history.scrollRestoration='manual';
 for(const ev of ['load','pageshow'])addEventListener(ev,()=>{scrollTo(0,0);setTimeout(()=>scrollTo(0,0),60)});
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
@@ -5492,14 +5641,11 @@ if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
  // A new version took over: reload once, but never while something is being typed or a sheet is open.
  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!hadController||reloading)return;const busy=activeDialog||document.activeElement?.matches?.('input,textarea,select');if(busy){toast('PULSE wurde aktualisiert. Beim nächsten Öffnen siehst du die neue Version.');return}reloading=true;location.reload()});
 }
-document.querySelectorAll('.life-mic').forEach(b=>b.hidden=!pulseSpeechSupported());
-handleLaunchParams();requestDurableStorage();
-setTimeout(()=>PulsePhotos.collect(photoReferences()).catch(()=>{}),4000);
 
 
 document.addEventListener('input',event=>{if(event.target?.id)dirtyInputs.add(event.target.id);rememberWorkoutInput(event.target)});
 let renderedDay=key();
-function refreshLocalDay(){if(key()!==renderedDay){renderedDay=key();dirtyInputs.clear();pendingWorkoutCapture=null;pendingFoodCapture=null;render();showWorkout(activePlan()||'A')}}
+function refreshLocalDay(){if(!db)return;if(key()!==renderedDay){renderedDay=key();dirtyInputs.clear();pendingWorkoutCapture=null;pendingFoodCapture=null;render();showWorkout(activePlan()||'A')}}
 window.addEventListener('focus',refreshLocalDay);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshLocalDay()});
 setInterval(refreshLocalDay,60000);
