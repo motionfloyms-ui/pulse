@@ -51,6 +51,7 @@
   "ui/sky.js",
   "ui/more.js",
   "ui/backup.js",
+  "ui/body-hub.js",
   "storage/photos.js",
   "ui/voice.js",
   "ui/understand.js",

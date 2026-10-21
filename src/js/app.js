@@ -28,7 +28,7 @@ function dateLabel(d=new Date()){return d.toLocaleDateString('de-DE',{weekday:'l
 function isoOffset(n){let d=new Date();d.setDate(d.getDate()+n);const p=x=>String(x).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`}
 
 
-function addWater(x){today().water=Math.min(6,today().water+x);save();toast('Wasser gespeichert')};function setWaterGoal(){openValueEditor('Wasserziel','Liter pro Tag',db.waterGoal,'0.1',x=>{if(x&&!isNaN(x)){db.waterGoal=+x;save();toast('Wasserziel gespeichert')}})}
+function addWater(x){today().water=Math.min(6,today().water+x);save();toast('Wasser heute: '+today().water.toLocaleString('de-DE',{maximumFractionDigits:2})+' L')};function setWaterGoal(){openValueEditor('Wasserziel','Liter pro Tag',db.waterGoal,'0.1',x=>{if(x&&!isNaN(x)){db.waterGoal=+x;save();toast('Wasserziel gespeichert')}})}
 
 const BUILTIN_FOODS=[
  {id:'skyr',name:'Skyr',aliases:['skyr'],per100:{kcal:63,protein:10.5,carbs:4,fat:.2,fiber:0},confidence:'berechnet'},
@@ -83,7 +83,7 @@ function patternInsights(){
  if(rec.length>=5){
    let low=rec.filter(x=>+x.d.recovery.sleep<7), hi=rec.filter(x=>+x.d.recovery.sleep>=7);
    let avg=a=>a.length?a.reduce((s,x)=>s+(recoveryScore(x.d.recovery)||0),0)/a.length:null;
-   if(low.length>=2&&hi.length>=2){let a=avg(low),b=avg(hi);if(b-a>=8)out.push({t:'Schlaf × Readiness',x:'An Tagen mit mindestens 7 h Schlaf lag dein Recovery-Score im Mittel '+Math.round(b-a)+' Punkte höher.',n:rec.length});}
+   if(low.length>=2&&hi.length>=2){let a=avg(low),b=avg(hi);if(b-a>=8)out.push({t:'Schlaf und Erholung',x:'An Tagen mit mindestens 7 h Schlaf lag dein Erholungswert im Mittel '+Math.round(b-a)+' Punkte höher.',n:rec.length});}
  }
  let cyc=dates.map(k=>({k,d:db.days[k]})).filter(x=>x.d.cycleContext&&+x.d.cycleContext.audhs>0);
  if(cyc.length>=3){let vals=cyc.map(x=>+x.d.cycleContext.audhs);let av=vals.reduce((a,b)=>a+b,0)/vals.length;if(av>=6)out.push({t:'Zyklus × AuDHS',x:'In '+cyc.length+' erfassten Zyklus-Tagen lag deine gemeldete AuDHS-Belastung im Mittel bei '+Number(av).toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+'/10. Das ist eine Beobachtung aus deinen Einträgen, keine Ursache-Wirkungs-Aussage.',n:cyc.length});}
@@ -199,7 +199,7 @@ function openCaptureWith(v=''){
 }
 
 let pendingValueSave=null, deferredInstallPrompt=null;
-const VIEW_TITLES={life:'Dein Tag',spaces:'Lebensräume',library:'Sammlung',focus:'Fokus',calendar:'Kalender',videos:'Videos',sigils:'Sigillen',sky:'Dein Himmel',songs:'Song-Werkstatt',more:'Mehr',bodyhub:'Körper',workout:'Training',nutrition:'Essen',recovery:'Recovery',trends:'Fortschritt',goals:'Ziele',history:'Verlauf',plan:'Plan',coach:'Muster',mehub:'Ich'};
+const VIEW_TITLES={life:'Dein Tag',spaces:'Lebensräume',library:'Sammlung',focus:'Fokus',calendar:'Kalender',videos:'Videos',sigils:'Sigillen',sky:'Dein Himmel',songs:'Song-Werkstatt',more:'Mehr',bodyhub:'Körper',workout:'Training',nutrition:'Essen',recovery:'Befinden',trends:'Fortschritt',goals:'Ziele',history:'Verlauf',plan:'Plan',coach:'Muster',mehub:'Ich'};
 let lastDialogTrigger=null,activeDialog=null,dialogBackPending=false,queuedDialogNavigation=null;
 function reducedMotion(){return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches}
 

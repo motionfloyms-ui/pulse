@@ -70,6 +70,20 @@ try{
   await pg.fill('#moreSearch','');for(const t of ['Song-Werkstatt','Sigillen','Dein Himmel','Fokus-Timer','Alle Einträge']){await ev(()=>lifeOpenMore());await pg.click('.more-tool >> text='+t);await pg.waitForTimeout(80);assert.notEqual(await ev(()=>document.getElementById('appMain').dataset.view),'more',t)}
   assert.deepEqual(await ev(()=>[...document.querySelectorAll('#lifeNav [aria-current=page]')].map(b=>b.textContent)),['Mehr']);
  });
+ await check('Körper: hub, water, routes and back',async()=>{
+  await pg.click('#lifeNav >> text=Körper');await pg.waitForTimeout(150);
+  assert.equal(await ev(()=>document.getElementById('appMain').dataset.view),'bodyhub');
+  const w=await ev(()=>today().water||0);await pg.click('.body-quick >> text=Wasser');await pg.waitForTimeout(150);
+  assert.equal(await ev(()=>today().water),w+.25);
+  assert.match(await pg.getAttribute('#bodyHubContent .tile-body .pulse-ring:nth-child(2)','aria-label'),new RegExp(String(w+.25).replace('.',',')));
+  for(const [t,v] of [['Essen & Trinken','nutrition'],['Training','workout'],['Befinden & Zyklus','recovery'],['Fortschritt','trends']]){
+   await ev(()=>goView('bodyhub'));await pg.click('.body-routes >> text="'+t+'"');await pg.waitForTimeout(100);
+   assert.equal(await ev(()=>document.getElementById('appMain').dataset.view),v,t);
+   assert.deepEqual(await ev(()=>[...document.querySelectorAll('#lifeNav [aria-current=page]')].map(b=>b.textContent)),['Körper'],t);
+   await pg.click('#'+v+' .backbtn');await pg.waitForTimeout(100);
+   assert.equal(await ev(()=>document.getElementById('appMain').dataset.view),'bodyhub','back from '+v);
+  }
+ });
  await check('theme switch survives reload',async()=>{await ev(()=>lifeSetTheme('light'));await pg.reload();await pg.waitForTimeout(800);assert.equal(await ev(()=>document.documentElement.dataset.theme),'light');await ev(()=>{lifeCloseSheet();lifeSetTheme('auto')})});
  await check('daily snapshot and restore (Zeitreise)',async()=>{
   await ev(()=>backupSnapshot('day'));const before=await ev(()=>db.life.items.length);

@@ -779,12 +779,12 @@ th{color:var(--muted);font-weight:600}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) body::before{content:"";position:fixed;inset:-25vmax;z-index:-1;pointer-events:none;background:radial-gradient(38vmax 38vmax at 18% 12%,rgb(107 91 255/.22),transparent 70%),radial-gradient(30vmax 30vmax at 88% 38%,rgb(255 94 126/.11),transparent 70%),radial-gradient(42vmax 42vmax at 45% 96%,rgb(56 189 248/.08),transparent 70%);animation:drift 46s ease-in-out infinite alternate}}
 :root[data-theme="dark"] body::before{content:"";position:fixed;inset:-25vmax;z-index:-1;pointer-events:none;background:radial-gradient(38vmax 38vmax at 18% 12%,rgb(107 91 255/.22),transparent 70%),radial-gradient(30vmax 30vmax at 88% 38%,rgb(255 94 126/.11),transparent 70%),radial-gradient(42vmax 42vmax at 45% 96%,rgb(56 189 248/.08),transparent 70%);animation:drift 46s ease-in-out infinite alternate}
 @keyframes drift{to{transform:translate3d(-5vmax,4vmax,0) rotate(10deg)}}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-tile,:root:not([data-theme="light"]) .life-entry,:root:not([data-theme="light"]) .life-lib-card,:root:not([data-theme="light"]) .life-tarot-panel,:root:not([data-theme="light"]) .life-capture-line,:root:not([data-theme="light"]) .life-body-card,:root:not([data-theme="light"]) .cos-card,:root:not([data-theme="light"]) .cos-grid,:root:not([data-theme="light"]) .cos-row,:root:not([data-theme="light"]) .life-today-row,:root:not([data-theme="light"]) .life-empty,:root:not([data-theme="light"]) .food-today>div,:root:not([data-theme="light"]) .life-settings-row,:root:not([data-theme="light"]) .vault-stat:not(.hero),:root:not([data-theme="light"]) .vault-shelf,:root:not([data-theme="light"]) .more-tool{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}}
-:root[data-theme="dark"] .pulse-tile,:root[data-theme="dark"] .life-entry,:root[data-theme="dark"] .life-lib-card,:root[data-theme="dark"] .life-tarot-panel,:root[data-theme="dark"] .life-capture-line,:root[data-theme="dark"] .life-body-card,:root[data-theme="dark"] .cos-card,:root[data-theme="dark"] .cos-grid,:root[data-theme="dark"] .cos-row,:root[data-theme="dark"] .life-today-row,:root[data-theme="dark"] .life-empty,:root[data-theme="dark"] .food-today>div,:root[data-theme="dark"] .life-settings-row,:root[data-theme="dark"] .vault-stat:not(.hero),:root[data-theme="dark"] .vault-shelf,:root[data-theme="dark"] .more-tool{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-tile,:root:not([data-theme="light"]) .life-entry,:root:not([data-theme="light"]) .life-lib-card,:root:not([data-theme="light"]) .life-tarot-panel,:root:not([data-theme="light"]) .life-capture-line,:root:not([data-theme="light"]) .life-body-card,:root:not([data-theme="light"]) .cos-card,:root:not([data-theme="light"]) .cos-grid,:root:not([data-theme="light"]) .cos-row,:root:not([data-theme="light"]) .life-today-row,:root:not([data-theme="light"]) .life-empty,:root:not([data-theme="light"]) .food-today>div,:root:not([data-theme="light"]) .life-settings-row,:root:not([data-theme="light"]) .vault-stat:not(.hero),:root:not([data-theme="light"]) .vault-shelf,:root:not([data-theme="light"]) .more-tool,:root:not([data-theme="light"]) .body-weeks,:root:not([data-theme="light"]) .body-quick button,:root:not([data-theme="light"]) .content-block,:root:not([data-theme="light"]) .disclosure,:root:not([data-theme="light"]) .excard,:root:not([data-theme="light"]) .composer,:root:not([data-theme="light"]) .capacity-choice,:root:not([data-theme="light"]) .quiet-callout{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}}
+:root[data-theme="dark"] .pulse-tile,:root[data-theme="dark"] .life-entry,:root[data-theme="dark"] .life-lib-card,:root[data-theme="dark"] .life-tarot-panel,:root[data-theme="dark"] .life-capture-line,:root[data-theme="dark"] .life-body-card,:root[data-theme="dark"] .cos-card,:root[data-theme="dark"] .cos-grid,:root[data-theme="dark"] .cos-row,:root[data-theme="dark"] .life-today-row,:root[data-theme="dark"] .life-empty,:root[data-theme="dark"] .food-today>div,:root[data-theme="dark"] .life-settings-row,:root[data-theme="dark"] .vault-stat:not(.hero),:root[data-theme="dark"] .vault-shelf,:root[data-theme="dark"] .more-tool,:root[data-theme="dark"] .body-weeks,:root[data-theme="dark"] .body-quick button,:root[data-theme="dark"] .content-block,:root[data-theme="dark"] .disclosure,:root[data-theme="dark"] .excard,:root[data-theme="dark"] .composer,:root[data-theme="dark"] .capacity-choice,:root[data-theme="dark"] .quiet-callout{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .life-check.checked{filter:drop-shadow(0 0 6px color-mix(in srgb,var(--ok) 75%,transparent))}}
 :root[data-theme="dark"] .life-check.checked{filter:drop-shadow(0 0 6px color-mix(in srgb,var(--ok) 75%,transparent))}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-dots i.on{box-shadow:0 0 8px color-mix(in srgb,var(--ok) 70%,transparent)}}
-:root[data-theme="dark"] .pulse-dots i.on{box-shadow:0 0 8px color-mix(in srgb,var(--ok) 70%,transparent)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-dots i.on:not(.today){box-shadow:0 0 8px color-mix(in srgb,var(--ok) 70%,transparent)}}
+:root[data-theme="dark"] .pulse-dots i.on:not(.today){box-shadow:0 0 8px color-mix(in srgb,var(--ok) 70%,transparent)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-ring .bar{filter:drop-shadow(0 0 3px rgb(139 123 255/.55))}}
 :root[data-theme="dark"] .pulse-ring .bar{filter:drop-shadow(0 0 3px rgb(139 123 255/.55))}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .life-topbar{background:color-mix(in srgb,var(--canvas) 72%,transparent)}}
@@ -1108,10 +1108,43 @@ body.sigil-open{overflow:hidden}
 .more-group .song-card{margin-bottom:8px}
 .backup-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 12px;margin:0 0 8px;padding:12px 14px;border-radius:var(--r-md);background:var(--surface-2)}
 .backup-row>span{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 160px}.backup-row small{font-size:12.5px}
+/* v25: Körper in the new design */
+.body-hero{display:flex;flex-direction:column;gap:6px;margin:0 0 10px;padding:18px 20px;border-radius:var(--r-xl);background:radial-gradient(130% 150% at 0% 0%,#1F8F64,#0E5A40 55%,#0A3D2C);color:#EFFFF7;box-shadow:var(--shadow-2)}
+.body-hero .life-kicker{color:#B9F0D8}
+.body-hero b{font-size:28px;line-height:1.1;font-weight:750;letter-spacing:-.02em}
+.body-hero p{margin:0;font-size:15px;color:#D2F5E5}
+.body-hero .pulse-dots i{background:rgb(255 255 255/.2)}.body-hero .pulse-dots i.on{background:#7CF0B9;box-shadow:0 0 8px rgb(124 240 185/.7)}
+.body-hero .pulse-dots i.today{box-shadow:0 0 0 2px #0E5A40,0 0 0 3.5px #B9F0D8}
+.body-hero-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px}
+.body-hero-actions .life-btn{background:#fff;color:#0A3D2C;box-shadow:none;font-weight:700}
+.body-hero-actions small{color:#B9F0D8;font-size:13px}
+.body-bento{margin-bottom:10px}
+.body-progress .body-spark{width:100%;height:36px;margin:2px 0}
+.body-spark polyline{fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.body-spark circle{fill:var(--accent)}
+.body-quick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 16px}
+.body-quick button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:58px;padding:10px 14px;border:0;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-1);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.body-quick b{font-size:15px;font-weight:700}.body-quick small{font-size:12px;color:var(--muted)}
+.body-quick button:active{transform:scale(.97)}
+.body-weeks{margin:0 0 16px;padding:14px 16px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-1)}
+.body-weeks h2{margin:0;font-size:18px}
+.body-weeks-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}
+.body-weeks-grid small{font-size:11px;font-weight:650;text-align:center;color:var(--muted)}
+.body-weeks-grid i{height:22px;border-radius:7px;background:var(--fill)}
+.body-weeks-grid i.pad{background:transparent}
+.body-weeks-grid i.on{background:var(--ok);box-shadow:0 0 10px color-mix(in srgb,var(--ok) 55%,transparent)}
+.body-weeks-grid i.today{outline:2px solid var(--ink);outline-offset:1px}
+.body-routes{margin:0 0 6px}
+td{font-variant-numeric:tabular-nums}
 /* Calm view: colour recedes, structure stays. */
 .life-calm .life-room-tile,.life-calm .life-room-hero{background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 5px 0 0 var(--room)}
 .life-calm .life-room-tile::after,.life-calm .life-room-hero::after{display:none}
 .life-calm .life-tonight{background:var(--night)}
+.life-calm .body-hero{background:var(--surface);color:var(--ink);box-shadow:inset 5px 0 0 var(--ok),var(--shadow-1)}
+.life-calm .body-hero .life-kicker,.life-calm .body-hero p,.life-calm .body-hero-actions small{color:var(--muted)}
+.life-calm .body-hero .pulse-dots i{background:var(--fill)}.life-calm .body-hero .pulse-dots i.on{background:var(--ok);box-shadow:none}.life-calm .body-hero .pulse-dots i.today{box-shadow:0 0 0 2px var(--surface),0 0 0 3.5px var(--ink)}
+.life-calm .body-hero-actions .life-btn{background:var(--ink);color:var(--surface)}
+.life-calm .body-weeks-grid i.on{box-shadow:none}
 .life-calm .view.active,.life-calm .modalbox,.life-calm .capturePanel{animation:none}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media print{.life-nav,.life-topbar,.toast{display:none}.app{padding:0}}

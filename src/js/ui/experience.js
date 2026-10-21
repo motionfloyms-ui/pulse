@@ -3,14 +3,8 @@
 function uiIcon(name) {
   return '<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-'+name+'"></use></svg>';
 }
-function renderAuraHome() {
-  const d=today(),context=pulseContext(),training=context.training;
-  document.getElementById('homeProtein').textContent=Math.round(d.protein||0)+' g';
-  document.getElementById('homeWater').textContent=Number(d.water||0).toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' L';
-  document.getElementById('homeTraining').textContent=training?.completed?'Erledigt':training?.kind==='home'?'Heimtraining':training?'Plan '+training.plan:'Nach Kapazität';
-  document.getElementById('bodyPlan').textContent=context.mode==='recovery'?'Erholungstag':training?.completed?'Training erledigt':training?.kind==='home'?'Heimtraining heute':training?'Plan '+training.plan+' heute':'Heute kein Training';
-  document.getElementById('bodyPlanDetail').textContent=context.mode==='recovery'?'Training und Schrittziel pausieren heute.':training?.kind==='home'?'Nach der Einheit als erledigt eintragen.':context.returnPolicy?'Wiedereinstieg: 2 Sätze pro Übung, RPE 6–7.':'Glutes, Schultern, Rücken. Letzte Gewichte sind vorausgefüllt.';
-}
+/* The Körper screen is rendered by ui/body-hub.js; kept as the hook render() calls. */
+function renderAuraHome(){if(typeof renderBodyHub==='function')renderBodyHub()}
 function openTodaysTraining() {
   const context=pulseContext();
   if(context.mode==='recovery')return goView('recovery');
@@ -41,7 +35,7 @@ function renderSemanticMemory() {
 function previewCapture() {
   const raw=document.getElementById('captureText').value.trim();
   const result=raw?interpretCapture(raw):null;
-  const names={task:'Aufgabe',food:'Essen',drink:'Getränk',workout:'Training zur Prüfung',recovery:'Heutige Recovery',context:'Heutiger Kontext','context-clear':'Aktualisierter Tageskontext','historical-review':'Vergangenes Datum prüfen',note:'Gedanke'};
+  const names={task:'Aufgabe',food:'Essen',drink:'Getränk',workout:'Training zur Prüfung',recovery:'Heutiges Befinden',context:'Heutiger Kontext','context-clear':'Aktualisierter Tageskontext','historical-review':'Vergangenes Datum prüfen',note:'Gedanke'};
   document.getElementById('captureHint').textContent=result
     ?(names[result.type]||'Eintrag')+(result.due?' · '+result.due:'')+' · noch nicht gespeichert'
     :'Ein Satz reicht. Bei fehlenden Angaben fragt PULSE nach.';
@@ -171,7 +165,7 @@ function showWorkout(plan,{exerciseIndex}={}) {
   const guide=document.getElementById('returnTrainingGuide');guide.hidden=session.closed||!PulseContext.returnPolicy(db,key());
   document.getElementById('workoutTable').innerHTML=exercises.map((exercise,index)=>{
     const completed=sets.filter(set=>set.exercise===exercise[0]),count=setCount(exercise[1]),weight=suggestedWeight(exercise,plan),range=repRange(exercise[1]),history=previousExerciseSession(exercise[0]);
-    const historyText=history.length?history[0].date+' · '+history.map(set=>de(set.kg)+' kg × '+set.reps+(set.rpe>0?' · RPE '+set.rpe:' · Anstrengung offen')).join(' / '):'Noch keine bestätigte Session für diese Übung.';
+    const historyText=history.length?deDate(history[0].date,{weekday:'short',day:'numeric',month:'short'})+' · '+history.map(set=>de(set.kg)+' kg × '+set.reps+(set.rpe>0?' · RPE '+set.rpe:' · Anstrengung offen')).join(' / '):'Noch keine bestätigte Session für diese Übung.';
     const rows=Array.from({length:count},(_,setIndex)=>{
       const saved=completed.find(set=>set.set===setIndex+1),draft=workoutDraft(plan,exercise[0],setIndex+1);
       if(saved)return '<div class="setdone">'+uiIcon('check')+'<span>Satz '+(setIndex+1)+' · '+esc(saved.kg)+' kg × '+esc(saved.reps)+'</span><small>'+(saved.rpe>0?'RPE '+esc(saved.rpe):'Anstrengung offen')+'</small></div>';

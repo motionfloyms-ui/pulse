@@ -5,7 +5,7 @@ function pulseTap(ms=12){try{if(navigator.userActivation&&!navigator.userActivat
 let lifeJustDone=null,lifeJustDoneAt=0;
 function dayPeriod(h=new Date().getHours()){return h>=5&&h<11?'morning':h>=11&&h<18?'day':'evening'}
 function ring(value,goal,label,unit){
- const p=goal?Math.max(0,Math.min(1,value/goal)):0,C=2*Math.PI*17;
+ const p=goal?Math.max(0,Math.min(1,value/goal)):0,C=2*Math.PI*17,de=n=>Number(n||0).toLocaleString('de-DE',{maximumFractionDigits:unit==='L'?2:1});
  return '<span class="pulse-ring" role="img" aria-label="'+esc(label+': '+de(value)+(goal?' von '+de(goal):'')+' '+unit)+'"><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="17" class="track"/><circle cx="22" cy="22" r="17" class="bar" stroke-dasharray="'+(C*p).toFixed(1)+' '+C.toFixed(1)+'"/></svg><span><b>'+de(value)+'</b><small>'+esc(label)+'</small></span></span>';
 }
 function trainedOn(d){const day=db.days[d]||{};return !!(day.workout||day.homeWorkoutCompleted||db.workouts.some(w=>w.date===d))}
