@@ -57,3 +57,12 @@ test('an import can be taken back completely',async()=>{
  V.undoImport(db,{...r.ids,next});
  assert.deepEqual(db.videos.items.map(x=>[x.id,x.shelves]),[['yt-'+A,[]]]);assert.equal(db.videos.shelves.length,0);assert.equal(db.videos.next,next);
 });
+test('ZIP64 archives (as large Takeout exports use) are read too',async()=>{
+ const z=Buffer.from(zip(FILES.slice(0,1)));const eocd=z.length-22,cdSize=z.readUInt32LE(eocd+12),cdOff=z.readUInt32LE(eocd+16);
+ const rec=Buffer.alloc(56);rec.writeUInt32LE(0x06064b50,0);rec.writeBigUInt64LE(44n,4);rec.writeUInt16LE(45,12);rec.writeUInt16LE(45,14);rec.writeBigUInt64LE(1n,24);rec.writeBigUInt64LE(1n,32);rec.writeBigUInt64LE(BigInt(cdSize),40);rec.writeBigUInt64LE(BigInt(cdOff),48);
+ const loc=Buffer.alloc(20);loc.writeUInt32LE(0x07064b50,0);loc.writeBigUInt64LE(BigInt(eocd),8);loc.writeUInt32LE(1,16);
+ const end=Buffer.alloc(22);end.writeUInt32LE(0x06054b50,0);end.writeUInt16LE(0xffff,8);end.writeUInt16LE(0xffff,10);end.writeUInt32LE(0xffffffff,12);end.writeUInt32LE(0xffffffff,16);
+ const big=Buffer.concat([z.subarray(0,eocd),rec,loc,end]);
+ const lists=await K.read([{name:'t.zip',bytes:new Uint8Array(big)}],{inflate});assert.deepEqual(lists.map(l=>[l.title,l.videos.length]),[['Growls',2]]);
+});
+
