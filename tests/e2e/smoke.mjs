@@ -112,10 +112,10 @@ try{
   await ev(()=>goView('life'));await pg.waitForTimeout(150);await pg.click('.tile-stapel');await pg.waitForTimeout(200);
   assert.equal(await ev(()=>document.getElementById('appMain').dataset.view),'stapel');
   const n=await ev(()=>db.deck.cards.length);assert.equal(n,12);assert.match(await pg.innerText('.stapel-count'),/Karte 1 von 12/);
-  const card=await ev(()=>db.deck.cards.findIndex(c=>c.type==='card'));await ev(i=>stapelGo(i),card);await pg.waitForTimeout(150);
+  const card=await ev(()=>db.deck.cards.findIndex(c=>c.type==='card'));await ev(i=>stapelGo(i),card);await pg.waitForFunction(i=>document.querySelector('.stapel-count')?.textContent.includes('Karte '+(i+1)+' von'),card);
   await pg.click('.stapel-keep');await pg.waitForTimeout(150);assert.equal(await ev(()=>db.deck.kept.length),1);
   const web=await ev(()=>db.deck.cards.findIndex(c=>c.type==='web'));assert.ok(web>0,'a picture of the day is in the stack');
-  await ev(i=>stapelGo(i),web);await pg.waitForFunction(()=>!/Wird geladen/.test(document.getElementById('stapelStage').innerText),null,{timeout:4000});
+  await ev(i=>stapelGo(i),web);await pg.waitForSelector('#stapelStage .t-web');await pg.waitForFunction(()=>!/Wird geladen/.test(document.getElementById('stapelStage').innerText),null,{timeout:6000});
   assert.match(await pg.innerText('#stapelStage'),/Testnebel|Testbild|Testartikel|Testgemälde/);await pg.click('.stapel-keep');await pg.waitForTimeout(150);
   assert.ok(await ev(()=>db.deck.kept.some(k=>k.ref.startsWith('w:')&&k.data&&k.data.title)));
   for(let i=0;i<n+2;i++){if(await pg.isVisible('.stapel-nav .life-btn.dark'))await pg.click('.stapel-nav .life-btn.dark');await pg.waitForTimeout(40)}
