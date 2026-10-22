@@ -14,6 +14,13 @@ pg.on('pageerror',e=>errs.push(step+': '+e.message));
 pg.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|net::|ERR_/.test(m.text()))errs.push(step+': console '+m.text())});
 pg.on('dialog',d=>d.accept());
 await pg.route(/ytimg|youtube|noembed/,r=>r.abort());
+/* Pictures of the day: the three services answer with fixed sample data, images are a 1×1 PNG. */
+const PNG=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=','base64');
+await pg.route(/api\.nasa\.gov|wikipedia\.org\/api|api\.artic\.edu|upload\.wikimedia\.org|apod\.nasa\.gov\/apod\/image|artic\.edu\/iiif/,r=>{const u=r.request().url();
+ if(/upload\.wikimedia|apod\/image|iiif/.test(u))return r.fulfill({contentType:'image/png',body:PNG});
+ if(/api\.nasa\.gov/.test(u))return r.fulfill({json:{date:'2026-10-21',title:'Testnebel',explanation:'A test nebula.',url:'https://apod.nasa.gov/apod/image/2610/t.png',hdurl:'https://apod.nasa.gov/apod/image/2610/t.png',media_type:'image'}});
+ if(/wikipedia\.org/.test(u))return r.fulfill({json:{tfa:{title:'Testartikel',titles:{normalized:'Testartikel'},extract:'Ein Artikel zum Testen.',content_urls:{mobile:{page:'https://de.m.wikipedia.org/wiki/Testartikel'}}},image:{title:'File:Testbild.png',thumbnail:{source:'https://upload.wikimedia.org/t.png'},image:{source:'https://upload.wikimedia.org/t.png'},file_page:'https://commons.wikimedia.org/wiki/File:Testbild.png',artist:{text:'Test'},license:{type:'CC0'},description:{text:'Ein Testbild.',lang:'de'}}}});
+ return r.fulfill({json:{config:{iiif_url:'https://www.artic.edu/iiif/2'},data:[{id:1,title:'Testgemälde',artist_display:'Niemand',date_display:'1900',image_id:'2d484387-2509-5e8e-2c43-22f9981972eb'}]}});});
 const ev=(f,a)=>pg.evaluate(f,a),pass=[];
 async function check(name,fn){step=name;await fn();pass.push(name)}
 /* A small ZIP like a Google Takeout export (synthetic data). */
@@ -107,11 +114,15 @@ try{
   const n=await ev(()=>db.deck.cards.length);assert.equal(n,12);assert.match(await pg.innerText('.stapel-count'),/Karte 1 von 12/);
   const card=await ev(()=>db.deck.cards.findIndex(c=>c.type==='card'));await ev(i=>stapelGo(i),card);await pg.waitForTimeout(150);
   await pg.click('.stapel-keep');await pg.waitForTimeout(150);assert.equal(await ev(()=>db.deck.kept.length),1);
+  const web=await ev(()=>db.deck.cards.findIndex(c=>c.type==='web'));assert.ok(web>0,'a picture of the day is in the stack');
+  await ev(i=>stapelGo(i),web);await pg.waitForFunction(()=>!/Wird geladen/.test(document.getElementById('stapelStage').innerText),null,{timeout:4000});
+  assert.match(await pg.innerText('#stapelStage'),/Testnebel|Testbild|Testartikel|Testgemälde/);await pg.click('.stapel-keep');await pg.waitForTimeout(150);
+  assert.ok(await ev(()=>db.deck.kept.some(k=>k.ref.startsWith('w:')&&k.data&&k.data.title)));
   for(let i=0;i<n+2;i++){if(await pg.isVisible('.stapel-nav .life-btn.dark'))await pg.click('.stapel-nav .life-btn.dark');await pg.waitForTimeout(40)}
   assert.match(await pg.innerText('#stapelStage'),/Stapel durch/);assert.equal(await ev(()=>PulseDeck.finished(db)),true);
   await pg.reload();await pg.waitForTimeout(900);await ev(()=>lifeOpenStapel());await pg.waitForTimeout(150);assert.match(await pg.innerText('#stapelStage'),/Stapel durch/,'stays done after reload');
   await ev(()=>stapelSettings());await pg.click('#lifeDetail button:has-text("16")');await pg.waitForTimeout(100);assert.equal(await ev(()=>db.deck.size),16);await ev(()=>lifeCloseSheet());
-  await ev(()=>stapelKept());assert.match(await pg.innerText('#stapelKeptList'),/#001/);await ev(()=>lifeCloseSheet());
+  await ev(()=>stapelKept());const kl=await pg.innerText('#stapelKeptList');assert.match(kl,/#001/);assert.match(kl,/#002/);await ev(()=>lifeCloseSheet());
  });
  await check('Körper: hub, water, routes and back',async()=>{
   await pg.click('#lifeNav >> text=Körper');await pg.waitForTimeout(150);

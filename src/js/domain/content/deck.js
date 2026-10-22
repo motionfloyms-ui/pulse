@@ -27,11 +27,13 @@
   if(!SIZES.includes(d.size))d.size=12;
   if(!Array.isArray(d.log))d.log=[];
   if(!d.stats||typeof d.stats!=='object')d.stats={kept:0,watched:0};
+  if(typeof d.web!=='boolean')d.web=true;
+  if(!d.webCache||typeof d.webCache!=='object'||Array.isArray(d.webCache))d.webCache={};
   return d;
  }
  /* The stack for `day`. Sources: `cards` [{id, topic}], `videos` (collection items), `own` [{id, createdAt}],
     `tarot` (number of tarot cards, 0 = none). `seen` maps refs to the day they were last shown. */
- function build({day,size=12,topics=TOPICS,cards=[],videos=[],own=[],tarot=0,seen={},kept=[]}){
+ function build({day,size=12,topics=TOPICS,cards=[],videos=[],own=[],tarot=0,web=[],seen={},kept=[]}){
   const r=rng('stapel:'+day),last=ref=>isDay(seen[ref])?seen[ref]:'',gap=ref=>last(ref)?days(last(ref),day):Infinity;
   // Own videos: never watched first, spread over the shelves; favourites come back after a while.
   const pool=shuffle(videos.filter(v=>v&&v.kind!=='playlist'&&v.vid&&gap('v:'+v.vid)>=VIDEO_GAP),r);
@@ -46,7 +48,8 @@
   // One old note of their own.
   const mine=shuffle(own.filter(o=>o&&o.id&&typeof o.createdAt==='string'&&isDay(o.createdAt.slice(0,10))&&days(o.createdAt.slice(0,10),day)>=OWN_AGE&&gap('o:'+o.id)>=OWN_GAP),r)[0]||null;
   // Written cards fill the rest: round robin over the topics, never shown first, then shown longest ago.
-  const keptRefs=new Set(kept.map(k=>k.ref)),n=Math.max(0,size-1-vids.length-(tarotCard!=null?1:0)-(mine?1:0));
+  const daily=web.slice(0,size>=12?2:1).map(src=>({type:'web',ref:'w:'+src+':'+day}));
+  const keptRefs=new Set(kept.map(k=>k.ref)),n=Math.max(0,size-1-vids.length-(tarotCard!=null?1:0)-(mine?1:0)-daily.length);
   const byTopic=new Map(topics.map(t=>[t,shuffle(cards.filter(c=>c&&c.topic===t&&!keptRefs.has('c:'+c.id)),r).sort((a,b)=>last('c:'+a.id).localeCompare(last('c:'+b.id)))]));
   const order=shuffle(topics.filter(t=>byTopic.get(t).length),r),written=[];
   while(written.length<n&&order.some(t=>byTopic.get(t).length))for(const t of order){const q=byTopic.get(t);if(q.length&&written.length<n)written.push(q.shift())}
@@ -54,6 +57,8 @@
   while(wi<written.length||vi<vids.length){if(wi<written.length)seq.push({type:'card',ref:'c:'+written[wi++].id});if(vi<vids.length)seq.push({type:'video',ref:'v:'+vids[vi++].vid})}
   if(tarotCard!=null)seq.splice(Math.min(2,seq.length),0,{type:'tarot',ref:'t:'+tarotCard});
   if(mine)seq.splice(Math.min(seq.length,Math.floor(seq.length/2)+1),0,{type:'own',ref:'o:'+mine.id});
+  // Pictures of the day: one right after the sky, a second one later on.
+  if(daily[0])seq.unshift(daily[0]);if(daily[1])seq.splice(Math.min(seq.length,Math.round(seq.length*.65)),0,daily[1]);
   return [{type:'sky',ref:'sky:'+day},...seq].slice(0,size);
  }
  /* Makes sure the stack of `day` exists; a new day closes the old one in the log. */
@@ -73,26 +78,34 @@
   return d.cards[pos]||null;
  }
  const finished=db=>{const d=ensure(db);return d.cards.length>0&&d.pos>=d.cards.length};
- /* Keeps a card in the collection (or gives it back). Written cards and tarot cards can be kept. */
- function keep(db,ref,now){
+ /* Keeps a card in the collection (or gives it back). Written cards, tarot cards and pictures of the day
+    can be kept; a picture keeps a copy of its description, because the source changes every day. */
+ function keep(db,ref,now,data){
   const d=ensure(db),i=d.kept.findIndex(k=>k.ref===ref);
   if(i>=0){d.kept.splice(i,1);d.stats.kept=Math.max(0,(d.stats.kept||0)-1);return null}
-  if(!/^(c|t):/.test(ref))throw Error('Nur Karten lassen sich behalten.');
-  const k={ref,at:now,no:d.next++};d.kept.push(k);d.stats.kept=(d.stats.kept||0)+1;return k;
+  if(!/^(c|t|w):/.test(ref))throw Error('Nur Karten lassen sich behalten.');
+  if(ref.startsWith('w:')&&!(data&&data.title))throw Error('Diese Karte ist noch nicht geladen.');
+  const k={ref,at:now,no:d.next++};if(ref.startsWith('w:'))k.data=data;d.kept.push(k);d.stats.kept=(d.stats.kept||0)+1;return k;
  }
  const isKept=(db,ref)=>ensure(db).kept.some(k=>k.ref===ref);
  function watched(db){const d=ensure(db);d.stats.watched=(d.stats.watched||0)+1}
  /* Settings take effect today when the stack is still untouched, otherwise tomorrow. */
- function configure(db,{size,topics}){
-  const d=ensure(db);if(SIZES.includes(size))d.size=size;
+ function configure(db,{size,topics,web}){
+  const d=ensure(db);if(SIZES.includes(size))d.size=size;if(typeof web==='boolean')d.web=web;
   if(Array.isArray(topics)){const t=TOPICS.filter(x=>topics.includes(x));if(!t.length)throw Error('Mindestens ein Thema bitte.');d.topics=t}
   const fresh=d.reached===0&&d.pos===0;if(fresh){d.cards=[];}
   return fresh;
+ }
+ /* Cache for pictures of the day: only the last ten days are kept (kept cards have their own copy). */
+ function cache(db,ref,entry,day){
+  const d=ensure(db);if(entry)d.webCache[ref]=entry;
+  for(const k of Object.keys(d.webCache)){const at=k.split(':')[2]||'';if(!isDay(at)||(isDay(day)&&days(at,day)>10))delete d.webCache[k]}
+  return d.webCache[ref]||null;
  }
  /* Days with a stack, kept cards, watched videos – for "Dein Himmel" and the end card. */
  function summary(db){
   const d=ensure(db),all=[...d.log,...(d.cards.length?[{day:d.day,shown:Math.min(d.cards.length,d.reached+1),total:d.cards.length,kept:d.stats.kept||0,watched:d.stats.watched||0}]:[])];
   return {days:all.length,finished:all.filter(x=>x.shown>=x.total).length,kept:d.kept.length,watched:all.reduce((a,x)=>a+(x.watched||0),0)};
  }
- return {TOPICS,SIZES,ensure,build,today,go,finished,keep,isKept,watched,configure,summary,rng,hash};
+ return {TOPICS,SIZES,ensure,build,today,go,finished,keep,isKept,watched,configure,cache,summary,rng,hash};
 });

@@ -8,7 +8,8 @@ function stapelQuiet(){try{storage.save(db);PulseStorageUI.clear();return true}c
 function stapelSources(){
  if(typeof vaultPrepare==='function')vaultPrepare();
  const own=PulseLife.list(db).filter(x=>x.kind==='note'&&x.status!=='archived'&&typeof x.createdAt==='string'&&(x.title||'').trim());
- return {cards:PulseCards.ALL,videos:PulseVault.ensure(db).items,own,tarot:PulseLibrary.TAROT.length};
+ const d=PulseDeck.ensure(db);
+ return {cards:PulseCards.ALL,videos:PulseVault.ensure(db).items,own,tarot:PulseLibrary.TAROT.length,web:d.web?PulseDaily.pick(key(),{topics:d.topics,count:2}):[]};
 }
 /* Today's stack; marks the open card as shown. Returns true when something changed that must be saved. */
 function stapelPrepare(){
@@ -65,6 +66,7 @@ function stapelCardHTML(card,{inSheet=false}={}){
   return '<article class="stapel-card t-own"><div class="stapel-cover">'+lifeGlyph(room.symbol,'stapel-own-glyph')+'<span class="stapel-kicker">Von dir · '+esc(stapelAge(x.createdAt).replace('seit ','vor '))+' · '+esc(room.name)+'</span><h2 id="stapelTitle" tabindex="-1">'+esc(x.title)+'</h2></div><div class="stapel-body">'+(x.body?stapelParas(x.body.slice(0,700)+(x.body.length>700?' …':'')):'<p class="stapel-read">Nur ein Titel. Was meintest du damals?</p>')+
    '<div class="stapel-actions">'+lifeButton('Weiterdenken',lifeCall('stapelFollow',x.id),'life-btn dark')+lifeButton('Öffnen',lifeCall('lifeOpenItem',x.id),'life-btn')+'</div></div></article>';
  }
+ if(type==='web')return stapelWebCard(card,inSheet);
  if(type==='sky')return stapelSky();
  return stapelMissing('Unbekannte Karte.');
 }
@@ -94,8 +96,31 @@ function renderStapel(){
  if(card&&card.type==='video'&&!end){const x=PulseVault.get(db,'yt-'+card.ref.slice(2));if(x&&!x.title&&typeof vaultFetchMeta==='function')vaultFetchMeta(x.id)}
  stapelPrefetch();
 }
-/* Titles for today's videos come in the background, so they are there when the card opens. */
-function stapelPrefetch(){if(typeof vaultFetchMeta!=='function')return;for(const c of PulseDeck.ensure(db).cards)if(c.type==='video'){const x=PulseVault.get(db,'yt-'+c.ref.slice(2));if(x&&!x.title)vaultFetchMeta(x.id)}}
+/* Titles for today's videos and the pictures of the day come in the background. */
+function stapelPrefetch(){for(const c of PulseDeck.ensure(db).cards){if(c.type==='web')stapelWebLoad(c.ref);else if(c.type==='video'&&typeof vaultFetchMeta==='function'){const x=PulseVault.get(db,'yt-'+c.ref.slice(2));if(x&&!x.title)vaultFetchMeta(x.id)}}}
+/* ---------- Pictures and texts of the day (NASA, Wikipedia, Art Institute of Chicago) ---------- */
+const stapelWebPending=new Map();
+const stapelWebRef=ref=>{const [,src,day]=ref.split(':');return {src,day}};
+async function stapelWebLoad(ref){
+ const d=PulseDeck.ensure(db),have=d.webCache[ref];if(have&&(have.data||Date.now()-Date.parse(have.at||0)<36e5))return;
+ if(!navigator.onLine||!d.web)return;
+ const {src,day}=stapelWebRef(ref),u=PulseDaily.url(src,day);if(!u||stapelWebPending.has(ref))return;
+ stapelWebPending.set(ref,true);
+ let p=stapelWebPending.get(u);if(!p){p=fetch(u,{credentials:'omit',referrerPolicy:'no-referrer'}).then(r=>r.ok?r.json():Promise.reject(Error('HTTP '+r.status)));stapelWebPending.set(u,p)}
+ let data=null;try{data=PulseDaily.parse(src,await p,day)}catch(_){stapelWebPending.delete(u)}
+ stapelWebPending.delete(ref);
+ PulseDeck.cache(db,ref,data?{data,at:new Date().toISOString()}:{fail:true,at:new Date().toISOString()},key());stapelQuiet();
+ const dd=PulseDeck.ensure(db),cur=dd.cards[dd.pos],stage=document.getElementById('stapelStage');
+ if(cur&&cur.ref===ref&&stage&&document.getElementById('appMain').dataset.view==='stapel')stage.innerHTML=stapelCardHTML(cur);
+}
+function stapelWebCard(card,inSheet){
+ const ref=card.ref,{src}=stapelWebRef(ref),S=PulseDaily.SOURCES[src]||{name:'Aus dem Netz',short:'dem Netz',lang:'de'},c=PulseDeck.ensure(db).webCache[ref],x=card.data||(c&&c.data);
+ const h='id="'+(inSheet?'lifeDetailHeading':'stapelTitle')+'" tabindex="-1"',kicker=esc(S.name)+(S.lang==='en'?' · Englisch':'');
+ if(!x)return '<article class="stapel-card t-web"><div class="stapel-cover"><span class="stapel-kicker">'+kicker+'</span><h2 '+h+'>'+(c&&c.fail?'Heute nicht erreichbar':'Wird geladen …')+'</h2></div><div class="stapel-body"><p class="stapel-read">'+(c&&c.fail?'Kein Netz, oder der Dienst antwortet gerade nicht. In einer Stunde versucht PULSE es noch einmal.':'Kommt direkt von '+esc(S.short)+'. Gesendet wird nur die Adresse des Tages.')+'</p></div></article>';
+ const photo=x.img?'<a class="stapel-photo" href="'+esc(x.big||x.img)+'" target="_blank" rel="noopener noreferrer" aria-label="Bild groß öffnen"><img src="'+esc(x.img)+'" alt="'+esc(x.title)+'" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add(\'broken\')"></a>':'';
+ return '<article class="stapel-card t-web">'+(photo||'<div class="stapel-cover"><span class="stapel-kicker">'+kicker+'</span><h2 '+h+'>'+esc(x.title)+'</h2></div>')+'<div class="stapel-body">'+(photo?'<span class="stapel-kicker">'+kicker+'</span><h2 '+h+'>'+esc(x.title)+'</h2>':'')+(x.sub?'<p class="stapel-meta">'+esc(x.sub)+'</p>':'')+(x.text?'<p'+(x.lang&&x.lang!=='de'?' lang="'+esc(x.lang)+'"':'')+'>'+esc(x.text)+'</p>':'')+'<p class="stapel-read">'+esc(x.credit||'')+'</p>'+
+  '<div class="stapel-actions">'+(inSheet?'':stapelKeepBtn(ref))+'<a class="life-btn" href="'+esc(x.link)+'" target="_blank" rel="noopener noreferrer">Quelle ↗</a></div></div></article>';
+}
 /* Called when a title arrived: update the open card without reloading a running video. */
 function stapelMetaArrived(id){
  const x=PulseVault.get(db,id);if(!x)return;
@@ -108,7 +133,7 @@ function stapelGo(i){
  save();window.scrollTo(0,0);setTimeout(()=>document.getElementById('stapelTitle')?.focus({preventScroll:true}),60);
 }
 function stapelKeep(ref){
- let k;try{k=PulseDeck.keep(db,ref,new Date().toISOString())}catch(e){return toast(e.message)}
+ let k;try{k=PulseDeck.keep(db,ref,new Date().toISOString(),ref.startsWith('w:')?PulseDeck.ensure(db).webCache[ref]?.data:undefined)}catch(e){return toast(e.message)}
  if(k){pulseSound('pop');pulseTap();toast('Behalten · Nummer '+k.no)}else toast('Aus der Sammlung genommen');
  save();if(document.getElementById('lifeSheet')?.open&&document.getElementById('stapelKeptList'))stapelKept();
 }
@@ -142,24 +167,25 @@ function stapelVideo(id,what){
  stapelMetaArrived(id);
 }
 /* ---------- Kept cards ---------- */
-function stapelKeptTitle(ref){if(ref.startsWith('c:'))return PulseCards.get(ref.slice(2))?.title||'Karte';if(ref.startsWith('t:'))return PulseLibrary.TAROT[Number(ref.slice(2))]?.name||'Tarotkarte';return 'Karte'}
-function stapelKeptKicker(ref){if(ref.startsWith('t:'))return 'Tarot';const c=PulseCards.get(ref.slice(2));return c?PulseCards.TOPICS[c.topic].name:''}
+function stapelKeptTitle(k){const ref=k.ref;if(ref.startsWith('w:'))return k.data?.title||'Bild des Tages';if(ref.startsWith('c:'))return PulseCards.get(ref.slice(2))?.title||'Karte';if(ref.startsWith('t:'))return PulseLibrary.TAROT[Number(ref.slice(2))]?.name||'Tarotkarte';return 'Karte'}
+function stapelKeptKicker(k){const ref=k.ref;if(ref.startsWith('w:'))return (PulseDaily.SOURCES[ref.split(':')[1]]||{name:'Aus dem Netz'}).name;if(ref.startsWith('t:'))return 'Tarot';const c=PulseCards.get(ref.slice(2));return c?PulseCards.TOPICS[c.topic].name:''}
 function stapelKept(){
  const kept=[...PulseDeck.ensure(db).kept].reverse();
- libDetailShell('<span class="life-kicker">Deine Sammlung</span><h2 id="lifeDetailHeading" tabindex="-1">Behaltene Karten</h2><div id="stapelKeptList">'+(kept.length?kept.map(k=>'<button type="button" class="cos-row" onclick="'+lifeCall('stapelShowKept',k.ref)+'"><span class="cos-row-date">#'+String(k.no).padStart(3,'0')+'</span><span><b>'+esc(stapelKeptTitle(k.ref))+'</b><small>'+esc(stapelKeptKicker(k.ref))+' · '+esc(lifeDate(String(k.at).slice(0,10),{day:'numeric',month:'short',year:'numeric'}))+'</small></span></button>').join(''):'<p class="life-none">Noch keine Karte behalten. Im Stapel auf „☆ Behalten“ tippen.</p>')+'</div>');
+ libDetailShell('<span class="life-kicker">Deine Sammlung</span><h2 id="lifeDetailHeading" tabindex="-1">Behaltene Karten</h2><div id="stapelKeptList">'+(kept.length?kept.map(k=>'<button type="button" class="cos-row" onclick="'+lifeCall('stapelShowKept',k.ref)+'"><span class="cos-row-date">#'+String(k.no).padStart(3,'0')+'</span><span><b>'+esc(stapelKeptTitle(k))+'</b><small>'+esc(stapelKeptKicker(k))+' · '+esc(lifeDate(String(k.at).slice(0,10),{day:'numeric',month:'short',year:'numeric'}))+'</small></span></button>').join(''):'<p class="life-none">Noch keine Karte behalten. Im Stapel auf „☆ Behalten“ tippen.</p>')+'</div>');
 }
-function stapelShowKept(ref){libDetailShell('<div class="stapel-sheetcard">'+stapelCardHTML({type:ref.startsWith('t:')?'tarot':'card',ref},{inSheet:true})+'</div>'+lifeButton('← Sammlung','stapelKept()','life-textbtn'))}
+function stapelShowKept(ref){const k=PulseDeck.ensure(db).kept.find(x=>x.ref===ref);libDetailShell('<div class="stapel-sheetcard">'+stapelCardHTML({type:ref.startsWith('t:')?'tarot':ref.startsWith('w:')?'web':'card',ref,data:k&&k.data},{inSheet:true})+'</div>'+lifeButton('← Sammlung','stapelKept()','life-textbtn')+(k?lifeButton('Aus der Sammlung nehmen',lifeCall('stapelKeep',ref),'life-textbtn danger'):''))}
 /* ---------- Settings ---------- */
 function stapelSettings(){
  const d=PulseDeck.ensure(db);
  libDetailShell('<span class="life-kicker">Stapel</span><h2 id="lifeDetailHeading" tabindex="-1">Dein Stapel</h2><p class="life-detail-intro">Jeden Tag eine feste Zahl Karten: Gedanken, Übungen, Videos aus deiner Sammlung, eine Tarotkarte zum Lernen, der Himmel und ab und zu eine alte Notiz von dir. Wenn er durch ist, ist Schluss bis morgen.</p>'+
   '<div class="life-sectionhead"><h3>Karten pro Tag</h3></div><div class="life-seg" role="group" aria-label="Karten pro Tag">'+PulseDeck.SIZES.map(n=>'<button type="button" aria-pressed="'+(d.size===n)+'" onclick="'+lifeCall('stapelConfigure','size',n)+'">'+n+'</button>').join('')+'</div>'+
+  '<div class="life-settings-row"><div><b>Bilder und Texte des Tages</b><p>Astronomiebild der NASA, Bild und Artikel des Tages der deutschen Wikipedia, ein gemeinfreies Kunstwerk des Art Institute of Chicago. Dafür ruft PULSE diese Dienste direkt auf; gesendet wird nur die Adresse des Tages.</p></div>'+lifeButton(d.web?'An':'Aus',lifeCall('stapelConfigure','web',!d.web),'life-btn')+'</div>'+
   '<div class="life-sectionhead"><h3>Themen</h3></div><div class="vault-chips">'+PulseDeck.TOPICS.map(t=>'<button type="button" aria-pressed="'+d.topics.includes(t)+'" onclick="'+lifeCall('stapelConfigure','topic',t)+'">'+esc(PulseCards.TOPICS[t].name)+'</button>').join('')+'</div>'+
   '<p class="life-footnote">'+PulseCards.ALL.length+' Karten gibt es bisher. Gesehene kommen erst wieder, wenn alle anderen dran waren. Videos aus deiner Sammlung kommen frühestens nach 45 Tagen wieder.</p>');
 }
 function stapelConfigure(what,v){
  const d=PulseDeck.ensure(db);let fresh;
- try{fresh=what==='size'?PulseDeck.configure(db,{size:v}):PulseDeck.configure(db,{topics:d.topics.includes(v)?d.topics.filter(t=>t!==v):[...d.topics,v]})}catch(e){return toast(e.message)}
+ try{fresh=what==='size'?PulseDeck.configure(db,{size:v}):what==='web'?PulseDeck.configure(db,{web:!!v}):PulseDeck.configure(db,{topics:d.topics.includes(v)?d.topics.filter(t=>t!==v):[...d.topics,v]})}catch(e){return toast(e.message)}
  save();stapelSettings();toast(fresh?'Gilt ab jetzt':'Gilt ab dem nächsten Stapel');
 }
 /* ---------- Tag tile ---------- */

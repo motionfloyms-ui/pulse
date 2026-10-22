@@ -1177,6 +1177,10 @@ td{font-variant-numeric:tabular-nums}
 .stapel-card.t-stimme{--c1:#BE185D;--c2:#4A044E}.stapel-card.t-kunst{--c1:#C2410C;--c2:#6B2109}.stapel-card.t-schreiben{--c1:#1D4ED8;--c2:#172554}
 .stapel-card.t-tarot{--c1:#4C1D95;--c2:#1E1B4B}.stapel-card.t-sky{--c1:#1E1B4B;--c2:#05060F}.stapel-card.t-own{--c1:#334155;--c2:#0F172A}.stapel-card.t-end{--c1:#047857;--c2:#022C22}
 .stapel-sheetcard .stapel-card{margin:0 0 12px;box-shadow:none}
+.stapel-card.t-web{--c1:#3F3F46;--c2:#09090B}
+.stapel-photo{display:grid;place-items:center;min-height:200px;background:#000}
+.stapel-photo img{display:block;width:100%;max-height:66vh;object-fit:contain}
+.stapel-photo.broken{min-height:120px}.stapel-photo.broken img{display:none}
 :root .pulse-bento .pulse-tile.tile-stapel{background-color:#2E1065;background-image:radial-gradient(120% 140% at 0% 0%,#7C3AED,#4C1D95 45%,#1E1B4B);color:#fff}
 .tile-stapel .pulse-tile-head,.tile-stapel small{color:rgb(255 255 255/.78)}
 .tile-stapel-bar{display:flex;gap:3px;width:100%;margin:8px 0 2px}.tile-stapel-bar i{flex:1;height:4px;border-radius:2px;background:rgb(255 255 255/.22)}.tile-stapel-bar i.on{background:#fff}
