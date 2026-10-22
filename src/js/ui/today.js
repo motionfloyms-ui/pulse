@@ -37,8 +37,8 @@ function tileNight(){
 function tileEvening(){return '<button type="button" class="pulse-tile tile-evening" onclick="'+lifeCall('lifeOpenLib','sinn-tagesabschluss')+'"><span class="pulse-tile-head">Abends</span><b class="pulse-tile-value">Tagesabschluss</b><small>Drei Sätze zum Tag</small></button>'}
 function tileRecipe(){const r=PulseLibrary.daily(key(),'recipe','koerper');return r?'<button type="button" class="pulse-tile tile-recipe" onclick="'+lifeCall('lifeOpenLib',r.id)+'"><span class="pulse-tile-head">Rezeptidee</span><b class="pulse-tile-value">'+esc(r.title)+'</b><small>'+esc(r.sub.split(' · ')[0])+'</small></button>':''}
 function lifeTiles(){
- const order={morning:['next','night','body','training','sky','recipe'],day:['body','training','next','sky','recipe','night'],evening:['next','evening','night','sky','body','training']}[dayPeriod()];
- const build={body:tileBody,training:tileTraining,next:tileNext,night:tileNight,evening:tileEvening,recipe:tileRecipe,sky:tileSky};
+ const order={morning:['stapel','next','night','body','training','sky','recipe'],day:['body','stapel','training','next','sky','recipe','night'],evening:['stapel','next','evening','night','sky','body','training']}[dayPeriod()];
+ const build={body:tileBody,training:tileTraining,next:tileNext,night:tileNight,evening:tileEvening,recipe:tileRecipe,sky:tileSky,stapel:tileStapel};
  const tiles=order.map(k=>build[k]()).filter(Boolean);
  /* Asymmetric bento: the first tile is the wide hero; a lone half tile at the end stretches. */
  if(tiles[0]&&!tiles[0].includes('span2'))tiles[0]=tiles[0].replace('class="pulse-tile ','class="pulse-tile span2 ');

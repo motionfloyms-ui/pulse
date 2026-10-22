@@ -44,10 +44,20 @@ async function vaultFetchMeta(id){
   const j=await vaultMetaJson(PulseVideo.watch(vaultRef(x,0)));if(!j)return;const y=PulseVault.get(db,id);if(!y)return;
   const fields={};if(!y.title&&j.title)fields.title=j.title;if(!y.channel&&j.author_name)fields.channel=j.author_name;if(vaultIsList(y)&&!y.thumb&&j.thumbnail_url)fields.thumb=String(j.thumbnail_url).replace(/^http:/,'https:');
   if(!y.room&&fields.title){const room=PulseVideo.room(fields.title,y);if(room)fields.room=room}
-  if(Object.keys(fields).length){PulseVault.update(db,id,fields,vaultNow());save();renderVault();if(vaultOpenId===id)vaultRefresh(id)}
+  if(Object.keys(fields).length){PulseVault.update(db,id,fields,vaultNow());vaultMetaChanged(id)}
  }catch(_){}
 }
-function vaultFillMissing(){if(!vaultThumbs())return;PulseVault.ensure(db).items.filter(x=>(!x.title||!x.channel||(vaultIsList(x)&&!x.thumb))&&!vaultMetaTried.has(x.id)).slice(0,4).forEach(x=>vaultFetchMeta(x.id))}
+/* Titles arrive one by one; they are saved together, and a running video in the Stapel keeps playing. */
+let vaultMetaTimer=null;
+function vaultMetaChanged(id){
+ if(typeof stapelMetaArrived==='function')stapelMetaArrived(id);if(vaultOpenId===id)vaultRefresh(id);
+ clearTimeout(vaultMetaTimer);vaultMetaTimer=setTimeout(()=>{if(document.getElementById('appMain').dataset.view==='stapel'&&typeof stapelQuiet==='function')stapelQuiet();else{save();renderVault()}},700);
+}
+/* A small queue: at most three requests at a time, visible videos first (after an import there can be thousands). */
+const vaultMetaQueue=[];let vaultMetaBusy=0;
+function vaultQueueMeta(ids){for(const id of ids)if(!vaultMetaTried.has(id)&&!vaultMetaQueue.includes(id))vaultMetaQueue.push(id);vaultPump()}
+function vaultPump(){while(vaultMetaBusy<3&&vaultMetaQueue.length){const id=vaultMetaQueue.shift();if(vaultMetaTried.has(id))continue;vaultMetaBusy++;Promise.resolve(vaultFetchMeta(id)).finally(()=>{vaultMetaBusy--;setTimeout(vaultPump,120)})}}
+function vaultFillMissing(list){if(!vaultThumbs()||!navigator.onLine)return;const src=list||PulseVault.ensure(db).items;vaultQueueMeta(src.filter(x=>(!x.title||!x.channel||(vaultIsList(x)&&!x.thumb))&&!vaultMetaTried.has(x.id)).slice(0,list?30:4).map(x=>x.id))}
 function vaultThumb(x,size='mq'){
  const inner='<span class="vault-no">'+vaultNo(x.no)+'</span>'+(vaultIsList(x)?'<span class="vault-short">'+LIST_ICON+'Playlist</span>':x.short?'<span class="vault-short">Short</span>':'')+(x.status==='gesehen'?'<span class="vault-seen" title="Gesehen">'+lifeGlyph('check')+'</span>':'');
  return '<span class="vault-thumb'+(x.short?' short':'')+(vaultIsList(x)?' list':'')+'">'+(vaultImg(x,size)?'<img src="'+esc(vaultImg(x,size))+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'<svg class="vault-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>'+inner+'</span>';
@@ -55,7 +65,7 @@ function vaultThumb(x,size='mq'){
 function vaultShelfName(id){const h=PulseVault.ensure(db).shelves.find(s=>s.id===id);return h?(h.emoji?h.emoji+' ':'')+h.name:''}
 function vaultCard(x){
  const label=(vaultIsList(x)?'Playlist ':'')+(x.title||'Ohne Titel')+(x.channel?', '+x.channel:'')+(x.status==='gesehen'?', gesehen':', auf der Merkliste')+(x.fav?', Favorit':'');
- return '<button type="button" class="vault-card" aria-label="'+esc(vaultNo(x.no)+' '+label)+'" onclick="'+lifeCall('vaultOpen',x.id)+'">'+vaultThumb(x)+'<span class="vault-info"><b>'+(x.fav?'<span class="vault-star" aria-hidden="true">★</span> ':'')+esc(x.title||'Ohne Titel')+'</b><small>'+esc([x.channel,x.shelves.map(vaultShelfName).join(' · ')].filter(Boolean).join(' · ')||(x.room?PulseLife.room(x.room).name:'Noch nicht einsortiert'))+'</small></span></button>';
+ return '<button type="button" class="vault-card" aria-label="'+esc(vaultNo(x.no)+' '+label)+'" onclick="'+lifeCall('vaultOpen',x.id)+'">'+vaultThumb(x)+'<span class="vault-info"><b>'+(x.fav?'<span class="vault-star" aria-hidden="true">★</span> ':'')+esc(x.title||(vaultIsList(x)?'Playlist ':'Video ')+vaultNo(x.no))+'</b><small>'+esc([x.channel,x.shelves.map(vaultShelfName).join(' · ')].filter(Boolean).join(' · ')||(x.room?PulseLife.room(x.room).name:'Noch nicht einsortiert'))+'</small></span></button>';
 }
 function vaultSet(k,v){
  vaultLimit=60;
@@ -71,10 +81,10 @@ function vaultRandom(){const x=PulseVault.random(db,'neu')||PulseVault.random(db
 function vaultStats(){
  const s=PulseVault.stats(db),pct=s.total?Math.round(s.seen/s.total*100):0;
  const prog=s.next?Math.round((s.total-s.prev)/(s.next-s.prev)*100):100;
- return '<div class="vault-stats"><div class="vault-stat hero"><span class="life-kicker">Gesammelt</span><b class="vault-big">'+s.total+'</b><small>'+(s.first?'seit '+esc(lifeDate(s.first.slice(0,10),{day:'numeric',month:'long',year:'numeric'})):'Noch leer')+(s.playlists?' · davon '+s.playlists+(s.playlists===1?' Playlist':' Playlists'):'')+' · '+s.shelves+(s.shelves===1?' Regal':' Regale')+(s.channels?' · '+s.channels+(s.channels===1?' Kanal':' Kanäle'):'')+'</small></div>'+
-  '<div class="vault-stat"><b class="vault-mid">'+s.seen+'<span class="vault-of">/'+s.total+'</span></b><small>gesehen</small><span class="vault-bar seen" aria-hidden="true"><i style="width:'+pct+'%"></i></span></div>'+
+ return '<div class="vault-stats"><div class="vault-stat hero"><span class="life-kicker">Gesammelt</span><b class="vault-big">'+vaultFmt(s.total)+'</b><small>'+(s.first?'seit '+esc(lifeDate(s.first.slice(0,10),{day:'numeric',month:'long',year:'numeric'})):'Noch leer')+(s.playlists?' · davon '+s.playlists+(s.playlists===1?' Playlist':' Playlists'):'')+' · '+s.shelves+(s.shelves===1?' Regal':' Regale')+(s.channels?' · '+s.channels+(s.channels===1?' Kanal':' Kanäle'):'')+'</small></div>'+
+  '<div class="vault-stat"><b class="vault-mid">'+vaultFmt(s.seen)+'<span class="vault-of">/'+vaultFmt(s.total)+'</span></b><small>gesehen</small><span class="vault-bar seen" aria-hidden="true"><i style="width:'+pct+'%"></i></span></div>'+
   '<div class="vault-stat"><b class="vault-mid"><span class="vault-star" aria-hidden="true">★</span> '+s.fav+'</b><small>Favoriten</small></div>'+
-  '<div class="vault-stat"><b class="vault-mid">'+(s.next||'✓')+'</b><small>'+(s.next?'Meilenstein · noch '+s.left:'Alle Meilensteine')+'</small><span class="vault-bar" aria-hidden="true"><i style="width:'+prog+'%"></i></span></div></div>';
+  '<div class="vault-stat"><b class="vault-mid">'+(s.next?vaultFmt(s.next):'✓')+'</b><small>'+(s.next?'Meilenstein · noch '+s.left:'Alle Meilensteine')+'</small><span class="vault-bar" aria-hidden="true"><i style="width:'+prog+'%"></i></span></div></div>';
 }
 function vaultTabs(){
  const all=PulseVault.ensure(db).items,c=PulseVault.count(all),neu=c.total-c.seen;
@@ -104,6 +114,7 @@ function renderVaultResults(){
  el.innerHTML=(scope?'<div class="vault-scope"><span>'+(vaultShelf?'Regal':vaultRoom?'Raum':'Kanal')+': <b>'+esc(scope)+'</b></span>'+(vaultShelf&&vaultShelf!=='none'?lifeButton('Bearbeiten',lifeCall('vaultEditShelf',vaultShelf),'life-textbtn'):'')+lifeButton('Alle zeigen',lifeCall('vaultSet','tab','list'),'life-textbtn')+'</div>':'')+
   '<div class="vault-listhead"><span>'+list.length+(list.length&&list.every(vaultIsList)?(list.length===1?' Playlist':' Playlists'):(list.length===1?' Eintrag':' Einträge'))+'</span><label class="vault-sort">Sortieren <select onchange="vaultSet(\'sort\',this.value)">'+[['neu','Neueste zuerst'],['alt','Älteste zuerst'],['nummer','Nach Nummer'],['titel','Titel A–Z'],['kanal','Kanal A–Z']].map(([v,l])=>'<option value="'+v+'"'+(vaultSort===v?' selected':'')+'>'+l+'</option>').join('')+'</select></label></div>'+
   (list.length?'<div class="vault-grid">'+list.slice(0,vaultLimit).map(vaultCard).join('')+'</div>'+(list.length>vaultLimit?lifeButton('Weitere '+Math.min(60,list.length-vaultLimit)+' anzeigen','vaultMore()','life-btn cal-more'):''):'<p class="life-none">Keine Videos in dieser Auswahl.</p>');
+ vaultFillMissing(list.slice(0,vaultLimit));
 }
 function renderVault(){
  const host=document.getElementById('vaultContent');if(!host||document.getElementById('appMain').dataset.view!=='videos')return;
@@ -112,7 +123,7 @@ function renderVault(){
  host.innerHTML='<header class="life-pagehead"><span class="life-kicker">Deine Fundstücke</span><h1>Videos</h1></header>'+vaultStats()+
   '<div class="vault-add"><label class="srOnly" for="vaultLink">YouTube-Link</label><input id="vaultLink" type="url" inputmode="url" placeholder="YouTube-Link einfügen" onkeydown="if(event.key===\'Enter\'){event.preventDefault();vaultPaste()}"/>'+(navigator.clipboard?.readText?'<button type="button" class="life-btn" onclick="vaultClipboard()">Einfügen</button>':'')+'<button type="button" class="life-btn dark" onclick="vaultPaste()">Hinzufügen</button></div>'+
   '<div class="vault-tools"><label class="life-search">'+lifeGlyph('search')+'<input id="vaultSearch" type="search" aria-label="Videos durchsuchen" placeholder="Titel, Kanal, Notiz, #Nummer …" value="'+esc(vaultQuery)+'" oninput="vaultSearch(this.value)"/></label>'+lifeButton('Zufall','vaultRandom()','life-btn')+'</div>'+
-  vaultTabs()+'<div id="vaultResults"></div>';
+  vaultImportRow()+vaultTabs()+'<div id="vaultResults"></div>';
  renderVaultResults();vaultFillMissing();
 }
 /* ---------- Detail ---------- */
@@ -180,5 +191,44 @@ function vaultEditShelf(id){
  openDialog(document.getElementById('lifeSheet'),'#vaultShelfName');
 }
 function vaultDeleteShelf(id){pushUndo({type:'videos',before:PulseLife.clone(db.videos)});PulseVault.removeShelf(db,id);vaultShelf='';vaultTab='shelf';save();lifeCloseSheet();renderVault();toast('Regal gelöscht','Rückgängig')}
+/* ---------- Import from Google Takeout ---------- */
+let vaultPending=null;
+const vaultFmt=n=>Number(n).toLocaleString('de-DE');
+function vaultImportRow(){
+ const n=PulseVault.ensure(db).items.length,big=n<30;
+ return '<div class="vault-import'+(big?' big':'')+'">'+(big?'<div><b>Deine YouTube-Listen holen</b><p>Mit dem Export aus Google Takeout kommen alle deine Playlists auf einmal herein. Jede wird ein Regal.</p></div>':'')+'<span class="vault-import-btns">'+lifeButton('So geht’s','vaultTakeoutHelp()','life-textbtn')+'<label class="life-btn'+(big?' dark':'')+'">YouTube-Listen importieren<input class="srOnly" type="file" accept=".zip,.csv,application/zip,text/csv" multiple onchange="vaultImportFiles(this.files);this.value=\'\'"/></label></span></div>';
+}
+function vaultTakeoutHelp(){
+ libDetailShell('<span class="life-kicker">YouTube-Import</span><h2 id="lifeDetailHeading" tabindex="-1">So holst du deine Listen</h2><ol class="vault-steps"><li><b>takeout.google.com</b> öffnen, mit dem Konto deines YouTube-Kanals.</li><li>Oben <b>„Auswahl aufheben“</b>.</li><li><b>„YouTube und YouTube Music“</b> anhaken.</li><li>Auf <b>„Alle YouTube-Daten ausgewählt“</b> tippen, dort nur <b>„Playlists“</b> anhaken, OK.</li><li><b>„Nächster Schritt“</b>, einmal exportieren, Dateityp .zip, <b>„Export erstellen“</b>.</li><li>Wenn die Mail von Google kommt: ZIP herunterladen und hier auswählen. Nicht entpacken.</li></ol><p class="life-footnote">Google gibt nur die Video-Nummern heraus. Titel und Bilder holt PULSE nach und nach, wenn Vorschaubilder in den Einstellungen an sind. Ein späterer Export fügt nur Neues hinzu.</p>');
+}
+const vaultInflate=bytes=>new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer().then(b=>new Uint8Array(b));
+async function vaultImportFiles(files){
+ if(!files||!files.length)return;
+ if(typeof DecompressionStream!=='function'&&[...files].some(f=>/\.zip$/i.test(f.name)))return toast('Dieser Browser kann keine ZIP-Dateien öffnen. Entpack sie und wähl die CSV-Dateien aus dem Ordner „Playlists“.');
+ try{
+  const inputs=await Promise.all([...files].map(async f=>({name:f.name,bytes:new Uint8Array(await f.arrayBuffer())})));
+  vaultPending=await PulseTakeout.read(inputs,{inflate:vaultInflate});vaultImportPreview();
+ }catch(e){toast(e&&e.code==='TAKEOUT'?e.message:'Die Datei ließ sich nicht lesen. Ist es der YouTube-Export aus Google Takeout?')}
+}
+function vaultImportPreview(){
+ const lists=vaultPending;if(!lists)return;const p=PulseVault.importPreview(db,lists);
+ document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;vaultOpenId=null;
+ el.innerHTML='<span class="life-kicker">YouTube-Import</span><h2 id="lifeDetailHeading" tabindex="-1">'+lists.length+(lists.length===1?' Liste':' Listen')+' gefunden</h2><p class="life-detail-intro">'+vaultFmt(p.unique)+' verschiedene Videos'+(p.already?', davon '+vaultFmt(p.already)+' schon in deiner Sammlung':'')+'. Jede Liste wird ein Regal. Neue Videos bekommen Sammlernummern, die ältesten zuerst.</p>'+
+  '<div class="vault-import-lists">'+p.lists.map((l,i)=>'<label class="cal-check"><input type="checkbox" data-import="'+i+'" checked/><span><b>'+esc(l.title)+'</b><small>'+vaultFmt(l.count)+(l.count===1?' Video':' Videos')+(l.fresh!==l.count?' · '+vaultFmt(l.fresh)+' neu':'')+'</small></span></label>').join('')+'</div>'+
+  '<div class="life-detail-actions">'+lifeButton('Importieren','vaultImportRun()','life-btn dark')+lifeButton('Abbrechen','vaultPending=null;lifeCloseSheet()','life-btn')+'</div><p class="life-footnote">Vorher legt PULSE einen Stand in der Zeitreise ab, und direkt danach geht „Rückgängig“.</p>';
+ if(activeDialog!=='lifeSheet')openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');else document.getElementById('lifeDetailHeading')?.focus();
+}
+async function vaultImportRun(){
+ const lists=vaultPending;if(!lists)return;
+ const chosen=lists.filter((_,i)=>document.querySelector('[data-import="'+i+'"]')?.checked);if(!chosen.length)return toast('Keine Liste ausgewählt.');
+ vaultPending=null;try{await backupSnapshot('vor-import')}catch(_){}
+ const s=PulseVault.ensure(db),before=s.items.length,next=s.next,r=PulseVault.importLists(db,chosen,vaultNow());
+ pushUndo({type:'videos-import',items:r.ids.items,shelves:r.ids.shelves,links:r.ids.links,next});
+ if(!save())return;
+ lifeCloseSheet();vaultTab='shelf';vaultShelf='';vaultRoom='';vaultChannel='';renderVault();
+ const m=PulseVault.reached(before,r.total);pulseSound(m?'chime':'pop');pulseTap([12,60,18]);
+ toast(vaultFmt(r.added)+(r.added===1?' Video':' Videos')+' aus '+chosen.length+(chosen.length===1?' Liste':' Listen')+(r.linked?' · '+vaultFmt(r.linked)+' einsortiert':''),'Rückgängig');
+}
+function undoVideoImport(u){PulseVault.undoImport(db,u);save();renderVault();toast('Import rückgängig gemacht')}
 function lifeSetVideoMeta(){db.uiPrefs.videoMeta=db.uiPrefs.videoMeta===false;if(save()){lifeSettings();renderVault()}}
 function videoSettingsHTML(){return '<div class="life-settings-row"><div><b>Vorschaubilder und Titel von YouTube</b><p>Lädt Bild, Titel und Kanal von YouTube. Klappt das direkt nicht, fragt Pulse den offenen Dienst noembed.com. Wenn aus, geht nichts nach außen, bis du ein Video abspielst.</p></div>'+lifeButton(db.uiPrefs.videoMeta===false?'Aus':'An','lifeSetVideoMeta()','life-btn')+'</div>'}

@@ -780,8 +780,8 @@ th{color:var(--muted);font-weight:600}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) body::before{content:"";position:fixed;inset:-25vmax;z-index:-1;pointer-events:none;background:radial-gradient(38vmax 38vmax at 18% 12%,rgb(107 91 255/.22),transparent 70%),radial-gradient(30vmax 30vmax at 88% 38%,rgb(255 94 126/.11),transparent 70%),radial-gradient(42vmax 42vmax at 45% 96%,rgb(56 189 248/.08),transparent 70%);animation:drift 46s ease-in-out infinite alternate}}
 :root[data-theme="dark"] body::before{content:"";position:fixed;inset:-25vmax;z-index:-1;pointer-events:none;background:radial-gradient(38vmax 38vmax at 18% 12%,rgb(107 91 255/.22),transparent 70%),radial-gradient(30vmax 30vmax at 88% 38%,rgb(255 94 126/.11),transparent 70%),radial-gradient(42vmax 42vmax at 45% 96%,rgb(56 189 248/.08),transparent 70%);animation:drift 46s ease-in-out infinite alternate}
 @keyframes drift{to{transform:translate3d(-5vmax,4vmax,0) rotate(10deg)}}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-tile,:root:not([data-theme="light"]) .life-entry,:root:not([data-theme="light"]) .life-lib-card,:root:not([data-theme="light"]) .life-tarot-panel,:root:not([data-theme="light"]) .life-capture-line,:root:not([data-theme="light"]) .life-body-card,:root:not([data-theme="light"]) .cos-card,:root:not([data-theme="light"]) .cos-grid,:root:not([data-theme="light"]) .cos-row,:root:not([data-theme="light"]) .life-today-row,:root:not([data-theme="light"]) .life-empty,:root:not([data-theme="light"]) .food-today>div,:root:not([data-theme="light"]) .life-settings-row,:root:not([data-theme="light"]) .vault-stat:not(.hero),:root:not([data-theme="light"]) .vault-shelf,:root:not([data-theme="light"]) .more-tool,:root:not([data-theme="light"]) .body-weeks,:root:not([data-theme="light"]) .body-quick button,:root:not([data-theme="light"]) .content-block,:root:not([data-theme="light"]) .disclosure,:root:not([data-theme="light"]) .excard,:root:not([data-theme="light"]) .composer,:root:not([data-theme="light"]) .capacity-choice,:root:not([data-theme="light"]) .quiet-callout{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}}
-:root[data-theme="dark"] .pulse-tile,:root[data-theme="dark"] .life-entry,:root[data-theme="dark"] .life-lib-card,:root[data-theme="dark"] .life-tarot-panel,:root[data-theme="dark"] .life-capture-line,:root[data-theme="dark"] .life-body-card,:root[data-theme="dark"] .cos-card,:root[data-theme="dark"] .cos-grid,:root[data-theme="dark"] .cos-row,:root[data-theme="dark"] .life-today-row,:root[data-theme="dark"] .life-empty,:root[data-theme="dark"] .food-today>div,:root[data-theme="dark"] .life-settings-row,:root[data-theme="dark"] .vault-stat:not(.hero),:root[data-theme="dark"] .vault-shelf,:root[data-theme="dark"] .more-tool,:root[data-theme="dark"] .body-weeks,:root[data-theme="dark"] .body-quick button,:root[data-theme="dark"] .content-block,:root[data-theme="dark"] .disclosure,:root[data-theme="dark"] .excard,:root[data-theme="dark"] .composer,:root[data-theme="dark"] .capacity-choice,:root[data-theme="dark"] .quiet-callout{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-tile,:root:not([data-theme="light"]) .life-entry,:root:not([data-theme="light"]) .life-lib-card,:root:not([data-theme="light"]) .life-tarot-panel,:root:not([data-theme="light"]) .life-capture-line,:root:not([data-theme="light"]) .life-body-card,:root:not([data-theme="light"]) .cos-card,:root:not([data-theme="light"]) .cos-grid,:root:not([data-theme="light"]) .cos-row,:root:not([data-theme="light"]) .life-today-row,:root:not([data-theme="light"]) .life-empty,:root:not([data-theme="light"]) .food-today>div,:root:not([data-theme="light"]) .life-settings-row,:root:not([data-theme="light"]) .vault-stat:not(.hero),:root:not([data-theme="light"]) .vault-shelf,:root:not([data-theme="light"]) .more-tool,:root:not([data-theme="light"]) .body-weeks,:root:not([data-theme="light"]) .stapel-card,:root:not([data-theme="light"]) .vault-import.big,:root:not([data-theme="light"]) .body-quick button,:root:not([data-theme="light"]) .content-block,:root:not([data-theme="light"]) .disclosure,:root:not([data-theme="light"]) .excard,:root:not([data-theme="light"]) .composer,:root:not([data-theme="light"]) .capacity-choice,:root:not([data-theme="light"]) .quiet-callout{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}}
+:root[data-theme="dark"] .pulse-tile,:root[data-theme="dark"] .life-entry,:root[data-theme="dark"] .life-lib-card,:root[data-theme="dark"] .life-tarot-panel,:root[data-theme="dark"] .life-capture-line,:root[data-theme="dark"] .life-body-card,:root[data-theme="dark"] .cos-card,:root[data-theme="dark"] .cos-grid,:root[data-theme="dark"] .cos-row,:root[data-theme="dark"] .life-today-row,:root[data-theme="dark"] .life-empty,:root[data-theme="dark"] .food-today>div,:root[data-theme="dark"] .life-settings-row,:root[data-theme="dark"] .vault-stat:not(.hero),:root[data-theme="dark"] .vault-shelf,:root[data-theme="dark"] .more-tool,:root[data-theme="dark"] .body-weeks,:root[data-theme="dark"] .stapel-card,:root[data-theme="dark"] .vault-import.big,:root[data-theme="dark"] .body-quick button,:root[data-theme="dark"] .content-block,:root[data-theme="dark"] .disclosure,:root[data-theme="dark"] .excard,:root[data-theme="dark"] .composer,:root[data-theme="dark"] .capacity-choice,:root[data-theme="dark"] .quiet-callout{background-image:linear-gradient(135deg,rgb(255 255 255/.065),rgb(255 255 255/.012) 70%)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .life-check.checked{filter:drop-shadow(0 0 6px color-mix(in srgb,var(--ok) 75%,transparent))}}
 :root[data-theme="dark"] .life-check.checked{filter:drop-shadow(0 0 6px color-mix(in srgb,var(--ok) 75%,transparent))}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .pulse-dots i.on:not(.today){box-shadow:0 0 8px color-mix(in srgb,var(--ok) 70%,transparent)}}
@@ -1137,6 +1137,58 @@ body.sigil-open{overflow:hidden}
 .body-weeks-grid i.today{outline:2px solid var(--ink);outline-offset:1px}
 .body-routes{margin:0 0 6px}
 td{font-variant-numeric:tabular-nums}
+/* v27: Stapel – the daily stack */
+.stapel{display:flex;flex-direction:column;gap:10px;padding-bottom:6px}
+.stapel-progress{display:flex;gap:3px;margin-top:6px}
+.stapel-progress i{flex:1;height:3px;border-radius:2px;background:var(--fill)}
+.stapel-progress i.done{background:var(--accent)}.stapel-progress i.now{background:color-mix(in srgb,var(--accent) 45%,var(--fill))}
+.stapel-head{display:flex;align-items:center;justify-content:space-between;min-height:40px}
+.stapel-count{font-size:13px;font-weight:650;color:var(--muted);font-variant-numeric:tabular-nums}
+.stapel-headbtns{display:flex;align-items:center;gap:4px}
+.stapel-card{overflow:hidden;border-radius:24px;background:var(--surface);box-shadow:var(--shadow-2)}
+.stapel-cover{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;min-height:230px;padding:20px 20px 18px;color:#fff;background:linear-gradient(160deg,var(--c1),var(--c2))}
+.stapel-cover>*{position:relative;z-index:2}.stapel-cover>.stapel-art{position:absolute;inset:0;z-index:0;width:100%;height:100%;opacity:.85}
+.stapel-cover::after{content:"";position:absolute;inset:auto 0 0;z-index:1;height:70%;background:linear-gradient(to top,rgb(0 0 0/.5),rgb(0 0 0/.18) 55%,transparent);pointer-events:none}
+.stapel-cover small{color:inherit}
+.stapel-kicker{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;opacity:.85}
+.stapel-cover h2{margin:0;font-size:28px;line-height:1.12;font-weight:750;letter-spacing:-.02em;text-wrap:balance}
+.stapel-body h2{margin:0;font-size:24px;line-height:1.2;font-weight:750;letter-spacing:-.015em;text-wrap:balance}
+.stapel-body .stapel-kicker{color:var(--muted);opacity:1}
+.stapel-sub{font-size:14px;opacity:.88}
+.stapel-body{display:flex;flex-direction:column;gap:12px;padding:18px 20px 20px}
+.stapel-body p{margin:0;font-size:17px;line-height:1.55}
+.stapel-try,.stapel-ask,.stapel-facts{padding:12px 14px;border-radius:14px;background:var(--fill)}
+.stapel-try b,.stapel-ask b,.stapel-facts b{display:block;margin-bottom:4px;font-size:12px;font-weight:750;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.stapel-facts p+b{margin-top:10px}
+.stapel-ask{background:color-mix(in srgb,var(--accent) 13%,var(--surface))}.stapel-ask p{font-weight:600}
+.stapel-body .stapel-read,.stapel-body .stapel-meta{font-size:14px;line-height:1.45;color:var(--muted)}
+.stapel-summary{font-weight:650}
+.stapel-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:2px}
+.stapel-keep[aria-pressed="true"]{color:var(--accent-text)}
+.stapel-nav{position:sticky;bottom:calc(88px + env(safe-area-inset-bottom));z-index:5;display:grid;grid-template-columns:1fr 2fr;gap:8px}
+.stapel-nav .life-btn{min-height:50px;box-shadow:var(--shadow-2)}.stapel-nav .is-hidden{visibility:hidden}
+.stapel-player{margin:0}.stapel-player .pulse-video-play,.stapel-player iframe{border-radius:0}
+.stapel-tarot-face{display:grid;place-items:center;gap:6px;width:66px;height:104px;margin-bottom:auto;border:1.5px solid rgb(252 211 77/.85);border-radius:9px;color:#FCD34D;font-weight:700;letter-spacing:.06em}
+.stapel-tarot-face .life-glyph{width:26px;height:26px}
+.t-sky .stapel-cover>svg{width:112px;height:112px;margin-bottom:auto}
+.stapel-own-glyph{width:56px;height:56px;margin-bottom:auto;color:#fff;opacity:.9}
+.stapel-done{width:120px;height:90px;margin-bottom:auto;fill:rgb(255 255 255/.12);stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.stapel-card.t-geist{--c1:#0F766E;--c2:#0B3B37}.stapel-card.t-kosmos{--c1:#312E81;--c2:#0B1026}.stapel-card.t-magie{--c1:#6D28D9;--c2:#2E1065}
+.stapel-card.t-stimme{--c1:#BE185D;--c2:#4A044E}.stapel-card.t-kunst{--c1:#C2410C;--c2:#6B2109}.stapel-card.t-schreiben{--c1:#1D4ED8;--c2:#172554}
+.stapel-card.t-tarot{--c1:#4C1D95;--c2:#1E1B4B}.stapel-card.t-sky{--c1:#1E1B4B;--c2:#05060F}.stapel-card.t-own{--c1:#334155;--c2:#0F172A}.stapel-card.t-end{--c1:#047857;--c2:#022C22}
+.stapel-sheetcard .stapel-card{margin:0 0 12px;box-shadow:none}
+:root .pulse-bento .pulse-tile.tile-stapel{background-color:#2E1065;background-image:radial-gradient(120% 140% at 0% 0%,#7C3AED,#4C1D95 45%,#1E1B4B);color:#fff}
+.tile-stapel .pulse-tile-head,.tile-stapel small{color:rgb(255 255 255/.78)}
+.tile-stapel-bar{display:flex;gap:3px;width:100%;margin:8px 0 2px}.tile-stapel-bar i{flex:1;height:4px;border-radius:2px;background:rgb(255 255 255/.22)}.tile-stapel-bar i.on{background:#fff}
+.vault-import{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin:0 0 12px}
+.vault-import.big{flex-direction:column;align-items:stretch;padding:16px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-1)}
+.vault-import b{font-size:16px}.vault-import p{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.vault-import-btns{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px}
+.vault-import-lists{display:flex;flex-direction:column;gap:6px;max-height:48vh;margin:8px 0;overflow:auto}
+.vault-import-lists label{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:12px;background:var(--fill)}
+.vault-import-lists small{display:block;font-size:13px;color:var(--muted)}
+.vault-steps{display:flex;flex-direction:column;gap:8px;padding-left:22px;font-size:15px;line-height:1.45}
+.life-calm .stapel-cover{filter:saturate(.35)}
 /* Calm view: colour recedes, structure stays. */
 .life-calm .life-room-tile,.life-calm .life-room-hero{background:var(--surface)!important;color:var(--ink)!important;box-shadow:inset 5px 0 0 var(--room)}
 .life-calm .life-room-tile::after,.life-calm .life-room-hero::after{display:none}

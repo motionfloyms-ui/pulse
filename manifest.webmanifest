@@ -16,6 +16,7 @@
     {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
   ],
   "shortcuts": [
+    {"name": "Dein Stapel", "short_name": "Stapel", "url": "./?action=stapel", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
     {"name": "Gedanke festhalten", "short_name": "Festhalten", "url": "./?action=compose", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
     {"name": "Per Sprache festhalten", "short_name": "Sprechen", "url": "./?action=voice", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
     {"name": "Training", "short_name": "Training", "url": "./?action=training", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},

@@ -3,6 +3,7 @@
 const LIB_GROUP_LIMIT=4;
 function libTab(view){
  if(['life','calendar','videos','more'].includes(view))return view;
+ if(view==='stapel')return 'life';
  if(['bodyhub','workout','nutrition','recovery','trends'].includes(view))return 'bodyhub';
  return 'more';
 }

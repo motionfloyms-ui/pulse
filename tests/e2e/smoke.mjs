@@ -1,7 +1,7 @@
 // End-to-end smoke test: real browser, real bundle. Clicks through the main flows and every visible
 // button of every screen, and fails on any JavaScript error. Run: node tests/e2e/smoke.mjs
 // Needs the "playwright" package and a Chromium (npx playwright install chromium).
-import {createRequire} from 'node:module';import http from 'node:http';import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';import zlib from 'node:zlib';import http from 'node:http';import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';
 const require=createRequire(import.meta.url);const {chromium}=require(process.env.PLAYWRIGHT_PATH||'playwright');
 const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'../..');
 const types={'.html':'text/html','.js':'text/javascript','.json':'application/json','.webmanifest':'application/manifest+json','.png':'image/png'};
@@ -16,6 +16,9 @@ pg.on('dialog',d=>d.accept());
 await pg.route(/ytimg|youtube|noembed/,r=>r.abort());
 const ev=(f,a)=>pg.evaluate(f,a),pass=[];
 async function check(name,fn){step=name;await fn();pass.push(name)}
+/* A small ZIP like a Google Takeout export (synthetic data). */
+function crc32(b){let crc=0xFFFFFFFF;for(const x of b){let c=(crc^x)&0xFF;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;crc=(crc>>>8)^c}return (crc^0xFFFFFFFF)>>>0}
+function zip(files){const parts=[],central=[];let offset=0;for(const f of files){const name=Buffer.from(f.name,'utf8'),data=Buffer.from(f.text,'utf8'),body=zlib.deflateRawSync(data),crc=crc32(data);const lh=Buffer.alloc(30);lh.writeUInt32LE(0x04034b50,0);lh.writeUInt16LE(20,4);lh.writeUInt16LE(0x0800,6);lh.writeUInt16LE(8,8);lh.writeUInt32LE(crc,14);lh.writeUInt32LE(body.length,18);lh.writeUInt32LE(data.length,22);lh.writeUInt16LE(name.length,26);parts.push(lh,name,body);const ch=Buffer.alloc(46);ch.writeUInt32LE(0x02014b50,0);ch.writeUInt16LE(20,4);ch.writeUInt16LE(20,6);ch.writeUInt16LE(0x0800,8);ch.writeUInt16LE(8,10);ch.writeUInt32LE(crc,16);ch.writeUInt32LE(body.length,20);ch.writeUInt32LE(data.length,24);ch.writeUInt16LE(name.length,28);ch.writeUInt32LE(offset,42);central.push(ch,name);offset+=30+name.length+body.length}const cd=Buffer.concat(central),end=Buffer.alloc(22);end.writeUInt32LE(0x06054b50,0);end.writeUInt16LE(files.length,8);end.writeUInt16LE(files.length,10);end.writeUInt32LE(cd.length,12);end.writeUInt32LE(offset,16);return Buffer.concat([...parts,cd,end])}
 try{
  await pg.goto(base);await pg.waitForTimeout(1200);
  await check('app loads',async()=>{assert.equal(await ev(()=>typeof db),'object');assert.ok(await pg.isVisible('#lifeNav'))});
@@ -87,6 +90,29 @@ try{
   await pg.fill('#moreSearch','');for(const t of ['Song-Werkstatt','Sigillen','Dein Himmel','Fokus-Timer','Alle Einträge']){await ev(()=>lifeOpenMore());await pg.click('.more-tool >> text='+t);await pg.waitForTimeout(80);assert.notEqual(await ev(()=>document.getElementById('appMain').dataset.view),'more',t)}
   assert.deepEqual(await ev(()=>[...document.querySelectorAll('#lifeNav [aria-current=page]')].map(b=>b.textContent)),['Mehr']);
  });
+ await check('YouTube lists from a Takeout ZIP: preview, import into shelves, undo',async()=>{
+  await ev(()=>goView('videos'));await pg.waitForTimeout(150);const before=await ev(()=>db.videos.items.length);
+  const ids=n=>Array.from({length:n},(_,i)=>('Q'+String(i).padStart(10,'0')).slice(0,11));
+  const buf=zip([{name:'Takeout/YouTube und YouTube Music/Playlists/Gesang-Videos.csv',text:'Video-ID,Zeitstempel der Erstellung des Playlist-Videos\n'+ids(40).map((v,i)=>v+',2021-0'+(1+i%9)+'-01T10:00:00+00:00').join('\n')},{name:'Takeout/YouTube und YouTube Music/Playlists/Später ansehen-Videos.csv',text:'Video-ID,Zeitstempel\n'+ids(60).slice(30).join(',2022-01-01T00:00:00+00:00\n')+',2022-01-01T00:00:00+00:00'}]);
+  await pg.setInputFiles('.vault-import input[type=file]',{name:'takeout.zip',mimeType:'application/zip',buffer:buf});await pg.waitForSelector('[data-import]');
+  assert.match(await pg.innerText('#lifeDetail'),/2 Listen gefunden[\s\S]*60 verschiedene Videos/);
+  await pg.click('#lifeDetail button:has-text("Importieren")');await pg.waitForTimeout(400);
+  assert.equal(await ev(()=>db.videos.items.length),before+60);assert.ok(await ev(()=>db.videos.shelves.some(h=>h.name==='Später ansehen')));
+  assert.equal(await ev(()=>db.videos.items.filter(x=>x.vid.startsWith('Q')).filter(x=>x.shelves.length===2).length),10);
+  await ev(()=>undoLast());await pg.waitForTimeout(200);assert.equal(await ev(()=>db.videos.items.length),before);
+ });
+ await check('Stapel: a finite stack with an end, keep a card, settings',async()=>{
+  await ev(()=>goView('life'));await pg.waitForTimeout(150);await pg.click('.tile-stapel');await pg.waitForTimeout(200);
+  assert.equal(await ev(()=>document.getElementById('appMain').dataset.view),'stapel');
+  const n=await ev(()=>db.deck.cards.length);assert.equal(n,12);assert.match(await pg.innerText('.stapel-count'),/Karte 1 von 12/);
+  const card=await ev(()=>db.deck.cards.findIndex(c=>c.type==='card'));await ev(i=>stapelGo(i),card);await pg.waitForTimeout(150);
+  await pg.click('.stapel-keep');await pg.waitForTimeout(150);assert.equal(await ev(()=>db.deck.kept.length),1);
+  for(let i=0;i<n+2;i++){if(await pg.isVisible('.stapel-nav .life-btn.dark'))await pg.click('.stapel-nav .life-btn.dark');await pg.waitForTimeout(40)}
+  assert.match(await pg.innerText('#stapelStage'),/Stapel durch/);assert.equal(await ev(()=>PulseDeck.finished(db)),true);
+  await pg.reload();await pg.waitForTimeout(900);await ev(()=>lifeOpenStapel());await pg.waitForTimeout(150);assert.match(await pg.innerText('#stapelStage'),/Stapel durch/,'stays done after reload');
+  await ev(()=>stapelSettings());await pg.click('#lifeDetail button:has-text("16")');await pg.waitForTimeout(100);assert.equal(await ev(()=>db.deck.size),16);await ev(()=>lifeCloseSheet());
+  await ev(()=>stapelKept());assert.match(await pg.innerText('#stapelKeptList'),/#001/);await ev(()=>lifeCloseSheet());
+ });
  await check('Körper: hub, water, routes and back',async()=>{
   await pg.click('#lifeNav >> text=Körper');await pg.waitForTimeout(150);
   assert.equal(await ev(()=>document.getElementById('appMain').dataset.view),'bodyhub');
@@ -110,7 +136,7 @@ try{
   assert.equal(await ev(()=>db.life.items.length),before);assert.equal(await ev(()=>db.life.items.some(x=>x.id==='zr1')),false);
  });
  await check('every button on every screen',async()=>{
-  const views=["goView('life')","lifeOpenMore()","lifeOpenSpaces('sinn')","lifeOpenSpaces('ideen')","lifeOpenLibrary()","goView('focus')","lifeOpenCalendar()","cosmosSetMode('week')","lifeOpenVideos()","lifeOpenSigils()","lifeOpenSky()","lifeOpenSongs()","goView('bodyhub')","goView('nutrition')","goView('mehub')"];
+  const views=["goView('life')","lifeOpenMore()","lifeOpenSpaces('sinn')","lifeOpenSpaces('ideen')","lifeOpenLibrary()","goView('focus')","lifeOpenCalendar()","cosmosSetMode('week')","lifeOpenVideos()","lifeOpenSigils()","lifeOpenSky()","lifeOpenSongs()","lifeOpenStapel()","goView('bodyhub')","goView('nutrition')","goView('mehub')"];
   const SKIP=/löschen|entfernen|export|backup|installieren|youtube|import|archiv|laden|bühnenmodus|einsingen/i;
   for(const v of views){step='crawl '+v;await ev(v);await pg.waitForTimeout(80);
    const n=await ev(()=>[...document.querySelectorAll('main .view.active button')].filter(e=>e.offsetParent).length);

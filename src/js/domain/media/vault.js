@@ -3,7 +3,7 @@
    favourites, notes and marked moments. Stored in db.videos; no DOM. */
 (function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('./video.js'):root.PulseVideo);if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseVault=api})(globalThis,function(Video){
  'use strict';
- const MILESTONES=[1,10,25,50,100,150,200,250,300,400,500,750,1000,1500,2000];
+ const MILESTONES=[1,10,25,50,100,150,200,250,300,400,500,750,1000,1500,2000,2500,3000,4000,5000,7500,10000];
  const ROOMS=['alltag','innen','sinn','koerper','menschen','ideen','draussen','zuhause'];
  const str=(v,n)=>String(v==null?'':v).replace(/\s+/g,' ').trim().slice(0,n);
  function ensure(db){
@@ -93,6 +93,46 @@
   return [];
  }
  function random(db,filter='neu',pick=Math.random){const list=query(db,{filter});return list.length?list[Math.floor(pick()*list.length)]:null}
+ /* What an import of playlists would do: per list how many videos are new, in total how many
+    different videos there are and how many are already in the collection. */
+ function importPreview(db,lists){
+  const have=new Set(ensure(db).items.map(x=>x.id)),all=new Set();
+  const out=lists.map(l=>{let fresh=0;for(const v of l.videos){const k='yt-'+v.vid;if(!have.has(k))fresh++;all.add(k)}return {title:l.title,count:l.videos.length,fresh}});
+  let already=0;for(const k of all)if(have.has(k))already++;
+  return {lists:out,unique:all.size,already,fresh:all.size-already};
+ }
+ /* Many videos at once (a YouTube export). Every playlist becomes a shelf (an existing shelf with the
+    same name is used), videos that are already collected only gain the shelf. New videos get their
+    collector numbers in the order they were first saved on YouTube, oldest first. */
+ function importLists(db,lists,now){
+  const s=ensure(db),byKey=new Map(s.items.map(x=>[x.id,x])),shelfBy=new Map(s.shelves.map(h=>[h.name.toLocaleLowerCase('de'),h])),fresh=new Map();
+  let shelves=0,linked=0,already=0;const stamp=Date.now().toString(36),ids={items:[],shelves:[],links:[]};
+  lists.forEach((l,i)=>{
+   const name=str(l.title,40)||'YouTube-Liste';let h=shelfBy.get(name.toLocaleLowerCase('de'));
+   if(!h){h={id:'sh-yt-'+stamp+'-'+i,name,emoji:'',createdAt:now};s.shelves.push(h);shelfBy.set(name.toLocaleLowerCase('de'),h);shelves++;ids.shelves.push(h.id)}
+   for(const v of l.videos||[]){
+    if(!v||!/^[A-Za-z0-9_-]{11}$/.test(v.vid))continue;
+    const k='yt-'+v.vid,old=byKey.get(k);
+    if(old){already++;if(!old.shelves.includes(h.id)){old.shelves.push(h.id);old.updatedAt=now;linked++;ids.links.push([old.id,h.id])}continue}
+    let x=fresh.get(k);const at=typeof v.at==='string'&&v.at?v.at:now;
+    if(!x){x={id:k,kind:'video',vid:v.vid,list:'',thumb:'',no:0,start:0,short:false,title:'',channel:'',room:'',shelves:[],status:'neu',fav:false,seen:0,seenAt:'',note:'',marks:[],addedAt:at,updatedAt:now};fresh.set(k,x)}
+    else if(at<x.addedAt)x.addedAt=at;
+    if(!x.shelves.includes(h.id))x.shelves.push(h.id);
+   }
+  });
+  const add=[...fresh.values()].sort((a,b)=>a.addedAt.localeCompare(b.addedAt));
+  for(const x of add){x.no=s.next++;s.items.push(x);ids.items.push(x.id)}
+  return {added:add.length,linked,already,shelves,total:s.items.length,ids};
+ }
+ /* Takes an import back: removes the videos and shelves it created and the shelf links it added. */
+ function undoImport(db,{items=[],shelves=[],links=[],next}={}){
+  const s=ensure(db),drop=new Set(items),gone=new Set(shelves),byId=new Map(s.items.map(x=>[x.id,x]));
+  for(const [id,sh] of links){const x=byId.get(id);if(x)x.shelves=x.shelves.filter(i=>i!==sh)}
+  s.items=s.items.filter(x=>!drop.has(x.id));s.shelves=s.shelves.filter(h=>!gone.has(h.id));
+  if(gone.size)for(const x of s.items)x.shelves=x.shelves.filter(i=>!gone.has(i));
+  if(Number.isInteger(next)&&next>=1)s.next=Math.max(next,s.items.reduce((m,x)=>Math.max(m,x.no),0)+1);
+  return s;
+ }
  /* One-time move of YouTube notes from the rooms into the collection. Returns the number moved. */
  function adoptFromLife(db,now){
   const life=db.life?.items;if(!Array.isArray(life))return 0;
@@ -105,5 +145,5 @@
   if(take.length)db.life.items=life.filter(x=>!take.includes(x));
   return take.length;
  }
- return {MILESTONES,ensure,normalize,get,add,update,watched,remove,addShelf,renameShelf,removeShelf,setShelf,parseTime,fmtTime,addMark,removeMark,query,count,stats,milestone,reached,groups,random,adoptFromLife};
+ return {MILESTONES,ensure,normalize,get,add,update,watched,remove,addShelf,renameShelf,removeShelf,setShelf,parseTime,fmtTime,addMark,removeMark,query,count,stats,milestone,reached,groups,random,importPreview,importLists,undoImport,adoptFromLife};
 });
