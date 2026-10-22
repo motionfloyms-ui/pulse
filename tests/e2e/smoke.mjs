@@ -166,5 +166,8 @@ try{
 }catch(e){errs.push(step+': '+e.message)}
 await browser.close();server.close();
 console.log(pass.map(p=>'ok  '+p).join('\n'));
-if(errs.length){console.error('\nFAILED in "'+step+'":\n'+[...new Set(errs)].map(e=>'  '+e).join('\n'));process.exit(1)}
+if(errs.length){console.error('\nFAILED in "'+step+'":\n'+[...new Set(errs)].map(e=>'  '+e).join('\n'));
+ /* On GitHub the message also becomes an annotation, readable without the full log. */
+ if(process.env.GITHUB_ACTIONS)for(const e of [...new Set(errs)].slice(0,8))console.log('::error title=E2E::'+String(e).slice(0,900).replace(/%/g,'%25').replace(/\r/g,'').replace(/\n/g,'%0A'));
+ process.exit(1)}
 console.log('\nE2E: '+pass.length+' checks passed, no JavaScript errors.');
