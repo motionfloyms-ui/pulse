@@ -644,7 +644,7 @@ void main(){vec3 toCam=cameraPosition-vW;float dist=length(toCam);vec3 v=toCam/d
  function resize(){if(presenting())return;const r=canvas.parentElement.getBoundingClientRect(),w=Math.max(1,Math.round(r.width)),h=Math.max(1,Math.round(r.height));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
  const ro=new ResizeObserver(resize);ro.observe(canvas.parentElement);resize();
  function resume(){if(running)return;running=true;last=performance.now();renderer.setAnimationLoop(frame)}
- function pause(){if(!running)return;running=false;renderer.setAnimationLoop(null);if(soundOn){PulseSoundscape.play('');soundOn=false;markSound()}if(bk.view==='write')persistDraft()}
+ function pause(){if(document.fullscreenElement?.id==='raumStage')document.exitFullscreen?.().catch(()=>{});if(!running)return;running=false;renderer.setAnimationLoop(null);if(soundOn){PulseSoundscape.play('');soundOn=false;markSound()}if(bk.view==='write')persistDraft()}
  async function enterVR(){
   if(!navigator.xr)return toast('Dieser Browser kann kein VR.');
   try{const session=await navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor','bounded-floor','hand-tracking']});
