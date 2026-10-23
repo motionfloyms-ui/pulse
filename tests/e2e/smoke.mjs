@@ -7,7 +7,8 @@ const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'../..')
 const types={'.html':'text/html','.js':'text/javascript','.json':'application/json','.webmanifest':'application/manifest+json','.png':'image/png'};
 const server=http.createServer((q,r)=>{const p=path.join(root,decodeURIComponent(q.url.split('?')[0]).replace(/^\/+/,'')||'index.html');const f=fs.existsSync(p)&&fs.statSync(p).isDirectory()?path.join(p,'index.html'):p;if(!f.startsWith(root)||!fs.existsSync(f)){r.writeHead(404);return r.end()}r.writeHead(200,{'content-type':types[path.extname(f)]||'application/octet-stream'});fs.createReadStream(f).pipe(r)});
 await new Promise(ok=>server.listen(0,ok));const base='http://localhost:'+server.address().port+'/';
-const browser=await chromium.launch();const errs=[];let step='';
+/* WebGL in headless Chromium comes from SwiftShader (needed for the Himmelsraum). */
+const browser=await chromium.launch({args:['--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist']});const errs=[];let step='';
 const ctx=await browser.newContext({viewport:{width:390,height:844},timezoneId:'Europe/Berlin',locale:'de-DE',colorScheme:'dark',acceptDownloads:true});
 const pg=await ctx.newPage();
 pg.on('pageerror',e=>errs.push(step+': '+e.message));
@@ -138,6 +139,38 @@ try{
    assert.equal(await ev(()=>document.getElementById('appMain').dataset.view),'bodyhub','back from '+v);
   }
  });
+ await check('Himmelsraum: 3D room, a page written with the finger, simulated VR session',async()=>{
+  const xr=await ctx.newPage();xr.on('pageerror',e=>errs.push(step+': '+e.message));xr.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|net::|ERR_/.test(m.text()))errs.push(step+': console '+m.text())});
+  await xr.addInitScript(require('./xr-mock.cjs'));
+  await xr.goto(base+'?action=raum');await xr.waitForFunction(()=>typeof RAUM!=='undefined'&&!!RAUM,null,{timeout:60000});
+  const x=(f,a)=>xr.evaluate(f,a);
+  /* Phone: write on the surface of light with the finger, keep it as a page. */
+  await xr.click('#raumControls button:has-text("Schreiben")');await xr.waitForFunction(()=>RAUM.debug.bk.view==='write'&&RAUM.debug.settled(),null,{timeout:20000});await xr.waitForTimeout(900);
+  const c=await x(()=>RAUM.debug.toScreen(RAUM.debug.objects.paneMesh));
+  await xr.mouse.move(c.x-60,c.y);await xr.mouse.down();for(let i=0;i<=20;i++)await xr.mouse.move(c.x-60+i*6,c.y+Math.sin(i/2)*12);await xr.mouse.up();
+  assert.equal(await x(()=>RAUM.debug.draft.strokes.length),1,'finger stroke');
+  await x(()=>RAUM.debug.select('Fertig'));await xr.waitForFunction(()=>raumPages().length===1&&RAUM.debug.bk.view==='read',null,{timeout:20000});
+  assert.deepEqual(await x(()=>{const p=raumPages()[0];return [p.room,p.photos.length,/^Notizbuch · /.test(p.title)]}),['innen',1,true]);
+  /* VR, simulated: enter, two controllers, buttons by ray, writing into the air, leave. */
+  await xr.click('#raumControls button:has-text("In VR betreten")');await xr.waitForFunction(()=>RAUM.debug.renderer.xr.isPresenting,null,{timeout:20000});
+  await x(()=>{const m=__xr;m.L=m.controller('left');m.R=m.controller('right');m.session.setSources([m.L,m.R])});
+  const frames=async n=>{const f0=await x(()=>__xr.frames);await xr.waitForFunction(([f0,n])=>__xr.frames>=f0+n,[f0,n],{timeout:30000})};
+  const aim=label=>x(label=>{let o=null;RAUM.debug.scene.traverse(n=>{if(n.userData&&n.userData.label===label){let v=true,p=n;while(p){if(!p.visible)v=false;p=p.parent}if(v)o=n}});if(!o)return false;const w=o.getWorldPosition(o.position.clone());__xr.aim(__xr.R.targetRaySpace,[.12,1.32,-.08],[w.x,w.y,w.z]);return true},label);
+  const click=()=>x(()=>{const m=__xr;m.session.fire('selectstart',m.R);m.session.fire('selectend',m.R);m.session.fire('select',m.R)});
+  const press=async label=>{assert.ok(await aim(label),'button '+label+' '+JSON.stringify(await x(()=>{const l=[];RAUM.debug.scene.traverse(n=>{if(n.userData&&n.userData.label){let v=true,p=n;while(p){if(!p.visible)v=false;p=p.parent}if(v)l.push(n.userData.label)}});return [RAUM.debug.bk.view,l.join(',')]})));await frames(3);await click();await frames(2)};
+  await frames(3);await press('Zuklappen');assert.equal(await x(()=>RAUM.debug.bk.view),'closed');
+  await press('Notizbuch');await press('Schreiben');assert.equal(await x(()=>RAUM.debug.bk.view),'write');
+  const pane=await x(()=>RAUM.debug.objects.pane.position.toArray());
+  const pen=async(dx,dy)=>{await x(p=>{__xr.poses.set(__xr.R.targetRaySpace,{p,q:[0,0,0,1]})},[pane[0]+dx,pane[1]+dy,pane[2]+.19]);await frames(1)};
+  await pen(-.15,0);await x(()=>__xr.session.fire('selectstart',__xr.R));for(let i=0;i<=12;i++)await pen(-.15+i*.025,Math.sin(i/2)*.03);
+  await x(()=>{__xr.session.fire('selectend',__xr.R);__xr.session.fire('select',__xr.R)});await frames(2);
+  assert.ok(await x(()=>RAUM.debug.draft.strokes.length===1&&RAUM.debug.draft.strokes[0].length>=15),'stroke written into the air');
+  await press('Fertig');await xr.waitForFunction(()=>raumPages().length===2&&RAUM.debug.bk.view==='read'&&RAUM.debug.settled(),null,{timeout:30000});
+  await press('Zuklappen');assert.ok(await aim('Verlassen'),'leave button');await frames(3);await click();
+  await xr.waitForFunction(()=>!RAUM.debug.renderer.xr.isPresenting,null,{timeout:10000});
+  await x(()=>goView('life'));await xr.waitForTimeout(200);await xr.close();
+  await pg.reload();await pg.waitForTimeout(900);/* the other window saved: start from its state */
+ });
  await check('theme switch survives reload',async()=>{await ev(()=>lifeSetTheme('light'));await pg.reload();await pg.waitForTimeout(800);assert.equal(await ev(()=>document.documentElement.dataset.theme),'light');await ev(()=>{lifeCloseSheet();lifeSetTheme('auto')})});
  await check('daily snapshot and restore (Zeitreise)',async()=>{
   await ev(()=>backupSnapshot('day'));const before=await ev(()=>db.life.items.length);
@@ -147,7 +180,7 @@ try{
   assert.equal(await ev(()=>db.life.items.length),before);assert.equal(await ev(()=>db.life.items.some(x=>x.id==='zr1')),false);
  });
  await check('every button on every screen',async()=>{
-  const views=["goView('life')","lifeOpenMore()","lifeOpenSpaces('sinn')","lifeOpenSpaces('ideen')","lifeOpenLibrary()","goView('focus')","lifeOpenCalendar()","cosmosSetMode('week')","lifeOpenVideos()","lifeOpenSigils()","lifeOpenSky()","lifeOpenSongs()","lifeOpenStapel()","goView('bodyhub')","goView('nutrition')","goView('mehub')"];
+  const views=["goView('life')","lifeOpenMore()","lifeOpenSpaces('sinn')","lifeOpenSpaces('ideen')","lifeOpenLibrary()","goView('focus')","lifeOpenCalendar()","cosmosSetMode('week')","lifeOpenVideos()","lifeOpenSigils()","lifeOpenSky()","lifeOpenSongs()","lifeOpenStapel()","lifeOpenRaum()","goView('bodyhub')","goView('nutrition')","goView('mehub')"];
   const SKIP=/löschen|entfernen|export|backup|installieren|youtube|import|archiv|laden|bühnenmodus|einsingen/i;
   for(const v of views){step='crawl '+v;await ev(v);await pg.waitForTimeout(80);
    const n=await ev(()=>[...document.querySelectorAll('main .view.active button')].filter(e=>e.offsetParent).length);

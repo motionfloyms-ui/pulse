@@ -17,6 +17,7 @@ function handleLaunchParams(){
   else if(action==='training')openTodaysTraining();
   else if(action==='tarot')lifeOpenSpaces('sinn');
   else if(action==='stapel')lifeOpenStapel();
+  else if(action==='raum')lifeOpenRaum();
  },200);
 }
 const isStandalone=()=>matchMedia('(display-mode: standalone)').matches;

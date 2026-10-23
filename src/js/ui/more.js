@@ -6,6 +6,7 @@ function lifeOpenMore(){goView('more')}
 function moreBack(){return lifeButton('← Mehr','lifeOpenMore()','life-back')}
 const MORE_TOOLS=[
  ['stapel','Stapel','Jeden Tag ein paar Karten statt Scrollen','lifeOpenStapel()','<rect x="6" y="4" width="12" height="16" rx="2"/><path d="M3 7v11a2 2 0 0 0 2 2M21 7v11a2 2 0 0 1-2 2"/>'],
+ ['raum','Himmelsraum','Ruhiger Raum mit Tarot, Sigillen, Notizbuch · auch für die Quest','lifeOpenRaum()','<path d="M3 20h18M5 20V12a7 7 0 0 1 14 0v8"/><path d="M12 5V3M8.5 6 7.5 4.3M15.5 6l1-1.7"/><circle cx="12" cy="14" r="2"/>'],
  ['songs','Song-Werkstatt','Gesangskarte, Bühnenmodus, Takes','lifeOpenSongs()','<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>'],
  ['sigils','Sigillen','Erschaffen, laden, vergessen','lifeOpenSigils()','<path d="M5 19 19 5M6 6c4 0 7 3 7 7M12 19h7"/><circle cx="6" cy="6" r="2"/>'],
  ['sky','Dein Himmel','Sterne, 90 Tage, Tarot-Sammlung','lifeOpenSky()','<path d="m12 3 1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4Z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8Z"/>'],

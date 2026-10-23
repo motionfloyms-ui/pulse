@@ -1138,6 +1138,22 @@ body.sigil-open{overflow:hidden}
 .body-routes{margin:0 0 6px}
 td{font-variant-numeric:tabular-nums}
 /* v27: Stapel – the daily stack */
+/* Himmelsraum */
+.raum-stage{position:relative;height:min(64vh,620px);min-height:320px;margin:0 0 14px;border-radius:24px;overflow:hidden;background:#0b0d14;touch-action:none;user-select:none;-webkit-user-select:none}
+.raum-stage canvas{display:block;width:100%;height:100%;cursor:grab}
+.raum-stage canvas:active{cursor:grabbing}
+.raum-stage:fullscreen{height:100%;max-height:none;margin:0;border-radius:0}
+.raum-status{position:absolute;left:16px;right:16px;bottom:16px;margin:0;color:#f3dfbd;font-size:14px;line-height:1.5;text-align:center}
+.raum-status .life-textbtn{color:#fbe8c6;text-decoration:underline}
+.raum-full{position:absolute;top:10px;right:10px;display:grid;place-items:center;width:44px;height:44px;border-radius:999px;background:rgba(20,14,10,.55);color:#fbe8c6}
+.raum-full svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.raum-type{position:absolute;left:10px;right:10px;bottom:10px;display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:18px;background:var(--surface);box-shadow:0 10px 30px rgba(0,0,0,.35);touch-action:auto;user-select:text;-webkit-user-select:text}
+.raum-type textarea{width:100%;min-height:110px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface-2);color:var(--ink);font:inherit;font-size:16px;line-height:1.45;resize:vertical}
+.raum-controls{display:flex;flex-direction:column;gap:14px}
+.raum-row{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.raum-row .life-seg{display:flex;align-self:stretch}.raum-row .life-seg button{flex:1;padding:4px 6px}
+.raum-row .vault-chips{margin-bottom:0}
+.raum-actions{display:flex;flex-wrap:wrap;gap:8px}
 .stapel{display:flex;flex-direction:column;gap:10px;padding-bottom:6px}
 .stapel-progress{display:flex;gap:3px;margin-top:6px}
 .stapel-progress i{flex:1;height:3px;border-radius:2px;background:var(--fill)}
