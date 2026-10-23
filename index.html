@@ -5980,19 +5980,19 @@ void main(){vec3 d=normalize(vDir);float h=max(d.y,0.0);
  const toBase=e=>Mv.clone().multiplyScalar(e.x).addScaledVector(Ev,e.y).addScaledVector(Pv,e.z);
  const sPos=[],sSize=[],sTint=[],sPhase=[],sAlpha=[];
  const addStar=(e,size,t,alpha=1)=>{const v=toBase(e).normalize().multiplyScalar(2200);sPos.push(v.x,v.y,v.z);sSize.push(size);const c=TINT[t]||TINT.w;sTint.push(c[0],c[1],c[2]);sPhase.push(rnd()*6.283);sAlpha.push(alpha)};
- const magSize=m=>Math.max(.8,Math.min(5.6,3.6-.64*m));
- for(const [ra,dec,mag,t] of BRIGHT)addStar(eq(ra,dec),magSize(mag),t);
- for(let i=0;i<1800;i++){const z=rnd()*2-1,a=rnd()*6.283,c=Math.sqrt(1-z*z);addStar(V(c*Math.cos(a),c*Math.sin(a),z),magSize(R(3.8,6.3)),rnd()<.2?'b':rnd()<.3?'y':'w')}
+ const magSize=m=>Math.max(1,Math.min(6,4-.65*m)),magAlpha=m=>clamp(1.25-.13*m,.4,1);
+ for(const [ra,dec,mag,t] of BRIGHT)addStar(eq(ra,dec),magSize(mag),t,magAlpha(mag));
+ for(let i=0;i<2600;i++){const z=rnd()*2-1,a=rnd()*6.283,c=Math.sqrt(1-z*z),m=R(3.8,6.3);addStar(V(c*Math.cos(a),c*Math.sin(a),z),magSize(m),rnd()<.2?'b':rnd()<.3?'y':'w',magAlpha(m))}
  {const gp=eq(192.859,27.128),ga=V(0,0,1).cross(gp).normalize(),gb=gp.clone().cross(ga),gc=eq(266.405,-28.936),lc=Math.atan2(gc.dot(gb),gc.dot(ga));
   const band=(l,g)=>ga.clone().multiplyScalar(Math.cos(l)*Math.cos(g)).addScaledVector(gb,Math.sin(l)*Math.cos(g)).addScaledVector(gp,Math.sin(g));
-  for(let i=0;i<2400;){const l=rnd()*6.283,k=.5+.5*Math.cos(l-lc);if(rnd()>.4+.6*k*k)continue;addStar(band(l,(rnd()+rnd()+rnd()-1.5)*.12*(1+.7*k)),magSize(R(5.4,6.8)),'w');i++}
+  for(let i=0;i<2400;){const l=rnd()*6.283,k=.5+.5*Math.cos(l-lc),m=R(5.4,6.8);if(rnd()>.4+.6*k*k)continue;addStar(band(l,(rnd()+rnd()+rnd()-1.5)*.12*(1+.7*k)),magSize(m),'w',magAlpha(m));i++}
   for(let i=0;i<900;){const l=rnd()*6.283,k=.5+.5*Math.cos(l-lc);if(rnd()>.3+.7*k*k)continue;addStar(band(l,(rnd()+rnd()+rnd()-1.5)*.09*(1+.6*k)),R(40,90),rnd()<.6?'w':'b',.008+.014*k);i++}}
  const starGeo=new THREE.BufferGeometry();
  starGeo.setAttribute('position',new THREE.Float32BufferAttribute(sPos,3));starGeo.setAttribute('size',new THREE.Float32BufferAttribute(sSize,1));starGeo.setAttribute('tint',new THREE.Float32BufferAttribute(sTint,3));starGeo.setAttribute('phase',new THREE.Float32BufferAttribute(sPhase,1));starGeo.setAttribute('alpha',new THREE.Float32BufferAttribute(sAlpha,1));
  const starU={vis:{value:0},time:{value:0},px:{value:renderer.getPixelRatio()}};
  const stars=new THREE.Points(starGeo,new THREE.ShaderMaterial({uniforms:starU,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
-  vertexShader:'attribute float size;attribute vec3 tint;attribute float phase;attribute float alpha;uniform float px;uniform float time;varying vec3 vT;varying float vA;void main(){vT=tint;vA=alpha*mix(1.0,0.78+0.22*sin(time*(1.1+phase*0.35)+phase*7.0),step(0.5,alpha));gl_PointSize=size*px;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
-  fragmentShader:'uniform float vis;varying vec3 vT;varying float vA;void main(){float d=length(gl_PointCoord-0.5);float a=1.0-smoothstep(0.0,0.5,d);gl_FragColor=vec4(vT,a*a*vis*vA);\n#include <colorspace_fragment>\n}'}));
+  vertexShader:'attribute float size;attribute vec3 tint;attribute float phase;attribute float alpha;uniform float px;uniform float time;varying vec3 vT;varying float vA;varying float vK;void main(){vT=tint;vK=step(0.3,alpha);vA=alpha*mix(1.0,0.78+0.22*sin(time*(1.1+phase*0.35)+phase*7.0),vK);gl_PointSize=size*px;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+  fragmentShader:'uniform float vis;varying vec3 vT;varying float vA;varying float vK;void main(){float d=length(gl_PointCoord-0.5);float soft=1.0-smoothstep(0.0,0.5,d);float a=mix(soft*soft,1.0-smoothstep(0.12,0.5,d),vK);gl_FragColor=vec4(vT,a*vis*vA);\n#include <colorspace_fragment>\n}'}));
  stars.frustumCulled=false;stars.renderOrder=-9;scene.add(stars);
  /* The moon: lit from the real direction of the sun, so its phase is simply right. */
  const moonU={sunDir:{value:V(1,0,0)},day:{value:0}};
@@ -6493,7 +6493,7 @@ void main(){vec3 toCam=cameraPosition-vW;float dist=length(toCam);vec3 v=toCam/d
  }
  function dispose(){pause();ro.disconnect();window.removeEventListener('keydown',onKey);toastObs?.disconnect();scene.traverse(o=>{o.geometry?.dispose?.();const m=o.material;for(const x of Array.isArray(m)?m:m?[m]:[]){x.map?.dispose?.();x.dispose?.()}});renderer.dispose()}
  return {setTime,setSound:k=>setSound(k,false),setBreath,enterVR,resume,pause,refresh,dispose,openBook:()=>{if(bk.view!=='write')openBook()},write:()=>{if(bk.view!=='write')startWrite()},setText,
-  debug:{scene,camera,renderer,look:(y,p)=>{yaw=y;pitch=p;look()},jump:mode=>{setTime(mode);shown=aim;applySky(shown)},tarotDaily,tarotThree,sgFocus,sgStart,sgEnd,sgForget,sig,bk,draft,finishWrite,closeBook,
+  debug:{scene,camera,renderer,look:(y,p)=>{yaw=y;pitch=p;look()},jump:mode=>{setTime(mode);shown=aim;applySky(shown)},tarotDaily,tarotThree,tarot,sgFocus,sgStart,sgEnd,sgForget,sig,bk,draft,finishWrite,closeBook,
    select:label=>{const b=hits.find(o=>o.userData.label===label&&visible(o));if(b)b.userData.onSelect();return !!b},
    settled:()=>!viewAnim&&!tweens.length,objects:{closedBook,paneMesh,book,pane,kb},toScreen:o=>{o.updateWorldMatrix(true,false);const p=o.getWorldPosition(V()).project(camera),r=canvas.getBoundingClientRect();return {x:r.left+(p.x+1)/2*r.width,y:r.top+(1-p.y)/2*r.height}},
    scribble:()=>{const s=[];draft.strokes.push(s);for(let i=0;i<=80;i++){const a=i/80*Math.PI*6;strokeAdd(s,-.28+i*.006,.04+Math.sin(a)*.045,.08)}persistSoon()}}};
