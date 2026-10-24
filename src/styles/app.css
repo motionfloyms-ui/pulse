@@ -1156,6 +1156,8 @@ td{font-variant-numeric:tabular-nums}
 .raum-stage:fullscreen{height:100%;max-height:none;margin:0;border-radius:0}
 .raum-status{position:absolute;left:16px;right:16px;bottom:16px;margin:0;color:#f3dfbd;font-size:14px;line-height:1.5;text-align:center}
 .raum-status .life-textbtn{color:#fbe8c6;text-decoration:underline}
+.raum-alt{display:block;margin-top:8px;opacity:.9}
+.raum-alt .life-textbtn{margin:0 6px}
 .raum-full{position:absolute;top:10px;right:10px;display:grid;place-items:center;width:44px;height:44px;border-radius:999px;background:rgba(20,14,10,.55);color:#fbe8c6}
 .raum-full svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .raum-type{position:absolute;left:10px;right:10px;bottom:10px;display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:18px;background:var(--surface);box-shadow:0 10px 30px rgba(0,0,0,.35);touch-action:auto;user-select:text;-webkit-user-select:text}

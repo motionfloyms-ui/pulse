@@ -6,12 +6,12 @@
 RAUM_STATIONS.push({id:'stapel',label:'Stapel',build(k){
  const {THREE}=k,A=k.at(-148,2.5),g=k.facing(new THREE.Group(),A.x,0,A.z,0);k.scene.add(g);
  const W=1.25,H=.82,CY=1.45,CW=1250,CH=820,BAND=290,P=48,GAP=34,COLW=(CW-P*2-GAP)/2,TOP=96,BOT=CH-62,F=k.FONT;
- g.add(k.easel(W,H,CY));
- const card=k.uvPanel(W,H,1000);card.position.set(0,CY,.004);g.add(card);
+ const e=k.easel(W,H,CY),top=e.userData.top;g.add(e);
+ const card=k.uvPanel(W,H,1000);card.position.set(0,CY,.004);top.add(card);k.shadow(0,-.16,.76,.34,0,g);k.shadow(0,.42,.38,.38,0,g);
  const BG={geist:['#0F766E','#0B3B37'],kosmos:['#312E81','#0B1026'],magie:['#6D28D9','#2E1065'],stimme:['#BE185D','#4A044E'],kunst:['#C2410C','#6B2109'],schreiben:['#1D4ED8','#172554'],
   tarot:['#4C1D95','#1E1B4B'],sky:['#1E1B4B','#05060F'],own:['#334155','#0F172A'],end:['#047857','#022C22'],web:['#3F3F46','#09090B'],video:['#7F1D1D','#1C0A0A'],cover:['#6a2a38','#1f0c12']};
  const mc=document.createElement('canvas').getContext('2d');
- const st={revealed:false,day:'',pos:-1,page:0,stamp:'',v:null,L:null,alpha:1,tick:0,actKey:null};
+ const st={revealed:false,day:'',pos:-1,page:0,stamp:'',v:null,L:null,alpha:1,tick:0,actKey:null};let dimF=1,dimmed=false;
  const fit=(c,text,max)=>{let s=String(text||'');if(c.measureText(s).width<=max)return s;while(s.length>1&&c.measureText(s+'…').width>max)s=s.slice(0,-1);return s.trimEnd()+'…'};
  /* ---------- Pictures: card art (SVG), pictures of the day, video thumbnails (only where the server allows it) ---------- */
  const imgs=new Map();
@@ -129,14 +129,14 @@ RAUM_STATIONS.push({id:'stapel',label:'Stapel',build(k){
  /* ---------- Buttons under the card ---------- */
  const navY=CY-H/2-.085,actY=navY-.066;
  const prevBtn=k.button('‹ Zurück',.2,.055,()=>step(-1)),keepBtn=k.button('☆ Behalten',.24,.055,()=>keep()),nextBtn=k.button('Weiter ›',.2,.055,()=>step(1));
- prevBtn.position.set(-.26,navY,.06);keepBtn.position.set(0,navY,.06);nextBtn.position.set(.26,navY,.06);g.add(prevBtn,keepBtn,nextBtn);
- k.homeButton(g,W/2-.075,actY,.06);
+ prevBtn.position.set(-.26,navY,.06);keepBtn.position.set(0,navY,.06);nextBtn.position.set(.26,navY,.06);top.add(prevBtn,keepBtn,nextBtn);
+ k.homeButton(top,W/2-.075,actY,.06);
  let actBtns=[];
  function setActions(list){
-  for(const b of actBtns){g.remove(b);const i=k.hits.indexOf(b);if(i>=0)k.hits.splice(i,1);b.material.map.dispose();b.material.dispose();b.geometry.dispose()}
+  for(const b of actBtns){top.remove(b);const i=k.hits.indexOf(b);if(i>=0)k.hits.splice(i,1);b.material.map.dispose();b.material.dispose();b.geometry.dispose()}
   const ws=list.map(([l])=>Math.min(.34,Math.max(.16,.05+.0135*l.length))),gap=.012,total=ws.reduce((a,b)=>a+b,0)+gap*Math.max(0,list.length-1);let x=-.1-total/2;
-  actBtns=list.map(([l,fn],i)=>{const b=k.button(l,ws[i],.05,fn);b.position.set(x+ws[i]/2,actY,.06);x+=ws[i]+gap;g.add(b);return b})}
- function sync(){const d=PulseDeck.ensure(db),v=st.v,pages=st.L?st.L.pages.length:1,end=st.revealed&&d.pos>=d.cards.length;
+  actBtns=list.map(([l,fn],i)=>{const b=k.button(l,ws[i],.05,fn);b.position.set(x+ws[i]/2,actY,.06);b.visible=!dimmed;x+=ws[i]+gap;top.add(b);return b})}
+ function sync(){if(dimmed)return;const d=PulseDeck.ensure(db),v=st.v,pages=st.L?st.L.pages.length:1,end=st.revealed&&d.pos>=d.cards.length;
   prevBtn.visible=st.revealed&&(st.page>0||d.pos>0);
   keepBtn.visible=!!v&&v.keep!==null;if(keepBtn.visible){keepBtn.userData.setLabel(v.keep?'★ Behalten':'☆ Behalten');keepBtn.userData.setActive(!!v.keep)}
   nextBtn.visible=!end;nextBtn.userData.setLabel(!st.revealed?'Aufdecken':st.page<pages-1?'Weiter ›':d.pos===d.cards.length-1?'Fertig ✓':'Weiter ›');
@@ -151,8 +151,8 @@ RAUM_STATIONS.push({id:'stapel',label:'Stapel',build(k){
  function piles(d){const today=d.day===key()&&d.cards.length,n=today?d.cards.length:d.size,pos=today?Math.min(d.pos,n):0,th=.0035,a=n-pos,b=pos;
   todo.visible=a>0;todo.scale.y=Math.max(.001,a*th);todo.position.y=TT+.015+a*th/2;done.visible=b>0;done.scale.y=Math.max(.001,b*th);done.position.y=TT+.015+b*th/2}
  const flyGeo=new THREE.BoxGeometry(.1,.003,.15),upright=new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI/2,0,0)),flat=new THREE.Quaternion();
- function flyCard(dir){const m=new THREE.Mesh(flyGeo,mats);g.add(m);const top=new THREE.Vector3(.09,done.position.y+done.scale.y/2+.004,.42),panel=new THREE.Vector3(0,CY-.04,.08);
-  k.tween(m,{position:dir>0?panel:top,quaternion:dir>0?upright:flat,scale:dir>0?2.3:1},{position:dir>0?top:panel,quaternion:dir>0?flat:upright,scale:dir>0?1:2.3},.6,()=>g.remove(m))}
+ function flyCard(dir){const m=new THREE.Mesh(flyGeo,mats);g.add(m);const pile=new THREE.Vector3(.09,done.position.y+done.scale.y/2+.004,.42),panel=new THREE.Vector3(0,CY-.04+top.position.y,.08);
+  k.tween(m,{position:dir>0?panel:pile,quaternion:dir>0?upright:flat,scale:dir>0?2.3:1},{position:dir>0?pile:panel,quaternion:dir>0?flat:upright,scale:dir>0?1:2.3},.6,()=>g.remove(m))}
  /* ---------- State ---------- */
  function stampOf(d){const e=d.cards[d.pos],ref=e?e.ref:'';let extra='';
   if(ref.startsWith('w:')){const c=d.webCache[ref];extra=c?(c.data?'d':c.fail?'f':''):''}
@@ -179,7 +179,10 @@ RAUM_STATIONS.push({id:'stapel',label:'Stapel',build(k){
  function keep(){const v=st.v;if(!v||!v.ref||v.keep===null)return;stapelKeep(v.ref);refresh(true)}
  function watch(){k.leaveVR();setTimeout(()=>goView('stapel'),250)}
  refresh(true);
- return {anchor:card,stand:1.1,width:1.5,refresh:()=>refresh(false),enter:()=>reveal(),
-  update(dt,t,now){if(st.alpha<1){st.alpha=Math.min(1,st.alpha+dt*3.2);card.material.opacity=.1+.9*st.alpha}if(now-st.tick>1000){st.tick=now;refresh(false)}},
-  debug:{st,step,reveal,keep}};
+ /* With "Weniger" the card fades back and its buttons rest while you are not standing at it. */
+ const api={anchor:card,stand:1.1,width:1.5,eye:CY,lift:dy=>e.userData.lift(dy),refresh:()=>refresh(false),enter:()=>reveal(),debug:{st,step,reveal,keep},
+  update(dt,t,now){if(st.alpha<1)st.alpha=Math.min(1,st.alpha+dt*3.2);dimF+=((api.dim?.16:1)-dimF)*Math.min(1,dt*4);card.material.opacity=(.1+.9*st.alpha)*dimF;
+   if(!!api.dim!==dimmed){dimmed=!!api.dim;if(dimmed){for(const b of [prevBtn,keepBtn,nextBtn,...actBtns])b.visible=false}else{for(const b of actBtns)b.visible=true;sync()}}
+   if(now-st.tick>1000){st.tick=now;refresh(false)}}};
+ return api;
 }});

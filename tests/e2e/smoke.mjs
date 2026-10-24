@@ -141,7 +141,7 @@ try{
   }
  });
  await check('Himmelsraum: 3D room, a page written with the finger, simulated VR session with the hub',async()=>{
-  const xr=await ctx.newPage();xr.on('pageerror',e=>errs.push(step+': '+e.message));xr.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|net::|ERR_/.test(m.text()))errs.push(step+': console '+m.text())});
+  const xr=await ctx.newPage();xr.on('pageerror',e=>errs.push(step+': '+e.message+' @ '+String(e.stack||'').split('\n').slice(1,3).map(l=>l.trim().slice(0,140)).join(' | ')));xr.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|net::|ERR_/.test(m.text()))errs.push(step+': console '+m.text())});
   await xr.addInitScript(require('./xr-mock.cjs'));
   await xr.route(/^https?:\/\/(?!localhost)/,r=>r.abort());/* the stack would load pictures of the day */
   await xr.goto(base+'?action=raum');await xr.waitForFunction(()=>typeof RAUM!=='undefined'&&!!RAUM,null,{timeout:60000});

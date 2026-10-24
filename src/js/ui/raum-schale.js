@@ -9,6 +9,7 @@ RAUM_STATIONS.push({id:'schale',label:'Schale',build(k){
  const TH=.74,rim=B.rim,depth=B.depth,rs=(rim*rim+depth*depth)/(2*depth),cy=rs-depth,thick=.006;
  {const top=new THREE.Mesh(new THREE.CylinderGeometry(.27,.27,.03,32),k.mat.dark);top.position.y=TH-.015;const leg=new THREE.Mesh(new THREE.CylinderGeometry(.035,.045,TH-.03,10),k.mat.dark);leg.position.y=(TH-.03)/2;
   const foot=new THREE.Mesh(new THREE.CylinderGeometry(.16,.18,.02,24),k.mat.dark);foot.position.y=.01;g.add(top,leg,foot)}
+ k.shadow(0,0,.42,.42,0,g);
  const cushion=new THREE.Mesh(new THREE.TorusGeometry(.075,.026,12,32),new THREE.MeshLambertMaterial({color:0x7a2436}));cushion.rotation.x=Math.PI/2;cushion.position.y=TH+.02;g.add(cushion);
  /* The bowl: a spherical shell; its rim centre is the origin of the bowl's own coordinates (as in PulseRaum). */
  const bowl=new THREE.Group();bowl.position.y=TH+.026+depth;g.add(bowl);
@@ -56,7 +57,7 @@ void main(){float r=length(vP),a=atan(vP.y,vP.x),lobes=abs(cos(2.0*a));
  let lastHit=-1e9,glowHit=0,strikes=0;
  function strike(power){
   power=Math.max(.05,Math.min(1,power));strikes++;lastHit=performance.now();glowHit=Math.max(glowHit,power);waterU.act.value=Math.max(waterU.act.value,power);
-  for(let i=0;i<3;i++){const m=new THREE.Mesh(ringGeo,new THREE.MeshBasicMaterial({color:0xffd9a0,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:false}));m.visible=false;bowl.add(m);waves.push({m,t:-i*.24,p:power})}
+  if(!k.calm())for(let i=0;i<3;i++){const m=new THREE.Mesh(ringGeo,new THREE.MeshBasicMaterial({color:0xffd9a0,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide,fog:false}));m.visible=false;bowl.add(m);waves.push({m,t:-i*.24,p:power})}
   const a=voice();if(!a)return;const c=a.ctx,t=c.currentTime+.004,out=c.createGain(),nodes=[],bright=.35+.65*power;out.connect(a.bus);
   B.partials.forEach(([ratio,amp,t60,beat],i)=>{const level=amp*Math.pow(bright,i)*(.25+.75*power)*.16;
    for(const s of [-1,1]){const o=c.createOscillator(),gn=c.createGain();o.type='sine';o.frequency.value=B.f1*ratio+s*beat/2;
@@ -70,13 +71,13 @@ void main(){float r=length(vP),a=atan(vP.y,vP.x),lobes=abs(cos(2.0*a));
   return sing={out,osc,ctx:c}}
  function singStop(){if(!sing)return;const s=sing;sing=null;try{s.out.gain.setTargetAtTime(0,s.ctx.currentTime,.25)}catch(_){}setTimeout(()=>s.osc.forEach(o=>{try{o.stop()}catch(_){}}),1500)}
  /* ---------- Sitting ---------- */
- const med={on:false,start:0,min:0,timers:[],shown:''};
+ const med={on:false,start:0,min:0,timers:[],shown:''};let dim=false;
  function three(then){med.timers.push(...[0,4200,8400].map((ms,i)=>setTimeout(()=>{strike(i===2?.8:.65);if(i===2&&then)then()},ms)))}
  function meditate(min){stopSitting(true);med.on=true;med.min=min;med.start=Infinity;three(()=>{med.start=performance.now()});k.say(min+' Minuten. Die Schale beginnt und beendet.',3500);draw()}
  function stopSitting(silent){for(const t of med.timers)clearTimeout(t);med.timers=[];const was=med.on;med.on=false;dots.visible=false;if(was&&!silent){strike(.35);k.say('Beendet.')}draw()}
  function finish(){med.on=false;three(()=>{dots.visible=false});k.say('Die Zeit ist um.',4000);draw()}
- function draw(){const left=med.on&&Number.isFinite(med.start)?Math.max(0,med.min*60000-(performance.now()-med.start)):null,mm=left==null?'':Math.floor(left/60000)+':'+String(Math.floor(left/1000)%60).padStart(2,'0');
-  const text=med.on?(left==null?'Gleich geht es los':'Noch '+mm):'';for(const b of sitBtns)b.visible=!med.on;stopBtn.visible=med.on;if(text===med.shown&&info.userData.drawn)return;med.shown=text;info.userData.drawn=true;
+ function draw(force){const left=med.on&&Number.isFinite(med.start)?Math.max(0,med.min*60000-(performance.now()-med.start)):null,mm=left==null?'':Math.floor(left/60000)+':'+String(Math.floor(left/1000)%60).padStart(2,'0');
+  const text=med.on?(left==null?'Gleich geht es los':'Noch '+mm):'';for(const b of sitBtns)b.visible=!med.on&&!dim;stopBtn.visible=med.on&&!dim;if(text===med.shown&&info.userData.drawn&&!force)return;med.shown=text;info.userData.drawn=true;
   info.userData.set(med.on?{kicker:'Sitzen · '+med.min+' Minuten',title:text,body:'Atmen. Nichts tun müssen. Die Schale sagt dir, wann es vorbei ist.'}:{kicker:'Klangschale',title:'Anschlagen oder kreisen',body:'Mit dem Controller oder der Fingerspitze anschlagen, oder darauf zeigen und drücken. Langsam am Rand entlang kreisen: Sie beginnt zu singen.'});
 }
  draw();
@@ -95,8 +96,11 @@ void main(){float r=length(vP),a=atan(vP.y,vP.x),lobes=abs(cos(2.0*a));
   for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.t+=dt;if(w.t<0)continue;const r=rim+w.t*.38;w.m.visible=true;w.m.scale.setScalar(r);w.m.position.y=w.t*.025;w.m.material.opacity=.38*w.p*Math.max(0,1-w.t/2.6);
    if(w.t>2.6){bowl.remove(w.m);w.m.material.dispose();waves.splice(i,1)}}
   if(med.on&&Number.isFinite(med.start)){const p=Math.min(1,(now-med.start)/(med.min*60000)),lit=Math.floor(p*60);dots.visible=true;for(let i=0;i<60;i++)dots.setColorAt(i,i<lit?ON:OFF);dots.instanceColor.needsUpdate=true;if(p>=1)finish()}
-  if(med.on&&Math.floor(now/1000)!==med.sec){med.sec=Math.floor(now/1000);draw()}}
- return {anchor:bowl,stand:.42,width:.9,update,meditate,strike,
+  if(med.on&&Math.floor(now/1000)!==med.sec){med.sec=Math.floor(now/1000);draw()}
+  /* With "Weniger" the panel fades back while you are not standing here. */
+  const want=api.dim?.16:1,o=info.material.opacity;if(Math.abs(o-want)>.004)info.material.opacity=o+(want-o)*Math.min(1,dt*4);if(!!api.dim!==dim){dim=!!api.dim;draw(true)}}
+ const api={anchor:bowl,stand:.42,width:.9,update,meditate,strike,
   refresh(){},pause(){singStop();stopSitting(true)},leave(){prev[0]=prev[1]=null;energy=0;singStop()},dispose(){singStop();stopSitting(true);for(const v of voices)v.nodes.forEach(n=>{try{n.stop()}catch(_){}})},
   debug:{strikes:()=>strikes,energy:()=>energy,bowl,med}};
+ return api;
 }});
