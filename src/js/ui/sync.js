@@ -19,7 +19,7 @@ function syncOpen(){
 }
 function syncMark(direction,device=''){const s=PulseSync.ensure(db);s.last={at:new Date().toISOString(),direction,device};save()}
 async function syncExport(){
- const device=syncDevice(),pkg=PulseSync.pack(db,{device,now:new Date().toISOString(),app:'30.0.0'});
+ const device=syncDevice(),pkg=PulseSync.pack(db,{device,now:new Date().toISOString(),app:'31.0.0'});
  let photos=0;
  try{const ids=PulseSync.photoIds(pkg.data);if(ids.length){pkg.photos=await PulsePhotos.exportSome(ids);photos=Object.keys(pkg.photos).length}}catch(_){toast('Bilder konnten nicht mit ins Paket. Die Einträge sind drin.')}
  const text=JSON.stringify(pkg),name='PULSE_abgleich_'+device+'_'+key();

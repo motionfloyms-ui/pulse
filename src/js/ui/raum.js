@@ -4,7 +4,11 @@
    the moon in its true phase and place) or a chosen time of day. Left the tarot corner, right the sigil
    corner, in front a breathing orb and a desk, on a side table a notebook: in VR you write into the air
    and the light lands on the page. A 3D view on the phone, a WebXR room on the Quest.
+   In VR the room is a hub: stations stand around it (day board, daily stack, singing bowl, the corners);
+   the desk or the menu on the hand takes you there, with a short fade.
    three.js (MIT, vendor/three) is loaded only when the room is opened. */
+/* Stations of the hub. Other files add {id, label, build(kit)}; build returns {anchor, stand, update, refresh, dispose}. */
+const RAUM_STATIONS=[];
 const RAUM_TIMES=[['echt','Jetzt'],['morgen','Morgen'],['tag','Tag'],['abend','Abend'],['nacht','Nacht']];
 const RAUM_SOUNDS=[['','Still'],['sea','Meer'],['rain','Regen'],['brown','Rauschen'],['drone','Drone']];
 let RAUM=null,raumImport=null,raumXR=false,raumBuilding=false;
@@ -29,7 +33,7 @@ function renderRaum(){
    '<div class="raum-type" id="raumType" hidden><label class="life-kicker" for="raumTypeArea">Getippt auf die Seite</label><textarea id="raumTypeArea" rows="5" maxlength="20000" placeholder="Was möchtest du festhalten?"></textarea><div class="raum-actions">'+lifeButton('Übernehmen','raumTypeDone(true)','life-btn dark')+(pulseSpeechSupported()?lifeButton('Sprechen',"pulseDictate('raumTypeArea')",'life-btn'):'')+lifeButton('Abbrechen','raumTypeDone(false)','life-btn')+'</div></div></div>'+
    '<textarea id="raumDictate" hidden></textarea>'+
    '<div id="raumControls" class="raum-controls"></div>'+
-   '<p class="life-footnote">Vorn das Meer, hinten die Berge, links die Tarotecke, rechts die Sigillenecke, vorn links das Notizbuch. Zum Umschauen ziehen, zum Auswählen tippen. Auf der Quest diese Seite im Browser öffnen und „In VR betreten“ tippen; beenden mit „Verlassen“ am Pult oder mit der Meta-Taste. Die Quest hat ihren eigenen PULSE-Speicher; mit „Abgleichen“ bringst du Handy und Quest auf denselben Stand.</p>';
+   '<p class="life-footnote">Vorn das Meer, hinten die Berge, links die Tarotecke, rechts die Sigillenecke, vorn links das Notizbuch, vorn rechts die Klangschale, hinten die Tagestafel und dein Stapel. Zum Umschauen ziehen, zum Auswählen tippen. Auf der Quest diese Seite im Browser öffnen und „In VR betreten“ tippen. In der Brille bringt dich das Pult zu den Stationen; das Menü an der Hand öffnet die A- oder X-Taste, ohne Controller drehst du die Handfläche zu dir. Knöpfe lassen sich auch mit der Fingerspitze drücken. Beenden mit „Verlassen“ am Pult oder mit der Meta-Taste. Die Quest hat ihren eigenen PULSE-Speicher; mit „Abgleichen“ bringst du Handy und Quest auf denselben Stand.</p>';
   raumStart();
  }
  raumControls();
@@ -249,8 +253,8 @@ void main(){vec3 toCam=cameraPosition-vW;float dist=length(toCam);vec3 v=toCam/d
  lantern.position.set(0,3.4,0);scene.add(lantern);
  const rugTex=canvasTex(1024,1024,g=>{const cx=512,ring=(r,col)=>{g.fillStyle=col;g.beginPath();g.arc(cx,cx,r,0,7);g.fill()};ring(510,'#7a2e24');ring(470,'#c9963e');ring(450,'#8e3a2a');for(let i=0;i<48;i++){const a=i/48*6.283;g.fillStyle=i%2?'#e1b866':'#b4543a';g.beginPath();g.arc(cx+Math.cos(a)*400,cx+Math.sin(a)*400,26,0,7);g.fill()}ring(340,'#5c2a3e');for(let i=0;i<16;i++){const a=i/16*6.283;g.fillStyle='#d9a55a';g.beginPath();g.moveTo(cx,cx);g.arc(cx,cx,320,a,a+.12);g.fill()}ring(200,'#8e3a2a');ring(170,'#e1b866');ring(140,'#7a2e24');for(let i=0;i<8;i++){const a=i/8*6.283;g.fillStyle='#f0d29a';g.beginPath();g.ellipse(cx+Math.cos(a)*90,cx+Math.sin(a)*90,40,16,a,0,7);g.fill()}ring(34,'#f0d29a')});
  {const rug=new THREE.Mesh(new THREE.CircleGeometry(1.3,72).rotateX(-Math.PI/2),new THREE.MeshLambertMaterial({map:rugTex}));rug.position.y=.006;scene.add(rug)}
- for(const [t,col] of [[150,0x9a4a38],[195,0xa8844a],[240,0x6e3a55],[118,0x5f6c3c]]){const m=new THREE.Mesh(new THREE.SphereGeometry(.34,24,12),new THREE.MeshLambertMaterial({color:col}));m.scale.set(1,.3,1);const p=at(t,1.6);m.position.set(p.x,.1,p.z);scene.add(m)}
- for(const t of [205,155]){const p=at(t,2.85),pot=new THREE.Mesh(new THREE.CylinderGeometry(.2,.15,.36,16),new THREE.MeshLambertMaterial({color:0xa0522d}));pot.position.set(p.x,.18,p.z);scene.add(pot);for(let k=0;k<9;k++){const leaf=new THREE.Mesh(new THREE.SphereGeometry(.09,8,6),new THREE.MeshLambertMaterial({color:new THREE.Color().setHSL(.29,.45,R(.22,.32),THREE.SRGBColorSpace)}));leaf.scale.set(1,R(2.6,4),.5);const la=rnd()*6.283;leaf.position.set(p.x+Math.cos(la)*.08,.5+R(0,.2),p.z+Math.sin(la)*.08);leaf.rotation.set(R(-.6,.6),la,R(-.6,.6));scene.add(leaf)}}
+ for(const [t,col] of [[180,0x9a4a38],[242,0x6e3a55],[118,0x5f6c3c]]){const m=new THREE.Mesh(new THREE.SphereGeometry(.34,24,12),new THREE.MeshLambertMaterial({color:col}));m.scale.set(1,.3,1);const p=at(t,1.6);m.position.set(p.x,.1,p.z);scene.add(m)}
+ for(const t of [188,172]){const p=at(t,2.85),pot=new THREE.Mesh(new THREE.CylinderGeometry(.2,.15,.36,16),new THREE.MeshLambertMaterial({color:0xa0522d}));pot.position.set(p.x,.18,p.z);scene.add(pot);for(let k=0;k<9;k++){const leaf=new THREE.Mesh(new THREE.SphereGeometry(.09,8,6),new THREE.MeshLambertMaterial({color:new THREE.Color().setHSL(.29,.45,R(.22,.32),THREE.SRGBColorSpace)}));leaf.scale.set(1,R(2.6,4),.5);const la=rnd()*6.283;leaf.position.set(p.x+Math.cos(la)*.08,.5+R(0,.2),p.z+Math.sin(la)*.08);leaf.rotation.set(R(-.6,.6),la,R(-.6,.6));scene.add(leaf)}}
  /* Candles: on the rail, on the tarot table, on the altar. The flames flicker; three warm lights fill the room. */
  const flames=[];
  function candle(x,y,z,h=R(.09,.2),r=R(.025,.04)){const b=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,12),new THREE.MeshLambertMaterial({color:0xf3e6cc}));b.position.set(x,y+h/2,z);scene.add(b);const f=sprite(GLOW_WARM,.11,0xffd28a,.95);f.position.set(x,y+h+.035,z);f.userData={base:.11,ph:rnd()*99};scene.add(f);flames.push(f)}
@@ -271,12 +275,12 @@ void main(){vec3 toCam=cameraPosition-vW;float dist=length(toCam);vec3 v=toCam/d
   if(o.title){g.fillStyle='#fbe8c6';g.font='800 48px '+FONT;for(const l of wrap(g,o.title,W-pad*2).slice(0,3)){g.fillText(l,pad,y);y+=56}y+=12}
   for(const [head,text] of o.lines||[]){if(y>H-70)break;if(head){g.fillStyle='#dcb67e';g.font='700 25px '+FONT;g.fillText(head.toUpperCase(),pad,y);y+=38}g.fillStyle='#f3dfbd';g.font='400 33px '+FONT;for(const l of wrap(g,text,W-pad*2)){if(y>H-36)break;g.fillText(l,pad,y);y+=42}y+=16}
   if(o.body){g.fillStyle='#f3dfbd';g.font='400 33px '+FONT;for(const l of wrap(g,o.body,W-pad*2)){if(y>H-36)break;g.fillText(l,pad,y);y+=42}}});return m}
- function button(label,w,h,onSelect){const m=panel(w,h),u=m.userData;u.label=label;u.active=false;u.hover=false;u.onSelect=onSelect;
+ function button(label,w,h,onSelect,ppm=PPM){const m=panel(w,h,ppm),u=m.userData;u.label=label;u.active=false;u.hover=false;u.onSelect=onSelect;
   u.paint=()=>u.draw((g,W,H)=>{const r=Math.min(W,H)*.32;g.fillStyle=u.active?'#e9b872':u.hover?'rgba(122,80,48,.98)':'rgba(56,35,23,.94)';rr(g,0,0,W,H,r);g.fill();g.strokeStyle=u.active?'#fff1d6':'rgba(233,184,114,'+(u.hover?.95:.45)+')';g.lineWidth=5;rr(g,4,4,W-8,H-8,r-3);g.stroke();
    let fs=Math.round(H*.44);g.font='700 '+fs+'px '+FONT;while(fs>12&&g.measureText(u.label).width>W*.84){fs--;g.font='700 '+fs+'px '+FONT}g.fillStyle=u.active?'#2c1a10':'#fbe8c6';g.textAlign='center';g.textBaseline='middle';g.fillText(u.label,W/2,H/2+2)});
   u.setLabel=l=>{if(u.label!==l){u.label=l;u.paint()}};u.setActive=a=>{if(u.active!==a){u.active=a;u.paint()}};u.setHover=h=>{if(u.hover!==h){u.hover=h;u.paint()}};
   u.paint();hits.push(m);return m}
- function row(group,defs,y,{w=.12,h=.05,gap=.012,z=0}={}){const total=defs.reduce((a,d)=>a+(d[2]||w),0)+gap*(defs.length-1);let x=-total/2;return defs.map(([label,fn,bw])=>{bw=bw||w;const b=button(label,bw,h,fn);b.position.set(x+bw/2,y,z);x+=bw+gap;group.add(b);return b})}
+ function row(group,defs,y,{w=.12,h=.05,gap=.012,z=0,ppm=PPM}={}){const total=defs.reduce((a,d)=>a+(d[2]||w),0)+gap*(defs.length-1);let x=-total/2;return defs.map(([label,fn,bw])=>{bw=bw||w;const b=button(label,bw,h,fn,ppm);b.position.set(x+bw/2,y,z);x+=bw+gap;group.add(b);return b})}
  const facing=(obj,x,y,z,eyeY=1.35)=>{obj.position.set(x,y,z);obj.lookAt(0,eyeY,0);return obj};
  /* Something to place right in front of the viewer (book, writing surface, messages). */
  function fitDist(w,h){const vf=70*RAD,hf=2*Math.atan(Math.tan(vf/2)*camera.aspect);return Math.max(w/2/Math.tan(hf/2),h/2/Math.tan(vf/2))*1.08}
@@ -296,7 +300,8 @@ void main(){vec3 toCam=cameraPosition-vW;float dist=length(toCam);vec3 v=toCam/d
  const pultInfo=panel(.68,.06);pultInfo.position.y=.165;pultPanel.add(pultInfo);
  const timeBtns=row(pultPanel,RAUM_TIMES.map(([k,l])=>[l,()=>{setTime(k);save();raumControls()}]),.095,{w:.124});timeBtns.forEach((b,i)=>b.userData.key=RAUM_TIMES[i][0]);
  const soundBtns=row(pultPanel,RAUM_SOUNDS.map(([k,l])=>[l,()=>{setSound(k);save();raumControls()}]),.03,{w:.124});soundBtns.forEach((b,i)=>b.userData.key=RAUM_SOUNDS[i][0]);
- const [,breathBtn,leaveBtn]=row(pultPanel,[['Notizbuch',()=>openBook(),.2],['Atemkugel',()=>{setBreath(!prefs.breath);save();raumControls()},.2],['Verlassen',()=>renderer.xr.getSession()?.end(),.2]],-.035);
+ row(pultPanel,[['Tafel',()=>goStation('tag')],['Stapel',()=>goStation('stapel')],['Tarot',()=>goStation('tarot')],['Sigillen',()=>goStation('sigil')],['Schale',()=>goStation('schale')]],-.035,{w:.124});
+ const [,breathBtn,leaveBtn]=row(pultPanel,[['Notizbuch',()=>openBook(),.2],['Atemkugel',()=>{setBreath(!prefs.breath);save();raumControls()},.2],['Verlassen',()=>renderer.xr.getSession()?.end(),.2]],-.1);
  /* ---------- Breathing orb: four counts in, six out ---------- */
  const orb=new THREE.Group(),orbBall=new THREE.Mesh(new THREE.SphereGeometry(.1,32,16),new THREE.MeshBasicMaterial({color:0xfff3e0,transparent:true,opacity:.85})),orbHalo=sprite(GLOW_SOFT,.4,0xffd9a8,.5);orb.add(orbBall,orbHalo);
  const orbLabel=panel(.3,.055);orbLabel.position.set(0,-.13,0);orb.add(orbLabel);let orbWord='',orbFade=1;
@@ -448,6 +453,8 @@ void main(){vec3 toCam=cameraPosition-vW;float dist=length(toCam);vec3 v=toCam/d
  if(prefs.draft&&typeof prefs.draft==='object'){draft.text=String(prefs.draft.text||'').slice(0,20000);draft.strokes=(Array.isArray(prefs.draft.strokes)?prefs.draft.strokes:[]).filter(Array.isArray).map(s=>s.map(v=>Number(v)/1000).filter(Number.isFinite)).filter(s=>s.length>=3).map(s=>s.slice(0,s.length-s.length%3))}
  const SPEECH=pulseSpeechSupported();
  const writeBtns=row(pane,[['Fertig',()=>finishWrite(),.12],['↶',()=>undoStroke(),.07],['Tippen',()=>toggleTyping(),.12],...(SPEECH?[['Diktieren',()=>dictate(),.13]]:[]),['Später',()=>leaveWrite(),.11],['Verwerfen',()=>discardWrite(),.13]],-PH/2-.065,{h:.05,gap:.01});
+ /* The buttons stand 10 cm in front of the writing plane, so a stroke that runs past the edge never presses one. */
+ writeBtns.forEach(b=>{b.position.z=.1;b.rotation.x=-.35});
  const dictBtn=SPEECH?writeBtns[3]:null,discardBtn=writeBtns.at(-1);
  function inkAdd(x,y,z){if(inkN>=INK_MAX)return;inkPos[inkN*3]=x;inkPos[inkN*3+1]=y;inkPos[inkN*3+2]=z;inkN++}
  function inkSeg(ax,ay,az,bx,by,bz){const d=Math.hypot(bx-ax,by-ay,bz-az),n=Math.min(60,Math.floor(d/.0025));for(let k=1;k<n;k++){const t=k/n;inkAdd(ax+(bx-ax)*t,ay+(by-ay)*t,az+(bz-az)*t)}inkAdd(bx,by,bz)}
@@ -589,30 +596,149 @@ void main(){vec3 toCam=cameraPosition-vW;float dist=length(toCam);vec3 v=toCam/d
   /* A press that starts on a button is a click; a press that starts on the writing surface (or in the air) writes. */
   c.addEventListener('selectstart',()=>{const h=p.hit;p.ui=h&&h.object!==paneMesh&&h.object.userData.onSelect?h.object:null;p.penStart=bk.view==='write'&&!p.ui&&penInside(p);p.down=true;p.stroke=null});
   c.addEventListener('selectend',()=>{p.down=false;if(p.stroke)persistSoon();p.stroke=null});
-  c.addEventListener('select',()=>{if(p.penStart){p.penStart=false;return}const h=p.hit;if(h&&h.object.userData.onSelect&&(!p.ui||h.object===p.ui)){h.object.userData.onSelect(h);try{p.src?.gamepad?.hapticActuators?.[0]?.pulse(.35,18)}catch(_){}}});
+  c.addEventListener('select',()=>{if(p.penStart){p.penStart=false;return}const h=p.hit;if(h&&h.object.userData.onSelect&&(!p.ui||h.object===p.ui)){h.object.userData.onSelect(h);if(p.src&&p.src.hand)roomClick();else try{p.src?.gamepad?.hapticActuators?.[0]?.pulse(.35,18)}catch(_){}}});
   return p});
  function penWorld(p,out){const h=p.src&&p.src.hand?p.hand.joints:null;if(h&&h['index-finger-tip']&&h['thumb-tip']){h['index-finger-tip'].getWorldPosition(out);h['thumb-tip'].getWorldPosition(tV3);return out.add(tV3).multiplyScalar(.5)}
   p.c.getWorldPosition(out);tV3.set(0,0,-1).applyQuaternion(p.c.getWorldQuaternion(tQ));return out.addScaledVector(tV3,.04)}
  const penLocal=(p,out)=>pane.worldToLocal(penWorld(p,out)),inPane=v=>v.z>-.3&&v.z<.6&&Math.abs(v.x)<PW*.8&&Math.abs(v.y)<PH*.9;
  function penInside(p){return inPane(penLocal(p,tV2))}
- let hovered=new Set();const turnLatch=new WeakMap();
- function updateXR(){
-  const now=new Set();let keyHover=null;const writing=bk.view==='write'&&pane.visible;
+ let hovered=new Set(),uvHovered=new Map();const turnLatch=new WeakMap(),menuLatch=new WeakMap();
+ function updateXR(nowMs){
+  const now=new Set(),uvNow=new Map();let keyHover=null;const writing=bk.view==='write'&&pane.visible,plates=pokePlates();
   for(const p of pens){
    if(p.src&&p.src.hand){let n=0;for(const j of Object.values(p.hand.joints)){if(!j.visible)continue;tM.compose(j.getWorldPosition(tV),tQ.identity(),tV2.setScalar(1));p.joints.setMatrixAt(n++,tM)}p.joints.count=n;p.joints.instanceMatrix.needsUpdate=true}else p.joints.count=0;
    if(!p.line.visible){p.dot.visible=false;p.hit=null}
    else{tM.identity().extractRotation(p.c.matrixWorld);const o=V().setFromMatrixPosition(p.c.matrixWorld),d=V(0,0,-1).applyMatrix4(tM),h=pickAt(o,d);p.hit=h;
-    if(h){p.dot.position.copy(h.point);p.dot.visible=true;p.line.scale.z=h.distance;if(h.object.userData.paint)now.add(h.object);if(h.object===kb)keyHover=kbKeyAt(h.uv)}else{p.dot.visible=false;p.line.scale.z=3}}
+    if(h){p.dot.position.copy(h.point);p.dot.visible=true;p.line.scale.z=h.distance;const u=h.object.userData;if(u.paint)now.add(h.object);if(u.hoverUV)uvNow.set(h.object,h.uv);if(h.object===kb)keyHover=kbKeyAt(h.uv)}else{p.dot.visible=false;p.line.scale.z=3}}
    if(writing&&p.src){penWorld(p,tV);p.tip.position.copy(tV);p.tip.visible=true;pane.worldToLocal(tV);const inside=inPane(tV),drawing=p.down&&p.penStart&&inside;p.tip.material.opacity=drawing?1:inside?.6:.25;p.tip.scale.setScalar(drawing?.035:.025);
     if(drawing){if(!p.stroke){p.stroke=[];draft.strokes.push(p.stroke)}strokeAdd(p.stroke,tV.x,tV.y,tV.z)}else if(p.stroke&&!inside)p.stroke=null}
-   else p.tip.visible=false}
+   else p.tip.visible=false;
+   /* Pressing a surface with the fingertip or the tip of the controller, like a real button. Not while writing. */
+   const f=p.src&&!p.down?pokeAt(p,plates):(p.poke=null);
+   if(f&&f.d<.05){const u=f.o.userData;if(u.paint)now.add(f.o);if(u.hoverUV)uvNow.set(f.o,f.uv);if(f.o===kb)keyHover=kbKeyAt(f.uv)}}
   for(const o of hovered)if(!now.has(o))o.userData.setHover(false);for(const o of now)if(!hovered.has(o))o.userData.setHover(true);hovered=now;
+  for(const [o] of uvHovered)if(!uvNow.has(o))o.userData.hoverUV(null);for(const [o,uv] of uvNow)o.userData.hoverUV(uv);uvHovered=uvNow;
   if(kb.visible&&keyHover!==kbs.hover){kbs.hover=keyHover;kbDraw()}
-  const s=renderer.xr.getSession();if(s)for(const src of s.inputSources){const gp=src.gamepad;if(!gp||gp.axes.length<4)continue;const x=gp.axes[2];if(Math.abs(x)>.75&&!turnLatch.get(src)){turnLatch.set(src,true);rig.rotation.y-=Math.sign(x)*Math.PI/6}else if(Math.abs(x)<.3)turnLatch.set(src,false)}}
+  /* Thumbstick left/right: a snap turn around the head. A or X: the menu at that hand. */
+  const s=renderer.xr.getSession();if(s)for(const src of s.inputSources){const gp=src.gamepad;if(!gp)continue;
+   const b=gp.buttons&&gp.buttons[4];if(b&&b.pressed){if(!menuLatch.get(src)){menuLatch.set(src,true);const p=pens.find(q=>q.src===src);if(p)wristToggle(p)}}else menuLatch.set(src,false);
+   if(gp.axes.length<4)continue;const x=gp.axes[2];if(Math.abs(x)>.75&&!turnLatch.get(src)){turnLatch.set(src,true);const h=headWorld();rigTo(h.x,h.z,h.yaw-Math.sign(x)*Math.PI/6)}else if(Math.abs(x)<.3)turnLatch.set(src,false)}
+  updateWrist(nowMs)}
  /* ---------- Small animations ---------- */
  const tweens=[];
  function tween(obj,from,to,dur,done){const f=from||{position:obj.position.clone(),quaternion:obj.quaternion.clone(),scale:obj.scale.x};for(let i=tweens.length-1;i>=0;i--)if(tweens[i].obj===obj)tweens.splice(i,1);obj.position.copy(f.position);obj.quaternion.copy(f.quaternion);obj.scale.setScalar(f.scale);tweens.push({obj,f,to,t:0,dur:reducedMotion()?.01:dur,done})}
  function runTweens(dt){for(let i=tweens.length-1;i>=0;i--){const w=tweens[i];if(!w)continue;w.t=Math.min(1,w.t+dt/w.dur);const e=w.t<.5?2*w.t*w.t:1-Math.pow(-2*w.t+2,2)/2;w.obj.position.lerpVectors(w.f.position,w.to.position,e);w.obj.quaternion.slerpQuaternions(w.f.quaternion,w.to.quaternion,e);w.obj.scale.setScalar(lerp(w.f.scale,w.to.scale,e));if(w.t>=1){tweens.splice(tweens.indexOf(w),1);w.done?.()}}}
+ /* ---------- Hub: stations, moving between them, pressing surfaces, the menu at the hand ---------- */
+ const stations={tarot:{label:'Tarot',anchor:tarotMark,stand:1,width:1.25},sigil:{label:'Sigillen',anchor:sigMark,stand:1,width:1.45}};
+ const built=[],homeBtns=[],hub={at:null,said:false};let building=null;
+ /* The head in the tracked space (three keeps the camera there, also in VR) and in the room. */
+ const hubF=V(),hubV=V();
+ function headLocal(){hubF.set(0,0,-1).applyQuaternion(camera.quaternion);return {x:camera.position.x,y:camera.position.y,z:camera.position.z,yaw:PulseRaum.yawOf(hubF.x,hubF.z)}}
+ const rigState=()=>({x:rig.position.x,z:rig.position.z,yaw:rig.rotation.y});
+ function headWorld(){const l=headLocal(),r=rigState(),w=PulseRaum.turn(l.x,l.z,r.yaw);return {x:r.x+w.x,y:l.y,z:r.z+w.z,yaw:PulseRaum.wrapAngle(r.yaw+l.yaw)}}
+ /* Moves the tracked space so the head stands at (x, z) and looks along yaw. The real height stays. */
+ function rigTo(x,z,yaw){const r=PulseRaum.rigFor(rigState(),headWorld(),{x,z,yaw});rig.position.set(r.x,0,r.z);rig.rotation.y=r.yaw;rig.updateMatrixWorld(true)}
+ /* A short fade to dark and back hides the jump; moving smoothly would make many people dizzy. */
+ const fadeBall=new THREE.Mesh(new THREE.SphereGeometry(.35,16,10),new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0,side:THREE.BackSide,depthTest:false,depthWrite:false,fog:false}));
+ fadeBall.renderOrder=999;fadeBall.visible=false;fadeBall.frustumCulled=false;camera.add(fadeBall);
+ let fade=null;
+ function fadeTo(fn){if(!presenting())return fn();if(fade&&!fade.done){fade.fn=fn;return}fade={t:0,fn,done:false}}
+ function runFade(dt){if(!fade)return;fade.t+=dt;const T1=reducedMotion()?.08:.16,T2=T1+(reducedMotion()?.12:.28);
+  if(!fade.done&&fade.t>=T1){fade.done=true;try{fade.fn()}catch(e){console.error(e)}}
+  const o=fade.t<T1?fade.t/T1:Math.max(0,1-(fade.t-T1)/(T2-T1));fadeBall.material.opacity=o;fadeBall.visible=o>.001;if(fade.t>=T2){fade=null;fadeBall.visible=false}}
+ /* In VR: stand in front of the station, looking at it. On the phone: turn the view to it. */
+ function goStation(id){
+  const st=stations[id];if(!st||!st.anchor)return;wristHide();
+  if(!presenting())return focusView(st.anchor,fovFor(st.anchor,st.width||1.3));
+  fadeTo(()=>{st.anchor.updateWorldMatrix(true,false);st.anchor.getWorldPosition(hubV);const p=PulseRaum.approach(hubV.x,hubV.z,st.stand||1);rigTo(p.x,p.z,p.yaw);hub.at=id;st.enter?.();
+   if(!hub.said){hub.said=true;setTimeout(()=>{if(presenting())say('Zurück zur Mitte: „Zur Mitte“ hier oder im Menü an der Hand.',4500)},350)}});
+ }
+ function goHome(){wristHide();if(!presenting())return focusView(V(0,1.2,-2),70);fadeTo(()=>{rigTo(0,0,0);hub.at=null})}
+ function homeButton(group,x,y,z=0,id=building){const b=button('Zur Mitte',.15,.05,goHome);b.position.set(x,y,z);b.visible=false;b.userData.station=id;group.add(b);homeBtns.push(b);return b}
+ homeButton(tarot.group,.62,-.37,0,'tarot');homeButton(sig.group,0,-.33,0,'sigil');
+ /* Pressing with the tip of the index finger (hands) or of the pen (controllers): a surface fires once when
+    the tip goes through it from the front, and again only after the tip came back out. */
+ const pk={tip:V(),local:V(),n:V(),inv:new THREE.Matrix4(),q:new THREE.Quaternion()};
+ function pokePlates(){return hits.filter(o=>o!==paneMesh&&o.userData.onSelect&&o.geometry&&(o.geometry.type==='PlaneGeometry'||o.geometry.type==='CircleGeometry')&&visible(o))}
+ function pokeTip(p,out){if(p.src&&p.src.hand){const j=p.hand.joints['index-finger-tip'];return j&&j.visible?j.getWorldPosition(out):null}
+  p.c.getWorldPosition(out);pk.n.set(0,0,-1).applyQuaternion(p.c.getWorldQuaternion(pk.q));return out.addScaledVector(pk.n,.04)}
+ function pokeAt(p,plates){
+  const tip=pokeTip(p,pk.tip);if(!tip){p.poke=null;return null}
+  let best=null,bd=1e9;
+  for(const o of plates){if(o.userData.wrist&&p===wr.p)continue;
+   pk.inv.copy(o.matrixWorld).invert();pk.local.copy(tip).applyMatrix4(pk.inv);
+   const g=o.geometry.parameters,w=g.width??g.radius*2,h=g.height??g.radius*2;
+   if(Math.abs(pk.local.x)>w/2+.004||Math.abs(pk.local.y)>h/2+.004)continue;
+   const d=pk.local.z*pk.n.setFromMatrixColumn(o.matrixWorld,2).length();
+   if(d<-.035||d>.05||Math.abs(d)>=bd)continue;
+   bd=Math.abs(d);best={o,d,uv:{x:clamp(pk.local.x/w+.5,0,1),y:clamp(pk.local.y/h+.5,0,1)}}}
+  if(!best){p.poke=null;return null}
+  const prev=p.poke&&p.poke.o===best.o?p.poke:null;let pressed=prev?prev.pressed:false;
+  if(pressed&&best.d>.016)pressed=false;
+  if(!pressed&&prev&&prev.d>.004&&best.d<=.004){pressed=true;try{best.o.userData.onSelect({object:best.o,uv:best.uv,point:tip.clone(),poke:true})}catch(e){console.error(e)}if(p.src&&p.src.hand)roomClick();else haptic(p,.45,14)}
+  p.poke={o:best.o,d:best.d,pressed};return best}
+ function haptic(p,v,ms){try{p.src?.gamepad?.hapticActuators?.[0]?.pulse(v,ms)}catch(_){}}
+ /* Sound of the room itself (bowl, clicks), placed in space: it comes from where things are. */
+ const audio={ctx:null,out:null};const lV=V(),lQ=new THREE.Quaternion(),lS=V(),lF=V(),lU=V();
+ function roomAudio(){if(audio.ctx){if(audio.ctx.state==='suspended')audio.ctx.resume().catch(()=>{});return audio}const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;
+  try{audio.ctx=new AC();audio.out=audio.ctx.createGain();audio.out.gain.value=.9;audio.out.connect(audio.ctx.destination)}catch(_){audio.ctx=null;return null}return audio}
+ function roomClick(){const a=roomAudio();if(!a)return;const c=a.ctx,t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.setValueAtTime(1500,t);o.frequency.exponentialRampToValueAtTime(900,t+.03);
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.05,t+.003);g.gain.exponentialRampToValueAtTime(.0001,t+.06);o.connect(g);g.connect(a.out);o.start(t);o.stop(t+.08)}
+ function hearFrom(){if(!audio.ctx)return;const L=audio.ctx.listener,c=presenting()?renderer.xr.getCamera():camera;c.matrixWorld.decompose(lV,lQ,lS);lF.set(0,0,-1).applyQuaternion(lQ);lU.set(0,1,0).applyQuaternion(lQ);
+  try{if(L.positionX){L.positionX.value=lV.x;L.positionY.value=lV.y;L.positionZ.value=lV.z;L.forwardX.value=lF.x;L.forwardY.value=lF.y;L.forwardZ.value=lF.z;L.upX.value=lU.x;L.upY.value=lU.y;L.upZ.value=lU.z}else{L.setPosition(lV.x,lV.y,lV.z);L.setOrientation(lF.x,lF.y,lF.z,lU.x,lU.y,lU.z)}}catch(_){}}
+ /* Panels whose regions are drawn and hit-tested together (boards, cards): draw(g,W,H,zone) registers zones. */
+ function uvPanel(w,h,ppm=1000){const m=panel(w,h,ppm),u=m.userData;u.zones=[];u.hover=null;u.paintFn=null;
+  u.redraw=()=>{if(u.paintFn)u.draw((g,W,H)=>{u.zones=[];u.paintFn(g,W,H,(id,x,y,zw,zh,fn)=>{u.zones.push({id,x,y,w:zw,h:zh,fn});return u.hover===id})})};
+  u.zoneAt=uv=>{if(!uv)return null;const c=m.material.map.userData.canvas,x=uv.x*c.width,y=(1-uv.y)*c.height;for(let i=u.zones.length-1;i>=0;i--){const z=u.zones[i];if(x>=z.x&&x<=z.x+z.w&&y>=z.y&&y<=z.y+z.h)return z}return null};
+  u.onSelect=hit=>{const z=u.zoneAt(hit&&hit.uv);if(z)z.fn(hit)};
+  u.hoverUV=uv=>{const z=u.zoneAt(uv),id=z?z.id:null;if(id!==u.hover){u.hover=id;u.redraw()}};
+  hits.push(m);return m}
+ /* A wooden easel for a board w×h whose centre is cy above the floor. */
+ function easel(w,h,cy){const g=new THREE.Group(),fr=.035,d=.03,box=(bw,bh,bd,x,y,z,mat=ribWood)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(bw,bh,bd),mat);m.position.set(x,y,z);g.add(m);return m};
+  box(w+2*fr,fr,d,0,cy+h/2+fr/2,-d/2-.002);box(w+2*fr,fr,d,0,cy-h/2-fr/2,-d/2-.002);box(fr,h,d,-w/2-fr/2,cy,-d/2-.002);box(fr,h,d,w/2+fr/2,cy,-d/2-.002);
+  box(w,h,.012,0,cy,-d-.004,dark);box(w*.92,.025,.08,0,cy-h/2-fr-.012,.01);
+  for(const s of [-1,1])box(.04,cy-h/2,.04,s*(w/2-.08),(cy-h/2)/2,-.035);
+  const top=cy+h/2,back=box(.035,Math.hypot(top,.4),.035,0,top/2,-.03-.2);back.rotation.x=Math.atan2(.4,top);
+  return g}
+ /* The moon as a disc in its phase (as in the app's moon icon). */
+ function moonDisc(g,cx,cy,r,m){const p=m.age/29.530588853,k=Math.cos(2*Math.PI*p),rx=Math.abs(k)*r,waxing=p<.5;
+  g.save();const halo=g.createRadialGradient(cx,cy,r*.8,cx,cy,r*1.7);halo.addColorStop(0,'rgba(245,230,179,.25)');halo.addColorStop(1,'rgba(245,230,179,0)');g.fillStyle=halo;g.beginPath();g.arc(cx,cy,r*1.7,0,7);g.fill();
+  g.fillStyle='#14112e';g.beginPath();g.arc(cx,cy,r,0,7);g.fill();g.fillStyle='#F5E6B3';
+  if(m.illumination>=99){g.beginPath();g.arc(cx,cy,r,0,7);g.fill()}
+  else if(m.illumination>1){g.beginPath();g.arc(cx,cy,r,-Math.PI/2,Math.PI/2,!waxing);g.ellipse(cx,cy,Math.max(.01,rx),r,0,Math.PI/2,-Math.PI/2,waxing?k>0:k<0);g.closePath();g.fill()}
+  g.strokeStyle='rgba(255,255,255,.25)';g.lineWidth=Math.max(1,r*.05);g.beginPath();g.arc(cx,cy,r,0,7);g.stroke();g.restore()}
+ /* Writing from anywhere: the surface of light comes to wherever you stand, optionally with a first line. */
+ function writeWith(text){wristHide();if(bk.view==='write'||bk.saving)return;if(text&&!draft.text.trim()&&!draft.strokes.length)draft.text=String(text).slice(0,20000);startWrite()}
+ /* The menu at the hand: turn a palm towards you (hand tracking) or press A or X (controllers). */
+ const wrist=new THREE.Group();wrist.visible=false;scene.add(wrist);
+ {const back=panel(.215,.1,2400);back.userData.draw((g,W,H)=>{g.fillStyle='rgba(30,19,12,.92)';rr(g,0,0,W,H,46);g.fill();g.strokeStyle='rgba(233,184,114,.55)';g.lineWidth=6;rr(g,7,7,W-14,H-14,40);g.stroke()});back.position.z=-.002;back.renderOrder=4;wrist.add(back)}
+ const wristClock=panel(.19,.026,4000);wristClock.position.y=.031;wrist.add(wristClock);
+ for(const b of [...row(wrist,[['Mitte',goHome,.043],['Tafel',()=>goStation('tag'),.043],['Stapel',()=>goStation('stapel'),.043],['Schale',()=>goStation('schale'),.043]],.001,{h:.024,gap:.005,ppm:4000}),
+  ...row(wrist,[['Tarot',()=>goStation('tarot'),.058],['Sigillen',()=>goStation('sigil'),.058],['Notizbuch',()=>{wristHide();openBook()},.058]],-.029,{h:.024,gap:.005,ppm:4000})])b.userData.wrist=true;
+ const wr={p:null,on:false,hand:false,lost:0,palm:new WeakMap(),clock:''},wrV=V(),wrQ=new THREE.Quaternion(),wrN=V(),wrH=V(),wrT=V();
+ function wristHide(){wr.on=false;wr.p=null;wr.hand=false;wrist.visible=false}
+ function wristToggle(p){if(wr.on&&wr.p===p)return wristHide();wr.on=true;wr.p=p;wr.hand=false}
+ function updateWrist(now){
+  renderer.xr.getCamera().getWorldPosition(wrH);
+  for(const p of pens){if(!p.src||!p.src.hand)continue;const j=p.hand.joints.wrist;if(!j||!j.visible){wr.palm.delete(p);continue}
+   j.getWorldPosition(wrV);j.getWorldQuaternion(wrQ);wrN.set(0,-1,0).applyQuaternion(wrQ);wrT.copy(wrH).sub(wrV);const d=wrT.length(),f=wrN.dot(wrT.divideScalar(d||1)),mine=wr.on&&wr.hand&&wr.p===p;
+   if(f>(mine?.45:.72)&&d<(mine?.75:.6)){if(!wr.palm.has(p))wr.palm.set(p,now);wr.lost=0;if(!wr.on&&now-wr.palm.get(p)>250){wr.on=true;wr.p=p;wr.hand=true}}
+   else{wr.palm.delete(p);if(mine){wr.lost=wr.lost||now;if(now-wr.lost>450)wristHide()}}}
+  const p=wr.p;if(!wr.on||!p||!p.src){wrist.visible=false;return}
+  /* Hands: in front of the palm (its normal is -Y of the wrist joint, -Z points into the palm). */
+  if(wr.hand){const j=p.hand.joints.wrist;j.getWorldPosition(wrV);j.getWorldQuaternion(wrQ);wrN.set(0,-1,0).applyQuaternion(wrQ);wrV.addScaledVector(wrN,.07).addScaledVector(wrT.set(0,0,-1).applyQuaternion(wrQ),.06)}
+  else{(p.grip.visible!==false?p.grip:p.c).getWorldPosition(wrV);wrV.y+=.1}
+  wrist.position.copy(wrV);wrist.lookAt(wrH);wrist.visible=true;
+  const text=hhmm(Date.now())+' · '+new Date().toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'short'});
+  if(text!==wr.clock){wr.clock=text;wristClock.userData.draw((g,W,H)=>{g.fillStyle='#fbe8c6';let fs=Math.round(H*.62);g.font='700 '+fs+'px '+FONT;while(fs>12&&g.measureText(text).width>W*.94){fs--;g.font='700 '+fs+'px '+FONT}g.textAlign='center';g.textBaseline='middle';g.fillText(text,W/2,H/2+2)})}
+ }
+ /* Everything a station may use. */
+ const kit={THREE,scene,camera,renderer,rig,hits,prefs,V,C,at,R,rnd,lerp,clamp,smooth,RAD,dayKey,hhmm,FONT,SERIF,PPM,
+  canvasTex,panel,infoPanel,button,row,wrap,rr,facing,place,sprite,glow:{warm:GLOW_WARM,soft:GLOW_SOFT,ink:GLOW_INK},mat:{wood,dark,ribWood,leather},candle,lights,
+  say,presenting,tween,uvPanel,easel,moonDisc,cardFace,homeButton,go:goStation,home:goHome,write:writeWith,station:id=>stations[id],setTime:m=>{setTime(m);save();raumControls()},
+  tarotDaily:()=>tarotDaily(),tarotShow:i=>tarotShow(i),tarotLay:(i,label)=>{tarotClear();const c=tarotCard(i,0,label||'');c.userData.target=0;setTimeout(()=>tarotShow(i),500)},
+  pens,tip:pokeTip,haptic,audio:roomAudio,click:roomClick,headWorld,leaveVR:()=>renderer.xr.getSession()?.end()};
+ for(const def of RAUM_STATIONS){building=def.id;try{const s=def.build(kit);if(s){s.id=def.id;s.label=s.label||def.label;stations[def.id]=s;built.push(s)}}catch(e){console.error('Himmelsraum: Station '+def.id,e)}}
  /* ---------- Loop ---------- */
  let running=false,last=performance.now();
  const goalV=V(),scaleV=V(),liftV=V(0,.3,-.05);
@@ -638,29 +764,35 @@ void main(){vec3 toCam=cameraPosition-vW;float dist=length(toCam);vec3 v=toCam/d
   if(kb.visible&&now-caretT>530){caret=!caret;caretT=now;drawPane()}
   if(dictBtn)dictBtn.userData.setLabel(pulseDictation?'Stopp':'Diktieren');
   leaveBtn.visible=xr;if(note.visible&&now>noteUntil)note.visible=false;
-  if(xr)updateXR();
+  if(xr)updateXR(now);else wrist.visible=false;
+  runFade(real);for(const b of homeBtns)b.visible=xr&&hub.at!==null&&b.userData.station===hub.at;
+  for(const s of built){try{s.update?.(dt,t,now,xr)}catch(e){console.error(e);s.update=null}}
+  hearFrom();
   pultPanel.visible=bk.view==='closed';inkUpload();
   renderer.render(scene,camera);
  }
  function resize(){if(presenting())return;const r=canvas.parentElement.getBoundingClientRect(),w=Math.max(1,Math.round(r.width)),h=Math.max(1,Math.round(r.height));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
  const ro=new ResizeObserver(resize);ro.observe(canvas.parentElement);resize();
- function resume(){if(running)return;running=true;last=performance.now();renderer.setAnimationLoop(frame)}
- function pause(){if(document.fullscreenElement?.id==='raumStage')document.exitFullscreen?.().catch(()=>{});if(!running)return;running=false;renderer.setAnimationLoop(null);if(soundOn){PulseSoundscape.play('');soundOn=false;markSound()}if(bk.view==='write')persistDraft()}
+ function resume(){if(running)return;running=true;last=performance.now();renderer.setAnimationLoop(frame);if(audio.ctx&&audio.ctx.state==='suspended')audio.ctx.resume().catch(()=>{})}
+ function pause(){if(document.fullscreenElement?.id==='raumStage')document.exitFullscreen?.().catch(()=>{});if(!running)return;running=false;renderer.setAnimationLoop(null);if(soundOn){PulseSoundscape.play('');soundOn=false;markSound()}if(bk.view==='write')persistDraft();for(const s of built)try{s.pause?.()}catch(_){}if(audio.ctx&&audio.ctx.state==='running')audio.ctx.suspend().catch(()=>{})}
  async function enterVR(){
   if(!navigator.xr)return toast('Dieser Browser kann kein VR.');
   try{const session=await navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor','bounded-floor','hand-tracking']});
-   await renderer.xr.setSession(session);rig.rotation.y=0;if(prefs.sound)setSound(prefs.sound,true);resume();if(bk.view==='write')drawPane();
-   session.addEventListener('end',()=>{camera.position.set(0,1.35,0);look();resize();for(const p of pens){p.line.visible=p.nib.visible=p.body.visible=p.dot.visible=p.tip.visible=false;p.joints.count=0;p.src=null;p.down=false}note.visible=false;kbShow(false);if(bk.view==='write'){persistDraft();drawPane()}raumControls()})}
+   await renderer.xr.setSession(session);rig.position.set(0,0,0);rig.rotation.y=0;hub.at=null;if(prefs.sound)setSound(prefs.sound,true);resume();if(bk.view==='write')drawPane();
+   setTimeout(()=>{if(presenting())say('Menü an der Hand: A- oder X-Taste, ohne Controller die Handfläche zu dir drehen.',5000)},1500);
+   session.addEventListener('end',()=>{rig.position.set(0,0,0);rig.rotation.y=0;hub.at=null;fade=null;fadeBall.visible=false;wristHide();camera.fov=70;camera.position.set(0,1.35,0);look();resize();for(const p of pens){p.line.visible=p.nib.visible=p.body.visible=p.dot.visible=p.tip.visible=false;p.joints.count=0;p.src=null;p.down=false;p.poke=null}note.visible=false;kbShow(false);if(bk.view==='write'){persistDraft();drawPane()}for(const s of built)try{s.leave?.()}catch(_){}raumControls()})}
   catch(e){toast('VR ließ sich nicht starten: '+(e&&e.message||e))}
  }
  function refresh(){
   sgLoad(false);timeBtns.forEach(b=>b.userData.setActive(b.userData.key===prefs.time));markSound();breathBtn.userData.setActive(prefs.breath);
   if(bk.view==='read'){const stamp=raumPages().map(x=>x.id+'@'+x.updatedAt).join('|');if(stamp!==bk.stamp){const atEnd=bk.index>=bk.spreads.length-1;bk.spreads=bookSpreads();bk.index=clamp(atEnd?bk.spreads.length-1:bk.index,0,Math.max(0,bk.spreads.length-1));drawSpread()}}
+  for(const s of built){try{s.refresh?.()}catch(e){console.error(e)}}
  }
- function dispose(){pause();ro.disconnect();window.removeEventListener('keydown',onKey);toastObs?.disconnect();scene.traverse(o=>{o.geometry?.dispose?.();const m=o.material;for(const x of Array.isArray(m)?m:m?[m]:[]){x.map?.dispose?.();x.dispose?.()}});renderer.dispose()}
+ function dispose(){pause();for(const s of built)try{s.dispose?.()}catch(_){}try{audio.ctx?.close()}catch(_){}ro.disconnect();window.removeEventListener('keydown',onKey);toastObs?.disconnect();scene.traverse(o=>{o.geometry?.dispose?.();const m=o.material;for(const x of Array.isArray(m)?m:m?[m]:[]){x.map?.dispose?.();x.dispose?.()}});renderer.dispose()}
  return {setTime,setSound:k=>setSound(k,false),setBreath,enterVR,resume,pause,refresh,dispose,openBook:()=>{if(bk.view!=='write')openBook()},write:()=>{if(bk.view!=='write')startWrite()},setText,
   debug:{scene,camera,renderer,look:(y,p)=>{yaw=y;pitch=p;look()},jump:mode=>{setTime(mode);shown=aim;applySky(shown)},tarotDaily,tarotThree,tarot,sgFocus,sgStart,sgEnd,sgForget,sig,bk,draft,finishWrite,closeBook,
    select:label=>{const b=hits.find(o=>o.userData.label===label&&visible(o));if(b)b.userData.onSelect();return !!b},
-   settled:()=>!viewAnim&&!tweens.length,objects:{closedBook,paneMesh,book,pane,kb},toScreen:o=>{o.updateWorldMatrix(true,false);const p=o.getWorldPosition(V()).project(camera),r=canvas.getBoundingClientRect();return {x:r.left+(p.x+1)/2*r.width,y:r.top+(1-p.y)/2*r.height}},
+   settled:()=>!viewAnim&&!tweens.length&&!fade,objects:{closedBook,paneMesh,book,pane,kb,wrist},
+   go:goStation,home:goHome,hub,stations,headWorld,rigTo,wristToggle:i=>wristToggle(pens[i]),wr,toScreen:o=>{o.updateWorldMatrix(true,false);const p=o.getWorldPosition(V()).project(camera),r=canvas.getBoundingClientRect();return {x:r.left+(p.x+1)/2*r.width,y:r.top+(1-p.y)/2*r.height}},
    scribble:()=>{const s=[];draft.strokes.push(s);for(let i=0;i<=80;i++){const a=i/80*Math.PI*6;strokeAdd(s,-.28+i*.006,.04+Math.sin(a)*.045,.08)}persistSoon()}}};
 }

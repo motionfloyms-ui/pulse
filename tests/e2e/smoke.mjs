@@ -140,9 +140,10 @@ try{
    assert.equal(await ev(()=>document.getElementById('appMain').dataset.view),'bodyhub','back from '+v);
   }
  });
- await check('Himmelsraum: 3D room, a page written with the finger, simulated VR session',async()=>{
+ await check('Himmelsraum: 3D room, a page written with the finger, simulated VR session with the hub',async()=>{
   const xr=await ctx.newPage();xr.on('pageerror',e=>errs.push(step+': '+e.message));xr.on('console',m=>{if(m.type()==='error'&&!/Failed to load resource|net::|ERR_/.test(m.text()))errs.push(step+': console '+m.text())});
   await xr.addInitScript(require('./xr-mock.cjs'));
+  await xr.route(/^https?:\/\/(?!localhost)/,r=>r.abort());/* the stack would load pictures of the day */
   await xr.goto(base+'?action=raum');await xr.waitForFunction(()=>typeof RAUM!=='undefined'&&!!RAUM,null,{timeout:60000});
   const x=(f,a)=>xr.evaluate(f,a);
   /* Phone: write on the surface of light with the finger, keep it as a page. */
@@ -156,9 +157,11 @@ try{
   await xr.click('#raumControls button:has-text("In VR betreten")');await xr.waitForFunction(()=>RAUM.debug.renderer.xr.isPresenting,null,{timeout:20000});
   await x(()=>{const m=__xr;m.L=m.controller('left');m.R=m.controller('right');m.session.setSources([m.L,m.R])});
   const frames=async n=>{const f0=await x(()=>__xr.frames);await xr.waitForFunction(([f0,n])=>__xr.frames>=f0+n,[f0,n],{timeout:30000})};
-  const aim=label=>x(label=>{let o=null;RAUM.debug.scene.traverse(n=>{if(n.userData&&n.userData.label===label){let v=true,p=n;while(p){if(!p.visible)v=false;p=p.parent}if(v)o=n}});if(!o)return false;const w=o.getWorldPosition(o.position.clone());__xr.aim(__xr.R.targetRaySpace,[.12,1.32,-.08],[w.x,w.y,w.z]);return true},label);
-  const click=()=>x(()=>{const m=__xr;m.session.fire('selectstart',m.R);m.session.fire('selectend',m.R);m.session.fire('select',m.R)});
-  const press=async label=>{assert.ok(await aim(label),'button '+label+' '+JSON.stringify(await x(()=>{const l=[];RAUM.debug.scene.traverse(n=>{if(n.userData&&n.userData.label){let v=true,p=n;while(p){if(!p.visible)v=false;p=p.parent}if(v)l.push(n.userData.label)}});return [RAUM.debug.bk.view,l.join(',')]})));await frames(3);await click();await frames(2)};
+  /* Poses are given in the tracked space; after moving through the room it no longer matches the world. */
+  const aim=(label,hand='R')=>x(([label,hand])=>{let o=null;RAUM.debug.scene.traverse(n=>{if(n.userData&&n.userData.label===label){let v=true,p=n;while(p){if(!p.visible)v=false;p=p.parent}if(v)o=n}});if(!o)return false;const l=RAUM.debug.camera.parent.worldToLocal(o.getWorldPosition(o.position.clone()));__xr.aim(__xr[hand].targetRaySpace,[hand==='L'?-.12:.12,1.32,-.08],[l.x,l.y,l.z]);return true},[label,hand]);
+  const click=(hand='R')=>x(hand=>{const m=__xr,s=m[hand];m.session.fire('selectstart',s);m.session.fire('selectend',s);m.session.fire('select',s)},hand);
+  const press=async(label,hand='R')=>{assert.ok(await aim(label,hand),'button '+label+' '+JSON.stringify(await x(()=>{const l=[];RAUM.debug.scene.traverse(n=>{if(n.userData&&n.userData.label){let v=true,p=n;while(p){if(!p.visible)v=false;p=p.parent}if(v)l.push(n.userData.label)}});return [RAUM.debug.bk.view,l.join(',')]})));await frames(3);await click(hand);await frames(2)};
+  const settle=()=>xr.waitForFunction(()=>RAUM.debug.settled(),null,{timeout:10000});
   await frames(3);await press('Zuklappen');assert.equal(await x(()=>RAUM.debug.bk.view),'closed');
   await press('Notizbuch');await press('Schreiben');assert.equal(await x(()=>RAUM.debug.bk.view),'write');
   const pane=await x(()=>RAUM.debug.objects.pane.position.toArray());
@@ -167,7 +170,34 @@ try{
   await x(()=>{__xr.session.fire('selectend',__xr.R);__xr.session.fire('select',__xr.R)});await frames(2);
   assert.ok(await x(()=>RAUM.debug.draft.strokes.length===1&&RAUM.debug.draft.strokes[0].length>=15),'stroke written into the air');
   await press('Fertig');await xr.waitForFunction(()=>raumPages().length===2&&RAUM.debug.bk.view==='read'&&RAUM.debug.settled(),null,{timeout:30000});
-  await press('Zuklappen');assert.ok(await aim('Verlassen'),'leave button');await frames(3);await click();
+  await press('Zuklappen');
+  /* Hub: the desk takes you to the day board, a task is ticked off there, back to the middle; the menu at the hand
+     leads to the stack (one card on); the bowl is struck with the tip of the controller; a fingertip presses a desk button. */
+  await x(()=>{PulseLife.create(db,{kind:'task',title:'Kerze anzünden',date:key()},'hub-t1',new Date().toISOString());save()});
+  await press('Tafel');await settle();await frames(2);assert.equal(await x(()=>RAUM.debug.hub.at),'tag');
+  const zone=await x(()=>{const b=RAUM.debug.stations.tag.anchor,z=b.userData.zones.find(z=>z.id==='t:hub-t1'),c=b.material.map.userData.canvas,g=b.geometry.parameters;
+   return RAUM.debug.camera.parent.worldToLocal(b.localToWorld(b.position.clone().set(((z.x+z.w/2)/c.width-.5)*g.width,(.5-(z.y+z.h/2)/c.height)*g.height,0))).toArray()});
+  await x(l=>__xr.aim(__xr.R.targetRaySpace,[.12,1.32,-.08],l),zone);await frames(3);await click();await frames(2);
+  assert.equal(await x(()=>PulseLife.get(db,'hub-t1').status),'done','task ticked off on the board');
+  await press('Zur Mitte');await settle();await frames(2);
+  assert.deepEqual(await x(()=>{const h=RAUM.debug.headWorld();return [RAUM.debug.hub.at,Math.round(h.x*100),Math.round(h.z*100)]}),[null,0,0]);
+  await x(()=>{__xr.R.gamepad.buttons[4]={pressed:true}});await frames(2);await x(()=>{__xr.R.gamepad.buttons[4]={pressed:false}});await frames(2);
+  assert.ok(await x(()=>RAUM.debug.objects.wrist.visible),'menu at the hand');
+  await press('Stapel','L');await settle();await frames(3);
+  assert.deepEqual(await x(()=>[RAUM.debug.hub.at,RAUM.debug.stations.stapel.debug.st.revealed]),['stapel',true]);
+  const [pos0,n0]=await x(()=>{const d=PulseDeck.ensure(db);return [d.pos,d.cards.length]});
+  if(pos0<n0){for(let i=0;i<6&&await x(()=>PulseDeck.ensure(db).pos)===pos0;i++)await press('Weiter ›');assert.equal(await x(()=>PulseDeck.ensure(db).pos),pos0+1,'one card on in the stack')}
+  else{await press('‹ Zurück');assert.equal(await x(()=>PulseDeck.ensure(db).pos),pos0-1,'back from the end of the stack')}
+  await x(()=>RAUM.debug.go('schale'));await settle();await frames(2);
+  const bowl=await x(()=>{const D=RAUM.debug,b=D.stations.schale.debug.bowl,r=D.camera.parent,w=b.getWorldPosition(b.position.clone());return [r.worldToLocal(w.clone().setY(w.y+.12)).toArray(),r.worldToLocal(w.clone().setY(w.y-.03)).toArray()]});
+  for(const p of bowl){await x(p=>__xr.poses.set(__xr.R.targetRaySpace,{p:[p[0],p[1],p[2]+.04],q:[0,0,0,1]}),p);await frames(3)}
+  assert.ok(await x(()=>RAUM.debug.stations.schale.debug.strikes()>0),'bowl struck with the controller');
+  await x(()=>RAUM.debug.home());await settle();await x(()=>{const m=__xr;m.H=m.hand('right');m.session.setSources([m.L,m.H])});await frames(3);
+  const btn=await x(()=>{let o=null;RAUM.debug.scene.traverse(q=>{if(q.userData&&q.userData.label==='Nacht'&&!q.userData.wrist)o=q});return [o.getWorldPosition(o.position.clone()).toArray(),o.getWorldDirection(o.position.clone()).toArray()]});
+  for(const d of [.04,.02,.008,-.006]){await x(([w,n,d])=>{const l=RAUM.debug.camera.parent.worldToLocal(RAUM.debug.camera.position.clone().set(w[0]+n[0]*d,w[1]+n[1]*d,w[2]+n[2]*d));__xr.H.center=[l.x,l.y-.04,l.z+.03]},[...btn,d]);await frames(2)}
+  assert.equal(await x(()=>raumPrefs().time),'nacht','desk button pressed with a fingertip');
+  await x(()=>{const m=__xr;m.session.setSources([m.L,m.R])});await frames(3);
+  assert.ok(await aim('Verlassen'),'leave button');await frames(3);await click();
   await xr.waitForFunction(()=>!RAUM.debug.renderer.xr.isPresenting,null,{timeout:10000});
   await x(()=>goView('life'));await xr.waitForTimeout(200);await xr.close();
   await pg.reload();await pg.waitForTimeout(900);/* the other window saved: start from its state */
