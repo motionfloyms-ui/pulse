@@ -1141,6 +1141,17 @@ body.sigil-open{overflow:hidden}
 .body-routes{margin:0 0 6px}
 td{font-variant-numeric:tabular-nums}
 /* v27: Stapel – the daily stack */
+/* Abgleich */
+.sync-steps{margin:4px 0 14px;padding-left:22px;color:var(--ink-2);font-size:15px;line-height:1.5}
+.sync-steps li{margin:4px 0}
+.sync-preview{margin:14px 0 6px;padding:14px 16px;border-radius:16px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line)}
+.sync-preview.done{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 45%,var(--line))}
+.sync-preview>b{display:block;margin-bottom:6px}
+.sync-preview p{margin:8px 0 0;color:var(--ink-2);font-size:14px;line-height:1.5}
+.sync-list{margin:6px 0 0;padding:0;list-style:none}
+.sync-list li{display:flex;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:15px}
+.sync-list li:first-child{border-top:0}
+.sync-list span{flex:0 0 7.5em;color:var(--muted);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.02em;padding-top:2px}
 /* Himmelsraum */
 .raum-stage{position:relative;height:min(64vh,620px);min-height:320px;margin:0 0 14px;border-radius:24px;overflow:hidden;background:#0b0d14;touch-action:none;user-select:none;-webkit-user-select:none}
 .raum-stage canvas{display:block;width:100%;height:100%;cursor:grab}
@@ -1226,7 +1237,7 @@ td{font-variant-numeric:tabular-nums}
 @media print{.life-nav,.life-topbar,.toast{display:none}.app{padding:0}}
 
 </style></head><body class="life-modern">
-<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v29</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view life-screen" id="videos"><div id="vaultContent"></div></section><section class="view life-screen" id="sigils"><div id="sigilContent"></div></section><section class="view life-screen" id="sky"><div id="skyContent"></div></section><section class="view life-screen" id="songs"><div id="songContent"></div></section><section class="view life-screen" id="stapel"><div id="stapelContent"></div></section><section class="view life-screen" id="raum"><div id="raumContent"></div></section><section class="view life-screen" id="more"><div id="moreContent"></div></section><section class="view life-screen" id="bodyhub"><div id="bodyHubContent"></div></section>
+<svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><header id="lifeTopbar" class="life-topbar"><button type="button" class="life-wordmark" onclick="goView('life')" aria-label="PULSE · zum Tag"><span class="life-logo" aria-hidden="true">✳</span><b>Pulse<span>v30</span></b></button><div class="life-top-actions"><button type="button" class="life-iconbtn" onclick="goView('focus')" aria-label="Fokus-Timer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.5M10 2.5h4M18.5 6.5l1.5-1.5"/></svg></button><button type="button" class="life-iconbtn" onclick="undoLast()" aria-label="Letzte Änderung rückgängig machen">↶</button><button type="button" class="life-iconbtn" onclick="lifeSettings()" aria-label="Einstellungen und Backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div></header><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view life-screen" id="videos"><div id="vaultContent"></div></section><section class="view life-screen" id="sigils"><div id="sigilContent"></div></section><section class="view life-screen" id="sky"><div id="skyContent"></div></section><section class="view life-screen" id="songs"><div id="songContent"></div></section><section class="view life-screen" id="stapel"><div id="stapelContent"></div></section><section class="view life-screen" id="raum"><div id="raumContent"></div></section><section class="view life-screen" id="more"><div id="moreContent"></div></section><section class="view life-screen" id="bodyhub"><div id="bodyHubContent"></div></section>
 <section class="view " id="mehub"><button type="button" class="backbtn" onclick="navigateUp('more')"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-back"></use></svg>Mehr</button><header class="pagehead"><h1>Ich</h1></header><div class="identity"><span class="avatar" data-me-initial>·</span><div><b data-me-name>Du</b><small>Muskelaufbau · Alltag · mehr Raum im Kopf</small></div></div><div class="routes"><button type="button" class="route" onclick="goView('goals')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Deine Richtung</b><small>Ziele, die zu deinem Leben passen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('plan')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg></span><span class="grow"><b>Dein Plan</b><small>Routinen, Training & Ausnahmen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('history')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg></span><span class="grow"><b>Verlauf</b><small>Was tatsächlich passiert ist</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('coach')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-spark"></use></svg></span><span class="grow"><b>Muster</b><small>Beobachtungen aus deinen Einträgen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div>
 <details class="disclosure"><summary>Was PULSE über dich weiß</summary><p class="tiny" id="eventCount"></p><div id="semanticMemory" class="memory-list"></div></details>
 <details class="disclosure"><summary>Daten &amp; Einstellungen</summary><p>Deine Einträge bleiben in diesem Browser. Ein Backup nimmt sie mit.</p><div class="actions"><button type="button" class="secondary" onclick="exportPulse()"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-download"></use></svg> Backup exportieren</button><button type="button" class="secondary" onclick="document.getElementById('pulseImport').click()">Backup importieren</button><button type="button" id="installPulse" hidden onclick="installPulse()">Als App installieren</button></div><input type="file" id="pulseImport" class="fileinput" accept="application/json" aria-label="PULSE-Backup auswählen" onchange="importPulse(this.files[0])"/><p class="tiny">PULSE 9 · App Preview 5</p></details></section>
@@ -1581,6 +1592,150 @@ return {ROOMS,KINDS,ensure,validate,list,get,create,update,toggle,day,dayFrom,se
   L.push('END:VCALENDAR');return L.map(fold).join('\r\n')+'\r\n';
  }
  return {parse,build,tzOffset,when,rrule,trigger};
+});
+// SOURCE: domain/sync/merge.js
+/* Abgleich: phone and Quest each keep their own PULSE. A package carries the shared content from one
+   device to the other: entries of the Lebensräume (notes, tasks, dates, notebook pages), sigils, tarot
+   (daily cards and own meanings), the video collection and kept cards. Body data and song texts stay
+   on the device. Merging works record by record: new records come in, of two versions the newer one
+   wins, sigil charges are combined, and deletions travel as tombstones so nothing deleted comes back.
+   Pure functions on db objects; no DOM. */
+(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('../life/model.js'):root.PulseLife);if(typeof module==='object'&&module.exports)module.exports=api;else root.PulseSync=api})(globalThis,function(Life){
+ 'use strict';
+ const FORMAT=1;
+ const isObj=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
+ const clone=v=>v===undefined?undefined:JSON.parse(JSON.stringify(v));
+ const ts=v=>typeof v==='string'?v:'';
+ const isDay=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s);
+ const KINDS=['life','sigil','video','shelf'];
+ const RANK={neu:0,geladen:1,vergessen:2,offen:3,erfuellt:3};
+ function ensure(db){if(!isObj(db.sync))db.sync={};if(!isObj(db.sync.gone))db.sync.gone={};return db.sync}
+ /* Remembers that a record was deleted here, so a merge removes it elsewhere instead of bringing it back. */
+ function forget(db,kind,id,now){if(!KINDS.includes(kind)||!id)return;ensure(db).gone[kind+':'+id]=now}
+ /* Undo of a deletion: the record is back, so is its right to travel. */
+ function revive(db,kind,ids){const g=ensure(db).gone;for(const id of ids)delete g[kind+':'+id]}
+ const goneAt=(db,kind,id)=>ts(ensure(db).gone[kind+':'+id]);
+ const version=x=>ts(x&&x.updatedAt)||ts(x&&x.createdAt)||ts(x&&x.addedAt);
+ /* What travels: everything that belongs to the shared mind, nothing from the body or the songs. */
+ function pack(db,{device='',now=new Date().toISOString(),app=''}={}){
+  const life=Life.ensure(db),p=life.preferences||{},d=db.deck||{};
+  return {app:'PULSE',kind:'abgleich',format:FORMAT,version:app,exportedAt:now,device:String(device||'').slice(0,40),data:{
+   life:{version:1,items:clone(life.items),preferences:{tarot:clone(p.tarot||null),tarotHistory:clone(p.tarotHistory||[]),tarotNotes:clone(p.tarotNotes||{})}},
+   magic:clone(isObj(db.magic)?db.magic:{version:1,sigils:[],next:1}),
+   videos:clone(isObj(db.videos)?db.videos:{version:1,items:[],shelves:[],next:1}),
+   deck:{kept:clone(Array.isArray(d.kept)?d.kept:[])},
+   sync:{gone:clone(ensure(db).gone)},
+   settings:{name:String((db.settings&&db.settings.name)||'').slice(0,40)}
+  }};
+ }
+ /* Photo ids a package needs (handwritten pages, photos in notes). */
+ function photoIds(data){const ids=new Set();for(const x of (isObj(data)&&isObj(data.life)&&Array.isArray(data.life.items)?data.life.items:[]))for(const id of Array.isArray(x&&x.photos)?x.photos:[])if(typeof id==='string'&&/^ph-[a-z0-9]+$/.test(id))ids.add(id);return [...ids]}
+ /* A package, or a whole PULSE backup (wrapped or bare). Returns {kind, data, device, exportedAt}. */
+ function read(o){
+  if(!isObj(o))throw Error('Diese Datei ist kein PULSE-Paket.');
+  const data=isObj(o.data)?o.data:o;
+  if(!isObj(data.life)&&!isObj(data.magic)&&!isObj(data.videos))throw Error('In dieser Datei steht nichts, was PULSE abgleichen kann.');
+  if(o.kind==='abgleich'&&Number(o.format)>FORMAT)throw Error('Dieses Paket stammt aus einer neueren PULSE-Version. Aktualisiere PULSE auf diesem Gerät.');
+  return {kind:o.kind==='abgleich'?'abgleich':'backup',data,device:String(o.device||'').slice(0,40),exportedAt:ts(o.exportedAt)};
+ }
+ function okItem(x){try{Life.validate({version:1,items:[x]});return true}catch(_){return false}}
+ /* Merges `src.data` into db. Returns what happened: {life, sigils, tarot, videos, shelves, kept, removed, skipped, photos, name}. */
+ function merge(db,src,now=new Date().toISOString()){
+  const d=src&&isObj(src.data)?src.data:{},out={life:{added:0,updated:0},sigils:{added:0,updated:0},tarot:{days:0,notes:0,today:false},videos:{added:0,updated:0},shelves:0,kept:0,removed:0,skipped:0,photos:new Set(),name:false};
+  /* Tombstones of both sides count. */
+  const G=ensure(db).gone,inGone=isObj(d.sync)&&isObj(d.sync.gone)?d.sync.gone:{};
+  for(const [k,t] of Object.entries(inGone)){const kind=k.slice(0,k.indexOf(':'));if(typeof t!=='string'||!KINDS.includes(kind))continue;if(!G[k]||G[k]<t)G[k]=t}
+  const dead=(kind,x,id)=>{const g=goneAt(db,kind,id);return !!g&&g>=version(x)};
+  /* Lebensräume */
+  const life=Life.ensure(db),at=new Map(life.items.map((x,i)=>[x.id,i]));
+  const items=isObj(d.life)&&Array.isArray(d.life.items)?d.life.items:[];
+  for(const x of items){
+   if(!isObj(x)||!okItem(x)){out.skipped++;continue}
+   if(dead('life',x,x.id))continue;
+   const i=at.get(x.id),photos=()=>{for(const p of x.photos||[])out.photos.add(p)};
+   if(i==null){life.items.push(clone(x));at.set(x.id,life.items.length-1);out.life.added++;photos()}
+   else if(version(x)>version(life.items[i])){life.items[i]=clone(x);out.life.updated++;photos()}
+  }
+  life.items=life.items.filter(x=>{if(dead('life',x,x.id)){out.removed++;return false}return true});
+  /* Tarot: one daily card per day; own meanings are combined, never lost. */
+  const P=isObj(life.preferences)?life.preferences:(life.preferences={}),ip=isObj(d.life)&&isObj(d.life.preferences)?d.life.preferences:{};
+  if(!Array.isArray(P.tarotHistory))P.tarotHistory=[];
+  const days=new Set(P.tarotHistory.map(h=>h&&h.date));
+  for(const h of Array.isArray(ip.tarotHistory)?ip.tarotHistory:[]){
+   if(!isObj(h)||!isDay(h.date)||!Number.isInteger(h.index)||h.index<0||h.index>77||days.has(h.date))continue;
+   P.tarotHistory.push({date:h.date,index:h.index,source:h.source==='deck'?'deck':'digital'});days.add(h.date);out.tarot.days++;
+  }
+  P.tarotHistory.sort((a,b)=>String(a.date).localeCompare(String(b.date)));P.tarotHistory=P.tarotHistory.slice(-500);
+  const it=ip.tarot;if(isObj(it)&&isDay(it.date)&&Number.isInteger(it.index)&&it.index>=0&&it.index<78&&(!isObj(P.tarot)||!isDay(P.tarot.date)||P.tarot.date<it.date)){P.tarot={date:it.date,index:it.index,source:it.source==='deck'?'deck':'digital'};out.tarot.today=true}
+  if(!isObj(P.tarotNotes))P.tarotNotes={};
+  for(const [k,v] of Object.entries(isObj(ip.tarotNotes)?ip.tarotNotes:{})){
+   if(!/^\d+$/.test(k)||Number(k)>77||typeof v!=='string'||!v.trim())continue;
+   const cur=typeof P.tarotNotes[k]==='string'?P.tarotNotes[k]:'';
+   if(!cur.trim()){P.tarotNotes[k]=v.slice(0,4000);out.tarot.notes++}
+   else if(cur!==v&&!cur.includes(v)){P.tarotNotes[k]=(v.includes(cur)?v:cur+'\n\n'+v).slice(0,4000);out.tarot.notes++}
+  }
+  /* Sigils: charges of both sides, the furthest state, the earliest forgetting, the newest result. */
+  if(!isObj(db.magic))db.magic={version:1,sigils:[],next:1};
+  const M=db.magic;if(!Array.isArray(M.sigils))M.sigils=[];if(!Number.isInteger(M.next)||M.next<1)M.next=1;
+  M.next=Math.max(M.next,...M.sigils.map(s=>(Number(s&&s.no)||0)+1));
+  const sigils=isObj(d.magic)&&Array.isArray(d.magic.sigils)?d.magic.sigils:[];
+  for(const s of sigils){
+   if(!isObj(s)||typeof s.id!=='string'||!s.id||typeof s.letters!=='string'){out.skipped++;continue}
+   if(goneAt(db,'sigil',s.id))continue;
+   const cur=M.sigils.find(x=>x&&x.id===s.id);
+   if(!cur){const c=clone(s);if(!Number.isInteger(c.no)||c.no<1||M.sigils.some(x=>x.no===c.no))c.no=M.next;M.next=Math.max(M.next,c.no+1);M.sigils.push(c);out.sigils.added++;continue}
+   let changed=false;if(!Array.isArray(cur.charges))cur.charges=[];
+   const seen=new Set(cur.charges.map(c=>c&&c.at));
+   for(const c of Array.isArray(s.charges)?s.charges:[])if(isObj(c)&&c.at&&!seen.has(c.at)){cur.charges.push(clone(c));seen.add(c.at);changed=true}
+   if(changed)cur.charges.sort((a,b)=>String(a.at).localeCompare(String(b.at)));
+   if((RANK[s.status]??0)>(RANK[cur.status]??0)){cur.status=s.status;changed=true}
+   if(s.forgottenAt&&(!cur.forgottenAt||String(s.forgottenAt)<String(cur.forgottenAt))){cur.forgottenAt=s.forgottenAt;changed=true}
+   if(isObj(s.result)&&s.result.at&&(!isObj(cur.result)||String(s.result.at)>String(cur.result.at||''))){cur.result=clone(s.result);if(s.status==='offen'||s.status==='erfuellt')cur.status=s.status;changed=true}
+   if(cur.status==='neu'&&cur.charges.length){cur.status='geladen';changed=true}
+   if(changed)out.sigils.updated++;
+  }
+  M.sigils=M.sigils.filter(s=>{if(s&&goneAt(db,'sigil',s.id)){out.removed++;return false}return true});
+  /* Videos: shelves match by id or by name; a collector number already taken here is given anew. */
+  if(!isObj(db.videos))db.videos={version:1,items:[],shelves:[],next:1};
+  const Vd=db.videos;if(!Array.isArray(Vd.items))Vd.items=[];if(!Array.isArray(Vd.shelves))Vd.shelves=[];
+  const iv=isObj(d.videos)?d.videos:{},shelfMap=new Map(),lower=s=>String(s||'').toLocaleLowerCase('de');
+  for(const h of Array.isArray(iv.shelves)?iv.shelves:[]){
+   if(!isObj(h)||typeof h.id!=='string'||goneAt(db,'shelf',h.id))continue;
+   let loc=Vd.shelves.find(x=>x.id===h.id)||Vd.shelves.find(x=>lower(x.name)===lower(h.name));
+   if(!loc){loc={id:h.id,name:String(h.name||'Regal').slice(0,40),emoji:String(h.emoji||'').slice(0,4),createdAt:ts(h.createdAt)};Vd.shelves.push(loc);out.shelves++}
+   shelfMap.set(h.id,loc.id);
+  }
+  const vat=new Map(Vd.items.map((x,i)=>[x&&x.id,i])),usedNo=new Set(Vd.items.map(x=>x&&x.no));
+  for(const x of Array.isArray(iv.items)?iv.items:[]){
+   if(!isObj(x)||typeof x.id!=='string'||!/^(yt|pl)-[A-Za-z0-9_-]+$/.test(x.id)){out.skipped++;continue}
+   if(dead('video',x,x.id))continue;
+   const c=clone(x);c.shelves=(Array.isArray(c.shelves)?c.shelves:[]).map(id=>shelfMap.get(id)).filter(Boolean);
+   const i=vat.get(x.id);
+   if(i==null){if(!Number.isInteger(c.no)||c.no<1||usedNo.has(c.no))c.no=0;else usedNo.add(c.no);Vd.items.push(c);vat.set(c.id,Vd.items.length-1);out.videos.added++}
+   else{const cur=Vd.items[i];if(version(x)>version(cur)){c.no=cur.no;Vd.items[i]=c;out.videos.updated++}}
+  }
+  Vd.items=Vd.items.filter(x=>{if(x&&dead('video',x,x.id)){out.removed++;return false}return true});
+  Vd.shelves=Vd.shelves.filter(h=>{if(h&&goneAt(db,'shelf',h.id)){out.removed++;return false}return true});
+  if(Vd.items.some(x=>x&&x.no===0)){let n=Vd.items.reduce((m,x)=>Math.max(m,Number(x&&x.no)||0),0)+1;for(const x of [...Vd.items].sort((a,b)=>ts(a.addedAt).localeCompare(ts(b.addedAt))))if(x.no===0)x.no=n++;Vd.next=Math.max(Number(Vd.next)||1,n)}
+  /* Kept cards of the Stapel. */
+  if(!isObj(db.deck))db.deck={};
+  const D=db.deck;if(!Array.isArray(D.kept))D.kept=[];
+  const refs=new Set(D.kept.map(k=>k&&k.ref)),nos=new Set(D.kept.map(k=>k&&k.no));let kn=Math.max(Number(D.next)||1,...D.kept.map(k=>(Number(k&&k.no)||0)+1));
+  for(const k of isObj(d.deck)&&Array.isArray(d.deck.kept)?d.deck.kept:[]){
+   if(!isObj(k)||typeof k.ref!=='string'||refs.has(k.ref))continue;
+   const c=clone(k);if(!Number.isInteger(c.no)||c.no<1||nos.has(c.no))c.no=kn;kn=Math.max(kn,c.no+1);D.kept.push(c);refs.add(c.ref);nos.add(c.no);out.kept++;
+  }
+  D.next=kn;
+  /* The name for the greeting, if this device has none yet. */
+  const nm=isObj(d.settings)?String(d.settings.name||'').trim().slice(0,40):'';
+  if(nm){if(!isObj(db.settings))db.settings={};if(!String(db.settings.name||'').trim()){db.settings.name=nm;out.name=true}}
+  out.photos=[...out.photos];
+  return out;
+ }
+ /* Same as merge, on a copy: what a merge would do. */
+ function preview(db,src,now){return merge(clone(db),src,now)}
+ const changes=r=>r.life.added+r.life.updated+r.sigils.added+r.sigils.updated+r.tarot.days+r.tarot.notes+(r.tarot.today?1:0)+r.videos.added+r.videos.updated+r.shelves+r.kept+r.removed+(r.name?1:0);
+ return {FORMAT,ensure,forget,revive,pack,photoIds,read,merge,preview,changes};
 });
 // SOURCE: state/schema.js
 /* JSON boundary for schema 820. Unknown fields are deliberately preserved. */
@@ -2454,7 +2609,7 @@ const PulseIDB=(()=>{
    if(currentState!==undefined){const pending=JSON.stringify(state.normalize(currentState));if(expected===null||pending!==JSON.stringify(JSON.parse(expected))){assertUnchanged();writeBackup('pulseOS_pre_import_memory_backup',pending)}}
    return transact(prepared,'pulseOS_pre_import_backup');
   })}
-  function exportText(value,{wrapped=true,version='29.0.0',now=new Date()}={}){
+  function exportText(value,{wrapped=true,version='30.0.0',now=new Date()}={}){
    // Emergency export deliberately does not reject uncommitted in-memory data.
    return JSON.stringify(wrapped?{app:'PULSE',version,schemaVersion:value.schemaVersion||state.SCHEMA_VERSION,exportedAt:now.toISOString(),data:value}:value,null,2);
   }
@@ -2918,7 +3073,7 @@ function undoLife(action){
  const groups={};for(const c of action.changes)(groups[c.name]=groups[c.name]||[]).push(c);
  for(const [name,list] of Object.entries(groups)){const drop=new Set(),put=new Map();for(const c of list){if(c.before===null)drop.add(String(c.id));else put.set(String(c.id),c.before)}
   const next=(lifeArray(name)||[]).map((x,i)=>[x,String(x.id??i)]).filter(([,k])=>!drop.has(k)).map(([x,k])=>put.has(k)?put.get(k):x);
-  if(name==='items')lifeState().items=next;else db[name]=next}
+  if(name==='items'){lifeState().items=next;const now=new Date().toISOString();for(const id of drop)PulseSync.forget(db,'life',id,now);PulseSync.revive(db,'life',[...put.keys()])}else db[name]=next}
  if(save()){renderLife();toast('Änderung zurückgenommen')}
 }
 function lifeToggle(id){const was=PulseLife.get(db,id)?.status;if(was!=='done'){lifeJustDone=id;lifeJustDoneAt=Date.now();pulseTap()}if(lifeMutate(()=>PulseLife.toggle(db,id,new Date().toISOString(),key(),uid('life')),'Aufgabe aktualisiert')&&was!=='done')pulseCelebrate()}
@@ -3011,7 +3166,7 @@ function lifeCloseSheet(){closeDialog(document.getElementById('lifeSheet'))}
 function lifeLegacy(v){goView(v);if(v==='workout')showWorkout(activePlan()||'A')}
 function lifeSettings(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
- el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 29</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div>'+backupSettingsHTML()+'<div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Dein Himmel ↗','lifeCloseSheet();lifeOpenSky()','life-textbtn')+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 30</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div>'+backupSettingsHTML()+'<div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Dein Himmel ↗','lifeCloseSheet();lifeOpenSky()','life-textbtn')+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup vor '+backupAgeDays()+' Tagen.')+'</p>';
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
  (navigator.storage?.persisted?navigator.storage.persisted():Promise.resolve(false)).then(p=>{const e=document.getElementById('lifeStorageState');if(e)e.textContent=p?'Speicher: dauerhaft geschützt':'Speicher: nicht dauerhaft geschützt'}).catch(()=>{});
 }
@@ -5417,9 +5572,9 @@ function vaultMarkRemove(id,t){vaultChange(id,()=>PulseVault.removeMark(db,id,t,
 function vaultRemove(id){
  const x=PulseVault.get(db,id);if(!x)return;
  pushUndo({type:'videos',before:PulseLife.clone(db.videos)});
- if(!vaultTry(()=>PulseVault.remove(db,id)))return;save();lifeCloseSheet();renderVault();toast(vaultNo(x.no)+' entfernt','Rückgängig');
+ if(!vaultTry(()=>PulseVault.remove(db,id)))return;PulseSync.forget(db,'video',x.id,vaultNow());save();lifeCloseSheet();renderVault();toast(vaultNo(x.no)+' entfernt','Rückgängig');
 }
-function undoVideos(u){db.videos=u.before;PulseVault.normalize(db);save();renderVault();toast('Wiederhergestellt')}
+function undoVideos(u){db.videos=u.before;PulseVault.normalize(db);PulseSync.revive(db,'video',db.videos.items.map(x=>x.id));PulseSync.revive(db,'shelf',db.videos.shelves.map(h=>h.id));save();renderVault();toast('Wiederhergestellt')}
 /* ---------- Shelves ---------- */
 function vaultNewShelf(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;vaultOpenId=null;
@@ -5438,7 +5593,7 @@ function vaultEditShelf(id){
  el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Regal bearbeiten</h2>'+vaultShelfFields(h.name,h.emoji)+'<div class="life-detail-actions">'+lifeButton('Speichern',lifeCall('vaultSaveShelf',id),'life-btn dark')+lifeButton('Regal löschen',lifeCall('vaultDeleteShelf',id),'life-textbtn danger')+'</div><p class="life-footnote">Beim Löschen bleiben die Videos in deiner Sammlung, nur das Regal verschwindet.</p>';
  openDialog(document.getElementById('lifeSheet'),'#vaultShelfName');
 }
-function vaultDeleteShelf(id){pushUndo({type:'videos',before:PulseLife.clone(db.videos)});PulseVault.removeShelf(db,id);vaultShelf='';vaultTab='shelf';save();lifeCloseSheet();renderVault();toast('Regal gelöscht','Rückgängig')}
+function vaultDeleteShelf(id){pushUndo({type:'videos',before:PulseLife.clone(db.videos)});PulseVault.removeShelf(db,id);PulseSync.forget(db,'shelf',id,vaultNow());vaultShelf='';vaultTab='shelf';save();lifeCloseSheet();renderVault();toast('Regal gelöscht','Rückgängig')}
 /* ---------- Import from Google Takeout ---------- */
 let vaultPending=null;
 const vaultFmt=n=>Number(n).toLocaleString('de-DE');
@@ -5477,7 +5632,7 @@ async function vaultImportRun(){
  const m=PulseVault.reached(before,r.total);pulseSound(m?'chime':'pop');pulseTap([12,60,18]);
  toast(vaultFmt(r.added)+(r.added===1?' Video':' Videos')+' aus '+chosen.length+(chosen.length===1?' Liste':' Listen')+(r.linked?' · '+vaultFmt(r.linked)+' einsortiert':''),'Rückgängig');
 }
-function undoVideoImport(u){PulseVault.undoImport(db,u);save();renderVault();toast('Import rückgängig gemacht')}
+function undoVideoImport(u){const now=vaultNow();for(const id of u.items||[])PulseSync.forget(db,'video',id,now);for(const id of u.shelves||[])PulseSync.forget(db,'shelf',id,now);PulseVault.undoImport(db,u);save();renderVault();toast('Import rückgängig gemacht')}
 function lifeSetVideoMeta(){db.uiPrefs.videoMeta=db.uiPrefs.videoMeta===false;if(save()){lifeSettings();renderVault()}}
 function videoSettingsHTML(){return '<div class="life-settings-row"><div><b>Vorschaubilder und Titel von YouTube</b><p>Lädt Bild, Titel und Kanal von YouTube. Klappt das direkt nicht, fragt Pulse den offenen Dienst noembed.com. Wenn aus, geht nichts nach außen, bis du ein Video abspielst.</p></div>'+lifeButton(db.uiPrefs.videoMeta===false?'Aus':'An','lifeSetVideoMeta()','life-btn')+'</div>'}
 // SOURCE: ui/stapel.js
@@ -5789,8 +5944,8 @@ function sigilOpen(id){
 function sigilMutate(fn,msg){try{fn()}catch(e){return toast(e.message)}if(!save())return;renderSigils();if(msg)toast(msg);skyCheck()}
 function sigilForget(id){sigilMutate(()=>PulseSigil.forget(db,id,sigilNow()),'Vergessen. Die Absicht ist jetzt verborgen.');sigilOpen(id)}
 function sigilSaveResult(id){sigilMutate(()=>PulseSigil.result(db,id,document.getElementById('sigilResult').value,document.getElementById('sigilScore').value,sigilNow()),'Ergebnis gespeichert');sigilOpen(id)}
-function sigilDelete(id){pushUndo({type:'magic',before:PulseLife.clone(db.magic)});sigilMutate(()=>PulseSigil.remove(db,id));lifeCloseSheet();toast('Sigille gelöscht','Rückgängig')}
-function undoMagic(u){db.magic=u.before;PulseSigil.normalize(db);save();renderSigils();toast('Wiederhergestellt')}
+function sigilDelete(id){pushUndo({type:'magic',before:PulseLife.clone(db.magic)});sigilMutate(()=>{PulseSync.forget(db,'sigil',id,sigilNow());PulseSigil.remove(db,id)});lifeCloseSheet();toast('Sigille gelöscht','Rückgängig')}
+function undoMagic(u){db.magic=u.before;PulseSigil.normalize(db);PulseSync.revive(db,'sigil',db.magic.sigils.map(s=>s.id));save();renderSigils();toast('Wiederhergestellt')}
 function sigilDownload(id){
  const s=PulseSigil.ensure(db).sigils.find(x=>x.id===id);if(!s)return;
  const svg=PulseSigil.svg(s.letters,{method:s.method,style:s.style,seed:s.seed},{stroke:'#111',width:5}).replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" style="background:#fff" ');
@@ -5864,7 +6019,7 @@ function renderRaum(){
    '<div class="raum-type" id="raumType" hidden><label class="life-kicker" for="raumTypeArea">Getippt auf die Seite</label><textarea id="raumTypeArea" rows="5" maxlength="20000" placeholder="Was möchtest du festhalten?"></textarea><div class="raum-actions">'+lifeButton('Übernehmen','raumTypeDone(true)','life-btn dark')+(pulseSpeechSupported()?lifeButton('Sprechen',"pulseDictate('raumTypeArea')",'life-btn'):'')+lifeButton('Abbrechen','raumTypeDone(false)','life-btn')+'</div></div></div>'+
    '<textarea id="raumDictate" hidden></textarea>'+
    '<div id="raumControls" class="raum-controls"></div>'+
-   '<p class="life-footnote">Vorn das Meer, hinten die Berge, links die Tarotecke, rechts die Sigillenecke, vorn links das Notizbuch. Zum Umschauen ziehen, zum Auswählen tippen. Auf der Quest diese Seite im Browser öffnen und „In VR betreten“ tippen; beenden mit „Verlassen“ am Pult oder mit der Meta-Taste. Die Quest hat ihren eigenen PULSE-Speicher: Was du dort schreibst, liegt zunächst nur dort.</p>';
+   '<p class="life-footnote">Vorn das Meer, hinten die Berge, links die Tarotecke, rechts die Sigillenecke, vorn links das Notizbuch. Zum Umschauen ziehen, zum Auswählen tippen. Auf der Quest diese Seite im Browser öffnen und „In VR betreten“ tippen; beenden mit „Verlassen“ am Pult oder mit der Meta-Taste. Die Quest hat ihren eigenen PULSE-Speicher; mit „Abgleichen“ bringst du Handy und Quest auf denselben Stand.</p>';
   raumStart();
  }
  raumControls();
@@ -5876,7 +6031,8 @@ function raumControls(){
   '<div class="raum-row"><span class="life-kicker">Himmel</span><div class="life-seg" role="group" aria-label="Tageszeit im Raum">'+RAUM_TIMES.map(([k,l])=>'<button type="button" aria-pressed="'+(p.time===k)+'" onclick="'+lifeCall('raumSet','time',k)+'">'+l+'</button>').join('')+'</div></div>'+
   '<div class="raum-row"><span class="life-kicker">Klang</span><div class="vault-chips" role="group" aria-label="Klang im Raum">'+RAUM_SOUNDS.map(([k,l])=>'<button type="button" aria-pressed="'+(cur===k)+'" onclick="'+lifeCall('raumSet','sound',k)+'">'+l+'</button>').join('')+'</div></div>'+
   '<div class="raum-row"><span class="life-kicker">Notizbuch'+(pages?' · '+pages+(pages===1?' Seite':' Seiten'):'')+(p.draft?' · Entwurf offen':'')+'</span><div class="raum-actions">'+lifeButton('Aufschlagen','raumBook()','life-btn')+lifeButton(p.draft?'Weiterschreiben':'Schreiben','raumWrite()','life-btn')+'</div></div>'+
-  '<div class="raum-row">'+lifeButton(p.breath?'Atemkugel ausblenden':'Atemkugel zeigen',lifeCall('raumSet','breath',!p.breath),'life-btn')+'</div>';
+  '<div class="raum-row">'+lifeButton(p.breath?'Atemkugel ausblenden':'Atemkugel zeigen',lifeCall('raumSet','breath',!p.breath),'life-btn')+'</div>'+
+  '<div class="raum-row"><span class="life-kicker">Handy und Quest</span><div class="raum-actions">'+lifeButton('Abgleichen','syncOpen()','life-btn')+'</div></div>';
 }
 function raumSet(what,v){
  const p=raumPrefs();
@@ -6739,7 +6895,7 @@ function renderMore(){
   '<div id="moreBody"><div class="life-sectionhead"><h2>Räume</h2></div><div class="more-rooms">'+PulseLife.ROOMS.map(r=>'<button type="button" class="more-room '+r.color+'" onclick="'+lifeCall('lifeOpenSpaces',r.id)+'">'+lifeGlyph(r.symbol)+'<b>'+esc(r.name)+'</b><small>'+(count(r.id)?count(r.id)+' eigene · ':'')+PulseLibrary.forRoom(r.id).length+' Inhalte</small></button>').join('')+'</div>'+
   '<div class="life-sectionhead"><h2>Werkzeuge</h2></div><div class="more-tools">'+MORE_TOOLS.map(moreTile).join('')+'</div>'+
   '<div class="life-sectionhead"><h2>Du</h2></div><div class="more-list">'+
-   [['Ziele, Plan, Verlauf, Muster','Was PULSE über dich weiß','goView(\'mehub\')'],['Einstellungen und Backup','Name, Darstellung, Töne, Speicher','lifeSettings()'],['Kalender umziehen','Import aus Google Kalender, Export, Erinnerungen','calMenu()']].map(([t,s,c])=>'<button type="button" class="cos-row" onclick="'+esc(c)+'"><span><b>'+esc(t)+'</b><small>'+esc(s)+'</small></span><span class="more-arrow" aria-hidden="true">↗</span></button>').join('')+'</div></div>';
+   [['Ziele, Plan, Verlauf, Muster','Was PULSE über dich weiß','goView(\'mehub\')'],['Einstellungen und Backup','Name, Darstellung, Töne, Speicher','lifeSettings()'],['Kalender umziehen','Import aus Google Kalender, Export, Erinnerungen','calMenu()'],['Mit anderem Gerät abgleichen','Handy und Quest auf denselben Stand','syncOpen()']].map(([t,s,c])=>'<button type="button" class="cos-row" onclick="'+esc(c)+'"><span><b>'+esc(t)+'</b><small>'+esc(s)+'</small></span><span class="more-arrow" aria-hidden="true">↗</span></button>').join('')+'</div></div>';
  renderMoreResults();
 }
 /* One search over everything: entries and appointments, videos, songs, library, tarot, sigils. */
@@ -6776,7 +6932,7 @@ async function backupSnapshot(kind='day'){
 }
 /* The day's snapshot follows the day: refreshed when Pulse goes to the background (at most every 10 min). */
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&db&&Date.now()-backupLastSnap>600000)backupSnapshot('day').catch(()=>{})});
-const BACKUP_KIND={day:'Tagesstand','vor-import':'Vor einem Import','vor-wiederherstellung':'Vor einer Wiederherstellung','vor-kalenderimport':'Vor einem Kalender-Import'};
+const BACKUP_KIND={day:'Tagesstand','vor-import':'Vor einem Import','vor-wiederherstellung':'Vor einer Wiederherstellung','vor-kalenderimport':'Vor einem Kalender-Import','vor-abgleich':'Vor einem Abgleich'};
 function backupWhen(iso){const d=iso.slice(0,10),t=new Date(iso).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});return (d===key()?'Heute':d===PulseLife.offset(key(),-1)?'Gestern':lifeDate(d,{weekday:'short',day:'numeric',month:'short'}))+', '+t}
 async function backupTimeline(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
@@ -6816,8 +6972,90 @@ function backupSettingsHTML(){
  return '<div class="life-sectionhead"><h3>Deine Daten</h3></div>'+storageUsageHTML()+
   '<div class="life-settings-row"><div><b>Zeitreise</b><p>Automatisch jeden Tag eine Sicherung im Browser, die letzten '+BACKUP_DAYS+' Tage.</p></div>'+lifeButton('Ansehen','backupTimeline()','life-btn')+'</div>'+
   '<div class="life-settings-row"><div><b>Backup außerhalb des Handys</b><p>'+(age===null?'Noch nie gesichert.':'Zuletzt vor '+age+(age===1?' Tag':' Tagen')+'.')+' Schützt vor Verlust oder Defekt des Handys: teilen in Google Drive, per Mail oder in einen Chat an dich selbst.</p></div>'+lifeButton('Backup teilen','backupShare()','life-btn dark')+'</div>'+
+  '<div class="life-settings-row"><div><b>Mit anderem Gerät abgleichen</b><p>Handy und Quest auf denselben Stand bringen, statt alles zu ersetzen.</p></div>'+lifeButton('Abgleichen','syncOpen()','life-btn')+'</div>'+
   '<div class="life-settings-row"><div><b>Erinnerung</b><p>Wann der Tag dich an ein neues Backup erinnert.</p></div><div class="life-seg" role="group" aria-label="Erinnerung an Backup">'+[[3,'3 Tage'],[7,'Woche'],[14,'2 Wochen'],[0,'Aus']].map(([v,l])=>'<button type="button" aria-pressed="'+(every===v)+'" onclick="backupSetEvery('+v+')">'+l+'</button>').join('')+'</div></div>'+
   '<div class="life-detail-actions">'+lifeButton('Als Datei herunterladen',lifeCall('exportPulse'),'life-btn')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,.txt,application/json,text/plain" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div>';
+}
+// SOURCE: ui/sync.js
+/* Abgleich between devices (phone and Quest each keep their own PULSE): make a package here, read the
+   package of the other device, see what would change, merge. A whole backup can be merged too. */
+let syncPending=null;
+const syncFrom=d=>({Quest:'von der Quest',Handy:'vom Handy',Computer:'vom Computer'})[d]||(d?'von '+d:'');
+function syncDevice(){const u=navigator.userAgent||'';return /OculusBrowser|Quest|Pacific/i.test(u)?'Quest':/Android|iPhone|iPad|Mobile/i.test(u)?'Handy':'Computer'}
+function syncOpen(){
+ syncPending=null;
+ document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
+ const last=db.sync&&db.sync.last;
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Mit anderem Gerät abgleichen</h2>'+
+  '<p class="life-detail-intro">Handy und Quest haben je einen eigenen PULSE-Speicher. Ein Abgleich bringt beide auf denselben Stand: Einträge und Notizbuch, Sigillen, Tarot, Videos und behaltene Karten. Körperdaten und Songtexte bleiben, wo sie sind.</p>'+
+  '<ol class="sync-steps"><li>Hier ein Paket erstellen und teilen, zum Beispiel in Google Drive.</li><li>Auf dem anderen Gerät das Paket einlesen und zusammenführen.</li><li>Danach dasselbe andersherum. Dann haben beide alles.</li></ol>'+
+  '<div class="life-detail-actions">'+lifeButton('Paket erstellen','syncExport()','life-btn dark')+'<label class="life-btn">Paket einlesen<input class="srOnly" type="file" accept=".json,.txt,application/json,text/plain" onchange="syncPick(this.files[0]);this.value=\'\'"/></label></div>'+
+  '<div id="syncResult" aria-live="polite"></div>'+
+  (last&&last.at?'<p class="life-subtle">Letzter Abgleich: '+esc(backupWhen(last.at))+(last.direction==='in'?' · eingelesen':' · Paket erstellt')+'</p>':'')+
+  '<p class="life-footnote">Neues kommt dazu. Gibt es denselben Eintrag auf beiden Geräten, gilt die neuere Fassung; Ladungen von Sigillen werden zusammengezählt. Gelöschtes bleibt gelöscht. Vor dem Zusammenführen legt PULSE eine Sicherung an (Einstellungen → Zeitreise). Auf der Quest: das Paket im Browser in Google Drive öffnen, herunterladen und hier einlesen. Auch ein PULSE-Backup lässt sich so zusammenführen, statt alles zu ersetzen; übernommen werden dabei nur die oben genannten Bereiche.</p>';
+ if(activeDialog!=='lifeSheet')openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
+}
+function syncMark(direction,device=''){const s=PulseSync.ensure(db);s.last={at:new Date().toISOString(),direction,device};save()}
+async function syncExport(){
+ const device=syncDevice(),pkg=PulseSync.pack(db,{device,now:new Date().toISOString(),app:'30.0.0'});
+ let photos=0;
+ try{const ids=PulseSync.photoIds(pkg.data);if(ids.length){pkg.photos=await PulsePhotos.exportSome(ids);photos=Object.keys(pkg.photos).length}}catch(_){toast('Bilder konnten nicht mit ins Paket. Die Einträge sind drin.')}
+ const text=JSON.stringify(pkg),name='PULSE_abgleich_'+device+'_'+key();
+ const file=typeof File==='function'?new File([text],name+'.txt',{type:'text/plain'}):null;
+ const done=how=>{syncMark('out',device);toast(how+(photos?' · mit '+photos+(photos===1?' Bild':' Bildern'):''))};
+ if(file&&navigator.canShare?.({files:[file]})){
+  try{await navigator.share({files:[file],title:'PULSE-Abgleich',text:'PULSE-Abgleich '+syncFrom(device)});done('Paket geteilt');return}
+  catch(e){if(e&&e.name==='AbortError')return}
+ }
+ PulseStorageUI.download(text,name+'.json');done('Paket als Datei gespeichert');
+}
+function syncPick(file){
+ if(!file)return;const box=document.getElementById('syncResult');if(box)box.innerHTML='<p class="life-subtle">Wird gelesen …</p>';
+ const r=new FileReader();r.onerror=()=>{if(box)box.innerHTML='';toast('Die Datei ließ sich nicht lesen.')};
+ r.onload=()=>{try{
+  let o;try{o=JSON.parse(String(r.result||''))}catch(_){throw Error('Diese Datei ist kein PULSE-Paket.')}
+  const photos=o&&o.photos&&typeof o.photos==='object'&&!Array.isArray(o.photos)?o.photos:null;
+  let src;
+  if(o&&o.kind==='abgleich')src=PulseSync.read(o);
+  else{if(o&&typeof o==='object')delete o.photos;src={kind:'backup',data:storage.prepareImport(JSON.stringify(o)),device:'',exportedAt:String(o&&o.exportedAt||'')}}
+  syncPending={src,photos,prev:PulseSync.preview(db,src,new Date().toISOString())};
+  syncShowPreview();
+ }catch(e){if(box)box.innerHTML='<p class="life-subtle">'+esc(e.message)+'</p>';toast(e.message)}};
+ r.readAsText(file);
+}
+function syncLines(r){
+ const n=(v,one,many)=>v+' '+(v===1?one:many),both=(a,b)=>[a,b].filter(Boolean).join(', '),L=[];
+ if(r.life.added||r.life.updated)L.push(['Einträge',both(r.life.added&&n(r.life.added,'neuer','neue'),r.life.updated&&n(r.life.updated,'neuere Fassung','neuere Fassungen'))]);
+ if(r.sigils.added||r.sigils.updated)L.push(['Sigillen',both(r.sigils.added&&n(r.sigils.added,'neue','neue'),r.sigils.updated&&n(r.sigils.updated,'ergänzt','ergänzt'))]);
+ if(r.tarot.days||r.tarot.notes||r.tarot.today)L.push(['Tarot',both(r.tarot.days&&n(r.tarot.days,'Tageskarte','Tageskarten'),r.tarot.notes&&n(r.tarot.notes,'eigene Bedeutung','eigene Bedeutungen'))||'die heutige Karte']);
+ if(r.videos.added||r.videos.updated)L.push(['Videos',both(r.videos.added&&n(r.videos.added,'neues','neue'),r.videos.updated&&n(r.videos.updated,'neuere Fassung','neuere Fassungen'))]);
+ if(r.shelves)L.push(['Regale',n(r.shelves,'neues','neue')]);
+ if(r.kept)L.push(['Behaltene Karten',n(r.kept,'neue','neue')]);
+ if(r.removed)L.push(['Entfernt',n(r.removed,'Sache, die drüben gelöscht wurde','Sachen, die drüben gelöscht wurden')]);
+ if(r.name)L.push(['Name','wird übernommen']);
+ return L;
+}
+const syncList=r=>'<ul class="sync-list">'+syncLines(r).map(([a,b])=>'<li><span>'+esc(a)+'</span>'+esc(b)+'</li>').join('')+'</ul>';
+function syncShowPreview(){
+ const p=syncPending,box=document.getElementById('syncResult');if(!p||!box)return;
+ const from=p.src.kind==='backup'?'PULSE-Backup':'Paket'+(p.src.device?' '+syncFrom(p.src.device):'');
+ const when=p.src.exportedAt?' · '+backupWhen(p.src.exportedAt):'',total=PulseSync.changes(p.prev);
+ box.innerHTML='<div class="sync-preview"><b>'+esc(from+when)+'</b>'+(total?syncList(p.prev)+(p.prev.skipped?'<p class="life-subtle">'+p.prev.skipped+' unlesbare Datensätze werden übersprungen.</p>':'')+
+  '<div class="life-detail-actions">'+lifeButton('Zusammenführen','syncApply()','life-btn dark')+lifeButton('Abbrechen','syncCancel()','life-btn')+'</div>':'<p>Nichts Neues darin. Für diese Bereiche ist hier schon alles da.</p>')+'</div>';
+}
+function syncCancel(){syncPending=null;const box=document.getElementById('syncResult');if(box)box.innerHTML=''}
+async function syncApply(){
+ const p=syncPending;if(!p)return;syncPending=null;
+ const box=document.getElementById('syncResult');if(box)box.innerHTML='<p class="life-subtle">Wird zusammengeführt …</p>';
+ await backupSnapshot('vor-abgleich').catch(()=>{});
+ const before=JSON.stringify(db);let r;
+ try{r=PulseSync.merge(db,p.src,new Date().toISOString());PulseSigil.normalize(db);PulseVault.normalize(db);PulseDeck.ensure(db);PulseSync.ensure(db).last={at:new Date().toISOString(),direction:'in',device:p.src.device||''}}
+ catch(e){db=JSON.parse(before);if(box)box.innerHTML='';toast('Abgleich fehlgeschlagen: '+e.message);return}
+ if(p.photos&&r.photos.length){const want={};for(const id of r.photos)if(typeof p.photos[id]==='string')want[id]=p.photos[id];try{await PulsePhotos.importAll(want)}catch(_){toast('Einige Bilder ließen sich nicht übernehmen.')}}
+ if(!save()){db=JSON.parse(before);if(box)box.innerHTML='';return}
+ renderLife();
+ if(box)box.innerHTML='<div class="sync-preview done"><b>Zusammengeführt.</b>'+syncList(r)+'<p>Damit beide Geräte gleich sind: jetzt hier ein Paket erstellen und auf dem anderen Gerät einlesen.</p><div class="life-detail-actions">'+lifeButton('Paket für das andere Gerät','syncExport()','life-btn dark')+'</div></div>';
+ toast('Abgleich fertig');
 }
 // SOURCE: ui/body-hub.js
 /* Körper in the same design as the Tag screen: training hero, food and water rings, quick actions,
@@ -6889,9 +7127,10 @@ const PulsePhotos=(()=>{
  async function collect(keep){if(!supported)return;const set=new Set(keep);for(const r of await all())if(!set.has(r.id))await remove(r.id)}
  const toDataURL=blob=>new Promise((res,rej)=>{const f=new FileReader();f.onload=()=>res(f.result);f.onerror=()=>rej(f.error);f.readAsDataURL(blob)});
  function fromDataURL(d){const [head,body]=d.split(',');const bin=atob(body),bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);return new Blob([bytes],{type:head.slice(5).split(';')[0]})}
+ async function exportSome(ids){if(!supported)return {};const out={};for(const id of ids){const r=await get(id).catch(()=>null);if(r&&r.blob)out[id]=await toDataURL(r.blob)}return out}
  async function exportAll(){if(!supported)return {};const out={};for(const r of await all())out[r.id]=await toDataURL(r.blob);return out}
  async function importAll(map){if(!supported||!map||typeof map!=='object')return 0;let n=0;for(const [id,d] of Object.entries(map)){if(!/^ph-[a-z0-9]+$/.test(id)||typeof d!=='string'||!d.startsWith('data:image/'))continue;await put({id,blob:fromDataURL(d),created:new Date().toISOString()});n++}return n}
- return {supported,add,url,hydrate,collect,exportAll,importAll};
+ return {supported,add,url,hydrate,collect,exportSome,exportAll,importAll};
 })();
 function photoReferences(){
  const refs=new Set();

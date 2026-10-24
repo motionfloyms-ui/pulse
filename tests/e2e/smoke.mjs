@@ -130,7 +130,8 @@ try{
   assert.equal(await ev(()=>document.getElementById('appMain').dataset.view),'bodyhub');
   const w=await ev(()=>today().water||0);await pg.click('.body-quick >> text=Wasser');await pg.waitForTimeout(150);
   assert.equal(await ev(()=>today().water),w+.25);
-  assert.match(await pg.getAttribute('#bodyHubContent .tile-body .pulse-ring:nth-child(2)','aria-label'),new RegExp(String(w+.25).replace('.',',')));
+  const want=String(w+.25).replace('.',',');await pg.waitForFunction(s=>(document.querySelector('#bodyHubContent .tile-body .pulse-ring:nth-child(2)')?.getAttribute('aria-label')||'').includes(s),want,{timeout:5000}).catch(()=>{});
+  assert.match(await pg.getAttribute('#bodyHubContent .tile-body .pulse-ring:nth-child(2)','aria-label'),new RegExp(want));
   for(const [t,v] of [['Essen & Trinken','nutrition'],['Training','workout'],['Befinden & Zyklus','recovery'],['Fortschritt','trends']]){
    await ev(()=>goView('bodyhub'));await pg.click('.body-routes >> text="'+t+'"');await pg.waitForTimeout(100);
    assert.equal(await ev(()=>document.getElementById('appMain').dataset.view),v,t);
@@ -170,6 +171,26 @@ try{
   await xr.waitForFunction(()=>!RAUM.debug.renderer.xr.isPresenting,null,{timeout:10000});
   await x(()=>goView('life'));await xr.waitForTimeout(200);await xr.close();
   await pg.reload();await pg.waitForTimeout(900);/* the other window saved: start from its state */
+ });
+ await check('Abgleich: package from one device merged into another and back',async()=>{
+  await ev(()=>{const now=new Date().toISOString();PulseLife.create(db,{kind:'note',room:'sinn',title:'Vom Handy für die Quest'},'sync-a',now);PulseSigil.create(db,{intent:'Abgleich klappt'},now,'sg-sync');save()});
+  await ev(()=>syncOpen());
+  const [d1]=await Promise.all([pg.waitForEvent('download'),pg.click('#lifeDetail button:has-text("Paket erstellen")')]);const f1=await d1.path();
+  const ctx2=await browser.newContext({viewport:{width:390,height:844},timezoneId:'Europe/Berlin',locale:'de-DE',acceptDownloads:true});const q=await ctx2.newPage();
+  q.on('pageerror',e=>errs.push(step+' (zweites Gerät): '+e.message));
+  await q.goto(base);await q.waitForTimeout(900);
+  await q.evaluate(()=>{PulseLife.create(db,{kind:'note',room:'innen',title:'Seite aus der Quest',source:'raum'},'sync-b',new Date().toISOString());save()});
+  await q.evaluate(()=>syncOpen());await q.setInputFiles('#lifeDetail input[type=file]',f1);await q.waitForSelector('#syncResult .sync-preview');
+  assert.match(await q.innerText('#syncResult'),/Einträge[\s\S]*Sigillen/i);
+  await q.click('#syncResult button:has-text("Zusammenführen")');await q.waitForSelector('#syncResult .sync-preview.done');
+  assert.deepEqual(await q.evaluate(()=>[!!PulseLife.get(db,'sync-a'),!!PulseLife.get(db,'sync-b'),PulseSigil.ensure(db).sigils.some(s=>s.id==='sg-sync')]),[true,true,true]);
+  const [d2]=await Promise.all([q.waitForEvent('download'),q.click('#syncResult button:has-text("Paket für das andere Gerät")')]);const f2=await d2.path();
+  await ev(()=>syncOpen());await pg.setInputFiles('#lifeDetail input[type=file]',f2);await pg.waitForSelector('#syncResult .sync-preview');
+  await pg.click('#syncResult button:has-text("Zusammenführen")');await pg.waitForSelector('#syncResult .sync-preview.done');
+  assert.equal(await ev(()=>PulseLife.get(db,'sync-b')?.title),'Seite aus der Quest');
+  await ev(()=>syncOpen());await pg.setInputFiles('#lifeDetail input[type=file]',f2);await pg.waitForSelector('#syncResult .sync-preview');
+  assert.match(await pg.innerText('#syncResult'),/Nichts Neues/,'the same package twice changes nothing');
+  await ev(()=>lifeCloseSheet());await ctx2.close();
  });
  await check('theme switch survives reload',async()=>{await ev(()=>lifeSetTheme('light'));await pg.reload();await pg.waitForTimeout(800);assert.equal(await ev(()=>document.documentElement.dataset.theme),'light');await ev(()=>{lifeCloseSheet();lifeSetTheme('auto')})});
  await check('daily snapshot and restore (Zeitreise)',async()=>{

@@ -169,9 +169,9 @@ function vaultMarkRemove(id,t){vaultChange(id,()=>PulseVault.removeMark(db,id,t,
 function vaultRemove(id){
  const x=PulseVault.get(db,id);if(!x)return;
  pushUndo({type:'videos',before:PulseLife.clone(db.videos)});
- if(!vaultTry(()=>PulseVault.remove(db,id)))return;save();lifeCloseSheet();renderVault();toast(vaultNo(x.no)+' entfernt','Rückgängig');
+ if(!vaultTry(()=>PulseVault.remove(db,id)))return;PulseSync.forget(db,'video',x.id,vaultNow());save();lifeCloseSheet();renderVault();toast(vaultNo(x.no)+' entfernt','Rückgängig');
 }
-function undoVideos(u){db.videos=u.before;PulseVault.normalize(db);save();renderVault();toast('Wiederhergestellt')}
+function undoVideos(u){db.videos=u.before;PulseVault.normalize(db);PulseSync.revive(db,'video',db.videos.items.map(x=>x.id));PulseSync.revive(db,'shelf',db.videos.shelves.map(h=>h.id));save();renderVault();toast('Wiederhergestellt')}
 /* ---------- Shelves ---------- */
 function vaultNewShelf(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;vaultOpenId=null;
@@ -190,7 +190,7 @@ function vaultEditShelf(id){
  el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Regal bearbeiten</h2>'+vaultShelfFields(h.name,h.emoji)+'<div class="life-detail-actions">'+lifeButton('Speichern',lifeCall('vaultSaveShelf',id),'life-btn dark')+lifeButton('Regal löschen',lifeCall('vaultDeleteShelf',id),'life-textbtn danger')+'</div><p class="life-footnote">Beim Löschen bleiben die Videos in deiner Sammlung, nur das Regal verschwindet.</p>';
  openDialog(document.getElementById('lifeSheet'),'#vaultShelfName');
 }
-function vaultDeleteShelf(id){pushUndo({type:'videos',before:PulseLife.clone(db.videos)});PulseVault.removeShelf(db,id);vaultShelf='';vaultTab='shelf';save();lifeCloseSheet();renderVault();toast('Regal gelöscht','Rückgängig')}
+function vaultDeleteShelf(id){pushUndo({type:'videos',before:PulseLife.clone(db.videos)});PulseVault.removeShelf(db,id);PulseSync.forget(db,'shelf',id,vaultNow());vaultShelf='';vaultTab='shelf';save();lifeCloseSheet();renderVault();toast('Regal gelöscht','Rückgängig')}
 /* ---------- Import from Google Takeout ---------- */
 let vaultPending=null;
 const vaultFmt=n=>Number(n).toLocaleString('de-DE');
@@ -229,6 +229,6 @@ async function vaultImportRun(){
  const m=PulseVault.reached(before,r.total);pulseSound(m?'chime':'pop');pulseTap([12,60,18]);
  toast(vaultFmt(r.added)+(r.added===1?' Video':' Videos')+' aus '+chosen.length+(chosen.length===1?' Liste':' Listen')+(r.linked?' · '+vaultFmt(r.linked)+' einsortiert':''),'Rückgängig');
 }
-function undoVideoImport(u){PulseVault.undoImport(db,u);save();renderVault();toast('Import rückgängig gemacht')}
+function undoVideoImport(u){const now=vaultNow();for(const id of u.items||[])PulseSync.forget(db,'video',id,now);for(const id of u.shelves||[])PulseSync.forget(db,'shelf',id,now);PulseVault.undoImport(db,u);save();renderVault();toast('Import rückgängig gemacht')}
 function lifeSetVideoMeta(){db.uiPrefs.videoMeta=db.uiPrefs.videoMeta===false;if(save()){lifeSettings();renderVault()}}
 function videoSettingsHTML(){return '<div class="life-settings-row"><div><b>Vorschaubilder und Titel von YouTube</b><p>Lädt Bild, Titel und Kanal von YouTube. Klappt das direkt nicht, fragt Pulse den offenen Dienst noembed.com. Wenn aus, geht nichts nach außen, bis du ein Video abspielst.</p></div>'+lifeButton(db.uiPrefs.videoMeta===false?'Aus':'An','lifeSetVideoMeta()','life-btn')+'</div>'}

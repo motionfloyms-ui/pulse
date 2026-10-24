@@ -29,9 +29,10 @@ const PulsePhotos=(()=>{
  async function collect(keep){if(!supported)return;const set=new Set(keep);for(const r of await all())if(!set.has(r.id))await remove(r.id)}
  const toDataURL=blob=>new Promise((res,rej)=>{const f=new FileReader();f.onload=()=>res(f.result);f.onerror=()=>rej(f.error);f.readAsDataURL(blob)});
  function fromDataURL(d){const [head,body]=d.split(',');const bin=atob(body),bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);return new Blob([bytes],{type:head.slice(5).split(';')[0]})}
+ async function exportSome(ids){if(!supported)return {};const out={};for(const id of ids){const r=await get(id).catch(()=>null);if(r&&r.blob)out[id]=await toDataURL(r.blob)}return out}
  async function exportAll(){if(!supported)return {};const out={};for(const r of await all())out[r.id]=await toDataURL(r.blob);return out}
  async function importAll(map){if(!supported||!map||typeof map!=='object')return 0;let n=0;for(const [id,d] of Object.entries(map)){if(!/^ph-[a-z0-9]+$/.test(id)||typeof d!=='string'||!d.startsWith('data:image/'))continue;await put({id,blob:fromDataURL(d),created:new Date().toISOString()});n++}return n}
- return {supported,add,url,hydrate,collect,exportAll,importAll};
+ return {supported,add,url,hydrate,collect,exportSome,exportAll,importAll};
 })();
 function photoReferences(){
  const refs=new Set();

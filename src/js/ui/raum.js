@@ -29,7 +29,7 @@ function renderRaum(){
    '<div class="raum-type" id="raumType" hidden><label class="life-kicker" for="raumTypeArea">Getippt auf die Seite</label><textarea id="raumTypeArea" rows="5" maxlength="20000" placeholder="Was möchtest du festhalten?"></textarea><div class="raum-actions">'+lifeButton('Übernehmen','raumTypeDone(true)','life-btn dark')+(pulseSpeechSupported()?lifeButton('Sprechen',"pulseDictate('raumTypeArea')",'life-btn'):'')+lifeButton('Abbrechen','raumTypeDone(false)','life-btn')+'</div></div></div>'+
    '<textarea id="raumDictate" hidden></textarea>'+
    '<div id="raumControls" class="raum-controls"></div>'+
-   '<p class="life-footnote">Vorn das Meer, hinten die Berge, links die Tarotecke, rechts die Sigillenecke, vorn links das Notizbuch. Zum Umschauen ziehen, zum Auswählen tippen. Auf der Quest diese Seite im Browser öffnen und „In VR betreten“ tippen; beenden mit „Verlassen“ am Pult oder mit der Meta-Taste. Die Quest hat ihren eigenen PULSE-Speicher: Was du dort schreibst, liegt zunächst nur dort.</p>';
+   '<p class="life-footnote">Vorn das Meer, hinten die Berge, links die Tarotecke, rechts die Sigillenecke, vorn links das Notizbuch. Zum Umschauen ziehen, zum Auswählen tippen. Auf der Quest diese Seite im Browser öffnen und „In VR betreten“ tippen; beenden mit „Verlassen“ am Pult oder mit der Meta-Taste. Die Quest hat ihren eigenen PULSE-Speicher; mit „Abgleichen“ bringst du Handy und Quest auf denselben Stand.</p>';
   raumStart();
  }
  raumControls();
@@ -41,7 +41,8 @@ function raumControls(){
   '<div class="raum-row"><span class="life-kicker">Himmel</span><div class="life-seg" role="group" aria-label="Tageszeit im Raum">'+RAUM_TIMES.map(([k,l])=>'<button type="button" aria-pressed="'+(p.time===k)+'" onclick="'+lifeCall('raumSet','time',k)+'">'+l+'</button>').join('')+'</div></div>'+
   '<div class="raum-row"><span class="life-kicker">Klang</span><div class="vault-chips" role="group" aria-label="Klang im Raum">'+RAUM_SOUNDS.map(([k,l])=>'<button type="button" aria-pressed="'+(cur===k)+'" onclick="'+lifeCall('raumSet','sound',k)+'">'+l+'</button>').join('')+'</div></div>'+
   '<div class="raum-row"><span class="life-kicker">Notizbuch'+(pages?' · '+pages+(pages===1?' Seite':' Seiten'):'')+(p.draft?' · Entwurf offen':'')+'</span><div class="raum-actions">'+lifeButton('Aufschlagen','raumBook()','life-btn')+lifeButton(p.draft?'Weiterschreiben':'Schreiben','raumWrite()','life-btn')+'</div></div>'+
-  '<div class="raum-row">'+lifeButton(p.breath?'Atemkugel ausblenden':'Atemkugel zeigen',lifeCall('raumSet','breath',!p.breath),'life-btn')+'</div>';
+  '<div class="raum-row">'+lifeButton(p.breath?'Atemkugel ausblenden':'Atemkugel zeigen',lifeCall('raumSet','breath',!p.breath),'life-btn')+'</div>'+
+  '<div class="raum-row"><span class="life-kicker">Handy und Quest</span><div class="raum-actions">'+lifeButton('Abgleichen','syncOpen()','life-btn')+'</div></div>';
 }
 function raumSet(what,v){
  const p=raumPrefs();

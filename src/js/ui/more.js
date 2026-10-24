@@ -27,7 +27,7 @@ function renderMore(){
   '<div id="moreBody"><div class="life-sectionhead"><h2>Räume</h2></div><div class="more-rooms">'+PulseLife.ROOMS.map(r=>'<button type="button" class="more-room '+r.color+'" onclick="'+lifeCall('lifeOpenSpaces',r.id)+'">'+lifeGlyph(r.symbol)+'<b>'+esc(r.name)+'</b><small>'+(count(r.id)?count(r.id)+' eigene · ':'')+PulseLibrary.forRoom(r.id).length+' Inhalte</small></button>').join('')+'</div>'+
   '<div class="life-sectionhead"><h2>Werkzeuge</h2></div><div class="more-tools">'+MORE_TOOLS.map(moreTile).join('')+'</div>'+
   '<div class="life-sectionhead"><h2>Du</h2></div><div class="more-list">'+
-   [['Ziele, Plan, Verlauf, Muster','Was PULSE über dich weiß','goView(\'mehub\')'],['Einstellungen und Backup','Name, Darstellung, Töne, Speicher','lifeSettings()'],['Kalender umziehen','Import aus Google Kalender, Export, Erinnerungen','calMenu()']].map(([t,s,c])=>'<button type="button" class="cos-row" onclick="'+esc(c)+'"><span><b>'+esc(t)+'</b><small>'+esc(s)+'</small></span><span class="more-arrow" aria-hidden="true">↗</span></button>').join('')+'</div></div>';
+   [['Ziele, Plan, Verlauf, Muster','Was PULSE über dich weiß','goView(\'mehub\')'],['Einstellungen und Backup','Name, Darstellung, Töne, Speicher','lifeSettings()'],['Kalender umziehen','Import aus Google Kalender, Export, Erinnerungen','calMenu()'],['Mit anderem Gerät abgleichen','Handy und Quest auf denselben Stand','syncOpen()']].map(([t,s,c])=>'<button type="button" class="cos-row" onclick="'+esc(c)+'"><span><b>'+esc(t)+'</b><small>'+esc(s)+'</small></span><span class="more-arrow" aria-hidden="true">↗</span></button>').join('')+'</div></div>';
  renderMoreResults();
 }
 /* One search over everything: entries and appointments, videos, songs, library, tarot, sigils. */

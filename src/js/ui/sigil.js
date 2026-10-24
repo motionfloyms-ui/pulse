@@ -58,8 +58,8 @@ function sigilOpen(id){
 function sigilMutate(fn,msg){try{fn()}catch(e){return toast(e.message)}if(!save())return;renderSigils();if(msg)toast(msg);skyCheck()}
 function sigilForget(id){sigilMutate(()=>PulseSigil.forget(db,id,sigilNow()),'Vergessen. Die Absicht ist jetzt verborgen.');sigilOpen(id)}
 function sigilSaveResult(id){sigilMutate(()=>PulseSigil.result(db,id,document.getElementById('sigilResult').value,document.getElementById('sigilScore').value,sigilNow()),'Ergebnis gespeichert');sigilOpen(id)}
-function sigilDelete(id){pushUndo({type:'magic',before:PulseLife.clone(db.magic)});sigilMutate(()=>PulseSigil.remove(db,id));lifeCloseSheet();toast('Sigille gelöscht','Rückgängig')}
-function undoMagic(u){db.magic=u.before;PulseSigil.normalize(db);save();renderSigils();toast('Wiederhergestellt')}
+function sigilDelete(id){pushUndo({type:'magic',before:PulseLife.clone(db.magic)});sigilMutate(()=>{PulseSync.forget(db,'sigil',id,sigilNow());PulseSigil.remove(db,id)});lifeCloseSheet();toast('Sigille gelöscht','Rückgängig')}
+function undoMagic(u){db.magic=u.before;PulseSigil.normalize(db);PulseSync.revive(db,'sigil',db.magic.sigils.map(s=>s.id));save();renderSigils();toast('Wiederhergestellt')}
 function sigilDownload(id){
  const s=PulseSigil.ensure(db).sigils.find(x=>x.id===id);if(!s)return;
  const svg=PulseSigil.svg(s.letters,{method:s.method,style:s.style,seed:s.seed},{stroke:'#111',width:5}).replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" style="background:#fff" ');

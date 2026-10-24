@@ -14,7 +14,7 @@ async function backupSnapshot(kind='day'){
 }
 /* The day's snapshot follows the day: refreshed when Pulse goes to the background (at most every 10 min). */
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&db&&Date.now()-backupLastSnap>600000)backupSnapshot('day').catch(()=>{})});
-const BACKUP_KIND={day:'Tagesstand','vor-import':'Vor einem Import','vor-wiederherstellung':'Vor einer Wiederherstellung','vor-kalenderimport':'Vor einem Kalender-Import'};
+const BACKUP_KIND={day:'Tagesstand','vor-import':'Vor einem Import','vor-wiederherstellung':'Vor einer Wiederherstellung','vor-kalenderimport':'Vor einem Kalender-Import','vor-abgleich':'Vor einem Abgleich'};
 function backupWhen(iso){const d=iso.slice(0,10),t=new Date(iso).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});return (d===key()?'Heute':d===PulseLife.offset(key(),-1)?'Gestern':lifeDate(d,{weekday:'short',day:'numeric',month:'short'}))+', '+t}
 async function backupTimeline(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
@@ -54,6 +54,7 @@ function backupSettingsHTML(){
  return '<div class="life-sectionhead"><h3>Deine Daten</h3></div>'+storageUsageHTML()+
   '<div class="life-settings-row"><div><b>Zeitreise</b><p>Automatisch jeden Tag eine Sicherung im Browser, die letzten '+BACKUP_DAYS+' Tage.</p></div>'+lifeButton('Ansehen','backupTimeline()','life-btn')+'</div>'+
   '<div class="life-settings-row"><div><b>Backup außerhalb des Handys</b><p>'+(age===null?'Noch nie gesichert.':'Zuletzt vor '+age+(age===1?' Tag':' Tagen')+'.')+' Schützt vor Verlust oder Defekt des Handys: teilen in Google Drive, per Mail oder in einen Chat an dich selbst.</p></div>'+lifeButton('Backup teilen','backupShare()','life-btn dark')+'</div>'+
+  '<div class="life-settings-row"><div><b>Mit anderem Gerät abgleichen</b><p>Handy und Quest auf denselben Stand bringen, statt alles zu ersetzen.</p></div>'+lifeButton('Abgleichen','syncOpen()','life-btn')+'</div>'+
   '<div class="life-settings-row"><div><b>Erinnerung</b><p>Wann der Tag dich an ein neues Backup erinnert.</p></div><div class="life-seg" role="group" aria-label="Erinnerung an Backup">'+[[3,'3 Tage'],[7,'Woche'],[14,'2 Wochen'],[0,'Aus']].map(([v,l])=>'<button type="button" aria-pressed="'+(every===v)+'" onclick="backupSetEvery('+v+')">'+l+'</button>').join('')+'</div></div>'+
   '<div class="life-detail-actions">'+lifeButton('Als Datei herunterladen',lifeCall('exportPulse'),'life-btn')+'<label class="life-btn">Backup importieren<input class="srOnly" type="file" accept=".json,.txt,application/json,text/plain" onchange="importPulse(this.files[0]);this.value=\'\'"/></label></div>';
 }
