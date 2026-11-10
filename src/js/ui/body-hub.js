@@ -1,6 +1,6 @@
 // SOURCE: ui/body-hub.js
-/* Körper in the same design as the Tag screen: training hero, food and water rings, quick actions,
-   mood of the day, progress with a small line, four weeks of training, plans and recipes. */
+/* Körper: today's training, food and water with the quick actions right under them, mood and progress,
+   the four areas as one list, then four weeks of training, plans and recipes. */
 const deDate=(d,o={day:'2-digit',month:'2-digit',year:'2-digit'})=>d&&/^\d{4}-\d{2}-\d{2}/.test(d)?new Date(d.slice(0,10)+'T12:00:00').toLocaleDateString('de-DE',o):(d||'—');
 function bodySpark(values,w=120,h=36){
  if(values.length<2)return '';const min=Math.min(...values),max=Math.max(...values),span=max-min||1;
@@ -30,10 +30,11 @@ function renderBodyHub(){
  const host=document.getElementById('bodyHubContent');if(!host||document.getElementById('appMain').dataset.view!=='bodyhub')return;
  const ret=!!PulseContext.returnPolicy(db,key());
  const plan=p=>'<details class="life-plan-details"><summary><b>Plan '+p+'</b><small>'+planData(p).length+' Übungen'+(ret?' · Wiedereinstieg':'')+'</small></summary>'+planData(p).map((x,i)=>{const last=previousExerciseSession(x[0]);return '<div class="life-plan-row"><span>'+(i+1)+'</span><div><b>'+esc(x[0])+'</b><small>'+esc(x[1])+' · '+esc(x[3])+' Pause'+(last.length?' · zuletzt '+esc(last.map(w=>de(w.kg)+'×'+w.reps).join(' / '))+' kg':'')+'</small></div></div>'}).join('')+'<button type="button" class="life-btn" onclick="goView(\'workout\');showWorkout(\''+p+'\')">Plan '+p+' öffnen</button></details>';
- host.innerHTML='<header class="life-pagehead"><span class="life-kicker">Essen · Training · Erholung</span><h1>Körper</h1></header>'+bodyHero()+
-  '<div class="pulse-bento body-bento">'+tileBody()+bodyMood()+bodyProgress()+'</div>'+
+ host.innerHTML='<header class="life-pagehead"><h1>Körper</h1></header>'+bodyHero()+
+  '<div class="pulse-bento body-bento">'+tileBody()+'</div>'+
   '<div class="body-quick">'+[['＋ 250 ml','Wasser','addWater(.25)'],['Mahlzeit','eintragen','goView(\'nutrition\')'],['Barcode','scannen','goView(\'nutrition\');setTimeout(openFoodScanner,200)']].map(([b,s,c])=>'<button type="button" onclick="'+c+'"><b>'+b+'</b><small>'+s+'</small></button>').join('')+'</div>'+
-  bodyWeeks()+
+  '<div class="pulse-bento body-bento">'+bodyMood()+bodyProgress()+'</div>'+
   '<div class="more-list body-routes">'+[['Essen & Trinken','Mahlzeiten, Getränke, eigene Lebensmittel','nutrition'],['Training','Sätze erfassen, Fokus oder alle Übungen','workout'],['Befinden & Zyklus','Tagesform, Schlaf, Zyklus','recovery'],['Fortschritt','Taille, Maße, Trainingsverlauf','trends']].map(([t,s,v])=>'<button type="button" class="cos-row" onclick="'+lifeCall('lifeLegacy',v)+'"><span><b>'+esc(t)+'</b><small>'+esc(s)+'</small></span><span class="more-arrow" aria-hidden="true">↗</span></button>').join('')+'</div>'+
+  bodyWeeks()+
   '<div class="life-sectionhead"><h2>Deine Trainingspläne</h2><span class="life-subtle">Mo · Mi · Fr</span></div>'+plan('A')+plan('B')+lifeLibSection('koerper');
 }

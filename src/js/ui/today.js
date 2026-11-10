@@ -1,5 +1,5 @@
 // SOURCE: ui/today.js
-/* Tag: an adaptive overview (tiles ordered by time of day), the day's agenda, and the one-line capture. */
+/* Tag: the one-line capture, the day's appointments and tasks first, then the body, then a short list for the rest. */
 /* Haptics only after the person has touched the page (Chrome blocks it otherwise). */
 function pulseTap(ms=12){try{if(navigator.userActivation&&!navigator.userActivation.hasBeenActive)return;navigator.vibrate?.(ms)}catch(_){}}
 let lifeJustDone=null,lifeJustDoneAt=0;
@@ -19,32 +19,24 @@ function tileTraining(){
  const n=days.filter(trainedOn).length;
  return '<button type="button" class="pulse-tile tile-training" onclick="openTodaysTraining()"><span class="pulse-tile-head">Training</span><b class="pulse-tile-value">'+esc(status)+'</b><span class="pulse-dots" aria-label="'+anz(n,'Trainingstag','Trainingstage')+' in den letzten 7 Tagen">'+days.map(x=>'<i class="'+(trainedOn(x)?'on':'')+(x===key()?' today':'')+'" title="'+esc(lifeDate(x,{weekday:'short'}))+'"></i>').join('')+'</span><small>'+n+' von 7 Tagen</small></button>';
 }
-function nextUp(){
- const now=new Date(),hm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0'),items=PulseLife.day(db,key()).filter(x=>x.status!=='done');
- return items.find(x=>x.time&&x.time>=hm)||items.find(x=>!x.time)||null;
+/* Start page, lower half: what belongs to the body, then one quiet list for everything else. */
+function toolIcon(id){const t=MORE_TOOLS.find(x=>x[0]===id);return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(t?t[4]:'')+'</svg>'}
+function tileWater(){
+ const w=Number(db.waterGoal)||2,v=Math.round((today().water||0)*100)/100,de=n=>n.toLocaleString('de-DE',{maximumFractionDigits:2});
+ return '<button type="button" class="pulse-tile tile-water" onclick="addWater(.25)" aria-label="250 Milliliter Wasser eintragen. Heute '+de(v)+' von '+de(w)+' Litern"><span class="pulse-tile-head">Wasser</span><b class="pulse-tile-value">＋ 250 ml</b><small>'+de(v)+' von '+de(w)+' L</small></button>';
 }
-function tileNext(){
- const x=nextUp();
- if(!x)return '<button type="button" class="pulse-tile tile-next" onclick="lifeQuick()"><span class="pulse-tile-head">Als Nächstes</span><b class="pulse-tile-value">Nichts geplant</b><small>Termin oder Aufgabe hinzufügen</small></button>';
- return '<button type="button" class="pulse-tile tile-next" onclick="'+lifeCall('lifeOpenItem',x.id)+'"><span class="pulse-tile-head">'+(x.time?'Um '+esc(x.time):'Aufgabe heute')+'</span><b class="pulse-tile-value">'+esc(x.title)+'</b><small>'+esc(PulseLife.room(x.room).name)+'</small></button>';
+function lifeBodyBlock(){
+ return '<div class="life-sectionhead"><h2>Körper</h2>'+lifeButton('Öffnen','goView(\'bodyhub\')','life-textbtn')+'</div><div class="pulse-bento">'+tileBody()+tileTraining()+tileWater()+'</div>';
 }
-function tileNight(){
- const m=cosmosMoon(key()),card=libTodayCard();
- const tarot=card?'<button type="button" class="life-tonight-card picked" onclick="'+lifeCall('lifeTarotOpen',card.index)+'"><span class="life-mini-card">'+lifeGlyph('star')+'</span><b>'+esc(card.card.name)+'</b><small>Tageskarte</small></button>'
-  :'<div class="life-tonight-card"><span class="life-mini-card back"></span><span class="life-today-actions">'+lifeButton('Karte ziehen',lifeCall('lifeDrawCard'),'life-textbtn')+lifeButton('Aus meinem Deck',lifeCall('lifeTarotBrowse','major',true),'life-textbtn')+'</span></div>';
- return '<section class="life-tonight span2" aria-label="Mond und Tageskarte"><button type="button" class="life-tonight-moon" onclick="'+lifeCall('lifeOpenCalendar',key())+'">'+moonSvg(m,52)+'<span><span class="life-kicker">Mond · '+m.illumination+' %</span><b>'+esc(m.name)+'</b><small>'+esc(moonLine(m))+'</small></span></button>'+tarot+'</section>';
-}
-function tileEvening(){return '<button type="button" class="pulse-tile tile-evening" onclick="'+lifeCall('lifeOpenLib','sinn-tagesabschluss')+'"><span class="pulse-tile-head">Abends</span><b class="pulse-tile-value">Tagesabschluss</b><small>Drei Sätze zum Tag</small></button>'}
-function tileRecipe(){const r=PulseLibrary.daily(key(),'recipe','koerper');return r?'<button type="button" class="pulse-tile tile-recipe" onclick="'+lifeCall('lifeOpenLib',r.id)+'"><span class="pulse-tile-head">Rezeptidee</span><b class="pulse-tile-value">'+esc(r.title)+'</b><small>'+esc(r.sub.split(' · ')[0])+'</small></button>':''}
-function lifeTiles(){
- const order={morning:['stapel','next','night','body','training','sky','recipe'],day:['body','stapel','training','next','sky','recipe','night'],evening:['stapel','next','evening','night','sky','body','training']}[dayPeriod()];
- const build={body:tileBody,training:tileTraining,next:tileNext,night:tileNight,evening:tileEvening,recipe:tileRecipe,sky:tileSky,stapel:tileStapel};
- const tiles=order.map(k=>build[k]()).filter(Boolean);
- /* Asymmetric bento: the first tile is the wide hero; a lone half tile at the end stretches. */
- if(tiles[0]&&!tiles[0].includes('span2'))tiles[0]=tiles[0].replace('class="pulse-tile ','class="pulse-tile span2 ');
- if(tiles[0])tiles[0]=tiles[0].replace(/class="(pulse-tile|life-tonight)/,'class="$1 hero');
- let half=0;tiles.forEach((t,i)=>{if(t.includes('span2'))half=0;else{half++;if(half%2===1&&(i===tiles.length-1||tiles[i+1].includes('span2')))tiles[i]=t.replace('class="pulse-tile ','class="pulse-tile span2 ')}});
- return '<div class="pulse-bento">'+tiles.join('')+'</div>';
+function alsoRow(icon,title,sub,call,cls=''){return '<button type="button" class="today-also-row '+cls+'" onclick="'+call+'"><span class="today-also-ic" aria-hidden="true">'+icon+'</span><span class="today-also-text"><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span><i aria-hidden="true">›</i></button>'}
+function lifeAlsoBlock(){
+ const m=cosmosMoon(key()),card=libTodayCard(),lit=skyData().filter(b=>b.done).length,rows=[];
+ if(dayPeriod()==='evening')rows.push(alsoRow(lifeGlyph('check'),'Tagesabschluss','Drei Sätze zum Tag',lifeCall('lifeOpenLib','sinn-tagesabschluss')));
+ rows.push(alsoRow(toolIcon('stapel'),'Stapel',stapelStatus(),'lifeOpenStapel()','tile-stapel'));
+ rows.push(alsoRow(moonSvg(m,24),'Mond',m.name+', '+moonLine(m),lifeCall('lifeOpenCalendar',key())));
+ rows.push(card?alsoRow(toolIcon('tarot'),'Tageskarte',card.card.name,lifeCall('lifeTarotOpen',card.index)):alsoRow(toolIcon('tarot'),'Tageskarte','Noch keine gezogen',lifeCall('lifeDrawCard')));
+ rows.push(alsoRow(toolIcon('sky'),'Dein Himmel',anz(lit,'Stern leuchtet','Sterne leuchten'),'lifeOpenSky()'));
+ return '<div class="life-sectionhead"><h2>Außerdem</h2></div><div class="today-also">'+rows.join('')+'</div>';
 }
 function weekStrip(date){
  const monday=PulseLife.offset(date,-((new Date(date+'T12:00:00').getDay()+6)%7));
@@ -60,14 +52,15 @@ function renderLifeToday(){
   (isToday?yesterdayLine():'')+weekStrip(date)+'<div class="life-calendar-tools">'+lifeButton('Kalender',lifeCall('lifeOpenCalendar',date),'life-textbtn')+(isToday?'':lifeButton('Heute',lifeCall('lifeSelectDay',key()),'life-textbtn'))+'</div>'+
   (focus?'<button type="button" class="life-focus-banner" onclick="goView(\'focus\')"><span class="life-live-dot"></span><span><b>'+esc(focus.title)+'</b><small>'+(focus.state==='paused'?'Timer pausiert':'Timer läuft')+'</small></span><span id="lifeMiniClock">'+lifeClock(PulseLife.remaining(focus,Date.now()))+'</span></button>':'')+
   '<div class="life-capture-wrap"><button type="button" class="life-capture-line" onclick="lifeQuick()">'+lifeGlyph('plus')+'<span>'+(lifeState().draft?'Entwurf fortsetzen':'Notiz, Termin, Essen …')+'</span></button>'+(pulseSpeechSupported()?'<button type="button" class="life-capture-mic" aria-label="Per Sprache erfassen" onclick="lifeQuick(true)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>':'')+'</div>'+
-  (isToday?lifeTiles()+lifeSystemRows(date)+lifeReviewRows():'')+
+  (isToday?lifeReviewRows():'')+
   '<div class="life-sectionhead"><h2>Termine</h2>'+lifeButton('＋ Termin',lifeCall('lifeCompose',{kind:'event',date}),'life-textbtn')+'</div>'+
   (allDay.length?'<div class="life-allday"><span class="life-subtle">Ganztägig</span>'+allDay.map(x=>lifeCard(x,{compact:true})).join('')+'</div>':'')+
   (timed.length?timed.map(x=>'<div class="life-time-row"><time>'+esc(x.time)+'</time><div class="life-timed-entry '+PulseLife.room(x.room).color+'">'+lifeCard(x,{compact:true})+'<small>'+x.duration+' Min.</small></div></div>').join(''):allDay.length?'':'<p class="life-none">Keine Termine.</p>')+
   '<div class="life-sectionhead"><h2>Aufgaben</h2>'+lifeButton('＋ Aufgabe',lifeCall('lifeCompose',{kind:'task',date}),'life-textbtn')+'</div>'+
   (anytime.length?anytime.map(x=>lifeCard(x,{compact:true})).join(''):'<p class="life-none">Keine Aufgaben für '+(isToday?'heute':'diesen Tag')+'.</p>')+
   (overdue.length&&isToday?'<button class="life-return-row" type="button" onclick="lifeReview()"><span>!</span><div><b>'+overdue.length+' überfällig</b><small>Neu planen oder parken</small></div><span>›</span></button>':'')+
-  (loose.length&&isToday?'<div class="life-sectionhead"><h2>Ohne Datum</h2>'+lifeButton('Alle',lifeCall('lifeOpenLibrary','task'),'life-textbtn')+'</div>'+loose.map(x=>lifeCard(x,{compact:true})).join(''):'');
+  (loose.length&&isToday?'<div class="life-sectionhead"><h2>Ohne Datum</h2>'+lifeButton('Alle',lifeCall('lifeOpenLibrary','task'),'life-textbtn')+'</div>'+loose.map(x=>lifeCard(x,{compact:true})).join(''):'')+
+  (isToday?lifeBodyBlock()+lifeAlsoBlock()+lifeSystemRows(date):'');
 }
 /* One-line capture: type, see where it goes, press Enter. */
 const ROOM_TAGS={alltag:'alltag',innen:'innen',innenleben:'innen',sinn:'sinn',rituale:'sinn',tarot:'sinn','körper':'koerper',koerper:'koerper',essen:'koerper',menschen:'menschen',ideen:'ideen',lernen:'ideen',musik:'ideen','draußen':'draussen',draussen:'draussen',natur:'draussen',zuhause:'zuhause',haushalt:'zuhause'};

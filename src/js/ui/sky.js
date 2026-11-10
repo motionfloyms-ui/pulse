@@ -42,7 +42,6 @@ function renderSky(){
   skyGlow()+skyTarot();
 }
 /* Tag screen: a small sky tile and yesterday in one line. */
-function tileSky(){const list=skyData(),lit=list.filter(b=>b.done).length;return '<button type="button" class="pulse-tile tile-sky" onclick="lifeOpenSky()"><span class="pulse-tile-head">Dein Himmel</span><b class="pulse-tile-value">'+anz(lit,'Stern','Sterne')+'</b><span class="tile-sky-mini" aria-hidden="true">'+list.slice(0,30).map(b=>'<i class="'+(b.done?'on':'')+'"></i>').join('')+'</span><small>'+esc(PulseSky.rank(lit).name)+'</small></button>'}
 function yesterdayLine(){if(dayPeriod()!=='morning')return '';const p=PulseSky.yesterday(db,key(),{proteinGoal:goalValue('protein')});return p.length?'<p class="life-yesterday"><b>Gestern:</b> '+esc(p.join(' · '))+'</p>':''}
 /* ---------- Cut-up machine ---------- */
 let cutupState={text:'',size:'mittel',seed:1,keep:[]};

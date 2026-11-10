@@ -1,7 +1,7 @@
 // SOURCE: ui/feel.js
 /* Look and feel: theme (automatic, light, dark), optional sounds, the breathing day pulse,
    and YouTube videos that load only after a tap. */
-const THEME_COLORS={light:'#F2F1F6',dark:'#08090E'};
+const THEME_COLORS={light:'#F2F4F3',dark:'#0E1312'};
 function pulseThemeChoice(){const t=db?.uiPrefs?.theme;return ['light','dark'].includes(t)?t:'auto'}
 let appliedTheme=null;
 function applyTheme(t=pulseThemeChoice()){

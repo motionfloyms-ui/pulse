@@ -189,9 +189,9 @@ function stapelConfigure(what,v){
  save();stapelSettings();toast(fresh?'Gilt ab jetzt':'Gilt ab dem nächsten Stapel');
 }
 /* ---------- Tag tile ---------- */
-function tileStapel(){
+function stapelStatus(){
  const d=PulseDeck.ensure(db),today=d.day===key()&&d.cards.length,n=today?d.cards.length:d.size,done=today&&d.pos>=d.cards.length,at=today?Math.min(d.pos,n):0;
- return '<button type="button" class="pulse-tile tile-stapel" onclick="lifeOpenStapel()"><span class="pulse-tile-head">Dein Stapel</span><b class="pulse-tile-value">'+(done?'Für heute durch':at?'Weiter bei Karte '+(at+1):'Neu · '+n+' Karten')+'</b><span class="tile-stapel-bar" aria-hidden="true">'+Array.from({length:n},(_,i)=>'<i class="'+(i<at||done?'on':'')+'"></i>').join('')+'</span><small>'+(done?'Morgen gibt es einen neuen':'Statt Scrollen: lesen, schauen, behalten')+'</small></button>';
+ return done?'Für heute durch':at?'Weiter bei Karte '+(at+1)+' von '+n:n+' Karten für heute';
 }
 /* Swipe left/right on the card; arrow keys on a keyboard. */
 document.addEventListener('pointerdown',e=>{if(!e.target.closest?.('#stapelStage')||e.target.closest('button,a,iframe,textarea,input'))return stapelTouch=null;stapelTouch={x:e.clientX,y:e.clientY,t:Date.now()}});

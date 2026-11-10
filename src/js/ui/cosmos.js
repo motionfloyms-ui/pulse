@@ -81,12 +81,13 @@ function cosmosList(date){
 }
 /* ---------- Almanac ---------- */
 function cosmosCard(kicker,title,body,actions='',cls=''){return '<article class="cos-card '+cls+'"><span class="life-kicker">'+kicker+'</span>'+(title?'<b>'+title+'</b>':'')+body+(actions?'<div class="cos-actions">'+actions+'</div>':'')+'</article>'}
+let cosmosAlmOpen=false;
 function cosmosAlmanac(date){
  const m=cosmosMoon(date),noon=cosmosNoon(date),start=new Date(date+'T00:00:00').getTime();
  const sign=PulseAstro.moonSign(noon),ingress=PulseAstro.moonIngresses(start,start+864e5),sun=PulseAstro.sunSign(noon),planet=PulseAstro.dayRuler(date),PL=PulseLore.PLANETS[planet];
  const almanac=PulseLore.almanac({phase:m.index,element:sign.element,planet}),P=PulseLore.PHASES[m.index];
  const when=m.event?(m.event.type==='new'?'Neumond':'Vollmond')+' um '+cosmosTime(m.event.ms)+' Uhr':moonLine(m);
- let out='<h3 class="cos-section">Almanach</h3>';
+ let out='';
  out+='<div class="cos-moon-hero">'+moonSvg(m,76)+'<div><span class="life-kicker">Mondtag '+m.lunarDay+' · '+m.illumination+' % beleuchtet</span><b>'+esc(m.name)+'</b><small>'+esc(when)+'</small><small class="cos-moonsign">Mond in '+sign.glyph+' '+esc(sign.name)+' · '+esc(PulseLore.SIGN_TEXT[sign.name])+'</small>'+ingress.map(g=>'<small class="cos-moonsign">ab '+cosmosTime(g.ms)+' Uhr in '+g.glyph+' '+esc(g.to)+'</small>').join('')+'</div></div>';
  out+='<article class="cos-card cos-yiji"><div><span class="life-kicker">Gut für</span><ul>'+almanac.good.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul></div><div><span class="life-kicker">Eher meiden</span><ul class="avoid">'+almanac.avoid.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul></div><p class="cos-foot">Traditionelle Zuordnungen aus Mondphase, Mondzeichen ('+esc(sign.element)+') und Planetentag.</p></article>';
  for(const f of cosmosFests(date)){const lib=COSMOS_LIB[f.name];out+=cosmosCard(FEST_KIND[f.kind]||'Fest',esc(f.name),'<p>'+esc(f.info)+'</p>',lib?lifeButton('Ideen und Rituale',lifeCall('lifeOpenLib',lib),'life-textbtn'):'','fest')}
@@ -105,7 +106,8 @@ function cosmosAlmanac(date){
   '<dl class="cos-facts"><dt>Sonne</dt><dd>'+sun.glyph+' '+esc(sun.name)+' '+sun.degree+'°</dd><dt>Baum</dt><dd>'+esc(tree.name)+'<small>'+esc(PulseLore.TREES[tree.name]||'')+' · Baumkalender nach Robert Graves</small></dd>'+
   '<dt>China</dt><dd>'+L.day+'. Tag des '+(L.leap?'Schaltmonats nach dem ':'')+L.month+'. Mondmonats<small>Jahr '+esc(L.element+'-'+L.animal)+' ('+esc(L.name)+') · Tag '+esc(D.element+'-'+D.animal)+'</small></dd>'+
   (t.current?'<dt>Abschnitt</dt><dd>'+esc(t.current.name)+' ('+esc(t.current.pinyin)+')<small>'+esc(lore?lore[0]+' '+lore[1]:'')+'</small></dd>':'')+'</dl><div class="cos-actions">'+lifeButton('Baumkalender',lifeCall('lifeOpenLib','sinn-der-keltische-baumkalender'),'life-textbtn')+lifeButton('Chinesischer Kalender',lifeCall('lifeOpenLib','sinn-der-chinesische-mondkalender'),'life-textbtn')+lifeButton('24 Abschnitte',lifeCall('lifeOpenLib','sinn-die-24-jahresabschnitte'),'life-textbtn')+'</div></details>';
- return out;
+ /* Folded by default so the appointments stay the main thing; the choice is kept while the app is open. */
+ return '<details class="cos-almanac"'+(cosmosAlmOpen?' open':'')+' ontoggle="cosmosAlmOpen=this.open"><summary>'+moonSvg(m,28)+'<span><b>Almanach</b><small>'+esc(m.name)+', Mond in '+esc(sign.name)+'</small></span></summary>'+out+'</details>';
 }
 function cosmosDetail(date){
  const items=calItems(date);
