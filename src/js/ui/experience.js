@@ -161,7 +161,7 @@ function showWorkout(plan,{exerciseIndex}={}) {
   document.getElementById('workoutViewControls').hidden=session.closed;
   document.getElementById('workoutFinish').hidden=session.closed;
   document.getElementById('workoutStart').hidden=session.closed;
-  document.getElementById('workoutStatus').textContent='Plan '+plan+' · '+sets.length+' Sätze gespeichert.'+(PulseContext.returnPolicy(db,key())?' Wiedereinstieg · zwei Arbeitssätze je Übung.':' Deine Anstrengung gibst du selbst an.');
+  document.getElementById('workoutStatus').textContent='Plan '+plan+' · '+anz(sets.length,'Satz','Sätze')+' gespeichert.'+(PulseContext.returnPolicy(db,key())?' Wiedereinstieg · zwei Arbeitssätze je Übung.':' Deine Anstrengung gibst du selbst an.');
   const guide=document.getElementById('returnTrainingGuide');guide.hidden=session.closed||!PulseContext.returnPolicy(db,key());
   document.getElementById('workoutTable').innerHTML=exercises.map((exercise,index)=>{
     const completed=sets.filter(set=>set.exercise===exercise[0]),count=setCount(exercise[1]),weight=suggestedWeight(exercise,plan),range=repRange(exercise[1]),history=previousExerciseSession(exercise[0]);
@@ -189,7 +189,7 @@ function renderTrends() {
 function buildReport() {
   const week=recordedWeek(),labels={kcal:'kcal',protein:'g Protein',water:'L Wasser',steps:'Schritte',readiness:'Befinden /100'};
   document.getElementById('weeklyReport').innerHTML='<b>Deine erfasste Woche</b>'+Object.entries(labels).map(([field,label])=>{
-    const item=week.averages[field];return '<p>'+label+': '+(item.value===null?'keine Daten':'Ø '+item.value+' aus '+item.count+' Tagen')+'</p>';
+    const item=week.averages[field];return '<p>'+label+': '+(item.value===null?'keine Daten':'Ø '+item.value+' aus '+anz(item.count,'Tag','Tagen'))+'</p>';
   }).join('')+'<p>Fehlende Einträge bleiben offen. Daraus entsteht keine Nachholaufgabe.</p>';
   toast('Rückblick aus deinen Einträgen erstellt');
 }

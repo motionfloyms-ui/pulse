@@ -38,7 +38,7 @@ RAUM_STATIONS.push({id:'stapel',label:'Stapel',build(k){
   const entry=d.cards[d.pos];
   if(!entry){const s=PulseDeck.summary(db),kept=d.stats.kept||0,watched=d.stats.watched||0;
    return {kind:'end',ref:'',colors:BG.end,kicker:'Für heute',title:'Stapel durch',art:{type:'check'},keep:null,actions:[],
-    blocks:[{t:'p',text:d.cards.length+' Karten'+(kept?' · '+kept+' behalten':'')+(watched?' · '+watched+(watched===1?' Video':' Videos')+' gesehen':'')},{t:'p',text:'Morgen liegt ein neuer Stapel bereit. Bis dahin ist hier Schluss, mit Absicht.'},...(s.days>1?[{t:'small',text:s.days+' Stapel-Tage bisher · '+s.kept+' Karten in deiner Sammlung'}]:[])]}}
+    blocks:[{t:'p',text:d.cards.length+' Karten'+(kept?' · '+kept+' behalten':'')+(watched?' · '+watched+(watched===1?' Video':' Videos')+' gesehen':'')},{t:'p',text:'Morgen liegt ein neuer Stapel bereit. Bis dahin ist hier Schluss, mit Absicht.'},...(s.days>1?[{t:'small',text:s.days+' Stapel-Tage bisher · '+anz(s.kept,'Karte','Karten')+' in deiner Sammlung'}]:[])]}}
   const ref=entry.ref,type=entry.type;
   if(type==='card'){const c=PulseCards.get(ref.slice(2));if(!c)return missing('Diese Karte gibt es nicht mehr.');const T=PulseCards.TOPICS[c.topic]||{name:''};
    return {kind:'card',ref,colors:BG[c.topic]||BG.own,kicker:PulseCards.KINDS[c.kind]+' · '+T.name,title:c.title,art:{type:'svg',key:'svg:'+c.id,src:svgSrc(c)},keep:PulseDeck.isKept(db,ref),actions:actFor(c),

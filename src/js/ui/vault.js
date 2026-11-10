@@ -122,7 +122,7 @@ function renderVault(){
  const active=document.activeElement?.id;if(active==='vaultSearch'){renderVaultResults();return}
  host.innerHTML='<header class="life-pagehead"><span class="life-kicker">Deine Fundstücke</span><h1>Videos</h1></header>'+vaultStats()+
   '<div class="vault-add"><label class="srOnly" for="vaultLink">YouTube-Link</label><input id="vaultLink" type="url" inputmode="url" placeholder="YouTube-Link einfügen" onkeydown="if(event.key===\'Enter\'){event.preventDefault();vaultPaste()}"/>'+(navigator.clipboard?.readText?'<button type="button" class="life-btn" onclick="vaultClipboard()">Einfügen</button>':'')+'<button type="button" class="life-btn dark" onclick="vaultPaste()">Hinzufügen</button></div>'+
-  '<div class="vault-tools"><label class="life-search">'+lifeGlyph('search')+'<input id="vaultSearch" type="search" aria-label="Videos durchsuchen" placeholder="Titel, Kanal, Notiz, #Nummer …" value="'+esc(vaultQuery)+'" oninput="vaultSearch(this.value)"/></label>'+lifeButton('Zufall','vaultRandom()','life-btn')+'</div>'+
+  '<div class="vault-tools"><label class="life-search">'+lifeGlyph('search')+'<input id="vaultSearch" type="search" aria-label="Videos durchsuchen" placeholder="Titel, Kanal, #Nummer …" value="'+esc(vaultQuery)+'" oninput="vaultSearch(this.value)"/></label>'+lifeButton('Zufall','vaultRandom()','life-btn')+'</div>'+
   vaultImportRow()+vaultTabs()+'<div id="vaultResults"></div>';
  renderVaultResults();vaultFillMissing();
 }

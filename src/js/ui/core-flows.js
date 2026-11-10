@@ -1,4 +1,7 @@
 // SOURCE: ui/core-flows.js
+/* Count with the right German word form: anz(1,'Stern','Sterne') → "1 Stern". */
+function anz(n,one,many){return n+' '+(Number(n)===1?one:many)}
+function vorTagen(n){return n<=0?'heute':n===1?'gestern':'vor '+n+' Tagen'}
 /* Canonical application commands. Replaces the corresponding 8.2 function bodies. */
 let pendingWorkoutCapture=null;
 const dirtyInputs=new Set();

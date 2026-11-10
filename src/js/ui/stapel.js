@@ -82,7 +82,7 @@ function stapelEnd(){
  const d=PulseDeck.ensure(db),s=PulseDeck.summary(db),watched=d.stats.watched||0,kept=d.stats.kept||0;
  return '<article class="stapel-card t-end"><div class="stapel-cover"><svg class="stapel-done" viewBox="0 0 120 90" aria-hidden="true"><rect x="22" y="16" width="56" height="70" rx="8" transform="rotate(-10 50 50)"/><rect x="34" y="10" width="56" height="70" rx="8" transform="rotate(4 62 45)"/><path d="m50 46 9 9 18-20"/></svg><span class="stapel-kicker">Für heute</span><h2 id="stapelTitle" tabindex="-1">Stapel durch</h2></div><div class="stapel-body">'+
   '<p class="stapel-summary">'+d.cards.length+' Karten'+(kept?' · '+kept+' behalten':'')+(watched?' · '+watched+(watched===1?' Video':' Videos')+' gesehen':'')+'</p><p>Morgen liegt ein neuer Stapel bereit. Bis dahin ist hier Schluss, mit Absicht.</p>'+
-  (s.days>1?'<p class="stapel-read">'+s.days+' Stapel-Tage bisher · '+s.kept+' Karten in deiner Sammlung</p>':'')+
+  (s.days>1?'<p class="stapel-read">'+s.days+' Stapel-Tage bisher · '+anz(s.kept,'Karte','Karten')+' in deiner Sammlung</p>':'')+
   '<div class="stapel-actions">'+(PulseDeck.ensure(db).kept.length?lifeButton('Deine Sammlung ('+PulseDeck.ensure(db).kept.length+')','stapelKept()','life-btn'):'')+lifeButton('Zurück zum Tag',lifeCall('goView','life'),'life-btn dark')+'</div></div></article>';
 }
 function renderStapel(){

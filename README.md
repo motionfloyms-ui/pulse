@@ -27,7 +27,7 @@ Dazu: Sigillen-Werkstatt (Buchstabenrad oder Saturnquadrat, Laden im Vollbild, V
 - `src/index.html` – Markup
 - `build.mjs` – erzeugt daraus die einzelne Datei `index.html` (keine Abhängigkeiten)
 - `vendor/three/` – three.js r185 (MIT-Lizenz), nur für den Himmelsraum
-- `tests/` – `node:test` für Abgleich, Sonnen- und Mondstand, Stapel, Takeout-Import, Datenmodell, Erkennung, Körper, Bibliothek, Kalender, Termine, .ics, Sigillen, Songs, Cut-up, Himmel, Videos, Videosammlung, Speicher und Migrationen
+- `tests/` – `node:test` für Abgleich, Sonnen- und Mondstand, Stapel, Takeout-Import, Datenmodell, Erkennung, Körper, Bibliothek, Kalender, Termine, .ics, Sigillen, Songs, Cut-up, Himmel, Videos, Videosammlung, Speicher, Migrationen und Wortformen (1 Stern, 2 Sterne)
 
 ```
 npm run check   # bauen, Bundle prüfen, Tests

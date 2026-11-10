@@ -86,6 +86,8 @@ button .icon{pointer-events:none}
 .life-nav .life-nav-capture:active{transform:scale(.94)}
 .toast{display:none;position:fixed;z-index:1100;left:50%;transform:translateX(-50%);bottom:calc(92px + env(safe-area-inset-bottom));width:max-content;max-width:calc(100% - 32px);align-items:center;gap:14px;padding:12px 12px 12px 18px;border-radius:16px;background:var(--ink);color:var(--canvas);font-size:14px;font-weight:500;box-shadow:var(--shadow-2)}
 .toast.show{display:flex}
+/* On the Stapel the sticky Zurück/Weiter row sits where the toast would land: lift the toast above it. */
+body:has(#stapel.active .stapel-nav) .toast{bottom:calc(154px + env(safe-area-inset-bottom))}
 .toast button{padding:9px 12px;border-radius:10px;background:color-mix(in srgb,var(--canvas) 18%,transparent);color:inherit;font-size:13px;flex-shrink:0}
 
 /* ---------- Shared type ---------- */
@@ -766,6 +768,8 @@ th{color:var(--muted);font-weight:600}
 .cos-row>span:last-child{display:flex;flex-direction:column;min-width:0}
 .cos-row small{font-size:12.5px;font-weight:400;color:var(--muted)}
 .cos-practice{margin-top:4px!important}
+.life-moon-panel{align-items:flex-start}
+.life-moon-panel .cos-practice b{display:inline;margin:0;font-size:inherit;line-height:inherit;letter-spacing:0;font-stretch:normal;color:inherit}
 .life-moon-panel .life-room-actions{margin-top:8px}
 @media(max-width:360px){.cos-day{min-height:54px}.cos-lunar{font-size:9.5px}.cos-grid{padding:6px;gap:2px}}
 /* YouTube */
@@ -832,7 +836,7 @@ th{color:var(--muted);font-weight:600}
 .vault-info small{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .vault-listhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 2px 10px;font-size:14px;color:var(--muted)}
 .vault-sort{display:flex;align-items:center;gap:6px;font-size:13px}
-.vault-sort select{min-height:44px;padding:4px 8px;font-size:14px}
+.vault-sort select{width:auto;margin-top:0;min-height:44px;padding:4px 34px 4px 12px;font-size:14px}
 .vault-scope{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin:0 2px 10px;font-size:15px}
 .vault-shelves{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .vault-shelf{display:flex;flex-direction:column;gap:0;min-width:0;padding:0;overflow:hidden;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-1);color:var(--ink);text-align:left;font-weight:400;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}

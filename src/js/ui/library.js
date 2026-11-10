@@ -40,7 +40,7 @@ function lifeLibSection(roomId){
  }
  if(roomId==='ideen')widgets='<div class="life-room-actions life-tools-row">'+lifeButton('Song-Werkstatt',lifeCall('lifeOpenSongs'),'life-btn dark')+lifeButton('Cut-up-Maschine',lifeCall('lifeCutup',''),'life-btn')+lifeButton('Videos',lifeCall('lifeOpenVideos'),'life-btn')+'</div>';
  if(roomId==='draussen'){const s=PulseLibrary.seasonal(key());widgets='<div class="life-season"><span class="life-kicker">Jetzt im '+s.name+'</span><ul>'+s.ideas.map(i=>'<li>'+esc(i)+'</li>').join('')+'</ul></div>'}
- return '<div class="life-sectionhead"><h2>Schon da</h2><span class="life-subtle">'+entries.length+' Inhalte</span></div>'+widgets+libGroups(entries);
+ return '<div class="life-sectionhead"><h2>Schon da</h2><span class="life-subtle">'+anz(entries.length,'Inhalt','Inhalte')+'</span></div>'+widgets+libGroups(entries);
 }
 function libDetailShell(html){document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;el.innerHTML=html;openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');el.closest('.life-sheet-panel')?.scrollTo?.(0,0)}
 function lifeOpenLib(id){

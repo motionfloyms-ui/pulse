@@ -17,7 +17,7 @@ function tileTraining(){
  const c=pulseContext(),t=c.training,days=Array.from({length:7},(_,i)=>PulseContext.offset(key(),i-6));
  const status=c.mode==='recovery'?'Erholungstag':t?.completed?'Erledigt':t?.active?'Läuft':t?.kind==='home'?'Heimtraining':t?'Plan '+t.plan+' heute':'Kein Training';
  const n=days.filter(trainedOn).length;
- return '<button type="button" class="pulse-tile tile-training" onclick="openTodaysTraining()"><span class="pulse-tile-head">Training</span><b class="pulse-tile-value">'+esc(status)+'</b><span class="pulse-dots" aria-label="'+n+' Trainingstage in den letzten 7 Tagen">'+days.map(x=>'<i class="'+(trainedOn(x)?'on':'')+(x===key()?' today':'')+'" title="'+esc(lifeDate(x,{weekday:'short'}))+'"></i>').join('')+'</span><small>'+n+' von 7 Tagen</small></button>';
+ return '<button type="button" class="pulse-tile tile-training" onclick="openTodaysTraining()"><span class="pulse-tile-head">Training</span><b class="pulse-tile-value">'+esc(status)+'</b><span class="pulse-dots" aria-label="'+anz(n,'Trainingstag','Trainingstage')+' in den letzten 7 Tagen">'+days.map(x=>'<i class="'+(trainedOn(x)?'on':'')+(x===key()?' today':'')+'" title="'+esc(lifeDate(x,{weekday:'short'}))+'"></i>').join('')+'</span><small>'+n+' von 7 Tagen</small></button>';
 }
 function nextUp(){
  const now=new Date(),hm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0'),items=PulseLife.day(db,key()).filter(x=>x.status!=='done');

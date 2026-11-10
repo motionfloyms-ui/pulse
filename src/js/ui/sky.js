@@ -26,7 +26,7 @@ function skyGlow(){
  const days=PulseSky.glow(db,key(),{proteinGoal:goalValue('protein')}),first=days[0].date,offset=(new Date(first+'T12:00:00').getDay()+6)%7;
  const cells=Array(offset).fill('<i class="pad"></i>').join('')+days.map(d=>'<i class="g'+d.level+(d.date===key()?' today':'')+'" title="'+esc(lifeDate(d.date,{day:'numeric',month:'short'})+': '+d.points+' Punkte')+'"></i>').join('');
  const active=days.filter(d=>d.level).length;
- return '<section class="sky-card"><div class="life-row"><h2>90 Tage</h2><span class="life-muted">'+active+' leuchtende Tage</span></div><div class="sky-glow" role="img" aria-label="'+active+' von 91 Tagen mit Aktivität">'+cells+'</div><p class="life-footnote">Jeder Tag leuchtet heller, je mehr los war: Training, Essen, Wasser, Einträge, Tarot, Videos, Sigillen. Ein dunkler Tag zerstört nichts.</p></section>';
+ return '<section class="sky-card"><div class="life-row"><h2>90 Tage</h2><span class="life-muted">'+anz(active,'leuchtender Tag','leuchtende Tage')+'</span></div><div class="sky-glow" role="img" aria-label="'+active+' von 91 Tagen mit Aktivität">'+cells+'</div><p class="life-footnote">Jeder Tag leuchtet heller, je mehr los war: Training, Essen, Wasser, Einträge, Tarot, Videos, Sigillen. Ein dunkler Tag zerstört nichts.</p></section>';
 }
 function skyTarot(){
  const h=lifeState().preferences.tarotHistory||[],have=new Set(h.map(x=>x.index)),T=PulseLibrary.TAROT;
@@ -36,13 +36,13 @@ function skyTarot(){
 function renderSky(){
  const host=document.getElementById('skyContent');if(!host||document.getElementById('appMain').dataset.view!=='sky')return;
  const list=skyData(),lit=list.filter(b=>b.done).length,R=PulseSky.rank(lit);
- host.innerHTML=moreBack()+'<header class="life-pagehead"><span class="life-kicker">Dein Himmel</span><h1>'+esc(R.name)+'</h1><p>'+lit+' von '+list.length+' Sternen leuchten'+(R.next?' · noch '+R.next.need+' bis „'+esc(R.next.name)+'“':'')+'</p></header>'+
+ host.innerHTML=moreBack()+'<header class="life-pagehead"><span class="life-kicker">Dein Himmel</span><h1>'+esc(R.name)+'</h1><p>'+lit+' von '+list.length+' Sternen '+(lit===1?'leuchtet':'leuchten')+(R.next?' · noch '+R.next.need+' bis „'+esc(R.next.name)+'“':'')+'</p></header>'+
   '<div class="sky-frame">'+skySvg(list)+'</div>'+
   PulseSky.GROUPS.map(g=>{const mine=list.filter(b=>b.group===g.id);return '<section class="sky-group"><h3>'+esc(g.name)+' <small>'+esc(g.hint)+' · '+mine.filter(b=>b.done).length+'/'+mine.length+'</small></h3><ul>'+mine.map(b=>'<li class="'+(b.done?'on':'')+'"><span class="sky-dot" aria-hidden="true"></span><span><b>'+esc(b.title)+'</b><small>'+esc(b.desc)+'</small>'+(b.done?'':'<span class="vault-bar" aria-hidden="true"><i style="width:'+Math.round(b.value/b.need*100)+'%"></i></span><small>'+b.value+' / '+b.need+'</small>')+'</span></li>').join('')+'</ul></section>'}).join('')+
   skyGlow()+skyTarot();
 }
 /* Tag screen: a small sky tile and yesterday in one line. */
-function tileSky(){const list=skyData(),lit=list.filter(b=>b.done).length;return '<button type="button" class="pulse-tile tile-sky" onclick="lifeOpenSky()"><span class="pulse-tile-head">Dein Himmel</span><b class="pulse-tile-value">'+lit+' Sterne</b><span class="tile-sky-mini" aria-hidden="true">'+list.slice(0,30).map(b=>'<i class="'+(b.done?'on':'')+'"></i>').join('')+'</span><small>'+esc(PulseSky.rank(lit).name)+'</small></button>'}
+function tileSky(){const list=skyData(),lit=list.filter(b=>b.done).length;return '<button type="button" class="pulse-tile tile-sky" onclick="lifeOpenSky()"><span class="pulse-tile-head">Dein Himmel</span><b class="pulse-tile-value">'+anz(lit,'Stern','Sterne')+'</b><span class="tile-sky-mini" aria-hidden="true">'+list.slice(0,30).map(b=>'<i class="'+(b.done?'on':'')+'"></i>').join('')+'</span><small>'+esc(PulseSky.rank(lit).name)+'</small></button>'}
 function yesterdayLine(){if(dayPeriod()!=='morning')return '';const p=PulseSky.yesterday(db,key(),{proteinGoal:goalValue('protein')});return p.length?'<p class="life-yesterday"><b>Gestern:</b> '+esc(p.join(' · '))+'</p>':''}
 /* ---------- Cut-up machine ---------- */
 let cutupState={text:'',size:'mittel',seed:1,keep:[]};

@@ -11,7 +11,7 @@ function bodyHero(){
  const c=pulseContext(),t=c.training,days=Array.from({length:7},(_,i)=>PulseContext.offset(key(),i-6)),n=days.filter(trainedOn).length;
  const title=c.mode==='recovery'?'Erholungstag':t?.completed?'Training erledigt':t?.kind==='home'?'Heimtraining heute':t?'Plan '+t.plan+' heute':'Heute kein Training';
  const detail=c.mode==='recovery'?'Training und Schrittziel pausieren heute.':t?.kind==='home'?'Nach der Einheit als erledigt eintragen.':PulseContext.returnPolicy(db,key())?'Wiedereinstieg: 2 Sätze pro Übung, RPE 6–7.':t?'Letzte Gewichte sind vorausgefüllt.':'Bewegung nach Lust: Spaziergang, Dehnen, Nordbahntrasse.';
- return '<section class="body-hero"><span class="life-kicker">Training</span><b>'+esc(title)+'</b><p>'+esc(detail)+'</p><span class="pulse-dots" aria-label="'+n+' Trainingstage in den letzten 7 Tagen">'+days.map(x=>'<i class="'+(trainedOn(x)?'on':'')+(x===key()?' today':'')+'"></i>').join('')+'</span><div class="body-hero-actions">'+lifeButton('Training öffnen','openTodaysTraining()','life-btn')+'<small>'+n+' von 7 Tagen</small></div></section>';
+ return '<section class="body-hero"><span class="life-kicker">Training</span><b>'+esc(title)+'</b><p>'+esc(detail)+'</p><span class="pulse-dots" aria-label="'+anz(n,'Trainingstag','Trainingstage')+' in den letzten 7 Tagen">'+days.map(x=>'<i class="'+(trainedOn(x)?'on':'')+(x===key()?' today':'')+'"></i>').join('')+'</span><div class="body-hero-actions">'+lifeButton('Training öffnen','openTodaysTraining()','life-btn')+'<small>'+n+' von 7 Tagen</small></div></section>';
 }
 function bodyMood(){
  const m=effectiveMode(),r=today().recovery,label={normal:'Normaler Tag',low:'Wenig Energie',recovery:'Erholung'}[m]||'Normaler Tag';
@@ -24,7 +24,7 @@ function bodyProgress(){
 }
 function bodyWeeks(){
  const days=Array.from({length:28},(_,i)=>PulseContext.offset(key(),i-27)),n=days.filter(trainedOn).length,first=days[0],offset=(new Date(first+'T12:00:00').getDay()+6)%7;
- return '<section class="body-weeks"><div class="life-row"><h2>Vier Wochen</h2><span class="life-subtle">'+n+' Trainingstage</span></div><div class="body-weeks-grid" role="img" aria-label="'+n+' Trainingstage in den letzten vier Wochen">'+['Mo','Di','Mi','Do','Fr','Sa','So'].map(d=>'<small>'+d+'</small>').join('')+Array(offset).fill('<i class="pad"></i>').join('')+days.map(d=>'<i class="'+(trainedOn(d)?'on':'')+(d===key()?' today':'')+'" title="'+esc(deDate(d,{weekday:'short',day:'numeric',month:'short'}))+'"></i>').join('')+'</div></section>';
+ return '<section class="body-weeks"><div class="life-row"><h2>Vier Wochen</h2><span class="life-subtle">'+anz(n,'Trainingstag','Trainingstage')+'</span></div><div class="body-weeks-grid" role="img" aria-label="'+anz(n,'Trainingstag','Trainingstage')+' in den letzten vier Wochen">'+['Mo','Di','Mi','Do','Fr','Sa','So'].map(d=>'<small>'+d+'</small>').join('')+Array(offset).fill('<i class="pad"></i>').join('')+days.map(d=>'<i class="'+(trainedOn(d)?'on':'')+(d===key()?' today':'')+'" title="'+esc(deDate(d,{weekday:'short',day:'numeric',month:'short'}))+'"></i>').join('')+'</div></section>';
 }
 function renderBodyHub(){
  const host=document.getElementById('bodyHubContent');if(!host||document.getElementById('appMain').dataset.view!=='bodyhub')return;
