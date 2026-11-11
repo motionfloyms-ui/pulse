@@ -1316,3 +1316,6 @@ td{font-variant-numeric:tabular-nums}
 .vault-stat.hero{background:var(--surface);color:var(--ink)}
 .vault-stat.hero .life-kicker,.vault-stat.hero small{color:var(--muted)}
 @media(max-width:360px){.vault-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.vault-stat{padding:12px 10px}}
+.home-switch{min-width:64px}
+.home-switch[aria-checked="false"]{background:var(--fill);color:var(--ink)}
+.home-switch[aria-checked="true"]{background:var(--accent);color:var(--accent-on)}

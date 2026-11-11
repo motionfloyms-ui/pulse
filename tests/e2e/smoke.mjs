@@ -110,7 +110,9 @@ try{
   await ev(()=>undoLast());await pg.waitForTimeout(200);assert.equal(await ev(()=>db.videos.items.length),before);
  });
  await check('Stapel: a finite stack with an end, keep a card, settings',async()=>{
-  await ev(()=>goView('life'));await pg.waitForTimeout(150);await pg.click('.tile-stapel');await pg.waitForTimeout(200);
+  await ev(()=>goView('life'));await pg.waitForTimeout(150);assert.equal(await pg.locator('.today-also').count(),0,'start page shows no extras until chosen');
+  await ev(()=>homeSettings());await pg.click('.home-switch[aria-label^="Stapel"]');await pg.waitForTimeout(150);await ev(()=>lifeCloseSheet());await pg.waitForTimeout(250);
+  await pg.click('.tile-stapel');await pg.waitForTimeout(200);
   assert.equal(await ev(()=>document.getElementById('appMain').dataset.view),'stapel');
   const n=await ev(()=>db.deck.cards.length);assert.equal(n,12);assert.match(await pg.innerText('.stapel-count'),/Karte 1 von 12/);
   const card=await ev(()=>db.deck.cards.findIndex(c=>c.type==='card'));await ev(i=>stapelGo(i),card);await pg.waitForFunction(i=>document.querySelector('.stapel-count')?.textContent.includes('Karte '+(i+1)+' von'),card);

@@ -29,14 +29,25 @@ function lifeBodyBlock(){
  return '<div class="life-sectionhead"><h2>Körper</h2>'+lifeButton('Öffnen','goView(\'bodyhub\')','life-textbtn')+'</div><div class="pulse-bento">'+tileBody()+tileTraining()+tileWater()+'</div>';
 }
 function alsoRow(icon,title,sub,call,cls=''){return '<button type="button" class="today-also-row '+cls+'" onclick="'+call+'"><span class="today-also-ic" aria-hidden="true">'+icon+'</span><span class="today-also-text"><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span><i aria-hidden="true">›</i></button>'}
+/* Start page extras. Everything stays in the app under "Mehr"; here she picks what also shows on the
+   start page. Nothing is on until she turns it on, so the page stays appointments, tasks, body. */
+const HOME_EXTRAS=[['abschluss','Tagesabschluss','Abends: drei Sätze zum Tag'],['stapel','Stapel','Die Karten für heute'],['mond','Mond','Phase und nächster Vollmond'],['tarot','Tageskarte','Ziehen oder ansehen'],['sky','Dein Himmel','Wie viele Sterne leuchten']];
+function homeExtras(){return Array.isArray(db.uiPrefs.home)?db.uiPrefs.home:[]}
+function homeToggle(id){const h=homeExtras().filter(x=>HOME_EXTRAS.some(e=>e[0]===x)),i=h.indexOf(id);if(i<0)h.push(id);else h.splice(i,1);db.uiPrefs.home=h;save();homeSettings()}
+function homeSettings(){
+ document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail'),on=homeExtras();el.hidden=false;
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Startseite</h2><p class="life-detail-intro">Termine, Aufgaben und Körper stehen immer da. Was soll zusätzlich auf der Startseite stehen? Alles bleibt unter „Mehr“ erreichbar.</p>'+HOME_EXTRAS.map(([id,t,sub])=>'<div class="life-settings-row"><div><b>'+esc(t)+'</b><p>'+esc(sub)+'</p></div><button type="button" class="life-btn home-switch" role="switch" aria-checked="'+on.includes(id)+'" aria-label="'+esc(t)+' auf der Startseite" onclick="'+lifeCall('homeToggle',id)+'">'+(on.includes(id)?'An':'Aus')+'</button></div>').join('');
+ openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
+}
 function lifeAlsoBlock(){
- const m=cosmosMoon(key()),card=libTodayCard(),lit=skyData().filter(b=>b.done).length,rows=[];
- if(dayPeriod()==='evening')rows.push(alsoRow(lifeGlyph('check'),'Tagesabschluss','Drei Sätze zum Tag',lifeCall('lifeOpenLib','sinn-tagesabschluss')));
- rows.push(alsoRow(toolIcon('stapel'),'Stapel',stapelStatus(),'lifeOpenStapel()','tile-stapel'));
- rows.push(alsoRow(moonSvg(m,24),'Mond',m.name+', '+moonLine(m),lifeCall('lifeOpenCalendar',key())));
- rows.push(card?alsoRow(toolIcon('tarot'),'Tageskarte',card.card.name,lifeCall('lifeTarotOpen',card.index)):alsoRow(toolIcon('tarot'),'Tageskarte','Noch keine gezogen',lifeCall('lifeDrawCard')));
- rows.push(alsoRow(toolIcon('sky'),'Dein Himmel',anz(lit,'Stern leuchtet','Sterne leuchten'),'lifeOpenSky()'));
- return '<div class="life-sectionhead"><h2>Außerdem</h2></div><div class="today-also">'+rows.join('')+'</div>';
+ const on=homeExtras(),rows=[];if(!on.length)return '';
+ const m=cosmosMoon(key()),card=libTodayCard(),lit=skyData().filter(b=>b.done).length;
+ if(on.includes('abschluss')&&dayPeriod()==='evening')rows.push(alsoRow(lifeGlyph('check'),'Tagesabschluss','Drei Sätze zum Tag',lifeCall('lifeOpenLib','sinn-tagesabschluss')));
+ if(on.includes('stapel'))rows.push(alsoRow(toolIcon('stapel'),'Stapel',stapelStatus(),'lifeOpenStapel()','tile-stapel'));
+ if(on.includes('mond'))rows.push(alsoRow(moonSvg(m,24),'Mond',m.name+', '+moonLine(m),lifeCall('lifeOpenCalendar',key())));
+ if(on.includes('tarot'))rows.push(card?alsoRow(toolIcon('tarot'),'Tageskarte',card.card.name,lifeCall('lifeTarotOpen',card.index)):alsoRow(toolIcon('tarot'),'Tageskarte','Noch keine gezogen',lifeCall('lifeDrawCard')));
+ if(on.includes('sky'))rows.push(alsoRow(toolIcon('sky'),'Dein Himmel',anz(lit,'Stern leuchtet','Sterne leuchten'),'lifeOpenSky()'));
+ return rows.length?'<div class="life-sectionhead"><h2>Außerdem</h2>'+lifeButton('Anpassen','homeSettings()','life-textbtn')+'</div><div class="today-also">'+rows.join('')+'</div>':'';
 }
 function weekStrip(date){
  const monday=PulseLife.offset(date,-((new Date(date+'T12:00:00').getDay()+6)%7));
