@@ -11,7 +11,11 @@ function bodyHero(){
  const c=pulseContext(),t=c.training,days=Array.from({length:7},(_,i)=>PulseContext.offset(key(),i-6)),n=days.filter(trainedOn).length;
  const title=c.mode==='recovery'?'Erholungstag':t?.completed?'Training erledigt':t?.kind==='home'?'Heimtraining heute':t?'Plan '+t.plan+' heute':'Heute kein Training';
  const detail=c.mode==='recovery'?'Training und Schrittziel pausieren heute.':t?.kind==='home'?'Nach der Einheit als erledigt eintragen.':PulseContext.returnPolicy(db,key())?'Wiedereinstieg: 2 Sätze pro Übung, RPE 6–7.':t?'Letzte Gewichte sind vorausgefüllt.':'Bewegung nach Lust: Spaziergang, Dehnen, Nordbahntrasse.';
- return '<section class="body-hero"><span class="life-kicker">Training</span><b>'+esc(title)+'</b><p>'+esc(detail)+'</p><span class="pulse-dots" aria-label="'+anz(n,'Trainingstag','Trainingstage')+' in den letzten 7 Tagen">'+days.map(x=>'<i class="'+(trainedOn(x)?'on':'')+(x===key()?' today':'')+'"></i>').join('')+'</span><div class="body-hero-actions">'+lifeButton('Training öffnen','openTodaysTraining()','life-btn')+'<small>'+n+' von 7 Tagen</small></div></section>';
+ /* Same shape as the start page: one statement, then the week as a segmented line. */
+ const wd=d=>['So','Mo','Di','Mi','Do','Fr','Sa'][new Date(d+'T12:00:00').getDay()];
+ return '<header class="life-pagehead today-hero body-top"><div class="today-hero-top"><span class="today-date">Körper</span></div><h1>'+esc(title)+'</h1><p class="today-hero-when">'+esc(detail)+'</p>'+
+  '<div class="body-week" role="img" aria-label="'+anz(n,'Trainingstag','Trainingstage')+' in den letzten 7 Tagen">'+days.map(x=>'<span class="'+(trainedOn(x)?'on':'')+(x===key()?' today':'')+'"><i></i><small>'+wd(x)+'</small></span>').join('')+'</div>'+
+  '<div class="body-hero-actions">'+lifeButton('Training öffnen','openTodaysTraining()','life-btn')+'<small>'+n+' von 7 Tagen trainiert</small></div></header>';
 }
 function bodyMood(){
  const m=effectiveMode(),r=today().recovery,label={normal:'Normaler Tag',low:'Wenig Energie',recovery:'Erholung'}[m]||'Normaler Tag';
@@ -30,7 +34,7 @@ function renderBodyHub(){
  const host=document.getElementById('bodyHubContent');if(!host||document.getElementById('appMain').dataset.view!=='bodyhub')return;
  const ret=!!PulseContext.returnPolicy(db,key());
  const plan=p=>'<details class="life-plan-details"><summary><b>Plan '+p+'</b><small>'+planData(p).length+' Übungen'+(ret?' · Wiedereinstieg':'')+'</small></summary>'+planData(p).map((x,i)=>{const last=previousExerciseSession(x[0]);return '<div class="life-plan-row"><span>'+(i+1)+'</span><div><b>'+esc(x[0])+'</b><small>'+esc(x[1])+' · '+esc(x[3])+' Pause'+(last.length?' · zuletzt '+esc(last.map(w=>de(w.kg)+'×'+w.reps).join(' / '))+' kg':'')+'</small></div></div>'}).join('')+'<button type="button" class="life-btn" onclick="goView(\'workout\');showWorkout(\''+p+'\')">Plan '+p+' öffnen</button></details>';
- host.innerHTML='<header class="life-pagehead"><h1>Körper</h1></header>'+bodyHero()+
+ host.innerHTML=bodyHero()+
   '<div class="pulse-bento body-bento">'+tileBody()+'</div>'+
   '<div class="body-quick">'+[['＋ 250 ml','Wasser','addWater(.25)'],['Mahlzeit','eintragen','goView(\'nutrition\')'],['Barcode','scannen','goView(\'nutrition\');setTimeout(openFoodScanner,200)']].map(([b,s,c])=>'<button type="button" onclick="'+c+'"><b>'+b+'</b><small>'+s+'</small></button>').join('')+'</div>'+
   '<div class="pulse-bento body-bento">'+bodyMood()+bodyProgress()+'</div>'+

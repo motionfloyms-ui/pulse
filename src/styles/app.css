@@ -1345,3 +1345,24 @@ td{font-variant-numeric:tabular-nums}
 .life-time-row.now>time{color:var(--accent-text)}
 .life-time-row.now .life-timed-entry{box-shadow:inset 4px 0 0 var(--accent),0 0 0 1px var(--accent)}
 .life-logo svg{width:27px;height:27px}
+
+/* ===== v37 · Körper opens like the start page; the month shows dots, titles live in the day list. ===== */
+.body-top{padding-bottom:10px}
+.body-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:24px 0 16px}
+.body-week span{display:flex;flex-direction:column;align-items:center;gap:7px}
+.body-week i{width:100%;height:6px;border-radius:3px;background:var(--fill-strong)}
+.body-week .on i{background:var(--accent)}
+.body-week small{font-size:11px;font-weight:500;color:var(--muted)}
+.body-week .today small{color:var(--ink);font-weight:700}
+.body-top .body-hero-actions{display:flex;align-items:center;gap:14px}
+.body-top .body-hero-actions .life-btn{background:var(--accent);color:var(--accent-on)}
+.body-top .body-hero-actions small{font-size:14px;color:var(--muted)}
+.cos-day{align-items:center;justify-content:flex-start;gap:5px;min-height:56px;padding:7px 2px 5px;text-align:center}
+.cos-day .cos-top{display:flex;align-items:center;justify-content:center;gap:3px}
+.cos-evs{flex-direction:row;align-items:center;justify-content:center;gap:3px;min-height:7px}
+.cos-dot{flex:none;width:6px;height:6px;border-radius:50%;background:color-mix(in srgb,var(--room,var(--accent)) 72%,var(--ink))}
+.cos-day[aria-pressed="true"] .cos-dot{background:var(--accent-on)}
+.cos-more{padding:0;font-size:9.5px;line-height:1}
+.cos-day .cos-marks{margin-top:0;justify-content:center}
+.cos-day.today b{color:var(--accent-text)}
+.cos-day[aria-pressed="true"].today b{color:inherit}

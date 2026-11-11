@@ -60,12 +60,13 @@ function cosmosCell(d,date){
  const glyph=m.event?(m.event.type==='new'?'<i class="cos-m new" title="Neumond"></i>':'<i class="cos-m full" title="Vollmond"></i>'):m.index===2?'<i class="cos-m first" title="Erstes Viertel"></i>':m.index===6?'<i class="cos-m last" title="Letztes Viertel"></i>':'';
  const cls=['cos-day',d.slice(0,7)!==date.slice(0,7)?'outside':'',d===key()?'today':'',fest.length?'fest':'',fest.some(f=>f.kind==='wheel')?'wheel':''].filter(Boolean).join(' ');
  const label=lifeDate(d)+', '+m.name+', Mond in '+sign.name+(fest.length?', '+fest.map(f=>f.name).join(', '):'')+(items.length?', '+items.map(x=>(x.time?x.time+' ':'')+x.title).join(', '):'');
- const chips=items.slice(0,2).map(x=>'<i class="cos-ev '+PulseLife.room(x.room).color+'">'+esc(x.title)+'</i>').join('')+(items.length>2?'<i class="cos-more">+'+(items.length-2)+'</i>':'');
- return '<button type="button" class="'+cls+'" aria-label="'+esc(label)+'" aria-pressed="'+(d===date)+'" onclick="'+lifeCall('cosmosSelect',d)+'"><span class="cos-top"><b>'+Number(d.slice(8))+'</b><span class="cos-sky" aria-hidden="true">'+glyph+'<span class="cos-sign">'+sign.glyph+'</span></span></span><span class="cos-evs" aria-hidden="true">'+chips+'</span>'+(fest.length?'<span class="cos-marks" aria-hidden="true"><i class="cos-fest"></i></span>':'')+'</button>';
+ /* One dot per entry in its room colour; the titles are in the day list under the month. */
+ const chips=items.slice(0,4).map(x=>'<i class="cos-dot '+PulseLife.room(x.room).color+'"></i>').join('')+(items.length>4?'<i class="cos-more">+'+(items.length-4)+'</i>':'');
+ return '<button type="button" class="'+cls+'" aria-label="'+esc(label)+'" aria-pressed="'+(d===date)+'" onclick="'+lifeCall('cosmosSelect',d)+'"><span class="cos-top"><b>'+Number(d.slice(8))+'</b><span class="cos-sky" aria-hidden="true">'+glyph+'</span></span><span class="cos-evs" aria-hidden="true">'+chips+'</span>'+(fest.length?'<span class="cos-marks" aria-hidden="true"><i class="cos-fest"></i></span>':'')+'</button>';
 }
 function cosmosMonth(date){
  return '<div class="cos-grid" role="group" aria-label="Monat">'+['Mo','Di','Mi','Do','Fr','Sa','So'].map(t=>'<small>'+t+'</small>').join('')+PulseCalendar.monthDays(date.slice(0,7)).map(d=>cosmosCell(d,date)).join('')+'</div>'+
-  '<p class="cos-legend"><span><i class="cos-m new"></i>Neumond</span><span><i class="cos-m full"></i>Vollmond</span><span><span class="cos-sign">♓︎</span>Mondzeichen</span><span><i class="cos-fest"></i>Fest</span></p>';
+  '<p class="cos-legend"><span><i class="cos-m new"></i>Neumond</span><span><i class="cos-m full"></i>Vollmond</span><span><i class="cos-fest"></i>Fest</span></p>';
 }
 function cosmosSkyLine(d){const m=cosmosMoon(d),s=PulseAstro.moonSign(cosmosNoon(d)),p=PulseAstro.dayRuler(d);return esc(m.name)+' · Mond in '+s.glyph+' '+esc(s.name)+' · '+PulseAstro.PLANET_GLYPH[p]+' '+esc(p)}
 function cosmosWeek(date){
