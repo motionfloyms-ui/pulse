@@ -53,20 +53,53 @@ function weekStrip(date){
  const monday=PulseLife.offset(date,-((new Date(date+'T12:00:00').getDay()+6)%7));
  return '<div class="life-day-controls">'+lifeButton('‹',lifeCall('lifeMoveDay',-7),'life-iconbtn')+'<div class="life-week">'+Array.from({length:7},(_,i)=>{const d=PulseLife.offset(monday,i);return '<button type="button" class="life-weekday '+(d===date?'selected':'')+'" aria-label="'+esc(lifeDate(d))+'" aria-pressed="'+(d===date)+'" onclick="'+lifeCall('lifeSelectDay',d)+'"><small>'+['Mo','Di','Mi','Do','Fr','Sa','So'][i]+'</small><b>'+Number(d.slice(8))+'</b><i class="'+(PulseLife.day(db,d).length?'filled':'')+'"></i></button>'}).join('')+'</div>'+lifeButton('›',lifeCall('lifeMoveDay',7),'life-iconbtn')+'</div>';
 }
+/* The day line: 24 hours as one line. Daylight is the lighter stretch, appointments stand on it as
+   bars, the dot is now. Above it: what comes next and how long until then. */
+function dayMinutes(t){const [h,m]=String(t||'').split(':').map(Number);return (h||0)*60+(m||0)}
+function spanText(min){return min<60?min+' Min.':Math.floor(min/60)+' Std.'+(min%60?' '+(min%60)+' Min.':'')}
+function nextUp(timed,nowMin){
+ const end=x=>dayMinutes(x.time)+(Number(x.duration)||60),run=timed.find(x=>dayMinutes(x.time)<=nowMin&&nowMin<end(x));
+ if(run)return {x:run,text:'läuft noch <b>'+spanText(end(run)-nowMin)+'</b>'};
+ const next=timed.find(x=>dayMinutes(x.time)>nowMin);
+ return next?{x:next,text:'beginnt in <b>'+spanText(dayMinutes(next.time)-nowMin)+'</b>, um '+esc(next.time)+' Uhr'}:null;
+}
+function dayLine(date,timed,nowMin,glide){
+ const pct=m=>(Math.max(0,Math.min(1440,m))/14.4).toFixed(2),ofDay=ms=>{const d=new Date(ms);return d.getHours()*60+d.getMinutes()};
+ let sun=null;try{sun=PulseAstro.sunTimes(date)}catch(_){}
+ const rise=sun?ofDay(sun.rise):0,set=sun?ofDay(sun.set):0;
+ return '<div class="dayline" role="img" aria-label="Tagesverlauf von 0 bis 24 Uhr'+(sun?', hell von '+cosmosTime(sun.rise)+' bis '+cosmosTime(sun.set)+' Uhr':'')+', '+anz(timed.length,'Termin','Termine')+'">'+
+  (sun&&set>rise?'<i class="dayline-sun" style="left:'+pct(rise)+'%;width:'+pct(set-rise)+'%"></i>':'')+
+  timed.map(x=>{const a=dayMinutes(x.time),d=Number(x.duration)||60;return '<i class="dayline-ev '+PulseLife.room(x.room).color+(a+d<=nowMin?' past':'')+'" style="left:'+pct(a)+'%;width:'+pct(Math.min(d,1440-a))+'%"></i>'}).join('')+
+  '<i class="dayline-now'+(glide?' glide':'')+'" style="left:'+pct(nowMin)+'%"></i><span class="dayline-hours" aria-hidden="true"><b>6</b><b>12</b><b>18</b></span></div>';
+}
+let todayHeroShown=false;
+function todayHero(){
+ const date=key(),now=new Date(),nowMin=now.getHours()*60+now.getMinutes();
+ const items=PulseLife.day(db,date),timed=items.filter(x=>x.time&&x.kind==='event').sort((a,b)=>dayMinutes(a.time)-dayMinutes(b.time)),up=nextUp(timed,nowMin);
+ const open=items.filter(x=>x.kind==='task'&&x.status==='open').length;
+ const glide=!todayHeroShown;todayHeroShown=true;
+ return '<header class="life-pagehead today-hero" id="todayHero"><div class="today-hero-top"><span class="today-date">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span>'+pulseCore()+'</div>'+
+  (up?'<h1><button type="button" onclick="'+lifeCall('lifeOpenItem',up.x.id)+'">'+esc(up.x.title)+'</button></h1><p class="today-hero-when">'+up.text+'</p>'
+     :'<h1>'+esc(lifeGreeting())+'</h1><p class="today-hero-when">'+(open?'Kein Termin mehr heute, '+anz(open,'Aufgabe','Aufgaben')+' offen.':timed.length?'Alle Termine für heute sind vorbei.':'Heute steht kein Termin an.')+'</p>')+
+  dayLine(date,timed,nowMin,glide)+'</header>';
+}
+/* Keep the dot and the countdown current without redrawing the page. */
+setInterval(()=>{const el=document.getElementById('todayHero');if(el&&!document.hidden&&lifeSelectedDay===key())el.outerHTML=todayHero()},30000);
 function renderLifeToday(){
  const host=document.getElementById('lifeTodayContent');if(!host)return;const date=lifeSelectedDay||key();lifeSelectedDay=date;const isToday=date===key();
  const items=PulseLife.day(db,date),all=PulseLife.list(db);
  const loose=all.filter(x=>x.kind==='task'&&x.status==='open'&&!x.date).slice(0,3),overdue=all.filter(x=>x.kind==='task'&&!['done','parked','archived'].includes(x.status)&&((x.deadline&&x.deadline<key())||(x.date&&x.date<key())));
  const timed=items.filter(x=>x.time),allDay=items.filter(x=>!x.time&&x.kind==='event'),anytime=items.filter(x=>!x.time&&x.kind!=='event'),focus=lifeState().focus;
- const title=isToday?lifeGreeting():date===PulseLife.offset(key(),1)?'Morgen':lifeDate(date,{weekday:'long'});
- host.innerHTML='<header class="life-pagehead life-greeting"><div><span class="life-kicker">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span><h1>'+esc(title)+'</h1></div>'+(isToday?pulseCore():'')+'</header>'+
+ const title=date===PulseLife.offset(key(),1)?'Morgen':lifeDate(date,{weekday:'long'});
+ const nowMin=new Date().getHours()*60+new Date().getMinutes();
+ host.innerHTML=(isToday?todayHero():'<header class="life-pagehead life-greeting"><div><span class="life-kicker">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span><h1>'+esc(title)+'</h1></div></header>')+
   (isToday?yesterdayLine():'')+weekStrip(date)+'<div class="life-calendar-tools">'+lifeButton('Kalender',lifeCall('lifeOpenCalendar',date),'life-textbtn')+(isToday?'':lifeButton('Heute',lifeCall('lifeSelectDay',key()),'life-textbtn'))+'</div>'+
   (focus?'<button type="button" class="life-focus-banner" onclick="goView(\'focus\')"><span class="life-live-dot"></span><span><b>'+esc(focus.title)+'</b><small>'+(focus.state==='paused'?'Timer pausiert':'Timer läuft')+'</small></span><span id="lifeMiniClock">'+lifeClock(PulseLife.remaining(focus,Date.now()))+'</span></button>':'')+
   '<div class="life-capture-wrap"><button type="button" class="life-capture-line" onclick="lifeQuick()">'+lifeGlyph('plus')+'<span>'+(lifeState().draft?'Entwurf fortsetzen':'Notiz, Termin, Essen …')+'</span></button>'+(pulseSpeechSupported()?'<button type="button" class="life-capture-mic" aria-label="Per Sprache erfassen" onclick="lifeQuick(true)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>':'')+'</div>'+
   (isToday?lifeReviewRows():'')+
   '<div class="life-sectionhead"><h2>Termine</h2>'+lifeButton('＋ Termin',lifeCall('lifeCompose',{kind:'event',date}),'life-textbtn')+'</div>'+
   (allDay.length?'<div class="life-allday"><span class="life-subtle">Ganztägig</span>'+allDay.map(x=>lifeCard(x,{compact:true})).join('')+'</div>':'')+
-  (timed.length?timed.map(x=>'<div class="life-time-row"><time>'+esc(x.time)+'</time><div class="life-timed-entry '+PulseLife.room(x.room).color+'">'+lifeCard(x,{compact:true})+'<small>'+x.duration+' Min.</small></div></div>').join(''):allDay.length?'':'<p class="life-none">Keine Termine.</p>')+
+  (timed.length?timed.map(x=>'<div class="life-time-row'+(isToday&&dayMinutes(x.time)+(Number(x.duration)||60)<=nowMin?' past':isToday&&dayMinutes(x.time)<=nowMin?' now':'')+'"><time>'+esc(x.time)+'</time><div class="life-timed-entry '+PulseLife.room(x.room).color+'">'+lifeCard(x,{compact:true})+'<small>'+x.duration+' Min.</small></div></div>').join(''):allDay.length?'':'<p class="life-none">Keine Termine.</p>')+
   '<div class="life-sectionhead"><h2>Aufgaben</h2>'+lifeButton('＋ Aufgabe',lifeCall('lifeCompose',{kind:'task',date}),'life-textbtn')+'</div>'+
   (anytime.length?anytime.map(x=>lifeCard(x,{compact:true})).join(''):'<p class="life-none">Keine Aufgaben für '+(isToday?'heute':'diesen Tag')+'.</p>')+
   (overdue.length&&isToday?'<button class="life-return-row" type="button" onclick="lifeReview()"><span>!</span><div><b>'+overdue.length+' überfällig</b><small>Neu planen oder parken</small></div><span>›</span></button>':'')+

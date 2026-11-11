@@ -1319,3 +1319,29 @@ td{font-variant-numeric:tabular-nums}
 .home-switch{min-width:64px}
 .home-switch[aria-checked="false"]{background:var(--fill);color:var(--ink)}
 .home-switch[aria-checked="true"]{background:var(--accent);color:var(--accent-on)}
+
+/* ===== v36 · Tageslinie: the start page opens with what comes next and where in the day you are. ===== */
+.today-hero{display:block;padding:8px 0 4px}
+.today-hero-top{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px}
+.today-date{font-size:15px;font-weight:500;color:var(--muted)}
+.today-hero h1{margin:6px 0 0;font-size:clamp(34px,10.5vw,46px);line-height:1.02;font-weight:700;font-stretch:88%;letter-spacing:-.03em;text-wrap:balance;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;padding-bottom:.08em}
+.today-hero h1 button{padding:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-align:left;min-height:0}
+.today-hero-when{margin:10px 0 0;font-size:17px;line-height:1.35;color:var(--ink-2)}
+.today-hero-when b{color:var(--accent-text);font-weight:650;font-variant-numeric:tabular-nums}
+.dayline{position:relative;height:46px;margin:24px 0 14px}
+.dayline::before{content:"";position:absolute;left:0;right:0;top:13px;height:6px;border-radius:3px;background:var(--fill-strong)}
+.dayline-sun{position:absolute;top:13px;height:6px;border-radius:3px;background:var(--warm);opacity:.6}
+.dayline-ev{position:absolute;top:3px;height:26px;min-width:7px;border-radius:4px;background:color-mix(in srgb,var(--room,var(--accent)) 72%,var(--ink))}
+.dayline-ev.past{opacity:.35}
+.dayline-now{position:absolute;top:7px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 4px var(--canvas)}
+.dayline-now.glide{animation:daylineGlide 1s cubic-bezier(.2,.7,.2,1) both}
+@keyframes daylineGlide{from{left:0}}
+.dayline-hours b{position:absolute;top:30px;transform:translateX(-50%);font-size:11px;font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums}
+.dayline-hours b:nth-child(1){left:25%}.dayline-hours b:nth-child(2){left:50%}.dayline-hours b:nth-child(3){left:75%}
+.life-calm .dayline-now.glide{animation:none}
+@media(prefers-reduced-motion:reduce){.dayline-now.glide{animation:none}}
+/* Agenda: what is over steps back, what is running carries the accent. */
+.life-time-row.past{opacity:.5}
+.life-time-row.now>time{color:var(--accent-text)}
+.life-time-row.now .life-timed-entry{box-shadow:inset 4px 0 0 var(--accent),0 0 0 1px var(--accent)}
+.life-logo svg{width:27px;height:27px}
