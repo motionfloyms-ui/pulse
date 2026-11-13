@@ -31,7 +31,7 @@ function lifeBodyBlock(){
 function alsoRow(icon,title,sub,call,cls=''){return '<button type="button" class="today-also-row '+cls+'" onclick="'+call+'"><span class="today-also-ic" aria-hidden="true">'+icon+'</span><span class="today-also-text"><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span><i aria-hidden="true">›</i></button>'}
 /* Start page extras. Everything stays in the app under "Mehr"; here she picks what also shows on the
    start page. Nothing is on until she turns it on, so the page stays appointments, tasks, body. */
-const HOME_EXTRAS=[['abschluss','Tagesabschluss','Abends: drei Sätze zum Tag'],['stapel','Stapel','Die Karten für heute'],['mond','Mond','Phase und nächster Vollmond'],['tarot','Tageskarte','Ziehen oder ansehen'],['sky','Dein Himmel','Wie viele Sterne leuchten']];
+const HOME_EXTRAS=[['abschluss','Tagesabschluss','Abends: drei Sätze zum Tag'],['mond','Mond','Phase und nächster Vollmond'],['tarot','Tageskarte','Ziehen oder ansehen'],['sky','Dein Himmel','Wie viele Sterne leuchten']];
 function homeExtras(){return Array.isArray(db.uiPrefs.home)?db.uiPrefs.home:[]}
 function homeToggle(id){const h=homeExtras().filter(x=>HOME_EXTRAS.some(e=>e[0]===x)),i=h.indexOf(id);if(i<0)h.push(id);else h.splice(i,1);db.uiPrefs.home=h;save();homeSettings()}
 function homeSettings(){
@@ -43,7 +43,6 @@ function lifeAlsoBlock(){
  const on=homeExtras(),rows=[];if(!on.length)return '';
  const m=cosmosMoon(key()),card=libTodayCard(),lit=skyData().filter(b=>b.done).length;
  if(on.includes('abschluss')&&dayPeriod()==='evening')rows.push(alsoRow(lifeGlyph('check'),'Tagesabschluss','Drei Sätze zum Tag',lifeCall('lifeOpenLib','sinn-tagesabschluss')));
- if(on.includes('stapel'))rows.push(alsoRow(toolIcon('stapel'),'Stapel',stapelStatus(),'lifeOpenStapel()','tile-stapel'));
  if(on.includes('mond'))rows.push(alsoRow(moonSvg(m,24),'Mond',m.name+', '+moonLine(m),lifeCall('lifeOpenCalendar',key())));
  if(on.includes('tarot'))rows.push(card?alsoRow(toolIcon('tarot'),'Tageskarte',card.card.name,lifeCall('lifeTarotOpen',card.index)):alsoRow(toolIcon('tarot'),'Tageskarte','Noch keine gezogen',lifeCall('lifeDrawCard')));
  if(on.includes('sky'))rows.push(alsoRow(toolIcon('sky'),'Dein Himmel',anz(lit,'Stern leuchtet','Sterne leuchten'),'lifeOpenSky()'));
@@ -73,15 +72,45 @@ function dayLine(date,timed,nowMin,glide){
   '<i class="dayline-now'+(glide?' glide':'')+'" style="left:'+pct(nowMin)+'%"></i><span class="dayline-hours" aria-hidden="true"><b>6</b><b>12</b><b>18</b></span></div>';
 }
 let todayHeroShown=false;
+/* The start page opens with the sky as it is right now: daylight, dusk or night, the sun where it stands
+   on its way across, the moon at night. On it: what comes next, and the day line. */
+function skyState(date,now){
+ let sun=null;try{sun=PulseAstro.sunTimes(date)}catch(_){}
+ if(!sun||!(sun.set>sun.rise))return {phase:'day',sun:null,p:.5};
+ const t=now.getTime(),near=45*6e4,p=(t-sun.rise)/(sun.set-sun.rise);
+ return {sun,p,phase:Math.abs(t-sun.rise)<near?'dawn':Math.abs(t-sun.set)<near?'dusk':p>0&&p<1?'day':'night'};
+}
+function skyLine(sky,now,open){
+ const tasks=open?anz(open,'Aufgabe','Aufgaben')+' offen. ':'';
+ if(!sky.sun)return tasks||'Heute steht kein Termin an.';
+ const t=now.getTime();
+ if(sky.phase==='dawn')return tasks+'Die Sonne geht gerade auf.';
+ if(sky.phase==='dusk')return tasks+'Die Sonne geht gerade unter.';
+ if(sky.phase==='day')return tasks+'Noch '+spanText(Math.max(1,Math.round((sky.sun.set-t)/6e4)))+' Tageslicht.';
+ if(t<sky.sun.rise)return tasks+'Sonnenaufgang um '+cosmosTime(sky.sun.rise)+' Uhr.';
+ let next=null;try{next=PulseAstro.sunTimes(PulseLife.offset(key(),1))}catch(_){}
+ return tasks+(next?'Sonnenaufgang morgen um '+cosmosTime(next.rise)+' Uhr.':'Die Sonne ist untergegangen.');
+}
 function todayHero(){
- const date=key(),now=new Date(),nowMin=now.getHours()*60+now.getMinutes();
+ const date=key(),now=new Date(),nowMin=now.getHours()*60+now.getMinutes(),sky=skyState(date,now);
  const items=PulseLife.day(db,date),timed=items.filter(x=>x.time&&x.kind==='event').sort((a,b)=>dayMinutes(a.time)-dayMinutes(b.time)),up=nextUp(timed,nowMin);
  const open=items.filter(x=>x.kind==='task'&&x.status==='open').length;
  const glide=!todayHeroShown;todayHeroShown=true;
- return '<header class="life-pagehead today-hero" id="todayHero"><div class="today-hero-top"><span class="today-date">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span>'+pulseCore()+'</div>'+
-  (up?'<h1><button type="button" onclick="'+lifeCall('lifeOpenItem',up.x.id)+'">'+esc(up.x.title)+'</button></h1><p class="today-hero-when">'+up.text+'</p>'
-     :'<h1>'+esc(lifeGreeting())+'</h1><p class="today-hero-when">'+(open?'Kein Termin mehr heute, '+anz(open,'Aufgabe','Aufgaben')+' offen.':timed.length?'Alle Termine für heute sind vorbei.':'Heute steht kein Termin an.')+'</p>')+
-  dayLine(date,timed,nowMin,glide)+'</header>';
+ const p=Math.max(0,Math.min(1,sky.p)),orb=sky.phase==='night'?'<span class="sky-moon" aria-hidden="true">'+moonSvg(cosmosMoon(date),46)+'</span>':'<i class="sky-sun" aria-hidden="true" style="left:'+(8+p*84).toFixed(1)+'%;top:'+(78+(1-Math.sin(Math.PI*p))*58).toFixed(0)+'px"></i>';
+ return '<header class="life-pagehead sky-card sky-'+sky.phase+'" id="todayHero">'+orb+'<span class="sky-date">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span>'+
+  (up?'<h1><button type="button" onclick="'+lifeCall('lifeOpenItem',up.x.id)+'">'+esc(up.x.title)+'</button></h1><p class="sky-when">'+up.text+'</p>'
+     :'<h1>'+esc(lifeGreeting())+'</h1><p class="sky-when">'+esc(skyLine(sky,now,open))+'</p>')+
+  dayLine(date,timed,nowMin,glide)+
+  (sky.sun?'<p class="sky-foot"><span>Sonne '+cosmosTime(sky.sun.rise)+' bis '+cosmosTime(sky.sun.set)+'</span><span>'+esc(cosmosMoon(date).name)+'</span></p>':'')+'</header>';
+}
+/* Today's card from the Stapel, with its picture. */
+function todayDeck(){
+ let d,card;try{if(stapelPrepare())setTimeout(save,0);d=PulseDeck.ensure(db);card=d.cards[Math.min(d.pos,d.cards.length-1)]}catch(_){return ''}
+ if(!card)return '';
+ const tmp=document.createElement('div');tmp.innerHTML=stapelCardHTML(card);const art=tmp.querySelector('.stapel-card'),cover=tmp.querySelector('.stapel-cover');if(!art||!cover)return '';
+ cover.querySelectorAll('button,a,iframe').forEach(e=>e.remove());cover.querySelectorAll('[id],[tabindex]').forEach(e=>{e.removeAttribute('id');e.removeAttribute('tabindex')});
+ const title=(cover.querySelector('h2')||{}).textContent||'Karte des Tages';
+ return '<div class="life-sectionhead"><h2>Stapel</h2><span class="life-subtle">'+esc(stapelStatus())+'</span></div><button type="button" class="deck-preview tile-stapel '+esc(art.className)+'" onclick="lifeOpenStapel()" aria-label="Stapel öffnen: '+esc(title)+'">'+cover.outerHTML.replace(/<h2/g,'<strong class="deck-title"').replace(/<\/h2>/g,'</strong>')+'</button>';
 }
 /* Keep the dot and the countdown current without redrawing the page. */
 setInterval(()=>{const el=document.getElementById('todayHero');if(el&&!document.hidden&&lifeSelectedDay===key())el.outerHTML=todayHero()},30000);
@@ -96,14 +125,14 @@ function renderLifeToday(){
   (isToday?yesterdayLine():'')+weekStrip(date)+(isToday?'':'<div class="life-calendar-tools">'+lifeButton('Zurück zu heute',lifeCall('lifeSelectDay',key()),'life-textbtn')+'</div>')+
   (focus?'<button type="button" class="life-focus-banner" onclick="goView(\'focus\')"><span class="life-live-dot"></span><span><b>'+esc(focus.title)+'</b><small>'+(focus.state==='paused'?'Timer pausiert':'Timer läuft')+'</small></span><span id="lifeMiniClock">'+lifeClock(PulseLife.remaining(focus,Date.now()))+'</span></button>':'')+
   (isToday?lifeReviewRows():'')+
-  '<div class="life-sectionhead"><h2>Termine</h2>'+lifeButton('＋ Termin',lifeCall('lifeCompose',{kind:'event',date}),'life-textbtn')+'</div>'+
+  '<section class="day-card"><div class="day-card-head"><h2>'+(isToday?'Heute':esc(title))+'</h2><span class="day-add">'+lifeButton('＋ Termin',lifeCall('lifeCompose',{kind:'event',date}),'')+lifeButton('＋ Aufgabe',lifeCall('lifeCompose',{kind:'task',date}),'')+'</span></div>'+
   (allDay.length?'<div class="life-allday"><span class="life-subtle">Ganztägig</span>'+allDay.map(x=>lifeCard(x,{compact:true})).join('')+'</div>':'')+
-  (timed.length?timed.map(x=>'<div class="life-time-row'+(isToday&&dayMinutes(x.time)+(Number(x.duration)||60)<=nowMin?' past':isToday&&dayMinutes(x.time)<=nowMin?' now':'')+'"><time>'+esc(x.time)+'</time><div class="life-timed-entry '+PulseLife.room(x.room).color+'">'+lifeCard(x,{compact:true})+'<small>'+x.duration+' Min.</small></div></div>').join(''):allDay.length?'':'<p class="life-none">Keine Termine.</p>')+
-  '<div class="life-sectionhead"><h2>Aufgaben</h2>'+lifeButton('＋ Aufgabe',lifeCall('lifeCompose',{kind:'task',date}),'life-textbtn')+'</div>'+
-  (anytime.length?anytime.map(x=>lifeCard(x,{compact:true})).join(''):'<p class="life-none">Keine Aufgaben für '+(isToday?'heute':'diesen Tag')+'.</p>')+
+  timed.map(x=>'<div class="life-time-row'+(isToday&&dayMinutes(x.time)+(Number(x.duration)||60)<=nowMin?' past':isToday&&dayMinutes(x.time)<=nowMin?' now':'')+'"><time>'+esc(x.time)+'</time><div class="life-timed-entry '+PulseLife.room(x.room).color+'">'+lifeCard(x,{compact:true})+'<small>'+x.duration+' Min.</small></div></div>').join('')+
+  anytime.map(x=>lifeCard(x,{compact:true})).join('')+
+  (allDay.length||timed.length||anytime.length?'':'<div class="day-empty"><span aria-hidden="true">'+lifeGlyph('sun')+'</span><p><b>Nichts geplant.</b> Schreib unten einfach los, zum Beispiel „Zahnarzt morgen 15 Uhr“.</p></div>')+'</section>'+
   (overdue.length&&isToday?'<button class="life-return-row" type="button" onclick="lifeReview()"><span>!</span><div><b>'+overdue.length+' überfällig</b><small>Neu planen oder parken</small></div><span>›</span></button>':'')+
   (loose.length&&isToday?'<div class="life-sectionhead"><h2>Ohne Datum</h2>'+lifeButton('Alle',lifeCall('lifeOpenLibrary','task'),'life-textbtn')+'</div>'+loose.map(x=>lifeCard(x,{compact:true})).join(''):'')+
-  (isToday?lifeBodyBlock()+lifeAlsoBlock()+lifeSystemRows(date):'');
+  (isToday?lifeBodyBlock()+todayDeck()+lifeAlsoBlock()+lifeSystemRows(date):'');
  /* The capture line lives in the dock under every main screen; keep its hint and microphone current. */
  const hint=document.getElementById('lifeComposerHint'),mic=document.getElementById('lifeComposerMic');
  if(hint)hint.textContent=lifeState().draft?'Entwurf fortsetzen':'Notiz, Termin, Essen …';if(mic)mic.hidden=!pulseSpeechSupported();

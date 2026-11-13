@@ -1,14 +1,14 @@
 /* PULSE 19 · one stylesheet. Tokens first, then base, shell, life screens, body tools, sheets. */
 :root{
  color-scheme:light dark;
- --canvas:#F2F4F3;--surface:#FFFFFF;--surface-2:#F6F8F7;--fill:#E8ECEA;--fill-strong:#DAE0DD;
+ --canvas:#EEF1EF;--surface:#FFFFFF;--surface-2:#F6F8F7;--fill:#E8ECEA;--fill-strong:#DAE0DD;
  --ink:#131918;--ink-2:#3D4745;--muted:#5A6664;--line:#E0E5E3;--line-strong:#C4CCC9;
  --accent:#0E6F68;--accent-hover:#0A5C56;--accent-on:#FFFFFF;--accent-soft:#DCEFEC;--accent-text:#0B625C;
  --night:#13282B;--night-2:#1D3D41;--night-ink:#EAF4F2;--night-muted:#A9C4C0;--star:#F0D9A0;
  --ok:#1B8A5A;--danger:#C7354A;--warm:#B8791A;
  --r-xl:20px;--r-lg:16px;--r-md:12px;--r-sm:8px;
- --shadow-1:0 0 0 1px var(--line);
- --shadow-2:0 12px 32px -16px rgb(19 25 24/.28),0 0 0 1px var(--line);
+ --shadow-1:0 1px 2px rgb(19 25 24/.05),0 10px 26px -14px rgb(19 25 24/.2);
+ --shadow-2:0 2px 4px rgb(19 25 24/.06),0 18px 40px -18px rgb(19 25 24/.32);
  --font:"Bricolage Grotesque",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
  --bar:color-mix(in srgb,var(--surface) 95%,transparent);
 }
@@ -1400,3 +1400,49 @@ td{font-variant-numeric:tabular-nums}
 #lifeTodayContent .life-timed-entry>small{display:block;margin:-8px 0 10px;font-size:13px;color:var(--muted)}
 .life-nav .life-nav-capture span+span{font-size:16px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #lifeTodayContent .life-sectionhead{margin-top:30px}
+
+/* ===== v39 · The start page has something to look at even when nothing is planned: the sky as it is
+   now, one card for the day, today's Stapel card with its picture. Light mode gets depth. ===== */
+.sky-card{position:relative;display:block;overflow:hidden;margin:2px -6px 18px;padding:22px 22px 16px;border-radius:30px;color:#fff;box-shadow:0 22px 44px -24px rgb(18 60 110/.7)}
+.sky-day{background:linear-gradient(165deg,#17599B 0%,#2A78BE 52%,#58A4DA 100%)}
+.sky-dawn,.sky-dusk{background:linear-gradient(165deg,#272B66 0%,#8B3D69 55%,#DE8A50 100%);box-shadow:0 22px 44px -24px rgb(110 50 80/.7)}
+.sky-night{background:radial-gradient(1px 1px at 18% 22%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 42% 12%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 63% 30%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 31% 44%,rgb(255 255 255/.7) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 55% 52%,rgb(255 255 255/.6) 50%,transparent 51%),radial-gradient(1px 1px at 8% 60%,rgb(255 255 255/.6) 50%,transparent 51%),linear-gradient(165deg,#090E22 0%,#131B3C 58%,#243060 100%);box-shadow:0 22px 44px -24px rgb(0 0 0/.8)}
+.sky-card>*{position:relative;z-index:1}
+.sky-card .sky-sun{position:absolute;z-index:0;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:radial-gradient(circle,#FFF7DC 0 24%,rgb(255 240 190/.5) 26%,rgb(255 240 190/.16) 48%,transparent 68%)}
+.sky-dawn .sky-sun,.sky-dusk .sky-sun{background:radial-gradient(circle,#FFE0B0 0 24%,rgb(255 190 120/.5) 26%,rgb(255 170 110/.16) 48%,transparent 68%)}
+.sky-card .sky-moon{position:absolute;z-index:0;right:22px;top:20px;filter:drop-shadow(0 0 14px rgb(240 217 160/.45))}
+.sky-date{display:block;font-size:15px;font-weight:500;opacity:.9;text-shadow:0 1px 2px rgb(0 0 0/.25)}
+.sky-card h1{margin:52px 0 0;color:#fff;font-size:clamp(34px,10.5vw,46px);line-height:1.02;font-weight:700;font-stretch:88%;letter-spacing:-.03em;text-wrap:balance;text-shadow:0 1px 3px rgb(0 0 0/.25);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;padding-bottom:.08em}
+.sky-card h1 button{padding:0;min-height:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-align:left}
+.sky-when{margin:8px 0 0;font-size:17px;line-height:1.35;color:#fff;text-shadow:0 1px 2px rgb(0 0 0/.25)}
+.sky-when b{font-weight:700;font-variant-numeric:tabular-nums}
+.sky-card .dayline{margin:22px 0 6px}
+.sky-card .dayline::before{background:rgb(255 255 255/.26)}
+.sky-card .dayline-sun{background:#FFE2A0;opacity:.95}
+.sky-night .dayline-sun{opacity:.45}
+.sky-card .dayline-ev{background:#fff;box-shadow:0 1px 4px rgb(0 0 0/.25)}
+.sky-card .dayline-now{background:#fff;box-shadow:0 0 0 5px rgb(255 255 255/.28),0 2px 6px rgb(0 0 0/.3)}
+.sky-card .dayline-hours b{color:rgb(255 255 255/.85)}
+.sky-foot{display:flex;justify-content:space-between;gap:12px;margin:4px 0 0;font-size:13px;color:rgb(255 255 255/.88);font-variant-numeric:tabular-nums}
+.day-card{margin:20px 0 0;padding:6px 18px 8px;border-radius:24px;background:var(--surface);box-shadow:var(--shadow-1)}
+.day-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:56px}
+.day-card-head h2{margin:0;font-size:21px;font-weight:700;letter-spacing:-.01em}
+.day-add{display:flex;gap:8px}
+.day-add button{min-height:36px;padding:0 13px;border-radius:18px;background:var(--accent-soft);color:var(--accent-text);font-size:14px;font-weight:650}
+.day-add button:active{background:var(--fill-strong)}
+.day-empty{display:flex;align-items:center;gap:14px;padding:6px 0 16px}
+.day-empty span{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:14px;background:var(--fill);color:var(--warm)}
+.day-empty .life-glyph{width:24px;height:24px}
+.day-empty p{margin:0;font-size:15px;line-height:1.45;color:var(--muted)}
+.day-empty b{color:var(--ink);font-weight:650}
+.day-card>.life-entry:last-child::after,.day-card>.life-time-row:last-child .life-entry::after{display:none!important}
+.deck-preview{display:block;width:100%;padding:0;border-radius:24px;overflow:hidden;text-align:left;font-weight:400;box-shadow:var(--shadow-2);transition:transform .15s}
+.deck-preview:active{transform:scale(.985)}
+.deck-preview .stapel-cover{min-height:190px}
+.deck-preview .deck-title{display:block;font-size:26px;line-height:1.12;font-weight:750;letter-spacing:-.02em;text-wrap:balance}
+.life-sectionhead .life-subtle{font-size:14px;color:var(--muted)}
+.life-calm .deck-preview{transition:none}
+.sky-card .sky-when,.sky-card .sky-foot,.sky-card .sky-date{color:#fff}
+.sky-card .sky-foot{color:rgb(255 255 255/.9);white-space:nowrap}
+.sky-card h1{margin-top:86px}
+.sky-night h1{margin-top:60px}

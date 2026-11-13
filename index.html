@@ -4,14 +4,14 @@
 /* PULSE 19 · one stylesheet. Tokens first, then base, shell, life screens, body tools, sheets. */
 :root{
  color-scheme:light dark;
- --canvas:#F2F4F3;--surface:#FFFFFF;--surface-2:#F6F8F7;--fill:#E8ECEA;--fill-strong:#DAE0DD;
+ --canvas:#EEF1EF;--surface:#FFFFFF;--surface-2:#F6F8F7;--fill:#E8ECEA;--fill-strong:#DAE0DD;
  --ink:#131918;--ink-2:#3D4745;--muted:#5A6664;--line:#E0E5E3;--line-strong:#C4CCC9;
  --accent:#0E6F68;--accent-hover:#0A5C56;--accent-on:#FFFFFF;--accent-soft:#DCEFEC;--accent-text:#0B625C;
  --night:#13282B;--night-2:#1D3D41;--night-ink:#EAF4F2;--night-muted:#A9C4C0;--star:#F0D9A0;
  --ok:#1B8A5A;--danger:#C7354A;--warm:#B8791A;
  --r-xl:20px;--r-lg:16px;--r-md:12px;--r-sm:8px;
- --shadow-1:0 0 0 1px var(--line);
- --shadow-2:0 12px 32px -16px rgb(19 25 24/.28),0 0 0 1px var(--line);
+ --shadow-1:0 1px 2px rgb(19 25 24/.05),0 10px 26px -14px rgb(19 25 24/.2);
+ --shadow-2:0 2px 4px rgb(19 25 24/.06),0 18px 40px -18px rgb(19 25 24/.32);
  --font:"Bricolage Grotesque",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
  --bar:color-mix(in srgb,var(--surface) 95%,transparent);
 }
@@ -1403,6 +1403,52 @@ td{font-variant-numeric:tabular-nums}
 #lifeTodayContent .life-timed-entry>small{display:block;margin:-8px 0 10px;font-size:13px;color:var(--muted)}
 .life-nav .life-nav-capture span+span{font-size:16px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #lifeTodayContent .life-sectionhead{margin-top:30px}
+
+/* ===== v39 · The start page has something to look at even when nothing is planned: the sky as it is
+   now, one card for the day, today's Stapel card with its picture. Light mode gets depth. ===== */
+.sky-card{position:relative;display:block;overflow:hidden;margin:2px -6px 18px;padding:22px 22px 16px;border-radius:30px;color:#fff;box-shadow:0 22px 44px -24px rgb(18 60 110/.7)}
+.sky-day{background:linear-gradient(165deg,#17599B 0%,#2A78BE 52%,#58A4DA 100%)}
+.sky-dawn,.sky-dusk{background:linear-gradient(165deg,#272B66 0%,#8B3D69 55%,#DE8A50 100%);box-shadow:0 22px 44px -24px rgb(110 50 80/.7)}
+.sky-night{background:radial-gradient(1px 1px at 18% 22%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 42% 12%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 63% 30%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 31% 44%,rgb(255 255 255/.7) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 55% 52%,rgb(255 255 255/.6) 50%,transparent 51%),radial-gradient(1px 1px at 8% 60%,rgb(255 255 255/.6) 50%,transparent 51%),linear-gradient(165deg,#090E22 0%,#131B3C 58%,#243060 100%);box-shadow:0 22px 44px -24px rgb(0 0 0/.8)}
+.sky-card>*{position:relative;z-index:1}
+.sky-card .sky-sun{position:absolute;z-index:0;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:radial-gradient(circle,#FFF7DC 0 24%,rgb(255 240 190/.5) 26%,rgb(255 240 190/.16) 48%,transparent 68%)}
+.sky-dawn .sky-sun,.sky-dusk .sky-sun{background:radial-gradient(circle,#FFE0B0 0 24%,rgb(255 190 120/.5) 26%,rgb(255 170 110/.16) 48%,transparent 68%)}
+.sky-card .sky-moon{position:absolute;z-index:0;right:22px;top:20px;filter:drop-shadow(0 0 14px rgb(240 217 160/.45))}
+.sky-date{display:block;font-size:15px;font-weight:500;opacity:.9;text-shadow:0 1px 2px rgb(0 0 0/.25)}
+.sky-card h1{margin:52px 0 0;color:#fff;font-size:clamp(34px,10.5vw,46px);line-height:1.02;font-weight:700;font-stretch:88%;letter-spacing:-.03em;text-wrap:balance;text-shadow:0 1px 3px rgb(0 0 0/.25);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;padding-bottom:.08em}
+.sky-card h1 button{padding:0;min-height:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-align:left}
+.sky-when{margin:8px 0 0;font-size:17px;line-height:1.35;color:#fff;text-shadow:0 1px 2px rgb(0 0 0/.25)}
+.sky-when b{font-weight:700;font-variant-numeric:tabular-nums}
+.sky-card .dayline{margin:22px 0 6px}
+.sky-card .dayline::before{background:rgb(255 255 255/.26)}
+.sky-card .dayline-sun{background:#FFE2A0;opacity:.95}
+.sky-night .dayline-sun{opacity:.45}
+.sky-card .dayline-ev{background:#fff;box-shadow:0 1px 4px rgb(0 0 0/.25)}
+.sky-card .dayline-now{background:#fff;box-shadow:0 0 0 5px rgb(255 255 255/.28),0 2px 6px rgb(0 0 0/.3)}
+.sky-card .dayline-hours b{color:rgb(255 255 255/.85)}
+.sky-foot{display:flex;justify-content:space-between;gap:12px;margin:4px 0 0;font-size:13px;color:rgb(255 255 255/.88);font-variant-numeric:tabular-nums}
+.day-card{margin:20px 0 0;padding:6px 18px 8px;border-radius:24px;background:var(--surface);box-shadow:var(--shadow-1)}
+.day-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:56px}
+.day-card-head h2{margin:0;font-size:21px;font-weight:700;letter-spacing:-.01em}
+.day-add{display:flex;gap:8px}
+.day-add button{min-height:36px;padding:0 13px;border-radius:18px;background:var(--accent-soft);color:var(--accent-text);font-size:14px;font-weight:650}
+.day-add button:active{background:var(--fill-strong)}
+.day-empty{display:flex;align-items:center;gap:14px;padding:6px 0 16px}
+.day-empty span{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:14px;background:var(--fill);color:var(--warm)}
+.day-empty .life-glyph{width:24px;height:24px}
+.day-empty p{margin:0;font-size:15px;line-height:1.45;color:var(--muted)}
+.day-empty b{color:var(--ink);font-weight:650}
+.day-card>.life-entry:last-child::after,.day-card>.life-time-row:last-child .life-entry::after{display:none!important}
+.deck-preview{display:block;width:100%;padding:0;border-radius:24px;overflow:hidden;text-align:left;font-weight:400;box-shadow:var(--shadow-2);transition:transform .15s}
+.deck-preview:active{transform:scale(.985)}
+.deck-preview .stapel-cover{min-height:190px}
+.deck-preview .deck-title{display:block;font-size:26px;line-height:1.12;font-weight:750;letter-spacing:-.02em;text-wrap:balance}
+.life-sectionhead .life-subtle{font-size:14px;color:var(--muted)}
+.life-calm .deck-preview{transition:none}
+.sky-card .sky-when,.sky-card .sky-foot,.sky-card .sky-date{color:#fff}
+.sky-card .sky-foot{color:rgb(255 255 255/.9);white-space:nowrap}
+.sky-card h1{margin-top:86px}
+.sky-night h1{margin-top:60px}
 </style></head><body class="life-modern">
 <svg class="icon-defs" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol><symbol id="i-body" viewBox="0 0 24 24"><path d="M5 5c4-5 7 0 7 0s3-5 7 0c5 6-7 15-7 15S0 11 5 5"/></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M8 4a4 4 0 0 0-4 4v2a4 4 0 0 0 0 7 4 4 0 0 0 8 2V5a3 3 0 0 0-4-1M16 4a4 4 0 0 1 4 4v2a4 4 0 0 1 0 7 4 4 0 0 1-8 2M5 10h3M16 10h3M5 16h3M16 16h3"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0M4 22v-2a8 8 0 0 1 16 0v2"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 14A9 9 0 0 1 10 3a8 8 0 1 0 11 11Z"/></symbol><symbol id="i-food" viewBox="0 0 24 24"><path d="M4 3v7c0 3 6 3 6 0V3M7 3v19M19 3c-5 3-5 10 0 10V3Zm0 10v9"/></symbol><symbol id="i-train" viewBox="0 0 24 24"><path d="M3 7v10M7 4v16M7 12h10M17 4v16M21 7v10"/></symbol><symbol id="i-growth" viewBox="0 0 24 24"><path d="M3 19h18M5 15l5-5 4 3 6-8M15 5h5v5"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18M12 7v5l3 2"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol><symbol id="i-water" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M5 19 19 5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 5h12M9 12h12M9 19h12M3 5h1M3 12h1M3 19h1"/></symbol></defs></svg><a class="skipLink" href="#appMain">Zum Inhalt</a><div class="brand" aria-hidden="true"><span class="brand-mark">p</span><b>PULSE</b></div><main class="app" id="appMain" tabindex="-1"><section class="view active life-screen" id="life"><div id="lifeTodayContent"></div></section><section class="view life-screen" id="spaces"><div id="lifeSpaceContent"></div></section><section class="view life-screen" id="library"><div id="lifeLibraryContent"></div></section><section class="view life-screen" id="focus"><div id="lifeFocusContent"></div></section><section class="view life-screen" id="calendar"><div id="cosmosContent"></div></section><section class="view life-screen" id="videos"><div id="vaultContent"></div></section><section class="view life-screen" id="sigils"><div id="sigilContent"></div></section><section class="view life-screen" id="sky"><div id="skyContent"></div></section><section class="view life-screen" id="songs"><div id="songContent"></div></section><section class="view life-screen" id="stapel"><div id="stapelContent"></div></section><section class="view life-screen" id="raum"><div id="raumContent"></div></section><section class="view life-screen" id="more"><div id="moreContent"></div></section><section class="view life-screen" id="bodyhub"><div id="bodyHubContent"></div></section>
 <section class="view " id="mehub"><button type="button" class="backbtn" onclick="navigateUp('more')"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-back"></use></svg>Mehr</button><header class="pagehead"><h1>Ich</h1></header><div class="identity"><span class="avatar" data-me-initial>·</span><div><b data-me-name>Du</b><small>Muskelaufbau · Alltag · mehr Raum im Kopf</small></div></div><div class="routes"><button type="button" class="route" onclick="goView('goals')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-growth"></use></svg></span><span class="grow"><b>Deine Richtung</b><small>Ziele, die zu deinem Leben passen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('plan')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg></span><span class="grow"><b>Dein Plan</b><small>Routinen, Training & Ausnahmen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('history')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg></span><span class="grow"><b>Verlauf</b><small>Was tatsächlich passiert ist</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button><button type="button" class="route" onclick="goView('coach')"><span class="route-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-spark"></use></svg></span><span class="grow"><b>Muster</b><small>Beobachtungen aus deinen Einträgen</small></span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"></use></svg></button></div>
@@ -3336,7 +3382,7 @@ function lifeCloseSheet(){closeDialog(document.getElementById('lifeSheet'))}
 function lifeLegacy(v){goView(v);if(v==='workout')showWorkout(activePlan()||'A')}
 function lifeSettings(){
  document.getElementById('lifeForm').hidden=true;const el=document.getElementById('lifeDetail');el.hidden=false;
- el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 38</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+'<div class="life-settings-row"><div><b>Startseite</b><p>Was dort außer Terminen, Aufgaben und Körper steht.</p></div>'+lifeButton('Auswählen','homeSettings()','life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div>'+backupSettingsHTML()+'<div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Dein Himmel ↗','lifeCloseSheet();lifeOpenSky()','life-textbtn')+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup '+vorTagen(backupAgeDays())+'.')+'</p>';
+ el.innerHTML='<h2 id="lifeDetailHeading" tabindex="-1">Einstellungen</h2><p class="life-detail-intro">PULSE 39</p><label class="life-name-field">Dein Name für die Begrüßung<input id="lifeNameInput" maxlength="40" autocomplete="given-name" value="'+esc(db.settings.name||'')+'" onchange="lifeSetName(this.value)"/></label><div class="life-settings-row"><div><b>Ruhige Ansicht</b><p>Weniger Farbe, keine Animationen.</p></div>'+lifeButton(lifeState().preferences.calm?'An':'Aus',lifeCall('lifeCalm'),'life-btn')+'</div>'+'<div class="life-settings-row"><div><b>Startseite</b><p>Was dort außer Terminen, Aufgaben und Körper steht.</p></div>'+lifeButton('Auswählen','homeSettings()','life-btn')+'</div>'+themeSettingsHTML()+videoSettingsHTML()+'<div class="life-sectionhead"><h3>Als App</h3></div><div class="life-settings-row"><div><b id="lifeStorageState">Speicherstatus wird geprüft …</b><p>'+(isStandalone()?'PULSE läuft als installierte App.':'Installiert bleibt PULSE offline nutzbar, und der Browser löscht deine Daten nicht beim Aufräumen.')+'</p></div>'+(deferredInstallPrompt&&!isStandalone()?lifeButton('Installieren',lifeCall('installPulse'),'life-btn dark'):'')+'</div>'+backupSettingsHTML()+'<div class="life-sectionhead"><h3>Weitere Werkzeuge</h3></div>'+lifeButton('Dein Himmel ↗','lifeCloseSheet();lifeOpenSky()','life-textbtn')+lifeButton('Ziele, Verlauf, Muster ↗',lifeCall('lifeLegacy','mehub'),'life-textbtn')+'<p class="life-footnote">Alles bleibt auf diesem Gerät. Spracheingabe nutzt den Spracherkennungsdienst von Chrome. Sync zwischen Geräten und Widgets gibt es noch nicht. '+(backupAgeDays()===null?'Noch kein Backup gesichert.':'Letztes Backup '+vorTagen(backupAgeDays())+'.')+'</p>';
  openDialog(document.getElementById('lifeSheet'),'#lifeDetailHeading');
  (navigator.storage?.persisted?navigator.storage.persisted():Promise.resolve(false)).then(p=>{const e=document.getElementById('lifeStorageState');if(e)e.textContent=p?'Speicher: dauerhaft geschützt':'Speicher: nicht dauerhaft geschützt'}).catch(()=>{});
 }
@@ -7749,7 +7795,7 @@ function renderMore(){
   '<div id="moreBody"><div class="life-sectionhead"><h2>Räume</h2></div><div class="more-rooms">'+PulseLife.ROOMS.map(r=>'<button type="button" class="more-room" onclick="'+lifeCall('lifeOpenSpaces',r.id)+'"><span class="more-room-ic '+r.color+'">'+lifeGlyph(r.symbol)+'</span><b>'+esc(r.name)+'</b>'+(count(r.id)?'<small>'+count(r.id)+'</small>':'')+'</button>').join('')+'</div>'+
   '<div class="life-sectionhead"><h2>Werkzeuge</h2></div><div class="more-tools">'+MORE_TOOLS.map(moreTile).join('')+'</div>'+
   '<div class="life-sectionhead"><h2>Du</h2></div><div class="more-tools">'+
-   [['Ziele, Plan, Verlauf','Was PULSE über dich weiß','goView(\'mehub\')'],['Startseite','Was dort außer Terminen, Aufgaben und Körper steht','homeSettings()'],['Einstellungen und Backup','Name, Darstellung, Töne, Speicher','lifeSettings()'],['Rückgängig','Die letzte Änderung zurücknehmen','undoLast()'],['Kalender umziehen','Import aus Google Kalender, Export','calMenu()'],['Mit anderem Gerät abgleichen','Handy und Quest auf denselben Stand','syncOpen()']].map(([t,s,c])=>'<button type="button" class="more-tool" onclick="'+esc(c)+'"><span><b>'+esc(t)+'</b><small>'+esc(s)+'</small></span><i aria-hidden="true">›</i></button>').join('')+'</div><p class="more-version">PULSE 38</p></div>';
+   [['Ziele, Plan, Verlauf','Was PULSE über dich weiß','goView(\'mehub\')'],['Startseite','Was dort außer Terminen, Aufgaben und Körper steht','homeSettings()'],['Einstellungen und Backup','Name, Darstellung, Töne, Speicher','lifeSettings()'],['Rückgängig','Die letzte Änderung zurücknehmen','undoLast()'],['Kalender umziehen','Import aus Google Kalender, Export','calMenu()'],['Mit anderem Gerät abgleichen','Handy und Quest auf denselben Stand','syncOpen()']].map(([t,s,c])=>'<button type="button" class="more-tool" onclick="'+esc(c)+'"><span><b>'+esc(t)+'</b><small>'+esc(s)+'</small></span><i aria-hidden="true">›</i></button>').join('')+'</div><p class="more-version">PULSE 39</p></div>';
  renderMoreResults();
 }
 /* One search over everything: entries and appointments, videos, songs, library, tarot, sigils. */
@@ -8240,7 +8286,7 @@ function lifeBodyBlock(){
 function alsoRow(icon,title,sub,call,cls=''){return '<button type="button" class="today-also-row '+cls+'" onclick="'+call+'"><span class="today-also-ic" aria-hidden="true">'+icon+'</span><span class="today-also-text"><b>'+esc(title)+'</b><small>'+esc(sub)+'</small></span><i aria-hidden="true">›</i></button>'}
 /* Start page extras. Everything stays in the app under "Mehr"; here she picks what also shows on the
    start page. Nothing is on until she turns it on, so the page stays appointments, tasks, body. */
-const HOME_EXTRAS=[['abschluss','Tagesabschluss','Abends: drei Sätze zum Tag'],['stapel','Stapel','Die Karten für heute'],['mond','Mond','Phase und nächster Vollmond'],['tarot','Tageskarte','Ziehen oder ansehen'],['sky','Dein Himmel','Wie viele Sterne leuchten']];
+const HOME_EXTRAS=[['abschluss','Tagesabschluss','Abends: drei Sätze zum Tag'],['mond','Mond','Phase und nächster Vollmond'],['tarot','Tageskarte','Ziehen oder ansehen'],['sky','Dein Himmel','Wie viele Sterne leuchten']];
 function homeExtras(){return Array.isArray(db.uiPrefs.home)?db.uiPrefs.home:[]}
 function homeToggle(id){const h=homeExtras().filter(x=>HOME_EXTRAS.some(e=>e[0]===x)),i=h.indexOf(id);if(i<0)h.push(id);else h.splice(i,1);db.uiPrefs.home=h;save();homeSettings()}
 function homeSettings(){
@@ -8252,7 +8298,6 @@ function lifeAlsoBlock(){
  const on=homeExtras(),rows=[];if(!on.length)return '';
  const m=cosmosMoon(key()),card=libTodayCard(),lit=skyData().filter(b=>b.done).length;
  if(on.includes('abschluss')&&dayPeriod()==='evening')rows.push(alsoRow(lifeGlyph('check'),'Tagesabschluss','Drei Sätze zum Tag',lifeCall('lifeOpenLib','sinn-tagesabschluss')));
- if(on.includes('stapel'))rows.push(alsoRow(toolIcon('stapel'),'Stapel',stapelStatus(),'lifeOpenStapel()','tile-stapel'));
  if(on.includes('mond'))rows.push(alsoRow(moonSvg(m,24),'Mond',m.name+', '+moonLine(m),lifeCall('lifeOpenCalendar',key())));
  if(on.includes('tarot'))rows.push(card?alsoRow(toolIcon('tarot'),'Tageskarte',card.card.name,lifeCall('lifeTarotOpen',card.index)):alsoRow(toolIcon('tarot'),'Tageskarte','Noch keine gezogen',lifeCall('lifeDrawCard')));
  if(on.includes('sky'))rows.push(alsoRow(toolIcon('sky'),'Dein Himmel',anz(lit,'Stern leuchtet','Sterne leuchten'),'lifeOpenSky()'));
@@ -8282,15 +8327,45 @@ function dayLine(date,timed,nowMin,glide){
   '<i class="dayline-now'+(glide?' glide':'')+'" style="left:'+pct(nowMin)+'%"></i><span class="dayline-hours" aria-hidden="true"><b>6</b><b>12</b><b>18</b></span></div>';
 }
 let todayHeroShown=false;
+/* The start page opens with the sky as it is right now: daylight, dusk or night, the sun where it stands
+   on its way across, the moon at night. On it: what comes next, and the day line. */
+function skyState(date,now){
+ let sun=null;try{sun=PulseAstro.sunTimes(date)}catch(_){}
+ if(!sun||!(sun.set>sun.rise))return {phase:'day',sun:null,p:.5};
+ const t=now.getTime(),near=45*6e4,p=(t-sun.rise)/(sun.set-sun.rise);
+ return {sun,p,phase:Math.abs(t-sun.rise)<near?'dawn':Math.abs(t-sun.set)<near?'dusk':p>0&&p<1?'day':'night'};
+}
+function skyLine(sky,now,open){
+ const tasks=open?anz(open,'Aufgabe','Aufgaben')+' offen. ':'';
+ if(!sky.sun)return tasks||'Heute steht kein Termin an.';
+ const t=now.getTime();
+ if(sky.phase==='dawn')return tasks+'Die Sonne geht gerade auf.';
+ if(sky.phase==='dusk')return tasks+'Die Sonne geht gerade unter.';
+ if(sky.phase==='day')return tasks+'Noch '+spanText(Math.max(1,Math.round((sky.sun.set-t)/6e4)))+' Tageslicht.';
+ if(t<sky.sun.rise)return tasks+'Sonnenaufgang um '+cosmosTime(sky.sun.rise)+' Uhr.';
+ let next=null;try{next=PulseAstro.sunTimes(PulseLife.offset(key(),1))}catch(_){}
+ return tasks+(next?'Sonnenaufgang morgen um '+cosmosTime(next.rise)+' Uhr.':'Die Sonne ist untergegangen.');
+}
 function todayHero(){
- const date=key(),now=new Date(),nowMin=now.getHours()*60+now.getMinutes();
+ const date=key(),now=new Date(),nowMin=now.getHours()*60+now.getMinutes(),sky=skyState(date,now);
  const items=PulseLife.day(db,date),timed=items.filter(x=>x.time&&x.kind==='event').sort((a,b)=>dayMinutes(a.time)-dayMinutes(b.time)),up=nextUp(timed,nowMin);
  const open=items.filter(x=>x.kind==='task'&&x.status==='open').length;
  const glide=!todayHeroShown;todayHeroShown=true;
- return '<header class="life-pagehead today-hero" id="todayHero"><div class="today-hero-top"><span class="today-date">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span>'+pulseCore()+'</div>'+
-  (up?'<h1><button type="button" onclick="'+lifeCall('lifeOpenItem',up.x.id)+'">'+esc(up.x.title)+'</button></h1><p class="today-hero-when">'+up.text+'</p>'
-     :'<h1>'+esc(lifeGreeting())+'</h1><p class="today-hero-when">'+(open?'Kein Termin mehr heute, '+anz(open,'Aufgabe','Aufgaben')+' offen.':timed.length?'Alle Termine für heute sind vorbei.':'Heute steht kein Termin an.')+'</p>')+
-  dayLine(date,timed,nowMin,glide)+'</header>';
+ const p=Math.max(0,Math.min(1,sky.p)),orb=sky.phase==='night'?'<span class="sky-moon" aria-hidden="true">'+moonSvg(cosmosMoon(date),46)+'</span>':'<i class="sky-sun" aria-hidden="true" style="left:'+(8+p*84).toFixed(1)+'%;top:'+(78+(1-Math.sin(Math.PI*p))*58).toFixed(0)+'px"></i>';
+ return '<header class="life-pagehead sky-card sky-'+sky.phase+'" id="todayHero">'+orb+'<span class="sky-date">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span>'+
+  (up?'<h1><button type="button" onclick="'+lifeCall('lifeOpenItem',up.x.id)+'">'+esc(up.x.title)+'</button></h1><p class="sky-when">'+up.text+'</p>'
+     :'<h1>'+esc(lifeGreeting())+'</h1><p class="sky-when">'+esc(skyLine(sky,now,open))+'</p>')+
+  dayLine(date,timed,nowMin,glide)+
+  (sky.sun?'<p class="sky-foot"><span>Sonne '+cosmosTime(sky.sun.rise)+' bis '+cosmosTime(sky.sun.set)+'</span><span>'+esc(cosmosMoon(date).name)+'</span></p>':'')+'</header>';
+}
+/* Today's card from the Stapel, with its picture. */
+function todayDeck(){
+ let d,card;try{if(stapelPrepare())setTimeout(save,0);d=PulseDeck.ensure(db);card=d.cards[Math.min(d.pos,d.cards.length-1)]}catch(_){return ''}
+ if(!card)return '';
+ const tmp=document.createElement('div');tmp.innerHTML=stapelCardHTML(card);const art=tmp.querySelector('.stapel-card'),cover=tmp.querySelector('.stapel-cover');if(!art||!cover)return '';
+ cover.querySelectorAll('button,a,iframe').forEach(e=>e.remove());cover.querySelectorAll('[id],[tabindex]').forEach(e=>{e.removeAttribute('id');e.removeAttribute('tabindex')});
+ const title=(cover.querySelector('h2')||{}).textContent||'Karte des Tages';
+ return '<div class="life-sectionhead"><h2>Stapel</h2><span class="life-subtle">'+esc(stapelStatus())+'</span></div><button type="button" class="deck-preview tile-stapel '+esc(art.className)+'" onclick="lifeOpenStapel()" aria-label="Stapel öffnen: '+esc(title)+'">'+cover.outerHTML.replace(/<h2/g,'<strong class="deck-title"').replace(/<\/h2>/g,'</strong>')+'</button>';
 }
 /* Keep the dot and the countdown current without redrawing the page. */
 setInterval(()=>{const el=document.getElementById('todayHero');if(el&&!document.hidden&&lifeSelectedDay===key())el.outerHTML=todayHero()},30000);
@@ -8305,14 +8380,14 @@ function renderLifeToday(){
   (isToday?yesterdayLine():'')+weekStrip(date)+(isToday?'':'<div class="life-calendar-tools">'+lifeButton('Zurück zu heute',lifeCall('lifeSelectDay',key()),'life-textbtn')+'</div>')+
   (focus?'<button type="button" class="life-focus-banner" onclick="goView(\'focus\')"><span class="life-live-dot"></span><span><b>'+esc(focus.title)+'</b><small>'+(focus.state==='paused'?'Timer pausiert':'Timer läuft')+'</small></span><span id="lifeMiniClock">'+lifeClock(PulseLife.remaining(focus,Date.now()))+'</span></button>':'')+
   (isToday?lifeReviewRows():'')+
-  '<div class="life-sectionhead"><h2>Termine</h2>'+lifeButton('＋ Termin',lifeCall('lifeCompose',{kind:'event',date}),'life-textbtn')+'</div>'+
+  '<section class="day-card"><div class="day-card-head"><h2>'+(isToday?'Heute':esc(title))+'</h2><span class="day-add">'+lifeButton('＋ Termin',lifeCall('lifeCompose',{kind:'event',date}),'')+lifeButton('＋ Aufgabe',lifeCall('lifeCompose',{kind:'task',date}),'')+'</span></div>'+
   (allDay.length?'<div class="life-allday"><span class="life-subtle">Ganztägig</span>'+allDay.map(x=>lifeCard(x,{compact:true})).join('')+'</div>':'')+
-  (timed.length?timed.map(x=>'<div class="life-time-row'+(isToday&&dayMinutes(x.time)+(Number(x.duration)||60)<=nowMin?' past':isToday&&dayMinutes(x.time)<=nowMin?' now':'')+'"><time>'+esc(x.time)+'</time><div class="life-timed-entry '+PulseLife.room(x.room).color+'">'+lifeCard(x,{compact:true})+'<small>'+x.duration+' Min.</small></div></div>').join(''):allDay.length?'':'<p class="life-none">Keine Termine.</p>')+
-  '<div class="life-sectionhead"><h2>Aufgaben</h2>'+lifeButton('＋ Aufgabe',lifeCall('lifeCompose',{kind:'task',date}),'life-textbtn')+'</div>'+
-  (anytime.length?anytime.map(x=>lifeCard(x,{compact:true})).join(''):'<p class="life-none">Keine Aufgaben für '+(isToday?'heute':'diesen Tag')+'.</p>')+
+  timed.map(x=>'<div class="life-time-row'+(isToday&&dayMinutes(x.time)+(Number(x.duration)||60)<=nowMin?' past':isToday&&dayMinutes(x.time)<=nowMin?' now':'')+'"><time>'+esc(x.time)+'</time><div class="life-timed-entry '+PulseLife.room(x.room).color+'">'+lifeCard(x,{compact:true})+'<small>'+x.duration+' Min.</small></div></div>').join('')+
+  anytime.map(x=>lifeCard(x,{compact:true})).join('')+
+  (allDay.length||timed.length||anytime.length?'':'<div class="day-empty"><span aria-hidden="true">'+lifeGlyph('sun')+'</span><p><b>Nichts geplant.</b> Schreib unten einfach los, zum Beispiel „Zahnarzt morgen 15 Uhr“.</p></div>')+'</section>'+
   (overdue.length&&isToday?'<button class="life-return-row" type="button" onclick="lifeReview()"><span>!</span><div><b>'+overdue.length+' überfällig</b><small>Neu planen oder parken</small></div><span>›</span></button>':'')+
   (loose.length&&isToday?'<div class="life-sectionhead"><h2>Ohne Datum</h2>'+lifeButton('Alle',lifeCall('lifeOpenLibrary','task'),'life-textbtn')+'</div>'+loose.map(x=>lifeCard(x,{compact:true})).join(''):'')+
-  (isToday?lifeBodyBlock()+lifeAlsoBlock()+lifeSystemRows(date):'');
+  (isToday?lifeBodyBlock()+todayDeck()+lifeAlsoBlock()+lifeSystemRows(date):'');
  /* The capture line lives in the dock under every main screen; keep its hint and microphone current. */
  const hint=document.getElementById('lifeComposerHint'),mic=document.getElementById('lifeComposerMic');
  if(hint)hint.textContent=lifeState().draft?'Entwurf fortsetzen':'Notiz, Termin, Essen …';if(mic)mic.hidden=!pulseSpeechSupported();
