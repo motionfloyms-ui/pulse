@@ -103,6 +103,31 @@ function todayHero(){
   dayLine(date,timed,nowMin,glide)+
   (sky.sun?'<p class="sky-foot"><span>Sonne '+cosmosTime(sky.sun.rise)+' bis '+cosmosTime(sky.sun.set)+'</span><span>'+esc(cosmosMoon(date).name)+'</span></p>':'')+'</header>';
 }
+/* One offer at a time, chosen by the hour and by what is still open: the app comes to her with a single
+   step instead of waiting to be operated. "Nicht heute" hides that offer until tomorrow. */
+function offerSkipped(id){const o=db.uiPrefs.offerSkip;return !!o&&o.day===key()&&Array.isArray(o.ids)&&o.ids.includes(id)}
+function offerSkip(id){const o=db.uiPrefs.offerSkip&&db.uiPrefs.offerSkip.day===key()?db.uiPrefs.offerSkip:{day:key(),ids:[]};if(!o.ids.includes(id))o.ids.push(id);db.uiPrefs.offerSkip=o;save()}
+function todayOffers(){
+ const p=dayPeriod(),d=today(),c=(()=>{try{return pulseContext()}catch(_){return {}}})(),out=[];
+ const sigil=(()=>{try{return PulseSigil.ensure(db).sigils.filter(x=>(x.status==='neu'||x.status==='geladen')&&!x.charges.some(ch=>String(ch.at).slice(0,10)===key()))[0]}catch(_){return null}})();
+ if(p==='morning'){
+  if(!libTodayCard())out.push({id:'tarot',title:'Deine Tageskarte',text:'Ein Tipp zieht sie. Mehr musst du nicht tun.',label:'Karte ziehen',call:lifeCall('lifeDrawCard')});
+  if(!(d.water>0))out.push({id:'water',title:'Ein Glas Wasser',text:'Das erste des Tages.',label:'＋ 250 ml',call:'addWater(.25)'});
+ }
+ if(p==='day'){
+  if(!(d.meals>0))out.push({id:'meal',title:'Schon etwas gegessen?',text:'Schreib es in einem Satz, zum Beispiel „2 Brote mit Käse“.',label:'Eintragen',call:'lifeQuick()'});
+  if(c.mode!=='recovery'&&c.training&&!c.training.completed&&!trainedOn(key()))out.push({id:'training',title:c.training.kind==='home'?'Heimtraining heute':'Plan '+c.training.plan+' heute',text:'Die letzten Gewichte sind vorausgefüllt.',label:'Training öffnen',call:'openTodaysTraining()'});
+ }
+ if(p==='evening'){
+  if(sigil)out.push({id:'sigil',title:'Sigille laden',text:'Eine Minute hinschauen, dann ist es getan.',label:'Laden, 1 Minute',call:lifeCall('sigilStart',sigil.id,1,'still')});
+  out.push({id:'abschluss',title:'Tagesabschluss',text:'Drei Sätze: Was war, was nehme ich mit, was lege ich ab.',label:'Öffnen',call:lifeCall('offerSkip','abschluss')+';'+lifeCall('lifeOpenLib','sinn-tagesabschluss')});
+ }
+ return out.filter(o=>!offerSkipped(o.id));
+}
+function todayOffer(){
+ const o=todayOffers()[0];if(!o)return '';
+ return '<section class="today-offer" aria-label="Vorschlag für jetzt"><div class="today-offer-text"><b>'+esc(o.title)+'</b><p>'+esc(o.text)+'</p></div><div class="today-offer-actions"><button type="button" class="today-offer-go" onclick="'+o.call+'">'+esc(o.label)+'</button><button type="button" class="today-offer-skip" onclick="'+lifeCall('offerSkip',o.id)+'">Nicht heute</button></div></section>';
+}
 /* Sigils without a ritual around them: the open one sits on the start page. One tap charges it for a
    minute, one tap lets it go. Nothing shows while there is none. */
 function todaySigil(){
@@ -137,7 +162,7 @@ function renderLifeToday(){
  host.innerHTML=(isToday?todayHero():'<header class="life-pagehead life-greeting"><div><span class="life-kicker">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span><h1>'+esc(title)+'</h1></div></header>')+
   (isToday?yesterdayLine():'')+weekStrip(date)+(isToday?'':'<div class="life-calendar-tools">'+lifeButton('Zurück zu heute',lifeCall('lifeSelectDay',key()),'life-textbtn')+'</div>')+
   (focus?'<button type="button" class="life-focus-banner" onclick="goView(\'focus\')"><span class="life-live-dot"></span><span><b>'+esc(focus.title)+'</b><small>'+(focus.state==='paused'?'Timer pausiert':'Timer läuft')+'</small></span><span id="lifeMiniClock">'+lifeClock(PulseLife.remaining(focus,Date.now()))+'</span></button>':'')+
-  (isToday?lifeReviewRows():'')+
+  (isToday?todayOffer()+lifeReviewRows():'')+
   '<section class="day-card"><div class="day-card-head"><h2>'+(isToday?'Heute':esc(title))+'</h2><span class="day-add">'+lifeButton('＋ Termin',lifeCall('lifeCompose',{kind:'event',date}),'')+lifeButton('＋ Aufgabe',lifeCall('lifeCompose',{kind:'task',date}),'')+'</span></div>'+
   (allDay.length?'<div class="life-allday"><span class="life-subtle">Ganztägig</span>'+allDay.map(x=>lifeCard(x,{compact:true})).join('')+'</div>':'')+
   timed.map(x=>'<div class="life-time-row'+(isToday&&dayMinutes(x.time)+(Number(x.duration)||60)<=nowMin?' past':isToday&&dayMinutes(x.time)<=nowMin?' now':'')+'"><time>'+esc(x.time)+'</time><div class="life-timed-entry '+PulseLife.room(x.room).color+'">'+lifeCard(x,{compact:true})+'<small>'+x.duration+' Min.</small></div></div>').join('')+
