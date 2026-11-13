@@ -20,7 +20,7 @@ function toast(x,actionLabel=''){
  if(storage.lastError){x=storage.lastError.message;actionLabel=''}
  let t=document.getElementById('toast');t.replaceChildren();
  let s=document.createElement('span');s.textContent=x;t.appendChild(s);
- if(actionLabel){let b=document.createElement('button');b.type='button';b.textContent=actionLabel;const target=db.undoStack.at(-1);b.onclick=()=>{t.classList.remove('show');if(db.undoStack.at(-1)!==target)return toast('Inzwischen gab es eine neuere Änderung. Nutze ↶ oben für die letzte.');undoLast()};t.appendChild(b)}
+ if(actionLabel){let b=document.createElement('button');b.type='button';b.textContent=actionLabel;const target=db.undoStack.at(-1);b.onclick=()=>{t.classList.remove('show');if(db.undoStack.at(-1)!==target)return toast('Inzwischen gab es eine neuere Änderung. Nutze „Rückgängig“ unter Mehr für die letzte.');undoLast()};t.appendChild(b)}
  t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3200)
 }
 function esc(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}

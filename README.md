@@ -4,6 +4,8 @@ Persönliche App für Tag, Lebensräume und Körper. Läuft komplett im Browser;
 
 Online: https://motionfloyms-ui.github.io/pulse/
 
+Es gibt keine Kopfleiste. Unten sitzt auf jedem Hauptbildschirm eine Eingabezeile über den fünf Tabs; Einstellungen, Rückgängig und die Versionsnummer stehen unter „Mehr“. Auf der Startseite wechselt Wischen nach links oder rechts den Tag.
+
 Die Startseite beginnt mit der Tageslinie: was als Nächstes kommt, wie lange es bis dahin dauert, und ein Strich für 24 Stunden mit Tageslicht, Terminen und dem Punkt für jetzt. Darunter stehen Termine und Aufgaben des Tages, darunter Körper (Essen, Training, Wasser) sonst nichts. Stapel, Mond, Tageskarte, Himmel und Tagesabschluss lassen sich unter Einstellungen → Startseite einzeln dazuschalten. „Mehr“ ist eine Suche, die acht Räume und zwei Listen. Im Kalender ist der Almanach eingeklappt. Die Gestaltung ist ruhig gehalten: eine Fläche, feine Linien statt Leuchten, eine Akzentfarbe; Raumfarben sitzen nur auf den Symbolen.
 
 Der Kalender ist ein Terminkalender (Wiederholungen, ganztägig und mehrtägig, Erinnerungen solange die App offen ist, .ics-Import aus Google Kalender und Export) mit einem Almanach pro Tag: Mondphase und Mondzeichen (Meeus), Planetentag und Planetenstunden, 28 Mondstationen, Tarot-Zuordnungen des Golden Dawn, Feste mehrerer Traditionen, Rauhnächte, Baumkalender, chinesischer Mondkalender und 24 Jahresabschnitte. Alles wird lokal berechnet, ohne Netz.

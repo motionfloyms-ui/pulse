@@ -93,9 +93,8 @@ function renderLifeToday(){
  const title=date===PulseLife.offset(key(),1)?'Morgen':lifeDate(date,{weekday:'long'});
  const nowMin=new Date().getHours()*60+new Date().getMinutes();
  host.innerHTML=(isToday?todayHero():'<header class="life-pagehead life-greeting"><div><span class="life-kicker">'+esc(lifeDate(date,{weekday:'long',day:'numeric',month:'long'}))+'</span><h1>'+esc(title)+'</h1></div></header>')+
-  (isToday?yesterdayLine():'')+weekStrip(date)+'<div class="life-calendar-tools">'+lifeButton('Kalender',lifeCall('lifeOpenCalendar',date),'life-textbtn')+(isToday?'':lifeButton('Heute',lifeCall('lifeSelectDay',key()),'life-textbtn'))+'</div>'+
+  (isToday?yesterdayLine():'')+weekStrip(date)+(isToday?'':'<div class="life-calendar-tools">'+lifeButton('Zurück zu heute',lifeCall('lifeSelectDay',key()),'life-textbtn')+'</div>')+
   (focus?'<button type="button" class="life-focus-banner" onclick="goView(\'focus\')"><span class="life-live-dot"></span><span><b>'+esc(focus.title)+'</b><small>'+(focus.state==='paused'?'Timer pausiert':'Timer läuft')+'</small></span><span id="lifeMiniClock">'+lifeClock(PulseLife.remaining(focus,Date.now()))+'</span></button>':'')+
-  '<div class="life-capture-wrap"><button type="button" class="life-capture-line" onclick="lifeQuick()">'+lifeGlyph('plus')+'<span>'+(lifeState().draft?'Entwurf fortsetzen':'Notiz, Termin, Essen …')+'</span></button>'+(pulseSpeechSupported()?'<button type="button" class="life-capture-mic" aria-label="Per Sprache erfassen" onclick="lifeQuick(true)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>':'')+'</div>'+
   (isToday?lifeReviewRows():'')+
   '<div class="life-sectionhead"><h2>Termine</h2>'+lifeButton('＋ Termin',lifeCall('lifeCompose',{kind:'event',date}),'life-textbtn')+'</div>'+
   (allDay.length?'<div class="life-allday"><span class="life-subtle">Ganztägig</span>'+allDay.map(x=>lifeCard(x,{compact:true})).join('')+'</div>':'')+
@@ -105,6 +104,10 @@ function renderLifeToday(){
   (overdue.length&&isToday?'<button class="life-return-row" type="button" onclick="lifeReview()"><span>!</span><div><b>'+overdue.length+' überfällig</b><small>Neu planen oder parken</small></div><span>›</span></button>':'')+
   (loose.length&&isToday?'<div class="life-sectionhead"><h2>Ohne Datum</h2>'+lifeButton('Alle',lifeCall('lifeOpenLibrary','task'),'life-textbtn')+'</div>'+loose.map(x=>lifeCard(x,{compact:true})).join(''):'')+
   (isToday?lifeBodyBlock()+lifeAlsoBlock()+lifeSystemRows(date):'');
+ /* The capture line lives in the dock under every main screen; keep its hint and microphone current. */
+ const hint=document.getElementById('lifeComposerHint'),mic=document.getElementById('lifeComposerMic');
+ if(hint)hint.textContent=lifeState().draft?'Entwurf fortsetzen':'Notiz, Termin, Essen …';if(mic)mic.hidden=!pulseSpeechSupported();
+ if(lifeDaySlide){host.classList.remove('slide-next','slide-prev');void host.offsetWidth;host.classList.add('slide-'+lifeDaySlide);lifeDaySlide=''}
 }
 /* One-line capture: type, see where it goes, press Enter. */
 const ROOM_TAGS={alltag:'alltag',innen:'innen',innenleben:'innen',sinn:'sinn',rituale:'sinn',tarot:'sinn','körper':'koerper',koerper:'koerper',essen:'koerper',menschen:'menschen',ideen:'ideen',lernen:'ideen',musik:'ideen','draußen':'draussen',draussen:'draussen',natur:'draussen',zuhause:'zuhause',haushalt:'zuhause'};
@@ -192,3 +195,11 @@ function quickMore(){
  if(q.kind==='note'||q.kind==='task'){const f=quickFields(q);return lifeCompose({kind:q.kind,room:f.room,title:f.title,body:f.body,date:f.date||(q.kind==='note'?q.when.date:'')||'',time:'',url:f.url||'',repeat:f.repeat||0})}
  const lines=q.text.split('\n');lifeCompose({kind:'note',room:q.room,title:lines[0]||'',body:lines.slice(1).join('\n'),date:'',time:''});
 }
+
+/* Swipe left or right on the day to move one day on or back. */
+var lifeDaySlide='';
+(function(){
+ let x0=0,y0=0,t0=0;
+ document.addEventListener('touchstart',e=>{const h=document.getElementById('lifeTodayContent');x0=0;if(!h||!h.contains(e.target)||e.touches.length!==1||e.target.closest('input,textarea,select'))return;x0=e.touches[0].clientX;y0=e.touches[0].clientY;t0=Date.now()},{passive:true});
+ document.addEventListener('touchend',e=>{if(!x0)return;const dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=0;if(Math.abs(dx)<70||Math.abs(dx)<Math.abs(dy)*2||Date.now()-t0>700)return;lifeDaySlide=dx<0?'next':'prev';lifeMoveDay(dx<0?1:-1)},{passive:true});
+})();
