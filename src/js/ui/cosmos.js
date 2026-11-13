@@ -128,10 +128,18 @@ function renderCosmos(){
  const host=document.getElementById('cosmosContent');if(!host||document.getElementById('appMain').dataset.view!=='calendar')return;
  const date=cosmosDay||(cosmosDay=key());calList=PulseLife.list(db);
  const title=cosmosMode==='week'?'Woche ab '+lifeDate(PulseLife.offset(date,-((new Date(date+'T12:00:00').getDay()+6)%7)),{day:'numeric',month:'short'}):cosmosMode==='list'?'Termine':lifeDate(date,{month:'long',year:'numeric'});
- host.innerHTML='<header class="life-pagehead cal-head"><div><span class="life-kicker">Kalender</span><h1>'+esc(title)+'</h1></div><div class="cal-head-actions">'+lifeButton(lifeGlyph('plus')+'<span>Termin</span>',lifeCall('calEdit','',date),'life-btn dark')+lifeButton('⋯','calMenu()','life-iconbtn')+'</div></header>'+
+ host.innerHTML='<header class="life-pagehead cal-head"><div><span class="life-kicker">Kalender</span><h1>'+esc(title)+'</h1></div><div class="cal-head-actions">'+'<button type="button" class="life-btn dark cal-add" aria-label="Termin hinzufügen" onclick="'+lifeCall('calEdit','',date)+'">'+lifeGlyph('plus')+'</button>'+lifeButton('⋯','calMenu()','life-iconbtn')+'</div></header>'+
   '<div class="cos-nav">'+(cosmosMode==='list'?'<span></span>':lifeButton('‹',lifeCall('cosmosShift',-1),'life-iconbtn'))+'<div class="life-seg" role="group" aria-label="Ansicht">'+[['month','Monat'],['week','Woche'],['list','Liste']].map(([k,l])=>'<button type="button" aria-pressed="'+(cosmosMode===k)+'" onclick="'+lifeCall('cosmosSetMode',k)+'">'+l+'</button>').join('')+'</div>'+(cosmosMode==='list'?'<span></span>':lifeButton('›',lifeCall('cosmosShift',1),'life-iconbtn'))+'</div>'+
   (date!==key()?'<div class="cal-today">'+lifeButton('Heute',lifeCall('cosmosSelect',key()),'life-textbtn')+'</div>':'')+
   (cosmosMode==='week'?cosmosWeek(date):cosmosMode==='list'?cosmosList(date):cosmosMonth(date))+
   (cosmosMode==='list'?'':cosmosDetail(date)+cosmosUpcoming());
  calList=null;
+ if(cosmosSlide){const g=host.querySelector('.cos-grid,.cal-week');if(g)g.classList.add('slide-'+cosmosSlide);cosmosSlide=''}
 }
+/* Swipe left or right on the month or week to move on or back. */
+var cosmosSlide='';
+(function(){
+ let x0=0,y0=0,t0=0;
+ document.addEventListener('touchstart',e=>{x0=0;if(e.touches.length!==1||!e.target.closest||!e.target.closest('#cosmosContent .cos-grid,#cosmosContent .cal-week'))return;x0=e.touches[0].clientX;y0=e.touches[0].clientY;t0=Date.now()},{passive:true});
+ document.addEventListener('touchend',e=>{if(!x0)return;const dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;x0=0;if(Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*2||Date.now()-t0>700)return;cosmosSlide=dx<0?'next':'prev';cosmosShift(dx<0?1:-1)},{passive:true});
+})();

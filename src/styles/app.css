@@ -1471,3 +1471,42 @@ button:active{opacity:.72}
 .life-calm .modal.open,.life-calm .modalbox{animation:none}
 .kbd .life-nav{display:none}
 .kbd .toast{bottom:16px}
+
+/* ===== v41 · The other tabs get what the start page has: one strong card at the top, depth, no empty boxes. ===== */
+/* Körper: today's training on a petrol card, the week as a white line. */
+.body-top{margin:2px -6px 18px;padding:20px 22px 20px;border-radius:30px;background:#0E6F68;color:#fff;box-shadow:0 22px 44px -24px rgb(14 111 104/.75)}
+.body-top .today-hero-top{min-height:0}
+.body-top .today-date{color:rgb(255 255 255/.88)}
+.body-top h1{margin-top:44px;color:#fff}
+.body-top .today-hero-when{color:rgb(255 255 255/.92)}
+.body-top .body-week i{background:rgb(255 255 255/.26)}
+.body-top .body-week .on i{background:#fff}
+.body-top .body-week small{color:rgb(255 255 255/.8)}
+.body-top .body-week .today small{color:#fff}
+.body-top .body-hero-actions .life-btn{background:#fff;color:#0B5650}
+.body-top .body-hero-actions small{color:rgb(255 255 255/.88)}
+/* Videos: the collection counter is one dark card with its three figures inside. */
+.vault-stats{gap:0;padding:6px 4px 8px;border-radius:28px;background:#182028;color:#fff;box-shadow:0 22px 44px -26px rgb(24 32 40/.9)}
+.vault-stat,.vault-stat.hero{padding:14px 16px;border-radius:0;background:none;color:#fff;box-shadow:none}
+.vault-stat.hero .life-kicker,.vault-stat.hero small,.vault-stat small{color:rgb(255 255 255/.74)}
+.vault-stat:not(.hero){border-top:1px solid rgb(255 255 255/.12)}
+.vault-stats .vault-of{color:rgb(255 255 255/.6)}
+.vault-stats .vault-bar{background:rgb(255 255 255/.18)}
+.vault-stats .vault-bar i{background:#62CDBD}
+@media(max-width:360px){.vault-stats{gap:0}.vault-stat{padding:12px 12px}}
+/* Mehr: you at the top. */
+.more-me{display:flex;align-items:center;gap:14px;width:100%;margin:6px 0 16px;padding:16px;border-radius:24px;background:var(--surface);color:var(--ink);text-align:left;font-weight:400;box-shadow:var(--shadow-1)}
+.more-me-av{display:grid;place-items:center;flex:none;width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--accent-on);font-size:21px;font-weight:700;letter-spacing:.01em}
+.more-me-av .life-glyph{width:26px;height:26px}
+.more-me-text{flex:1;min-width:0}
+.more-me-text b{display:block;font-size:20px;font-weight:700;line-height:1.2}
+.more-me-text small{display:block;font-size:13px;line-height:1.4;color:var(--muted)}
+.more-me>i{font-style:normal;font-size:20px;color:var(--line-strong)}
+.life-lib-card{min-height:0;padding:14px 16px}
+.body-top .body-hero-actions .life-btn{white-space:nowrap;flex:none}
+.cal-head h1{font-size:26px;white-space:nowrap}
+.cal-head-actions .cal-add{width:44px;min-width:44px;height:44px;min-height:44px;padding:0;border-radius:50%;display:grid;place-items:center}
+.cal-head-actions .cal-add .life-glyph{width:20px;height:20px}
+.cos-grid.slide-next,.cal-week.slide-next{animation:dayNext .22s cubic-bezier(.2,.7,.2,1)}
+.cos-grid.slide-prev,.cal-week.slide-prev{animation:dayPrev .22s cubic-bezier(.2,.7,.2,1)}
+.life-calm .cos-grid,.life-calm .cal-week{animation:none}
