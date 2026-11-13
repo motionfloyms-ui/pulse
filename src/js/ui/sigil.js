@@ -68,6 +68,8 @@ function sigilDownload(id){
  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
 }
 /* ---------- Charging: full screen ---------- */
+/* The options stay folded so that charging is: tap, look, done. */
+var sigilOptsOpen=false;
 async function sigilStart(id,minutes=3,mode='still'){
  const s=PulseSigil.ensure(db).sigils.find(x=>x.id===id);if(!s)return;
  let lock=null;if(sigilCharge&&!sigilCharge.done){clearInterval(sigilCharge.timer);lock=sigilCharge.lock}else{lifeCloseSheet();try{lock=await navigator.wakeLock?.request('screen')}catch(_){}}
@@ -76,9 +78,9 @@ async function sigilStart(id,minutes=3,mode='still'){
  el.className='sigil-overlay '+mode;el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-label','Sigille laden');
  el.innerHTML='<div class="sigil-charge-glyph"><div class="sigil-breath" aria-hidden="true"></div>'+sigilGlyph(s,'sigil-svg charge')+'</div>'+
   '<div class="sigil-charge-ui"><span id="sigilClock" class="sigil-clock">'+lifeClock(minutes*60)+'</span><p id="sigilHint">'+(mode==='still'?'Atme mit dem Kreis. Schau auf die Sigille, bis der Kopf leer ist.':'Bewege dich, summe, werde laut. Im Höhepunkt: auf die Sigille schauen.')+'</p>'+
-  '<div class="sigil-row">'+[1,3,5,9].map(n=>'<button type="button" aria-pressed="'+(n===minutes)+'" onclick="'+lifeCall('sigilStart',id,n,mode)+'">'+n+' Min.</button>').join('')+'</div>'+
+  '<details class="sigil-opts"'+(sigilOptsOpen?' open':'')+' ontoggle="sigilOptsOpen=this.open"><summary>Dauer, Art und Klang ändern</summary><div class="sigil-row">'+[1,3,5,9].map(n=>'<button type="button" aria-pressed="'+(n===minutes)+'" onclick="'+lifeCall('sigilStart',id,n,mode)+'">'+n+' Min.</button>').join('')+'</div>'+
   '<div class="sigil-row">'+[['still','Still'],['ekstatisch','Ekstatisch']].map(([k,l])=>'<button type="button" aria-pressed="'+(k===mode)+'" onclick="'+lifeCall('sigilStart',id,minutes,k)+'">'+l+'</button>').join('')+'</div>'+
-  soundChips('Klang')+'<div class="sigil-row">'+lifeButton('Jetzt beenden','sigilEnd(true)','life-btn')+'</div></div>';
+  soundChips('Klang')+'</details><div class="sigil-row">'+lifeButton('Jetzt beenden','sigilEnd(true)','life-btn')+'</div></div>';
  if(!PulseSoundscape.playing())PulseSoundscape.play('drone');
  document.querySelectorAll('#sigilOverlay .sound-chips').forEach(x=>x.outerHTML=soundChips('Klang'));
  el.hidden=false;document.body.classList.add('sigil-open');el.querySelector('button')?.focus();

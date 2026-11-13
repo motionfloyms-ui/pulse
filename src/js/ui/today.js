@@ -103,6 +103,19 @@ function todayHero(){
   dayLine(date,timed,nowMin,glide)+
   (sky.sun?'<p class="sky-foot"><span>Sonne '+cosmosTime(sky.sun.rise)+' bis '+cosmosTime(sky.sun.set)+'</span><span>'+esc(cosmosMoon(date).name)+'</span></p>':'')+'</header>';
 }
+/* Sigils without a ritual around them: the open one sits on the start page. One tap charges it for a
+   minute, one tap lets it go. Nothing shows while there is none. */
+function todaySigil(){
+ let list;try{list=PulseSigil.ensure(db).sigils.filter(x=>x.status==='neu'||x.status==='geladen')}catch(_){return ''}
+ if(!list.length)return '';
+ list=[...list].sort((a,b)=>a.charges.length-b.charges.length||String(b.createdAt).localeCompare(String(a.createdAt)));
+ const g=list[0],n=g.charges.length,last=n?String(g.charges[n-1].at).slice(0,10):'',no='#'+String(g.no).padStart(2,'0');
+ const state=!n?'Noch nicht geladen':n+' Mal geladen, zuletzt '+(last===key()?'heute':last===PulseLife.offset(key(),-1)?'gestern':lifeDate(last,{day:'numeric',month:'short'}));
+ return '<div class="life-sectionhead"><h2>Sigille</h2>'+(list.length>1?lifeButton(anz(list.length-1,'weitere','weitere'),'lifeOpenSigils()','life-textbtn'):'')+'</div>'+
+  '<section class="sigil-today"><button type="button" class="sigil-today-glyph" onclick="'+lifeCall('sigilOpen',g.id)+'" aria-label="Sigille '+no+' ansehen">'+PulseSigil.svg(g.letters,{method:g.method,style:g.style,seed:g.seed},{cls:'sigil-svg'})+'</button>'+
+  '<div class="sigil-today-text"><b>'+no+'</b><small>'+esc(state)+'</small><div class="sigil-today-actions">'+lifeButton('Laden, 1 Minute',lifeCall('sigilStart',g.id,1,'still'),'')+(n?lifeButton('Loslassen',lifeCall('todaySigilRelease',g.id),'quiet'):'')+'</div></div></section>';
+}
+function todaySigilRelease(id){try{PulseSigil.forget(db,id,new Date().toISOString())}catch(e){return toast(e.message)}if(!save())return;pulseTap();toast('Losgelassen. Lass sie arbeiten.');try{skyCheck()}catch(_){}}
 /* Today's card from the Stapel, with its picture. */
 function todayDeck(){
  let d,card;try{if(stapelPrepare())setTimeout(save,0);d=PulseDeck.ensure(db);card=d.cards[Math.min(d.pos,d.cards.length-1)]}catch(_){return ''}
@@ -132,7 +145,7 @@ function renderLifeToday(){
   (allDay.length||timed.length||anytime.length?'':'<div class="day-empty"><span aria-hidden="true">'+lifeGlyph('sun')+'</span><p><b>Nichts geplant.</b> Schreib unten einfach los, zum Beispiel „Zahnarzt morgen 15 Uhr“.</p></div>')+'</section>'+
   (overdue.length&&isToday?'<button class="life-return-row" type="button" onclick="lifeReview()"><span>!</span><div><b>'+overdue.length+' überfällig</b><small>Neu planen oder parken</small></div><span>›</span></button>':'')+
   (loose.length&&isToday?'<div class="life-sectionhead"><h2>Ohne Datum</h2>'+lifeButton('Alle',lifeCall('lifeOpenLibrary','task'),'life-textbtn')+'</div>'+loose.map(x=>lifeCard(x,{compact:true})).join(''):'')+
-  (isToday?lifeBodyBlock()+todayDeck()+lifeAlsoBlock()+lifeSystemRows(date):'');
+  (isToday?lifeBodyBlock()+todaySigil()+todayDeck()+lifeAlsoBlock()+lifeSystemRows(date):'');
  /* The capture line lives in the dock under every main screen; keep its hint and microphone current. */
  const hint=document.getElementById('lifeComposerHint'),mic=document.getElementById('lifeComposerMic');
  if(hint)hint.textContent=lifeState().draft?'Entwurf fortsetzen':'Notiz, Termin, Essen …';if(mic)mic.hidden=!pulseSpeechSupported();
@@ -160,14 +173,18 @@ function quickAnalyze(raw){
  else if(foodOk&&amount)kind='meal';
  if(link&&(kind==='meal'||kind==='capture'))kind='note';
  const video=link&&PulseVideo.parseAny(link.replace(/[).,;!?]+$/,''));if(video&&!room)room=PulseVideo.room(text.replace(link,''),video);if(video&&!when.date&&!series)kind='video';
+ /* A sigil in one line: start with „Sigille“ or pick the chip. The sentence is the intent. */
+ const sig=/^sigil(?:le)?\b\s*[:\-–]?\s*/i.exec(text),intent=sig?text.slice(sig[0].length).trim():text;
+ if(sig&&intent.length>=3)kind='sigil';
  if(quickOverride&&!(quickOverride==='video'&&!video)&&!(quickOverride==='meal'&&!(foodOk||i.type==='drink'))&&!(quickOverride==='event'&&!when.date&&!series))kind=quickOverride;
- return {text,link,video:video?video.type:'',room:room||(kind==='meal'?'koerper':'alltag'),kind,when,rep,series:series&&(kind==='event'||kind==='task')?series:null,remind:PulseCapture.remind(text),type:i.type,foodOk,kcal:Math.round(parts.reduce((a,p)=>a+(p.nut?.kcal||0),0))};
+ return {text,intent:kind==='sigil'?intent:'',link,video:video?video.type:'',room:room||(kind==='meal'?'koerper':'alltag'),kind,when,rep,series:series&&(kind==='event'||kind==='task')?series:null,remind:PulseCapture.remind(text),type:i.type,foodOk,kcal:Math.round(parts.reduce((a,p)=>a+(p.nut?.kcal||0),0))};
 }
 /* A series as a task: the task comes back after it is done (1, 7, 14 or 30 days), when the rule allows it. */
 function quickTaskRepeat(r){if(!r)return 0;if(r.freq==='daily'&&r.interval===1)return 1;if(r.freq==='weekly'&&(r.byday||[]).length===1&&r.interval<=2)return 7*r.interval;if(r.freq==='monthly'&&r.interval===1)return 30;return 0}
 function quickSpan(q){return q.when.time?q.when.time+(q.when.end?'–'+q.when.end:'')+' Uhr':'ganztägig'}
 function quickDescribe(q){
  const names={note:'Notiz',task:'Aufgabe',event:'Termin',meal:'Mahlzeit'},roomName=' · '+PulseLife.room(q.room).name,timed=!!q.when.time,remind=q.kind==='event'&&q.remind!=null?' · Erinnerung '+calRemindLabel(q.remind==='default'?(timed?15:-480):q.remind).replace(/^Am Tag/,'am Tag'):'';
+ if(q.kind==='sigil')return 'Sigille · wird sofort gezeichnet';
  if(q.kind==='video')return (q.video==='playlist'?'Playlist':'Video')+' für den Videos-Tab'+(q.room&&q.room!=='alltag'?' · '+PulseLife.room(q.room).name:'');
  if(q.kind==='capture')return {workout:'Trainingssatz zum Prüfen',recovery:'Erholungstag für heute',context:'Befinden für heute','context-clear':'Befinden: wieder normal','historical-review':'Notiz mit vergangenem Datum',food:'Essen · Menge wird abgefragt',drink:'Getränk'}[q.type]||'Eintrag';
  const from=d=>lifeDate(d,{weekday:'short',day:'numeric',month:'short',...(d.slice(0,4)!==key().slice(0,4)?{year:'numeric'}:{})});
@@ -179,14 +196,15 @@ function quickDescribe(q){
 function quickPreview(){
  const box=document.getElementById('quickRoute'),field=document.getElementById('quickText');if(!box||!field)return;
  if(!field.value.trim()){box.innerHTML='<span class="quick-hint">Erkennt Datum, Uhrzeit, Wiederholungen wie „jeden Dienstag“, Mengen und #raum.</span>';return}
- const q=quickAnalyze(field.value),alts=[['note','Notiz'],['task','Aufgabe']];if(q.video)alts.unshift(['video',q.video==='playlist'?'Playlist':'Video']);if(q.when.date||q.rep)alts.push(['event','Termin']);if(q.foodOk)alts.push(['meal','Mahlzeit']);
- box.innerHTML='<span class="quick-target">Wird: <b>'+esc(quickDescribe(q))+'</b></span>'+(q.kind==='capture'?'':'<span class="quick-alts" role="group" aria-label="Stattdessen speichern als">'+alts.map(([k,l])=>'<button type="button" aria-pressed="'+(q.kind===k)+'" onclick="'+lifeCall('quickSet',k)+'">'+l+'</button>').join('')+'</span>');
+ const q=quickAnalyze(field.value),alts=[['note','Notiz'],['task','Aufgabe']];if(q.video)alts.unshift(['video',q.video==='playlist'?'Playlist':'Video']);if(q.when.date||q.rep)alts.push(['event','Termin']);if(q.foodOk)alts.push(['meal','Mahlzeit']);alts.push(['sigil','Sigille']);
+ box.innerHTML='<span class="quick-target">Wird: <b>'+esc(quickDescribe(q))+'</b></span>'+(q.kind==='capture'?'':'<span class="quick-alts" role="group" aria-label="Stattdessen speichern als">'+alts.map(([k,l])=>'<button type="button" aria-pressed="'+(q.kind===k)+'" onclick="'+lifeCall('quickSet',k)+'">'+l+'</button>').join('')+'</span>')+
+  (q.kind==='sigil'?'<span class="quick-sigil" aria-hidden="true">'+PulseSigil.svg(PulseSigil.reduce(q.intent),{method:'rad',style:'geschwungen',seed:PulseSigil.hash(q.intent)},{cls:'sigil-svg'})+'</span>':'');
 }
 function quickSet(kind){quickOverride=kind;quickPreview();document.getElementById('quickText')?.focus()}
 function lifeQuick(voice=false){
  if(lifeState().draft){lifeCompose();return}
  quickOverride=null;
- libDetailShell('<h2 id="lifeDetailHeading" class="srOnly">Erfassen</h2><label class="srOnly" for="quickText">Eintrag</label><textarea id="quickText" class="quick-input" rows="2" enterkeyhint="done" placeholder="z. B. Probe jeden Dienstag 19 Uhr · 2 Bananen · Idee #ideen" oninput="quickOverride=null;quickPreview()" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();quickSave()}"></textarea>'+
+ libDetailShell('<h2 id="lifeDetailHeading" class="srOnly">Erfassen</h2><label class="srOnly" for="quickText">Eintrag</label><textarea id="quickText" class="quick-input" rows="2" enterkeyhint="done" placeholder="z. B. Probe jeden Dienstag 19 Uhr · 2 Bananen · Sigille: Ich schlafe tief" oninput="quickOverride=null;quickPreview()" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();quickSave()}"></textarea>'+
   '<div id="quickRoute" class="quick-route" aria-live="polite"></div><div class="quick-actions">'+(pulseSpeechSupported()?'<button type="button" class="life-mic" data-target="quickText" aria-pressed="false" onclick="pulseDictate(\'quickText\',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>Sprechen</span></button>':'')+lifeButton('Mehr Details','quickMore()','life-textbtn')+'<button type="button" class="life-btn dark" onclick="quickSave()">Speichern</button></div>');
  const f=document.getElementById('quickText');setTimeout(()=>{f?.focus();quickPreview();if(voice)pulseDictate('quickText')},60);
 }
@@ -213,6 +231,7 @@ function quickSave(){
  pulseStopDictation();
  if(q.kind==='meal'){const m=directIntakeCapture(q.text);if(!m){quickOverride='capture';return quickSave()}save();lifeCloseSheet();render();pulseTap();return toast(intakeMessage(m),'Rückgängig')}
  if(q.kind==='capture'){lifeCloseSheet();const r=universalCapture(q.text);if(r.type==='food-review'){const token=pendingFoodCapture;setTimeout(()=>{openCapture();pendingFoodCapture=token;showFoodFollowup(q.text)},320);return}render();pulseTap();return toast(r.message,['food','drink'].includes(r.type)?'Rückgängig':'')}
+ if(q.kind==='sigil'){let g;try{g=PulseSigil.create(db,{intent:q.intent,method:'rad',style:'geschwungen',seed:PulseSigil.hash(q.intent),phase:cosmosMoon(key()).index},new Date().toISOString())}catch(e){return toast(e.message)}if(!save())return;lifeCloseSheet();pulseSound('chime');pulseTap([12,50,12]);toast('Sigille #'+String(g.no).padStart(2,'0')+' erschaffen. Sie steht jetzt auf deiner Startseite.');try{skyCheck()}catch(_){}return}
  if(q.kind==='video'){const t=q.text.replace(q.link,'').trim(),x=vaultAdd(q.link.replace(/[).,;!?]+$/,''),{title:t,room:q.room==='alltag'&&!/#alltag/i.test(field.value)?'':q.room});if(x)lifeCloseSheet();return}
  const fields=quickFields(q),id=uid('life');
  if(lifeMutate(()=>PulseLife.create(db,fields,id,new Date().toISOString()),quickDescribe(q).split(' · ')[0]+' gespeichert')){lifeCloseSheet();pulseTap()}

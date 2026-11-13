@@ -1533,3 +1533,19 @@ body:has(#appMain:not([data-view="life"],[data-view="calendar"],[data-view="body
 .sub-hero .measurement-feature .big-number{color:#fff}
 .sub-hero .measurement-feature .primary{background:#fff;color:#0B5650}
 .sub-hero .recovery-note{margin:10px 0 0;padding:0;background:none;color:rgb(255 255 255/.92);font-size:17px}
+
+/* ===== v43 · Sigils in everyday reach: one line to make one, one tap to charge it, one tap to let it go. ===== */
+.quick-sigil{display:block;width:112px;height:112px;margin:2px 0 0;padding:12px;border-radius:20px;background:#13282B;color:#F0D9A0}
+.sigil-today{display:flex;align-items:center;gap:16px;padding:16px;border-radius:24px;background:#13282B;color:#EAF4F2;box-shadow:0 20px 40px -24px rgb(19 40 43/.9)}
+.sigil-today-glyph{flex:none;width:104px;height:104px;padding:10px;border-radius:18px;background:rgb(255 255 255/.06);color:#F0D9A0}
+.sigil-today-glyph .sigil-svg{filter:drop-shadow(0 0 8px rgb(240 217 160/.4))}
+.sigil-today-text{flex:1;min-width:0}
+.sigil-today-text b{display:block;font-size:22px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.sigil-today-text small{display:block;margin-top:3px;font-size:13px;line-height:1.4;color:rgb(234 244 242/.75)}
+.sigil-today-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.sigil-today-actions button{min-height:40px;padding:0 14px;border-radius:20px;background:#F0D9A0;color:#13282B;font-size:14px;font-weight:700;white-space:nowrap}
+.sigil-today-actions button.quiet{background:rgb(255 255 255/.12);color:#EAF4F2;font-weight:600}
+.sigil-opts{width:100%;margin:6px 0}
+.sigil-opts>summary{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:22px;cursor:pointer;list-style:none;font-size:14px;font-weight:600;opacity:.8}
+.sigil-opts>summary::-webkit-details-marker{display:none}
+.sigil-opts[open]>summary{opacity:1}

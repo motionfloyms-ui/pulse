@@ -126,6 +126,17 @@ try{
   await ev(()=>stapelSettings());await pg.click('#lifeDetail button:has-text("16")');await pg.waitForTimeout(100);assert.equal(await ev(()=>db.deck.size),16);await ev(()=>lifeCloseSheet());
   await ev(()=>stapelKept());const kl=await pg.innerText('#stapelKeptList');assert.match(kl,/#001/);assert.match(kl,/#002/);await ev(()=>lifeCloseSheet());
  });
+ await check('sigil in one line: capture, start page card, charge is one tap away, release',async()=>{
+  await ev(()=>goView('life'));const n0=await ev(()=>PulseSigil.ensure(db).sigils.length);
+  await ev(()=>lifeQuick());await pg.fill('#quickText','Sigille: Ich schlafe tief und ruhig');await pg.waitForTimeout(100);
+  assert.match(await pg.innerText('#quickRoute'),/Sigille/);assert.equal(await pg.locator('#quickRoute .quick-sigil svg').count(),1);
+  await pg.press('#quickText','Enter');await pg.waitForTimeout(300);
+  const g=await ev(()=>PulseSigil.ensure(db).sigils.at(-1));assert.equal(await ev(()=>PulseSigil.ensure(db).sigils.length),n0+1);assert.equal(g.intent,'Ich schlafe tief und ruhig');assert.equal(g.status,'neu');
+  assert.equal(await pg.locator('.sigil-today').count(),1);assert.equal(await pg.locator('.sigil-today-actions button').count(),1,'only "Laden" before the first charge');
+  await ev(id=>{PulseSigil.charge(db,id,1,'still',new Date().toISOString());save()},g.id);await pg.waitForTimeout(200);
+  await pg.click('.sigil-today-actions >> text=Loslassen');await pg.waitForTimeout(200);
+  assert.equal(await ev(id=>PulseSigil.ensure(db).sigils.find(x=>x.id===id).status,g.id),'vergessen');assert.equal(await pg.locator('.sigil-today').count(),0);
+ });
  await check('Körper: hub, water, routes and back',async()=>{
   await pg.click('#lifeNav >> text=Körper');await pg.waitForTimeout(150);
   assert.equal(await ev(()=>document.getElementById('appMain').dataset.view),'bodyhub');
