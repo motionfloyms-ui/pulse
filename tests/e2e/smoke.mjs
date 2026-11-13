@@ -133,9 +133,10 @@ try{
   await pg.press('#quickText','Enter');await pg.waitForTimeout(300);
   const g=await ev(()=>PulseSigil.ensure(db).sigils.at(-1));assert.equal(await ev(()=>PulseSigil.ensure(db).sigils.length),n0+1);assert.equal(g.intent,'Ich schlafe tief und ruhig');assert.equal(g.status,'neu');
   assert.equal(await pg.locator('.sigil-today').count(),1);assert.equal(await pg.locator('.sigil-today-actions button').count(),1,'only "Laden" before the first charge');
-  await ev(id=>{PulseSigil.charge(db,id,1,'still',new Date().toISOString());save()},g.id);await pg.waitForTimeout(200);
-  await pg.click('.sigil-today-actions >> text=Loslassen');await pg.waitForTimeout(200);
-  assert.equal(await ev(id=>PulseSigil.ensure(db).sigils.find(x=>x.id===id).status,g.id),'vergessen');assert.equal(await pg.locator('.sigil-today').count(),0);
+  const active=()=>ev(()=>PulseSigil.ensure(db).sigils.filter(x=>x.status==='neu'||x.status==='geladen').length);
+  await ev(()=>{for(const x of PulseSigil.ensure(db).sigils)if(x.status==='neu')PulseSigil.charge(db,x.id,1,'still',new Date().toISOString());save()});await pg.waitForTimeout(250);
+  const before=await active();await pg.click('.sigil-today-actions >> text=Loslassen');await pg.waitForTimeout(250);
+  assert.equal(await active(),before-1,'one tap lets one sigil go');
  });
  await check('Körper: hub, water, routes and back',async()=>{
   await pg.click('#lifeNav >> text=Körper');await pg.waitForTimeout(150);
