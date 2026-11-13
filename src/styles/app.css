@@ -64,7 +64,7 @@ button .icon{pointer-events:none}
 .modalOpen{overflow:hidden}
 
 /* ---------- Shell ---------- */
-.app{width:min(100%,760px);margin:0 auto;padding:calc(10px + env(safe-area-inset-top)) 20px calc(156px + env(safe-area-inset-bottom));min-height:100dvh}
+.app{width:min(100%,760px);margin:0 auto;padding:calc(10px + env(safe-area-inset-top)) 20px calc(var(--dock) + 34px + env(safe-area-inset-bottom));min-height:100dvh}
 .view{display:none}.view.active{display:block;animation:arrive .22s ease-out}
 @keyframes arrive{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .life-topbar{position:sticky;top:0;z-index:50;width:100%;margin:0 auto;padding:calc(10px + env(safe-area-inset-top)) max(20px,calc((100% - 720px)/2)) 10px;display:flex;align-items:center;justify-content:space-between;background:color-mix(in srgb,var(--canvas) 82%,transparent);-webkit-backdrop-filter:saturate(1.8) blur(18px);backdrop-filter:saturate(1.8) blur(18px)}
@@ -84,10 +84,10 @@ button .icon{pointer-events:none}
 .life-nav .life-nav-capture{width:52px;height:52px;min-height:52px;margin:auto;border-radius:50%;background:var(--accent);color:var(--accent-on);box-shadow:0 6px 16px -6px var(--accent)}
 .life-nav-capture span{font-size:28px;font-weight:400;line-height:1}
 .life-nav .life-nav-capture:active{transform:scale(.94)}
-.toast{display:none;position:fixed;z-index:1100;left:50%;transform:translateX(-50%);bottom:calc(136px + env(safe-area-inset-bottom));width:max-content;max-width:calc(100% - 32px);align-items:center;gap:14px;padding:12px 12px 12px 18px;border-radius:16px;background:var(--ink);color:var(--canvas);font-size:14px;font-weight:500;box-shadow:var(--shadow-2)}
+.toast{display:none;position:fixed;z-index:1100;left:50%;transform:translateX(-50%);bottom:calc(var(--dock) + 14px + env(safe-area-inset-bottom));width:max-content;max-width:calc(100% - 32px);align-items:center;gap:14px;padding:12px 12px 12px 18px;border-radius:16px;background:var(--ink);color:var(--canvas);font-size:14px;font-weight:500;box-shadow:var(--shadow-2)}
 .toast.show{display:flex}
 /* On the Stapel the sticky Zurück/Weiter row sits where the toast would land: lift the toast above it. */
-body:has(#stapel.active .stapel-nav) .toast{bottom:calc(196px + env(safe-area-inset-bottom))}
+body:has(#stapel.active .stapel-nav) .toast{bottom:calc(var(--dock) + 74px + env(safe-area-inset-bottom))}
 .toast button{padding:9px 12px;border-radius:10px;background:color-mix(in srgb,var(--canvas) 18%,transparent);color:inherit;font-size:13px;flex-shrink:0}
 
 /* ---------- Shared type ---------- */
@@ -469,7 +469,7 @@ th{color:var(--muted);font-weight:600}
 .setdone .icon{color:var(--ok);width:18px}.setdone small{margin-left:auto}
 .suggestion{font-size:13px;color:var(--muted);margin:14px 2px 0;line-height:1.5}
 .session-end{display:grid;gap:6px;margin:24px 0}
-.timerbox{display:none;position:sticky;bottom:calc(134px + env(safe-area-inset-bottom));z-index:40;align-items:center;gap:10px;margin:14px 0;padding:12px 14px;border-radius:var(--r-lg);background:var(--ink);color:var(--canvas);box-shadow:var(--shadow-2);font-size:13px}
+.timerbox{display:none;position:sticky;bottom:calc(var(--dock) + 12px + env(safe-area-inset-bottom));z-index:40;align-items:center;gap:10px;margin:14px 0;padding:12px 14px;border-radius:var(--r-lg);background:var(--ink);color:var(--canvas);box-shadow:var(--shadow-2);font-size:13px}
 .timerbox.on{display:flex}
 .timerbox small{color:inherit;opacity:.7}
 .timerbox b{display:block;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
@@ -1198,7 +1198,7 @@ td{font-variant-numeric:tabular-nums}
 .stapel-summary{font-weight:650}
 .stapel-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:2px}
 .stapel-keep[aria-pressed="true"]{color:var(--accent-text)}
-.stapel-nav{position:sticky;bottom:calc(134px + env(safe-area-inset-bottom));z-index:5;display:grid;grid-template-columns:1fr 2fr;gap:8px}
+.stapel-nav{position:sticky;bottom:calc(var(--dock) + 12px + env(safe-area-inset-bottom));z-index:5;display:grid;grid-template-columns:1fr 2fr;gap:8px}
 .stapel-nav .life-btn{min-height:50px;box-shadow:var(--shadow-2)}.stapel-nav .is-hidden{visibility:hidden}
 .stapel-player{margin:0}.stapel-player .pulse-video-play,.stapel-player iframe{border-radius:0}
 .stapel-tarot-face{display:grid;place-items:center;gap:6px;width:66px;height:104px;margin-bottom:auto;border:1.5px solid rgb(252 211 77/.85);border-radius:9px;color:#FCD34D;font-weight:700;letter-spacing:.06em}
@@ -1510,3 +1510,26 @@ button:active{opacity:.72}
 .cos-grid.slide-next,.cal-week.slide-next{animation:dayNext .22s cubic-bezier(.2,.7,.2,1)}
 .cos-grid.slide-prev,.cal-week.slide-prev{animation:dayPrev .22s cubic-bezier(.2,.7,.2,1)}
 .life-calm .cos-grid,.life-calm .cal-week{animation:none}
+
+/* ===== v42 · Subpages: tabs only (no capture line) so the page's own input has the room, a back
+   button that stays in reach, and the same strong card at the top as the tabs. ===== */
+body{--dock:122px}
+body:has(#appMain:not([data-view="life"],[data-view="calendar"],[data-view="bodyhub"],[data-view="videos"],[data-view="more"])){--dock:62px}
+body:has(#appMain:not([data-view="life"],[data-view="calendar"],[data-view="bodyhub"],[data-view="videos"],[data-view="more"])) .life-composer{display:none}
+.backbtn,.life-back{position:sticky;top:calc(8px + env(safe-area-inset-top));z-index:30;display:inline-flex;align-items:center;gap:4px;min-height:40px;margin:2px 0 10px -4px;padding:0 16px 0 10px;border-radius:20px;background:var(--surface);color:var(--ink);font-size:15px;font-weight:600;box-shadow:var(--shadow-1)}
+.sub-hero{display:block;margin:0 -6px 16px;padding:20px 22px 22px;border-radius:30px;background:#0E6F68;color:#fff;box-shadow:0 22px 44px -24px rgb(14 111 104/.75)}
+.sub-hero h1{margin:0;color:#fff}
+.sub-hero .lede{color:rgb(255 255 255/.92);margin-top:10px;font-size:16px}
+.sub-hero .food-today{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0 0}
+.sub-hero .food-today>div{padding:0;border-radius:0;background:none;gap:6px;min-width:0}
+.sub-hero .food-today small{color:rgb(255 255 255/.8);font-size:13px}
+.sub-hero .food-today b{color:#fff;font-size:26px;line-height:1.1}
+.sub-hero .food-today b span{display:block;margin-top:2px;color:rgb(255 255 255/.75);font-size:12px}
+.sub-hero .food-bar{background:rgb(255 255 255/.26)}
+.sub-hero .food-bar i{background:#fff}
+.sub-hero .food-today .small{margin-top:6px;min-height:36px;padding:0 6px;border-radius:18px;background:#fff;color:#0B5650;font-size:13px;font-weight:650;white-space:nowrap}
+.sub-hero .measurement-feature{margin:14px 0 0;padding:0;border-radius:0;background:none}
+.sub-hero .measurement-feature .eyebrow{color:rgb(255 255 255/.8)}
+.sub-hero .measurement-feature .big-number{color:#fff}
+.sub-hero .measurement-feature .primary{background:#fff;color:#0B5650}
+.sub-hero .recovery-note{margin:10px 0 0;padding:0;background:none;color:rgb(255 255 255/.92);font-size:17px}
