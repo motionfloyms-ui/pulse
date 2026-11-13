@@ -1446,3 +1446,28 @@ td{font-variant-numeric:tabular-nums}
 .sky-card .sky-foot{color:rgb(255 255 255/.9);white-space:nowrap}
 .sky-card h1{margin-top:86px}
 .sky-night h1{margin-top:60px}
+
+/* ===== v40 · Behaves like an app: no pull-to-reload, labels cannot be selected by a long press,
+   sheets rise from the bottom edge, leave downwards and follow the finger, the dock makes room for
+   the keyboard, every tap answers. ===== */
+html,body{overscroll-behavior-y:contain}
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+input,textarea,select,[contenteditable],p,li,pre,blockquote,td{-webkit-user-select:text;user-select:text}
+button p,button li{-webkit-user-select:none;user-select:none}
+button{transition:opacity .12s,background-color .15s}
+button:active{opacity:.72}
+.view.active{animation-duration:.16s}
+.modal,.captureSheet{align-items:flex-end;padding:0;background:rgb(8 12 11/.4);-webkit-backdrop-filter:none;backdrop-filter:none}
+.modal.open{animation:dim .2s ease-out}
+.modalbox,.capturePanel{width:min(100%,640px);max-height:92dvh;border-radius:28px 28px 0 0;padding:8px 22px calc(22px + env(safe-area-inset-bottom));animation:sheetUp .3s cubic-bezier(.2,.85,.25,1);will-change:transform}
+.modalbox::before,.capturePanel::before{display:block;width:40px;height:5px;margin:2px auto 10px;background:var(--line-strong)}
+.modal.closing{display:flex;pointer-events:none;animation:dimOut .2s ease-in forwards}
+.modal.closing .modalbox{animation:sheetDown .2s cubic-bezier(.4,0,1,1) forwards}
+.modal.dragged{animation:none}
+@keyframes sheetUp{from{transform:translateY(100%)}}
+@keyframes sheetDown{to{transform:translateY(100%)}}
+@keyframes dim{from{background-color:rgb(8 12 11/0)}}
+@keyframes dimOut{to{background-color:rgb(8 12 11/0)}}
+.life-calm .modal.open,.life-calm .modalbox{animation:none}
+.kbd .life-nav{display:none}
+.kbd .toast{bottom:16px}

@@ -4,7 +4,7 @@ Persönliche App für Tag, Lebensräume und Körper. Läuft komplett im Browser;
 
 Online: https://motionfloyms-ui.github.io/pulse/
 
-Es gibt keine Kopfleiste. Unten sitzt auf jedem Hauptbildschirm eine Eingabezeile über den fünf Tabs; Einstellungen, Rückgängig und die Versionsnummer stehen unter „Mehr“. Auf der Startseite wechselt Wischen nach links oder rechts den Tag.
+Es gibt keine Kopfleiste. Unten sitzt auf jedem Hauptbildschirm eine Eingabezeile über den fünf Tabs; Einstellungen, Rückgängig und die Versionsnummer stehen unter „Mehr“. Auf der Startseite wechselt Wischen nach links oder rechts den Tag. Eingabe- und Detailblätter kommen von unten, lassen sich am oberen Rand nach unten wegziehen und sitzen bei offener Tastatur direkt darüber. Herunterziehen lädt die Seite nicht neu, Beschriftungen lassen sich nicht markieren, die fünf Tabs merken sich ihre Scrollposition, und ein kurzes Vibrieren bestätigt Tippen (abschaltbar in den Einstellungen).
 
 Die Startseite beginnt mit dem Himmel, wie er gerade ist (Tag, Dämmerung, Nacht; die Sonne steht dort, wo sie auf ihrem Weg ist, nachts der Mond). Darauf stehen der nächste Termin und die Tageslinie: ein Strich für 24 Stunden mit Tageslicht, Terminen und dem Punkt für jetzt. Darunter eine Karte für den Tag (Termine und Aufgaben, oder ein Hinweis zum Eintippen, wenn nichts geplant ist), Körper und die heutige Stapel-Karte mit ihrem Bild. Mond, Tageskarte, Himmel und Tagesabschluss lassen sich unter Einstellungen → Startseite dazuschalten.
 

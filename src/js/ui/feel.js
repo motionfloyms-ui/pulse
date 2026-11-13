@@ -11,11 +11,13 @@ function applyTheme(t=pulseThemeChoice()){
  document.querySelectorAll('meta[name="theme-color"]').forEach(m=>{const media=m.getAttribute('media')||'';m.setAttribute('content',t==='auto'?(media.includes('dark')?THEME_COLORS.dark:THEME_COLORS.light):THEME_COLORS[t])});
 }
 function lifeSetTheme(t){if(!['auto','light','dark'].includes(t))return;db.uiPrefs.theme=t;if(save()){applyTheme(t);lifeSettings()}}
+function lifeSetHaptics(){db.uiPrefs.haptics=db.uiPrefs.haptics===false;if(save()){lifeSettings();pulseHaptic(12)}}
 function lifeSetSound(){db.uiPrefs.sound=!db.uiPrefs.sound;if(save()){lifeSettings();if(db.uiPrefs.sound)pulseSound('pop')}}
 function themeSettingsHTML(){
  const t=pulseThemeChoice();
  return '<div class="life-settings-row"><div><b>Darstellung</b><p>Automatisch folgt deinem Handy.</p></div><div class="life-seg" role="group" aria-label="Darstellung">'+[['auto','Auto'],['light','Hell'],['dark','Dunkel']].map(([v,l])=>'<button type="button" aria-pressed="'+(t===v)+'" onclick="'+lifeCall('lifeSetTheme',v)+'">'+l+'</button>').join('')+'</div></div>'+
-  '<div class="life-settings-row"><div><b>Töne</b><p>Leiser Klick beim Abhaken, Akkord wenn alles für heute erledigt ist.</p></div>'+lifeButton(db.uiPrefs.sound?'An':'Aus',lifeCall('lifeSetSound'),'life-btn')+'</div>';
+  '<div class="life-settings-row"><div><b>Töne</b><p>Leiser Klick beim Abhaken, Akkord wenn alles für heute erledigt ist.</p></div>'+lifeButton(db.uiPrefs.sound?'An':'Aus',lifeCall('lifeSetSound'),'life-btn')+'</div>'+
+  '<div class="life-settings-row"><div><b>Vibration</b><p>Kurzes Tippen unter dem Finger bei Tabs, beim Abhaken und beim Eintragen.</p></div>'+lifeButton(db.uiPrefs.haptics===false?'Aus':'An',lifeCall('lifeSetHaptics'),'life-btn')+'</div>';
 }
 /* Tiny synthesised sounds, no audio files. Off unless switched on in the settings. */
 let pulseAudio=null;
@@ -83,3 +85,33 @@ function overlayEnter(id,onBack){if(overlayOpen)return;overlayOpen={id,onBack};b
 function overlayLeave(){if(!overlayOpen)return;overlayOpen=null;backgroundInert(false);if(history.state?.pulseOverlay){overlayBackPending=true;history.back()}}
 /* Called first by the popstate handler; true when the event belonged to an overlay. */
 function overlayPop(){if(overlayBackPending){overlayBackPending=false;return true}if(overlayOpen){const o=overlayOpen;overlayOpen=null;backgroundInert(false);try{o.onBack()}catch(_){}return true}return false}
+
+/* ---------- Touch feel: a short tick under the finger, sheets that leave downwards and follow a drag,
+   and the dock stepping aside for the keyboard. ---------- */
+function pulseHaptic(ms=8){try{if(db?.uiPrefs?.haptics!==false&&navigator.vibrate&&(!navigator.userActivation||navigator.userActivation.hasBeenActive))navigator.vibrate(ms)}catch(_){}}
+document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('#lifeNav button,.life-check,.day-add button,.home-switch,.body-quick button,.tile-water,.life-day,.cos-day,.stapel-nav button'))pulseHaptic(8)},true);
+function sheetLeave(wrapper){
+ if(wrapper.classList.contains('dragged')||document.body.classList.contains('life-calm'))return;
+ wrapper.classList.add('closing');setTimeout(()=>wrapper.classList.remove('closing'),210);
+}
+(function(){
+ let panel=null,y0=0,dy=0,t0=0;
+ document.addEventListener('touchstart',e=>{
+  panel=null;if(e.touches.length!==1||!e.target.closest)return;
+  const p=e.target.closest('.modal.open .modalbox');if(!p||p.scrollTop>0||e.target.closest('input,textarea,select,button,a,label'))return;
+  const y=e.touches[0].clientY;if(y-p.getBoundingClientRect().top>72)return;
+  panel=p;y0=y;dy=0;t0=Date.now();p.style.transition='none';
+ },{passive:true});
+ document.addEventListener('touchmove',e=>{if(!panel)return;dy=Math.max(0,e.touches[0].clientY-y0);panel.style.transform='translateY('+dy+'px)'},{passive:true});
+ const end=()=>{
+  if(!panel)return;const p=panel,w=p.closest('.modal');panel=null;
+  p.style.transition='transform .2s cubic-bezier(.2,.8,.2,1)';
+  if(dy>110||(dy>36&&Date.now()-t0<260)){
+   p.style.transform='translateY(110%)';
+   setTimeout(()=>{if(w&&w.classList.contains('open')){w.classList.add('dragged');closeDialog(w);setTimeout(()=>w.classList.remove('dragged'),60)}p.style.transform='';p.style.transition=''},190);
+  }else{p.style.transform='';setTimeout(()=>{p.style.transition=''},210)}
+ };
+ document.addEventListener('touchend',end);document.addEventListener('touchcancel',end);
+ let base=window.innerHeight,width=window.innerWidth;
+ window.addEventListener('resize',()=>{if(window.innerWidth!==width){width=window.innerWidth;base=window.innerHeight}if(window.innerHeight>base)base=window.innerHeight;document.body.classList.toggle('kbd',base-window.innerHeight>140)});
+})();

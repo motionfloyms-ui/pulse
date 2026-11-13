@@ -210,7 +210,7 @@ function openDialog(wrapper,focusSelector,{fromHistory=false}={}){
  const replacing=activeDialog!==null;
  if(!replacing)lastDialogTrigger=document.activeElement;
  else if(activeDialog!==wrapper.id)document.getElementById(activeDialog)?.classList.remove('open');
- activeDialog=wrapper.id;wrapper.classList.add('open');backgroundInert(true);
+ activeDialog=wrapper.id;wrapper.classList.remove('closing');wrapper.classList.add('open');backgroundInert(true);
  if(!fromHistory&&!dialogBackPending){const state={pulseView:(location.hash||'#now').slice(1),pulseDialog:wrapper.id};if(replacing)history.replaceState(state,'',location.hash);else history.pushState(state,'',location.hash)}
  requestAnimationFrame(()=>{if(activeDialog!==wrapper.id)return;const el=wrapper.querySelector(focusSelector)||wrapper.querySelector('button,input,textarea,select,[tabindex]:not([tabindex="-1"])');el?.focus()});
 }
@@ -218,6 +218,7 @@ function closeDialog(wrapper,{fromHistory=false,navigating=false}={}){
  if(!wrapper||activeDialog!==wrapper.id)return;
  pulseStopDictation();stopScanner();
  wrapper.classList.remove('open');activeDialog=null;backgroundInert(false);
+ if(!navigating&&typeof sheetLeave==='function')sheetLeave(wrapper);
  const f=lastDialogTrigger;lastDialogTrigger=null;
  if(!navigating&&f&&document.contains(f))requestAnimationFrame(()=>f.focus());
  if(!fromHistory&&!navigating&&history.state?.pulseDialog===wrapper.id){dialogBackPending=true;history.back()}
