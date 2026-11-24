@@ -4,10 +4,32 @@ function lifeReceiveShare(fields){
  if(!lifeState().draft)return lifeCompose(fields);
  const id=uid('life');if(lifeMutate(()=>PulseLife.create(db,{kind:'note',room:'alltag',...fields},id,new Date().toISOString()),'Geteilten Inhalt gespeichert'))lifeOpenItem(id);
 }
+/* Photos shared from another app: the service worker left them in a small cache. Ask once what they are. */
+let sharedPhotoFiles=[],sharedPhotoMeta={};
+async function takeSharedPhotos(n){
+ const out=[];try{const c=await caches.open('pulse-share');for(let i=0;i<Math.min(8,n);i++){const r=await c.match('./__share/'+i);if(r){const b=await r.blob();out.push(new File([b],'geteilt-'+(i+1)+'.jpg',{type:b.type||'image/jpeg'}))}}for(const k of await c.keys())await c.delete(k)}catch(_){}
+ return out;
+}
+function sharedPhotoSheet(files,meta){
+ sharedPhotoFiles=files;sharedPhotoMeta=meta;const n=files.length;
+ libDetailShell('<span class="life-kicker">Geteilt</span><h2 id="lifeDetailHeading" tabindex="-1">'+(n===1?'Ein Foto':n+' Fotos')+'</h2><div class="share-photos">'+files.slice(0,4).map(()=>'<img alt=""/>').join('')+'</div>'+
+  '<p class="life-detail-intro">Was ist es?</p><div class="share-photo-actions">'+lifeButton('Mahlzeit',"sharedPhotoAs('meal')",'life-btn dark')+lifeButton(n===1?'Notiz mit Foto':'Notiz mit Fotos',"sharedPhotoAs('note')",'life-btn')+'</div>');
+ document.querySelectorAll('#lifeDetail .share-photos img').forEach((img,i)=>{img.src=URL.createObjectURL(files[i])});
+}
+async function sharedPhotoAs(kind){
+ const files=sharedPhotoFiles,meta=sharedPhotoMeta;sharedPhotoFiles=[];if(!files.length)return lifeCloseSheet();
+ if(kind==='meal'){lifeCloseSheet();await mealPhotoSave(files[0],{note:meta.text||''});return}
+ const ids=[];for(const f of files){try{ids.push(await PulsePhotos.add(f))}catch(e){toast(e.message)}}
+ if(!ids.length)return;
+ const link=/^https?:\/\//i.test(meta.url||'')?meta.url:((meta.text||'').match(/https?:\/\/\S+/)||[''])[0],body=(meta.text||'').replace(link,'').trim();
+ const id=uid('life');lifeCloseSheet();
+ if(lifeMutate(()=>PulseLife.create(db,{kind:'note',room:'alltag',title:(meta.title||body.split('\n')[0]||'Geteiltes Foto').slice(0,120),body:meta.title?body:body.split('\n').slice(1).join('\n').trim(),url:link,photos:ids},id,new Date().toISOString()),'Foto gespeichert'))lifeOpenItem(id);
+}
 function handleLaunchParams(){
  const q=new URLSearchParams(location.search);if(![...q.keys()].length)return;
- const action=q.get('action'),title=(q.get('title')||'').trim(),text=(q.get('text')||'').trim(),url=(q.get('url')||'').trim();
+ const action=q.get('action'),title=(q.get('title')||'').trim(),text=(q.get('text')||'').trim(),url=(q.get('url')||'').trim(),shared=Number(q.get('shared'))||0;
  history.replaceState(history.state,'',location.pathname+location.hash);
+ if(shared>0){setTimeout(async()=>{const files=await takeSharedPhotos(shared);if(files.length)sharedPhotoSheet(files,{title,text,url});else toast('Das geteilte Foto ist nicht angekommen. Versuch es noch einmal.')},200);return}
  setTimeout(()=>{
   if(title||text||url){const link=/^https?:\/\//i.test(url)?url:(text.match(/https?:\/\/\S+/)||[''])[0];const video=PulseVideo.parseAny(link);if(video){const clean=PulseVideo.shareTitle(title)||PulseVideo.shareTitle(text.replace(link,'').trim().split('\n')[0]),rest=(clean+' '+text.replace(link,'')).trim();const x=vaultAdd(link,{title:clean,room:PulseVideo.room(rest,video)});if(x){lifeOpenVideos();vaultOpen(x.id)}return}
   const name=title||(text.replace(link,'').trim().split('\n')[0]||(video?'YouTube-Video':'Geteilt')),room=video?PulseVideo.room(title+' '+text,video):'';lifeReceiveShare({kind:'note',title:name.slice(0,120),body:title?text.replace(link,'').trim():text.replace(link,'').trim().split('\n').slice(1).join('\n').trim(),url:link,...(room?{room}:{})})}

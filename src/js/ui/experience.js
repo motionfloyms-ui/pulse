@@ -86,8 +86,9 @@ function renderNutrition() {
   const d=today();
   for(const [id,value] of [['nKcal',Math.round(d.kcal)],['nProt',de(d.protein)+' g'],['nCarb',de(d.carbs)+' g'],['nFat',de(d.fat)+' g']])document.getElementById(id).textContent=value;
   document.getElementById('mealList').innerHTML=db.meals.filter(meal=>meal.date===key()).slice().reverse().map(meal=>
-    '<div class="item mealItem"><div class="grow"><small>'+esc(meal.time||'Zeit offen')+'</small><b>'+esc(meal.name)+'</b><div class="muted">'+de(meal.protein)+' g Protein · '+Math.round(meal.kcal)+' kcal'+(meal.confidence==='estimated'?' · geschätzt':'')+'</div></div><button type="button" class="icon-button danger" aria-label="'+esc(meal.name)+' löschen" onclick="removeMeal('+db.meals.indexOf(meal)+')">'+uiIcon('close')+'</button></div>'
-  ).join('')||'<div class="empty">Noch keine Mahlzeiten heute.</div>';
+    '<div class="item mealItem'+(meal.photo?' has-photo':'')+'">'+(meal.photo?photoTiles([meal.photo]):'')+'<div class="grow"><small>'+esc(meal.time||'Zeit offen')+'</small><b>'+esc(meal.name)+'</b><div class="muted">'+(meal.confidence==='photo'?'Foto, Werte offen':de(meal.protein)+' g Protein · '+Math.round(meal.kcal)+' kcal'+(meal.confidence==='estimated'?' · geschätzt':''))+'</div>'+(meal.confidence==='photo'?'<button type="button" class="small meal-fill" onclick="'+lifeCall('mealPhotoFill',meal.id)+'">Werte ergänzen</button>':'')+'</div><button type="button" class="icon-button danger" aria-label="'+esc(meal.name)+' löschen" onclick="removeMeal('+db.meals.indexOf(meal)+')">'+uiIcon('close')+'</button></div>'
+  ).join('')||'<div class="empty">Noch keine Mahlzeiten heute. Ein Foto über die Kamera unten reicht.</div>';
+  PulsePhotos.hydrate(document.getElementById('mealList'));
   document.getElementById('macroBars').innerHTML='<div class="quiet-note">'+esc(nutritionNextAction())+'</div>';
   renderFoodToday();renderFoodLibrary();
 }

@@ -115,7 +115,7 @@ function todayOffers(){
   if(!(d.water>0))out.push({id:'water',title:'Ein Glas Wasser',text:'Das erste des Tages.',label:'＋ 250 ml',call:'addWater(.25)'});
  }
  if(p==='day'){
-  if(!(d.meals>0))out.push({id:'meal',title:'Schon etwas gegessen?',text:'Schreib es in einem Satz, zum Beispiel „2 Brote mit Käse“.',label:'Eintragen',call:'lifeQuick()'});
+  if(!(d.meals>0))out.push({id:'meal',title:'Schon etwas gegessen?',text:'Ein Foto reicht. Die Werte kannst du später ergänzen oder weglassen.',label:'Foto machen',call:'mealPhotoPick()'});
   if(c.mode!=='recovery'&&c.training&&!c.training.completed&&!trainedOn(key()))out.push({id:'training',title:c.training.kind==='home'?'Heimtraining heute':'Plan '+c.training.plan+' heute',text:'Die letzten Gewichte sind vorausgefüllt.',label:'Training öffnen',call:'openTodaysTraining()'});
  }
  if(p==='evening'){

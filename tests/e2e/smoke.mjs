@@ -126,6 +126,33 @@ try{
   await ev(()=>stapelSettings());await pg.click('#lifeDetail button:has-text("16")');await pg.waitForTimeout(100);assert.equal(await ev(()=>db.deck.size),16);await ev(()=>lifeCloseSheet());
   await ev(()=>stapelKept());const kl=await pg.innerText('#stapelKeptList');assert.match(kl,/#001/);assert.match(kl,/#002/);await ev(()=>lifeCloseSheet());
  });
+ await check('Essen per Foto: a photo is the meal, values can follow in one sentence',async()=>{
+  await ev(()=>goView('life'));
+  const before=await ev(()=>({meals:today().meals||0,kcal:today().kcal||0,n:db.meals.length}));
+  const m=await ev(async()=>{const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d');g.fillStyle='#c84';g.fillRect(0,0,64,64);const b=await new Promise(r=>c.toBlob(r,'image/jpeg'));return mealPhotoSave(new File([b],'teller.jpg',{type:'image/jpeg'}))});
+  assert.ok(m&&m.photo&&m.confidence==='photo','a photo meal was saved');
+  const after=await ev(()=>({meals:today().meals,kcal:today().kcal}));assert.equal(after.meals,before.meals+1);assert.equal(after.kcal,before.kcal,'a photo adds no guessed calories');
+  assert.ok(await ev(id=>photoReferences().has(id),m.photo),'meal photos are not cleaned up');
+  await ev(()=>goView('nutrition'));await pg.waitForTimeout(300);
+  assert.equal(await pg.locator('#mealList .mealItem.has-photo img[data-photo-id]').count()>=1,true);
+  await pg.click('#mealList .meal-fill');await pg.waitForTimeout(250);await pg.fill('#mealFillText','2 Bananen');await pg.click('#lifeDetail >> text=Werte übernehmen');await pg.waitForTimeout(250);
+  const done=await ev(id=>{const x=db.meals.find(y=>y.id===id);return {kcal:x.kcal,conf:x.confidence,dayKcal:today().kcal,meals:today().meals}},m.id);
+  assert.ok(done.kcal>0&&done.conf!=='photo','values were added');assert.equal(done.dayKcal,before.kcal+done.kcal);assert.equal(done.meals,before.meals+1,'filling in values does not add a second meal');
+ });
+ await check('shared photos: the service worker keeps them, PULSE asks what they are',async()=>{
+  const ok=await ev(async()=>{if(!('serviceWorker' in navigator))return 'no-sw';const reg=await Promise.race([navigator.serviceWorker.ready,new Promise(r=>setTimeout(()=>r(null),8000))]);if(!reg)return 'no-reg';
+   const c=document.createElement('canvas');c.width=c.height=32;const b=await new Promise(r=>c.toBlob(r,'image/png'));const fd=new FormData();fd.append('text','Rezept von Pia');fd.append('photos',new File([b],'a.png',{type:'image/png'}));
+   const sw=reg.active;if(!sw)return 'no-active';
+   const res=await fetch('./share',{method:'POST',body:fd,redirect:'manual'}).catch(e=>String(e));
+   const cache=await caches.open('pulse-share');const hit=await cache.match('./__share/0');return hit?'stored':'missing:'+(res&&res.type);});
+  if(ok!=='stored'&&!String(ok).startsWith('no-'))assert.fail('service worker did not keep the shared photo: '+ok);
+  await ev(async()=>{const c=document.createElement('canvas');c.width=c.height=32;const b=await new Promise(r=>c.toBlob(r,'image/png'));const cache=await caches.open('pulse-share');await cache.put('./__share/0',new Response(b,{headers:{'content-type':'image/png'}}))});
+  await pg.goto(base+'?shared=1&text='+encodeURIComponent('Rezept von Pia'));await pg.waitForTimeout(1400);
+  assert.match(await pg.innerText('#lifeDetail'),/Was ist es\?/);
+  const n0=await ev(()=>PulseLife.list(db).length);await pg.click('#lifeDetail >> text=Notiz mit Foto');await pg.waitForTimeout(600);
+  const note=await ev(()=>PulseLife.list(db).find(x=>x.title==='Rezept von Pia'));assert.ok(note&&note.photos.length===1,'note with the shared photo');assert.equal(await ev(()=>PulseLife.list(db).length),n0+1);
+  assert.equal(await ev(async()=>(await (await caches.open('pulse-share')).keys()).length),0,'the share cache is emptied');
+ });
  await check('sigil in one line: capture, start page card, charge is one tap away, release',async()=>{
   await ev(()=>goView('life'));const n0=await ev(()=>PulseSigil.ensure(db).sigils.length);
   await ev(()=>lifeQuick());await pg.fill('#quickText','Sigille: Ich schlafe tief und ruhig');await pg.waitForTimeout(100);

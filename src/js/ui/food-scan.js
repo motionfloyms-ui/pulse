@@ -100,3 +100,35 @@ function lifeFoodPick(i){
  const f=foodSearchHits[i];if(!f)return;rememberFood(f);
  if(save()){lifeCloseSheet();render();toast(f.name+' gemerkt');const t=document.getElementById('smartFoodText');if(t?.value.trim()&&document.getElementById('appMain').dataset.view==='nutrition')understandFood()}
 }
+
+/* ---------- Essen per Foto: the photo is the entry. Nothing is recognised and no number is guessed; the
+   meal counts as eaten, its values stay open until she adds them in one sentence (or never). ---------- */
+function mealSlotName(h=new Date().getHours()){return h<11?'Frühstück':h<15?'Mittagessen':h<18?'Zwischendurch':'Abendessen'}
+function mealPhotoPick(){const i=document.getElementById('mealPhotoInput');if(!i)return;i.value='';i.click()}
+async function mealPhotoSave(file,{name='',note=''}={}){
+ if(!file)return null;
+ let id;try{id=await PulsePhotos.add(file)}catch(e){toast(e.message);return null}
+ let m;try{m=commitMeal({name:name||mealSlotName(),kcal:0,protein:0,carbs:0,fat:0,fiber:0,note,source:'photo',confidence:'photo',photo:id})}catch(e){toast(e.message);return null}
+ if(!save())return null;
+ try{render()}catch(_){}
+ pulseTap();toast(m.name+' eingetragen. Werte kannst du unter Essen ergänzen.','Rückgängig');return m;
+}
+function mealPhotoFill(id){
+ const m=db.meals.find(x=>x.id===id);if(!m)return toast('Diese Mahlzeit gibt es nicht mehr.');
+ libDetailShell('<span class="life-kicker">'+esc(m.time||'')+'</span><h2 id="lifeDetailHeading" tabindex="-1">'+esc(m.name)+'</h2>'+
+  (m.photo?'<div class="meal-fill-photo">'+photoTiles([m.photo])+'</div>':'')+
+  '<label>Was war es?<textarea id="mealFillText" rows="2" placeholder="z. B. 2 Scheiben Brot, 1 Apfel"></textarea></label><p class="capture-understanding" id="mealFillStatus" aria-live="polite">Ein Satz reicht. PULSE rechnet die Werte aus.</p>'+
+  '<div class="life-detail-actions">'+lifeButton('Werte übernehmen',lifeCall('mealPhotoFillSave',id),'life-btn dark')+'</div>');
+ const el=document.getElementById('lifeDetail');PulsePhotos.hydrate(el);
+}
+function mealPhotoFillSave(id){
+ const m=db.meals.find(x=>x.id===id),field=document.getElementById('mealFillText'),status=document.getElementById('mealFillStatus');if(!m||!field)return;
+ const raw=field.value.trim();if(!raw){status.textContent='Schreib kurz, was es war.';return field.focus()}
+ const template=findMealTemplate(raw),parts=parseFoodText(template?.text||raw);
+ if(!parts.length){status.textContent='Das kann ich nicht ausrechnen. Schreib die Menge dazu, zum Beispiel „1 Teller Nudeln“.';return field.focus()}
+ const unknown=parts.filter(p=>p.unknown);if(unknown.length){status.textContent='Unklar: '+unknown.map(p=>'„'+p.raw+'“ ('+(p.reason||'nicht gefunden')+')').join(', ')+'. Schreib es anders oder lass es weg.';return field.focus()}
+ const totals={kcal:0,protein:0,carbs:0,fat:0,fiber:0};for(const p of parts)for(const k of Object.keys(totals))totals[k]=nums(totals[k]+p.nut[k]);
+ const d=db.days[m.date]||today();for(const k of Object.keys(totals)){d[k]=nums((d[k]||0)-(m[k]||0)+totals[k]);m[k]=totals[k]}
+ m.confidence=parts.some(p=>p.confidence==='geschaetzt')?'estimated':'calculated';m.rawText=raw;m.name=template?.label||(String(m.name).split(':')[0]+': '+raw).slice(0,90);
+ if(!save())return;lifeCloseSheet();try{render()}catch(_){}pulseTap();toast(intakeMessage(m));
+}

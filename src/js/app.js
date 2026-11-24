@@ -211,7 +211,7 @@ function openDialog(wrapper,focusSelector,{fromHistory=false}={}){
  if(!replacing)lastDialogTrigger=document.activeElement;
  else if(activeDialog!==wrapper.id)document.getElementById(activeDialog)?.classList.remove('open');
  activeDialog=wrapper.id;wrapper.classList.remove('closing');wrapper.classList.add('open');backgroundInert(true);
- if(!fromHistory&&!dialogBackPending){const state={pulseView:(location.hash||'#now').slice(1),pulseDialog:wrapper.id};if(replacing)history.replaceState(state,'',location.hash);else history.pushState(state,'',location.hash)}
+ if(!fromHistory&&!dialogBackPending){const state={pulseView:(location.hash||'#life').slice(1),pulseDialog:wrapper.id};if(replacing)history.replaceState(state,'',location.hash);else history.pushState(state,'',location.hash)}
  requestAnimationFrame(()=>{if(activeDialog!==wrapper.id)return;const el=wrapper.querySelector(focusSelector)||wrapper.querySelector('button,input,textarea,select,[tabindex]:not([tabindex="-1"])');el?.focus()});
 }
 function closeDialog(wrapper,{fromHistory=false,navigating=false}={}){
@@ -248,10 +248,10 @@ document.addEventListener('keydown',e=>{
 });
 window.addEventListener('popstate',event=>{
  if(typeof overlayPop==='function'&&overlayPop())return;
- if(dialogBackPending){dialogBackPending=false;if(activeDialog)history.pushState({pulseView:(location.hash||'#now').slice(1),pulseDialog:activeDialog},'',location.hash);if(queuedDialogNavigation){const queued=queuedDialogNavigation;queuedDialogNavigation=null;goView(queued.v,queued.options)}return}
+ if(dialogBackPending){dialogBackPending=false;if(activeDialog)history.pushState({pulseView:(location.hash||'#life').slice(1),pulseDialog:activeDialog},'',location.hash);if(queuedDialogNavigation){const queued=queuedDialogNavigation;queuedDialogNavigation=null;goView(queued.v,queued.options)}return}
  const wasDialog=!!activeDialog;
  if(activeDialog)closeDialog(document.getElementById(activeDialog),{fromHistory:true});
- const destination=(location.hash||'#now').slice(1);
+ const destination=(location.hash||'#life').slice(1);
  if(!wasDialog||document.getElementById('appMain').dataset.view!==destination)goView(destination,{historyMode:false,focus:!wasDialog&&!event?.state?.pulseDialog});
  const id=event?.state?.pulseDialog;
  if(['captureSheet','valueModal','lifeSheet'].includes(id)){const wrapper=document.getElementById(id);if(wrapper)openDialog(wrapper,'input,textarea,button,[tabindex]',{fromHistory:true})}

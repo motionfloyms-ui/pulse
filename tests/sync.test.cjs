@@ -117,3 +117,5 @@ test('preview changes nothing',()=>{
  const before=JSON.stringify(a),r=S.preview(a,S.read(S.pack(b)),T(4));
  assert.equal(r.life.added,1);assert.equal(JSON.stringify(a),before);
 });
+
+test('meal photos travel with the sync package',()=>{assert.deepEqual(S.photoIds({life:{items:[]},meals:[{id:'m1',photo:'ph-meal1'},{id:'m2'}]}),['ph-meal1'])});

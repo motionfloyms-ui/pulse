@@ -6,3 +6,5 @@ test('thursday moves the warm meal earlier',()=>{assert.equal(Ctx.mealSlots('202
 test('training alternates A and B by actual history',()=>{const db={days:{},workouts:[{date:'2026-10-19',plan:'A'}],events:[],planOverrides:{}};assert.equal(Ctx.training(db,'2026-10-21').plan,'B')});
 test('readiness needs a complete check-in',()=>{assert.equal(Ctx.score({sleep:8}),null);assert.ok(Ctx.score({sleep:8,sleepQ:8,stress:2,sore:2,energy:8,mood:8})>80)});
 test('weekly averages ignore days without records',()=>{const db={days:{'2026-10-20':{kcal:1600,protein:120,meals:3}}};const w=P.week(db,'2026-10-20',Ctx.offset,Ctx.score);assert.equal(w.averages.kcal.count,1);assert.equal(w.averages.kcal.value,1600)});
+
+test('a day with only photo meals has unknown nutrition, not zero',()=>{const db={days:{'2026-10-20':{kcal:0,protein:0,meals:1}},meals:[{date:'2026-10-20',confidence:'photo',kcal:0}]};const w=P.week(db,'2026-10-20',Ctx.offset,Ctx.score);assert.equal(w.averages.kcal.count,0)});

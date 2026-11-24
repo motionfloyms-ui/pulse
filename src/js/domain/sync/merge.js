@@ -34,7 +34,7 @@
   }};
  }
  /* Photo ids a package needs (handwritten pages, photos in notes). */
- function photoIds(data){const ids=new Set();for(const x of (isObj(data)&&isObj(data.life)&&Array.isArray(data.life.items)?data.life.items:[]))for(const id of Array.isArray(x&&x.photos)?x.photos:[])if(typeof id==='string'&&/^ph-[a-z0-9]+$/.test(id))ids.add(id);return [...ids]}
+ function photoIds(data){const ids=new Set(),ok=id=>typeof id==='string'&&/^ph-[a-z0-9]+$/.test(id);for(const x of (isObj(data)&&isObj(data.life)&&Array.isArray(data.life.items)?data.life.items:[]))for(const id of Array.isArray(x&&x.photos)?x.photos:[])if(ok(id))ids.add(id);for(const m of (isObj(data)&&Array.isArray(data.meals)?data.meals:[]))if(m&&ok(m.photo))ids.add(m.photo);return [...ids]}
  /* A package, or a whole PULSE backup (wrapped or bare). Returns {kind, data, device, exportedAt}. */
  function read(o){
   if(!isObj(o))throw Error('Diese Datei ist kein PULSE-Paket.');

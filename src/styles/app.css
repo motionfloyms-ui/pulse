@@ -1557,3 +1557,17 @@ body:has(#appMain:not([data-view="life"],[data-view="calendar"],[data-view="body
 .today-offer-actions{display:flex;align-items:center;gap:8px}
 .today-offer-go{min-height:46px;padding:0 20px;border-radius:23px;background:var(--accent);color:var(--accent-on);font-size:16px;font-weight:700;white-space:nowrap}
 .today-offer-skip{min-height:46px;padding:0 14px;border-radius:23px;background:none;color:var(--muted);font-size:15px;font-weight:600}
+
+/* ===== v45 · Essen per Foto and shared photos. ===== */
+.life-nav .life-composer-cam{flex:none;width:50px;min-height:50px;border-radius:16px;background:var(--fill);color:var(--ink-2)}
+.life-composer-cam svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.life-nav .life-composer-cam:active{background:var(--fill-strong)}
+.mealItem.has-photo{align-items:flex-start;gap:12px}
+.mealItem.has-photo>.life-photo{flex:none;width:64px;height:64px}
+.mealItem.has-photo>.life-photo img{width:64px;height:64px;object-fit:cover;border-radius:14px}
+.mealItem .meal-fill{margin-top:8px;min-height:36px;padding:0 14px;border-radius:18px;background:var(--accent-soft);color:var(--accent-text);font-size:14px;font-weight:650}
+.meal-fill-photo .life-photo img{width:100%;max-height:220px;object-fit:cover;border-radius:18px}
+.share-photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:6px 0 4px}
+.share-photos img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:16px;background:var(--fill)}
+.share-photo-actions{display:flex;flex-wrap:wrap;gap:10px}
+.meal-fill-photo .life-photo,.meal-fill-photo .life-photo-open{display:block;width:100%;height:auto;padding:0;background:none}

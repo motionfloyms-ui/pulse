@@ -23,8 +23,9 @@
     {"name": "Tageskarte", "short_name": "Tarot", "url": "./?action=tarot", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
   ],
   "share_target": {
-    "action": "./",
-    "method": "GET",
-    "params": {"title": "title", "text": "text", "url": "url"}
+    "action": "./share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {"title": "title", "text": "text", "url": "url", "files": [{"name": "photos", "accept": ["image/*"]}]}
   }
 }

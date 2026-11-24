@@ -4,7 +4,9 @@
   function week(db,date,offset,score){
     const days=Array.from({length:7},(_,index)=>{
       const key=offset(date,index-6),d=db.days[key]||{};
-      const nutrition=Number(d.meals)>0||Number(d.kcal)>0||Number(d.protein)>0;
+      /* Photo-only meals say "eaten", not "0 kcal": such a day counts as unknown, never as zero. */
+      const photoOnly=(Array.isArray(db.meals)?db.meals:[]).filter(m=>m&&m.date===key&&m.confidence==='photo').length;
+      const nutrition=Number(d.kcal)>0||Number(d.protein)>0||Number(d.meals)>photoOnly;
       return {date:key,kcal:nutrition?d.kcal??null:null,protein:nutrition?d.protein??null:null,
         water:d.water>0?d.water:null,steps:d.steps>0||d.stepsRecordedAt?d.steps??0:null,
         sleep:d.recovery?.sleep??null,readiness:score(d.recovery)};

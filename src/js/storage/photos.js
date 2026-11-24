@@ -38,6 +38,7 @@ function photoReferences(){
  const refs=new Set();
  for(const x of PulseLife.list(db,{archived:true}))(x.photos||[]).forEach(id=>refs.add(id));
  (lifeState().draft?.photos||[]).forEach(id=>refs.add(id));
+ for(const m of db.meals||[])if(m&&typeof m.photo==='string')refs.add(m.photo);
  for(const id of JSON.stringify(db.undoStack||[]).match(/ph-[a-z0-9]+/g)||[])refs.add(id);
  lifeEditorPhotos.forEach(id=>refs.add(id));
  return refs;
